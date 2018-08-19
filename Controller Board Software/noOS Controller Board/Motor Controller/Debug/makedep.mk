@@ -2,9 +2,21 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\ASF\common\services\spi\sam_spi\spi_master.c
+
+src\ASF\common\services\spi\sam_usart_spi\usart_spi.c
+
+src\ASF\sam\drivers\spi\spi.c
+
+src\ASF\sam\drivers\usart\usart.c
+
+src\comm.c
+
 src\ASF\sam\drivers\twi\twi.c
 
 src\lcd.c
+
+src\menu.c
 
 src\timing.c
 

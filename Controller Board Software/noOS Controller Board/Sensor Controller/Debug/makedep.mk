@@ -2,6 +2,12 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\ASF\common\services\spi\sam_spi\spi_master.c
+
+src\ASF\sam\drivers\spi\spi.c
+
+src\ASF\sam\drivers\dmac\dmac.c
+
 src\ASF\common\services\clock\sam3x\sysclk.c
 
 src\ASF\sam\drivers\pmc\pmc.c

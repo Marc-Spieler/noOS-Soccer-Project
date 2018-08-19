@@ -131,6 +131,11 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/common/services/clock/sam3x/pll.h \
  ../src/ASF/sam/drivers/pmc/sleep.h \
  ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
+ ../src/ASF/common/services/spi/sam_spi/spi_master.h \
+ ../src/ASF/sam/drivers/spi/spi.h ../src/config/conf_spi_master.h \
+ ../src/ASF/common/services/spi/usart_spi.h \
+ ../src/ASF/common/services/spi/sam_usart_spi/usart_spi.h \
+ ../src/ASF/sam/drivers/usart/usart.h ../src/config/conf_usart_spi.h \
  ../src/ASF/common/services/twi/sam_twi/twi_master.h \
  ../src/ASF/sam/drivers/twi/twi.h \
  ../src/ASF/common/services/twi/sam_twi/twi_slave.h \
@@ -138,7 +143,7 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/common/services/twi/sam_twi/twi_master.h \
  ../src/ASF/common/services/twi/twi_slave.h \
  ../src/ASF/common/services/twi/sam_twi/twi_slave.h ../src/timing.h \
- ../src/lcd.h
+ ../src/lcd.h ../src/menu.h ../src/comm.h
 
 ../src/asf.h:
 
@@ -412,6 +417,20 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h:
 
+../src/ASF/common/services/spi/sam_spi/spi_master.h:
+
+../src/ASF/sam/drivers/spi/spi.h:
+
+../src/config/conf_spi_master.h:
+
+../src/ASF/common/services/spi/usart_spi.h:
+
+../src/ASF/common/services/spi/sam_usart_spi/usart_spi.h:
+
+../src/ASF/sam/drivers/usart/usart.h:
+
+../src/config/conf_usart_spi.h:
+
 ../src/ASF/common/services/twi/sam_twi/twi_master.h:
 
 ../src/ASF/sam/drivers/twi/twi.h:
@@ -429,3 +448,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/timing.h:
 
 ../src/lcd.h:
+
+../src/menu.h:
+
+../src/comm.h:

@@ -33,6 +33,8 @@
   <options>
     <option id="common.boards" value="Add" config="" content-id="Atmel.ASF" />
     <option id="common.services.ioport" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="sam.drivers.dmac" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.services.basic.spi_master" value="Add" config="standard_spi" content-id="Atmel.ASF" />
     <option id="sam.utils.linker_scripts#atsam3x8" value="Add" config="" content-id="Atmel.ASF" />
   </options>
   <configurations>
@@ -177,6 +179,15 @@
     <file path="src/Config/conf_clock.h" framework="" version="3.35.1" source="common\services\clock\sam3x\module_config\conf_clock.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/common/services/ioport/sam/ioport_pio.h" framework="" version="3.35.1" source="common\services\ioport\sam\ioport_pio.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/common/services/ioport/ioport.h" framework="" version="3.35.1" source="common\services\ioport\ioport.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/dmac/dmac.c" framework="" version="3.35.1" source="sam\drivers\dmac\dmac.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/dmac/example/dmac_example.h" framework="" version="3.35.1" source="sam\drivers\dmac\example\dmac_example.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/dmac/dmac.h" framework="" version="3.35.1" source="sam\drivers\dmac\dmac.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/sam_spi/spi_master.c" framework="" version="3.35.1" source="common\services\spi\sam_spi\spi_master.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/sam_spi/spi_master.h" framework="" version="3.35.1" source="common\services\spi\sam_spi\spi_master.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/spi_master.h" framework="" version="3.35.1" source="common\services\spi\spi_master.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/Config/conf_spi_master.h" framework="" version="3.35.1" source="common\services\spi\sam_spi\module_config\conf_spi_master.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/spi/spi.c" framework="" version="3.35.1" source="sam\drivers\spi\spi.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/spi/spi.h" framework="" version="3.35.1" source="sam\drivers\spi\spi.h" changed="False" content-id="Atmel.ASF" />
   </files>
   <documentation help="http://asf.atmel.com/docs/3.35.1/common.applications.user_application.user_board.sam3x/html/index.html" />
   <offline-documentation help="" />
@@ -240,6 +251,10 @@
       <Value>../src/ASF/sam/drivers/pmc</Value>
       <Value>../src/ASF/common/services/clock</Value>
       <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/sam/drivers/dmac</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -280,6 +295,10 @@
       <Value>../src/ASF/sam/drivers/pmc</Value>
       <Value>../src/ASF/common/services/clock</Value>
       <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/sam/drivers/dmac</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
@@ -302,6 +321,10 @@
       <Value>../src/ASF/sam/drivers/pmc</Value>
       <Value>../src/ASF/common/services/clock</Value>
       <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/sam/drivers/dmac</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -342,6 +365,10 @@
       <Value>../src/ASF/sam/drivers/pmc</Value>
       <Value>../src/ASF/common/services/clock</Value>
       <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/sam/drivers/dmac</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>
@@ -381,6 +408,10 @@
       <Value>../src/ASF/sam/drivers/pmc</Value>
       <Value>../src/ASF/common/services/clock</Value>
       <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/sam/drivers/dmac</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
@@ -404,6 +435,10 @@
       <Value>../src/ASF/sam/drivers/pmc</Value>
       <Value>../src/ASF/common/services/clock</Value>
       <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/sam/drivers/dmac</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -411,6 +446,33 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="src\ASF\common\services\spi\sam_spi\spi_master.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\spi\spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\spi\spi.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\config\conf_spi_master.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\spi\spi_master.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\spi\sam_spi\spi_master.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\sam\drivers\dmac\dmac.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\dmac\dmac.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam\drivers\dmac\example\dmac_example.h">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\ASF\common\services\ioport\ioport.h">
       <SubType>compile</SubType>
     </None>
@@ -834,11 +896,16 @@
     <Folder Include="src\ASF\common\services\clock\sam3x\" />
     <Folder Include="src\ASF\common\services\ioport\" />
     <Folder Include="src\ASF\common\services\ioport\sam\" />
+    <Folder Include="src\ASF\common\services\spi\" />
+    <Folder Include="src\ASF\common\services\spi\sam_spi\" />
     <Folder Include="src\ASF\common\utils\" />
     <Folder Include="src\ASF\common\utils\interrupt\" />
     <Folder Include="src\ASF\sam\" />
     <Folder Include="src\ASF\sam\drivers\" />
+    <Folder Include="src\ASF\sam\drivers\dmac\" />
+    <Folder Include="src\ASF\sam\drivers\dmac\example\" />
     <Folder Include="src\ASF\sam\drivers\pmc\" />
+    <Folder Include="src\ASF\sam\drivers\spi\" />
     <Folder Include="src\ASF\sam\utils\" />
     <Folder Include="src\ASF\sam\utils\cmsis\" />
     <Folder Include="src\ASF\sam\utils\cmsis\sam3x\" />

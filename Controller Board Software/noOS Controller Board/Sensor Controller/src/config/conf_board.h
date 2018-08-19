@@ -38,4 +38,10 @@
 #define LED_S2  						        (PIO_PD1_IDX)
 #define LED_S3   						        (PIO_PD0_IDX)
 
+/* SPI0 pin definition */
+#define SPI0_MISO				            	(PIO_PA25_IDX)
+#define SPI0_MOSI				            	(PIO_PA26_IDX)
+#define SPI0_SPCK				            	(PIO_PA27_IDX)
+#define SPI0_NPCS0				          		(PIO_PA28_IDX)
+
 #endif // CONF_BOARD_H

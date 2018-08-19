@@ -59,6 +59,9 @@
 // From module: Common build items for user board support templates
 #include <user_board.h>
 
+// From module: DMAC - DMAC Controller
+#include <dmac.h>
+
 // From module: Generic board support
 #include <board.h>
 
@@ -77,6 +80,13 @@
 
 // From module: SAM3X startup code
 #include <exceptions.h>
+
+// From module: SPI - SAM Implementation
+#include <spi_master.h>
+#include <spi_master.h>
+
+// From module: SPI - Serial Peripheral Interface
+#include <spi.h>
 
 // From module: System Clock Control - SAM3X/A implementation
 #include <sysclk.h>

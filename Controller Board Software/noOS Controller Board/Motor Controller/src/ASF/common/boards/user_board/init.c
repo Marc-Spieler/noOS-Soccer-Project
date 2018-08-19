@@ -48,4 +48,14 @@ void board_init(void)
 	ioport_disable_pin(I2C0_DATA);
 	ioport_set_pin_mode(I2C0_CLK, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(I2C0_CLK);
+	
+	/* Configure SPI pins */
+	ioport_set_pin_mode(SPI1_MISO, IOPORT_MODE_MUX_A);
+	ioport_disable_pin(SPI1_MISO);
+	ioport_set_pin_mode(SPI1_MOSI, IOPORT_MODE_MUX_A);
+	ioport_disable_pin(SPI1_MOSI);
+	ioport_set_pin_mode(SPI1_SPCK, IOPORT_MODE_MUX_A);
+	ioport_disable_pin(SPI1_SPCK);
+	ioport_set_pin_mode(SPI1_NPCS0, IOPORT_MODE_MUX_A);
+	ioport_disable_pin(SPI1_NPCS0);
 }

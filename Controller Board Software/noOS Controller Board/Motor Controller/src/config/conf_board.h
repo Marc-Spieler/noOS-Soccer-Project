@@ -45,4 +45,10 @@
 #define I2C0_DATA					            PIO_PA17_IDX
 #define I2C0_CLK					            PIO_PA18_IDX
 
+/* SPI1 pin definition */
+#define SPI1_MISO				            	(PIO_PA12_IDX)
+#define SPI1_MOSI				            	(PIO_PA13_IDX)
+#define SPI1_SPCK				            	(PIO_PA16_IDX)
+#define SPI1_NPCS0				          		(PIO_PA14_IDX)
+
 #endif

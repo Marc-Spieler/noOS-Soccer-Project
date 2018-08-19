@@ -35,6 +35,7 @@
     <option id="common.services.ioport" value="Add" config="" content-id="Atmel.ASF" />
     <option id="common.services.basic.twi" value="Add" config="" content-id="Atmel.ASF" />
     <option id="sam.drivers.dmac" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.services.basic.spi_master" value="Add" config="usart_and_standard_spi" content-id="Atmel.ASF" />
     <option id="sam.utils.linker_scripts#atsam3x8" value="Add" config="" content-id="Atmel.ASF" />
   </options>
   <configurations>
@@ -188,6 +189,18 @@
     <file path="src/ASF/common/services/twi/sam_twi/twi_slave.h" framework="" version="3.35.1" source="common\services\twi\sam_twi\twi_slave.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/sam/drivers/twi/twi.c" framework="" version="3.35.1" source="sam\drivers\twi\twi.c" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/sam/drivers/twi/twi.h" framework="" version="3.35.1" source="sam\drivers\twi\twi.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/sam_spi/spi_master.c" framework="" version="3.35.1" source="common\services\spi\sam_spi\spi_master.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/sam_spi/spi_master.h" framework="" version="3.35.1" source="common\services\spi\sam_spi\spi_master.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/spi_master.h" framework="" version="3.35.1" source="common\services\spi\spi_master.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/Config/conf_spi_master.h" framework="" version="3.35.1" source="common\services\spi\sam_spi\module_config\conf_spi_master.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/sam_usart_spi/usart_spi.c" framework="" version="3.35.1" source="common\services\spi\sam_usart_spi\usart_spi.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/sam_usart_spi/usart_spi.h" framework="" version="3.35.1" source="common\services\spi\sam_usart_spi\usart_spi.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/spi/usart_spi.h" framework="" version="3.35.1" source="common\services\spi\usart_spi.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/Config/conf_usart_spi.h" framework="" version="3.35.1" source="common\services\spi\sam_usart_spi\module_config\conf_usart_spi.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/spi/spi.c" framework="" version="3.35.1" source="sam\drivers\spi\spi.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/spi/spi.h" framework="" version="3.35.1" source="sam\drivers\spi\spi.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/usart/usart.c" framework="" version="3.35.1" source="sam\drivers\usart\usart.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/usart/usart.h" framework="" version="3.35.1" source="sam\drivers\usart\usart.h" changed="False" content-id="Atmel.ASF" />
   </files>
   <documentation help="http://asf.atmel.com/docs/3.35.1/common.applications.user_application.user_board.sam3x/html/index.html" />
   <offline-documentation help="" />
@@ -254,6 +267,11 @@
       <Value>../src/ASF/common/services/ioport</Value>
       <Value>../src/ASF/common/services/twi</Value>
       <Value>../src/ASF/sam/drivers/twi</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/common/services/spi/sam_usart_spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -297,6 +315,11 @@
       <Value>../src/ASF/common/services/ioport</Value>
       <Value>../src/ASF/common/services/twi</Value>
       <Value>../src/ASF/sam/drivers/twi</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/common/services/spi/sam_usart_spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
@@ -322,6 +345,11 @@
       <Value>../src/ASF/common/services/ioport</Value>
       <Value>../src/ASF/common/services/twi</Value>
       <Value>../src/ASF/sam/drivers/twi</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/common/services/spi/sam_usart_spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -365,6 +393,11 @@
       <Value>../src/ASF/common/services/ioport</Value>
       <Value>../src/ASF/common/services/twi</Value>
       <Value>../src/ASF/sam/drivers/twi</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/common/services/spi/sam_usart_spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>
@@ -409,6 +442,11 @@
       <Value>../src/ASF/common/services/ioport</Value>
       <Value>../src/ASF/common/services/twi</Value>
       <Value>../src/ASF/sam/drivers/twi</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/common/services/spi/sam_usart_spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
@@ -435,6 +473,11 @@
       <Value>../src/ASF/common/services/ioport</Value>
       <Value>../src/ASF/common/services/twi</Value>
       <Value>../src/ASF/sam/drivers/twi</Value>
+      <Value>../src/ASF/common/services/spi/sam_spi</Value>
+      <Value>../src/ASF/common/services/spi</Value>
+      <Value>../src/ASF/common/services/spi/sam_usart_spi</Value>
+      <Value>../src/ASF/sam/drivers/spi</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -442,6 +485,48 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="src\ASF\common\services\spi\sam_spi\spi_master.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\common\services\spi\sam_usart_spi\usart_spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\spi\spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\usart\usart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\comm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\comm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\usart\usart.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam\drivers\spi\spi.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\config\conf_usart_spi.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\spi\usart_spi.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\spi\sam_usart_spi\usart_spi.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\config\conf_spi_master.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\spi\spi_master.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\spi\sam_spi\spi_master.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\ASF\sam\drivers\twi\twi.c">
       <SubType>compile</SubType>
     </Compile>
@@ -449,6 +534,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\menu.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\menu.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\timing.c">
@@ -904,6 +995,9 @@
     <Folder Include="src\ASF\common\services\clock\sam3x\" />
     <Folder Include="src\ASF\common\services\ioport\" />
     <Folder Include="src\ASF\common\services\ioport\sam\" />
+    <Folder Include="src\ASF\common\services\spi\" />
+    <Folder Include="src\ASF\common\services\spi\sam_spi\" />
+    <Folder Include="src\ASF\common\services\spi\sam_usart_spi\" />
     <Folder Include="src\ASF\common\services\twi\" />
     <Folder Include="src\ASF\common\services\twi\sam_twi\" />
     <Folder Include="src\ASF\common\utils\" />
@@ -913,7 +1007,9 @@
     <Folder Include="src\ASF\sam\drivers\dmac\" />
     <Folder Include="src\ASF\sam\drivers\dmac\example\" />
     <Folder Include="src\ASF\sam\drivers\pmc\" />
+    <Folder Include="src\ASF\sam\drivers\spi\" />
     <Folder Include="src\ASF\sam\drivers\twi\" />
+    <Folder Include="src\ASF\sam\drivers\usart\" />
     <Folder Include="src\ASF\sam\utils\" />
     <Folder Include="src\ASF\sam\utils\cmsis\" />
     <Folder Include="src\ASF\sam\utils\cmsis\sam3x\" />

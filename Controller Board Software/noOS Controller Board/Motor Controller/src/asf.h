@@ -81,6 +81,17 @@
 // From module: SAM3X startup code
 #include <exceptions.h>
 
+// From module: SPI - SAM Implementation
+#include <spi_master.h>
+#include <spi_master.h>
+
+// From module: SPI - SAM implementation
+#include <usart_spi.h>
+#include <usart_spi.h>
+
+// From module: SPI - Serial Peripheral Interface
+#include <spi.h>
+
 // From module: System Clock Control - SAM3X/A implementation
 #include <sysclk.h>
 
@@ -92,5 +103,8 @@
 
 // From module: TWI - Two-wire Interface
 #include <twi.h>
+
+// From module: USART - Univ. Syn Async Rec/Trans
+#include <usart.h>
 
 #endif // ASF_H
