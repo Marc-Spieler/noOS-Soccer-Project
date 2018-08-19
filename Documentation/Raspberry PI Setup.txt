@@ -1,0 +1,53 @@
+sudo apt-get update
+sudo apt-get upgrade
+sudo reboot
+
+
+// OpenCV
+// http://pklab.net/?id=392&lang=EN
+sudo apt-get install build-essential cmake cmake-curses-gui pkg-config
+sudo apt-get install libpng12-dev
+sudo apt-get install libpng-dev
+sudo apt-get install libjpeg-dev libtiff5-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libeigen3-dev libxvidcore-dev libx264-dev libgtk2.0-dev libgdk-pixbuf2.0-dev libpango1.0-dev libcairo2-dev libfontconfig1-dev libfreetype6-dev libfontconfig1-dev libfreetype6-dev libxft-dev
+wget https://github.com/opencv/opencv/archive/master.zip
+wget https://github.com/opencv/opencv_contrib/archive/master.zip
+unzip master.zip
+unzip master.zip.1
+cd opencv-master
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=RELEASE CMAKE_INSTALL_PREFIX=/usr/local BUILD_WITH_DEBUG_INFO=OFF BUILD_DOCS=OFF BUILD_EXAMPLES=OFF BUILD_TESTS=OFF BUILD_opencv_ts=OFF BUILD_PERF_TESTS=OFF INSTALL_C_EXAMPLES=ON INSTALL_PYTHON_EXAMPLES=ON ENABLE_NEON=ON WITH_LIBV4L=ON OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-master .. 
+make -j4
+sudo make install
+sudo ldconfig
+
+// Raspicam
+// https://www.uco.es/investiga/grupos/ava/node/40
+wget https://netcologne.dl.sourceforge.net/project/raspicam/raspicam-0.1.6.zip
+unzip raspicam-0.1.6.zip
+cd raspicam-0.1.6
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+sudo ldconfig
+
+// BlueZ
+// https://learn.adafruit.com/install-bluez-on-the-raspberry-pi/installation
+sudo apt-get update
+sudo apt-get install -y libusb-dev libdbus-1-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev
+wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.48.tar.xz
+tar -xvf bluez-5.48.tar.xz
+cd bluez-5.48
+./configure
+make
+sudo make install
+sudo apt-get install libbluetooth-dev
+
+// WiringPI
+// http://wiringpi.com/download-and-install/
+sudo apt-get install git-core
+git clone git://git.drogon.net/wiringPi
+cd wiringPi
+./build
