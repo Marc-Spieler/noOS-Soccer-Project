@@ -1,40 +1,53 @@
-/**
- * \file
- *
- * \brief Empty user application template
- *
- */
+/************************************************************************/
+/* Author: Marc Spieler                                                 */
+/* Team: noOS                                                           */
+/* Created: 01.07.18                                                    */
+/************************************************************************/
 
-/**
- * \mainpage User Application template doxygen documentation
- *
- * \par Empty user application template
- *
- * Bare minimum empty user application template
- *
- * \par Content
- *
- * -# Include the ASF header files (through asf.h)
- * -# "Insert system clock initialization code here" comment
- * -# Minimal main function that starts with a call to board_init()
- * -# "Insert application code here" comment
- *
- */
+#include "asf.h"
 
-/*
- * Include header files for all drivers that have been imported from
- * Atmel Software Framework (ASF).
- */
-/*
- * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
- */
-#include <asf.h>
+static uint32_t g_ul_ms_ticks = 0;
 
-int main (void)
+void mdelay(uint32_t ul_dly_ticks);
+
+void SysTick_Handler(void)
 {
-	/* Insert system clock initialization code here (sysclk_init()). */
+	g_ul_ms_ticks++;
+}
 
+int main(void)
+{
+	sysclk_init();
 	board_init();
+	SysTick_Config(sysclk_get_cpu_hz() / 1000);
+	
+	for(int i = 0; i< 3; i++)
+	{
+		ioport_set_pin_level(LED_ONBOARD, 1);
+		ioport_set_pin_level(LED_S1, 1);
+		ioport_set_pin_level(LED_S2, 1);
+		ioport_set_pin_level(LED_S3, 1);
+		mdelay(100);
+		ioport_set_pin_level(LED_ONBOARD, 0);
+		ioport_set_pin_level(LED_S1, 0);
+		ioport_set_pin_level(LED_S2, 0);
+		ioport_set_pin_level(LED_S3, 0);
+		mdelay(100);
+	}
+	
+	while (1)
+	{
+		ioport_set_pin_level(LED_ONBOARD, 1);
+		mdelay(100);
+		ioport_set_pin_level(LED_ONBOARD, 0);
+		mdelay(900);
+	}
+}
 
-	/* Insert application code here, after the board has been initialized. */
+void mdelay(uint32_t ul_dly_ticks)
+{
+	uint32_t ul_cur_ticks;
+
+	ul_cur_ticks = g_ul_ms_ticks;
+	while ((g_ul_ms_ticks - ul_cur_ticks) < ul_dly_ticks);
 }

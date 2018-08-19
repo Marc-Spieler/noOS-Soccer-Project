@@ -8,8 +8,8 @@ src/lcd.d src/lcd.o: ../src/lcd.c ../src/lcd.h ../src/asf.h \
  ../src/ASF/sam/utils/preprocessor/mrepeat.h \
  ../src/ASF/sam/utils/preprocessor/preprocessor.h \
  ../src/ASF/sam/utils/header_files/io.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/sam3xa.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/sam3x8e.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/sam3xa.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/sam3x8e.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.3.1\include\stdint.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\stdint.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\machine\_default_types.h \
@@ -17,77 +17,77 @@ src/lcd.d src/lcd.o: ../src/lcd.c ../src/lcd.h ../src/asf.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\_newlib_version.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\_intsup.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\_stdint.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\arm\cmsis\5.0.1\CMSIS\Include/core_cm3.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\arm\cmsis\5.0.1\CMSIS\Include/cmsis_compiler.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\arm\cmsis\5.0.1\CMSIS\Include/cmsis_gcc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/system_sam3xa.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/adc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/can.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/chipid.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/dacc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/dmac.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/efc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/emac.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/gpbr.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/hsmci.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/matrix.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/pdc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/pio.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/pmc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/pwm.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/rstc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/rtc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/rtt.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/smc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/spi.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/ssc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/supc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/tc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/trng.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/twi.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/uart.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/uotghs.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/usart.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/wdt.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/hsmci.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/ssc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/spi0.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/tc0.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/tc1.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/tc2.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/twi0.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/twi1.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/pwm.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/usart0.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/usart1.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/usart2.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/usart3.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/uotghs.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/emac.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/can0.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/can1.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/trng.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/adc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/dmac.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/dacc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/smc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/matrix.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/pmc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/uart.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/chipid.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/efc0.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/efc1.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/pioa.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/piob.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/pioc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/piod.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/rstc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/supc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/rtt.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/wdt.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/rtc.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/gpbr.h \
- C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/pio/sam3x8e.h \
+ ../src/ASF/thirdparty/CMSIS/Include/core_cm3.h \
+ ../src/ASF/thirdparty/CMSIS/Include/core_cmInstr.h \
+ ../src/ASF/thirdparty/CMSIS/Include/core_cmFunc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_adc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_can.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_chipid.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_dacc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_dmac.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_efc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_emac.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_gpbr.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_hsmci.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_matrix.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_pdc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_pio.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_pmc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_pwm.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_rstc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_rtc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_rtt.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_smc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_spi.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_ssc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_supc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_tc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_trng.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_twi.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_uart.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_uotghs.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_usart.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/component/component_wdt.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_hsmci.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_ssc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_spi0.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_tc0.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_tc1.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_tc2.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_twi0.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_twi1.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_pwm.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_usart0.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_usart1.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_usart2.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_usart3.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_uotghs.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_emac.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_can0.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_can1.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_trng.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_adc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_dmac.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_dacc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_smc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_matrix.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_pmc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_uart.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_chipid.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_efc0.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_efc1.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_pioa.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_piob.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_pioc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_piod.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_rstc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_supc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_rtt.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_wdt.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_rtc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_gpbr.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/include/pio/pio_sam3x8e.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\stdio.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\_ansi.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\newlib.h \
@@ -164,9 +164,9 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gc
 
 ../src/ASF/sam/utils/header_files/io.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/sam3xa.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/sam3xa.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/sam3x8e.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/sam3x8e.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.3.1\include\stdint.h:
 
@@ -182,147 +182,147 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\_stdint.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\arm\cmsis\5.0.1\CMSIS\Include/core_cm3.h:
+../src/ASF/thirdparty/CMSIS/Include/core_cm3.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\arm\cmsis\5.0.1\CMSIS\Include/cmsis_compiler.h:
+../src/ASF/thirdparty/CMSIS/Include/core_cmInstr.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\arm\cmsis\5.0.1\CMSIS\Include/cmsis_gcc.h:
+../src/ASF/thirdparty/CMSIS/Include/core_cmFunc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/system_sam3xa.h:
+../src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/adc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_adc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/can.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_can.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/chipid.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_chipid.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/dacc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_dacc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/dmac.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_dmac.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/efc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_efc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/emac.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_emac.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/gpbr.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_gpbr.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/hsmci.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_hsmci.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/matrix.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_matrix.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/pdc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_pdc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/pio.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_pio.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/pmc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_pmc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/pwm.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_pwm.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/rstc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_rstc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/rtc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_rtc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/rtt.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_rtt.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/smc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_smc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/spi.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_spi.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/ssc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_ssc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/supc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_supc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/tc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_tc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/trng.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_trng.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/twi.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_twi.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/uart.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_uart.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/uotghs.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_uotghs.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/usart.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_usart.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/component/wdt.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/component/component_wdt.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/hsmci.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_hsmci.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/ssc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_ssc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/spi0.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_spi0.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/tc0.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_tc0.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/tc1.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_tc1.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/tc2.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_tc2.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/twi0.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_twi0.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/twi1.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_twi1.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/pwm.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_pwm.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/usart0.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_usart0.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/usart1.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_usart1.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/usart2.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_usart2.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/usart3.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_usart3.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/uotghs.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_uotghs.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/emac.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_emac.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/can0.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_can0.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/can1.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_can1.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/trng.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_trng.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/adc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_adc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/dmac.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_dmac.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/dacc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_dacc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/smc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_smc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/matrix.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_matrix.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/pmc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_pmc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/uart.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_uart.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/chipid.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_chipid.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/efc0.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_efc0.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/efc1.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_efc1.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/pioa.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_pioa.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/piob.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_piob.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/pioc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_pioc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/piod.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_piod.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/rstc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_rstc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/supc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_supc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/rtt.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_rtt.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/wdt.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_wdt.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/rtc.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_rtc.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/instance/gpbr.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/instance/instance_gpbr.h:
 
-C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.51\include/pio/sam3x8e.h:
+../src/ASF/sam/utils/cmsis/sam3x/include/pio/pio_sam3x8e.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\stdio.h:
 

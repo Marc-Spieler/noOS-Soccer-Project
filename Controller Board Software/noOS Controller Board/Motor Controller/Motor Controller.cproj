@@ -347,8 +347,6 @@
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.51\include</Value>
       <Value>../src/ASF/common/boards</Value>
       <Value>../src/ASF/sam/utils</Value>
       <Value>../src/ASF/sam/utils/header_files</Value>
