@@ -11,8 +11,8 @@
 
 typedef enum bl_type
 {
-	LCD_LIGHT_OFF = 0,
-	LCD_LIGHT_ON  = 8
+    LCD_LIGHT_OFF = 0,
+    LCD_LIGHT_ON  = 8
 } backlight_t;
 
 void lcd_init(void);

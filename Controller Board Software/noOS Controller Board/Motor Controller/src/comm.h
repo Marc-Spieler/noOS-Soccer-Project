@@ -11,20 +11,20 @@
 
 typedef struct
 {
-	struct
-	{
-		uint8_t heartbeat	 :1;
-		uint8_t rsvd		 :7;
-	} ibit;
+    struct
+    {
+        uint8_t heartbeat	 :1;
+        uint8_t rsvd		 :7;
+    } ibit;
 } motor_to_sensor_t;
 
 typedef struct
 {
-	struct
-	{
-		uint8_t heartbeat	 :1;
-		uint8_t rsvd		 :7;
-	} ibit;
+    struct
+    {
+        uint8_t heartbeat	 :1;
+        uint8_t rsvd		 :7;
+    } ibit;
 } sensor_to_motor_t;
 
 extern motor_to_sensor_t mts;
