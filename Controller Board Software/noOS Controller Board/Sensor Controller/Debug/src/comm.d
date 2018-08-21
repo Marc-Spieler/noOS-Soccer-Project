@@ -1,4 +1,4 @@
-src/main.d src/main.o: ../src/main.c ../src/asf.h \
+src/comm.d src/comm.o: ../src/comm.c ../src/comm.h ../src/asf.h \
  ../src/ASF/sam/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h \
@@ -133,7 +133,11 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
  ../src/ASF/common/services/spi/sam_spi/spi_master.h \
  ../src/ASF/sam/drivers/spi/spi.h ../src/config/conf_spi_master.h \
- ../src/comm.h
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\xlocale.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h
+
+../src/comm.h:
 
 ../src/asf.h:
 
@@ -413,4 +417,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/config/conf_spi_master.h:
 
-../src/comm.h:
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\xlocale.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h:

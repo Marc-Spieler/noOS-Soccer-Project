@@ -26,5 +26,7 @@ src\ASF\sam\utils\cmsis\sam3x\source\templates\system_sam3x.c
 
 src\ASF\sam\utils\syscalls\gcc\syscalls.c
 
+src\comm.c
+
 src\main.c
 
