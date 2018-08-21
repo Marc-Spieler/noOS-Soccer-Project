@@ -18,6 +18,12 @@ uint32_t ticks_dot_update;
 uint8_t dots = 0;
 Bool update_dots = 1;
 
+char test_file_name[] = "0:sd_mmc_test.txt";
+Ctrl_status status;
+FRESULT res;
+FATFS fs;
+FIL file_object;
+
 void noOS_bootup_sequence(void);
 
 int main(void)
@@ -28,6 +34,8 @@ int main(void)
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
+    sd_mmc_init();
+    
     spi_init();
     
     twi_init();
@@ -35,6 +43,58 @@ int main(void)
     lcd_init();
     bl_state = LCD_LIGHT_ON;
     set_backlight(bl_state);
+    
+    while (1)
+    {
+        //printf("Please plug an SD, MMC or SDIO card in slot.\n\r");
+        do
+        {
+            status = sd_mmc_test_unit_ready(0);
+            
+            if (CTRL_FAIL == status)
+            {
+                //printf("Card install FAIL\n\r");
+                //printf("Please unplug and re-plug the card.\n\r");
+                while (CTRL_NO_PRESENT != sd_mmc_check(0));
+            }
+        } while (CTRL_GOOD != status);
+
+        //printf("Mount disk (f_mount)...\r\n");
+        memset(&fs, 0, sizeof(FATFS));
+        res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
+        
+        if (FR_INVALID_DRIVE == res)
+        {
+            //printf("[FAIL] res %d\r\n", res);
+            goto main_end_of_test;
+        }
+        //printf("[OK]\r\n");
+
+        //printf("Create a file (f_open)...\r\n");
+        test_file_name[0] = LUN_ID_SD_MMC_0_MEM + '0';
+        res = f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
+        
+        if (res != FR_OK)
+        {
+            //printf("[FAIL] res %d\r\n", res);
+            goto main_end_of_test;
+        }
+        
+        if (0 == f_puts("Test SD/MMC stack\n", &file_object))
+        {
+            f_close(&file_object);
+            //printf("[FAIL]\r\n");
+            goto main_end_of_test;
+        }
+        
+        //printf("[OK]\r\n");
+        f_close(&file_object);
+        //printf("Test is successful.\n\r");
+
+        main_end_of_test:
+            //printf("Please unplug the card.\n\r");
+            //while (CTRL_NO_PRESENT != sd_mmc_check(0));
+    }
     
     noOS_bootup_sequence();
     

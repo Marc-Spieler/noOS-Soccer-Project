@@ -58,4 +58,12 @@ void board_init(void)
 	ioport_disable_pin(SPI1_SPCK);
 	ioport_set_pin_mode(SPI1_NPCS0, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(SPI1_NPCS0);
+
+    /* Configure micro SD Card pins */
+    ioport_set_pin_mode(MSD_CMD, IOPORT_MODE_MUX_A);
+    ioport_set_pin_mode(MSD_CLK, IOPORT_MODE_MUX_A);
+    ioport_set_pin_mode(MSD_DATA0, IOPORT_MODE_MUX_A);
+    ioport_set_pin_mode(MSD_DATA1, IOPORT_MODE_MUX_A);
+    ioport_set_pin_mode(MSD_DATA2, IOPORT_MODE_MUX_A);
+    ioport_set_pin_mode(MSD_DATA3, IOPORT_MODE_MUX_A);
 }
