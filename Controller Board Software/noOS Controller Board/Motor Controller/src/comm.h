@@ -14,7 +14,8 @@ typedef struct
     struct
     {
         uint8_t heartbeat	 :1;
-        uint8_t rsvd		 :7;
+        uint8_t button  	 :1;
+        uint8_t rsvd		 :6;
     } ibit;
 } motor_to_sensor_t;
 

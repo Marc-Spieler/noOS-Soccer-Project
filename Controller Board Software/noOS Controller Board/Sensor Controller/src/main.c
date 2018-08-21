@@ -15,7 +15,8 @@ typedef struct
     struct
     {
         uint8_t heartbeat	 :1;
-        uint8_t rsvd		 :7;
+        uint8_t button  	 :1;
+        uint8_t rsvd		 :6;
     } ibit;
 } motor_to_sensor_t;
 
@@ -82,6 +83,15 @@ int main(void)
             ioport_set_pin_level(LED_ONBOARD, 0);
             ioport_set_pin_level(LED_S1, 0);
             stm.ibit.heartbeat = 0;
+        }
+        
+        if (mts.ibit.button)
+        {
+            ioport_set_pin_level(LED_S2, 1);
+        }
+        else
+        {
+            ioport_set_pin_level(LED_S2, 0);
         }
         
         PrepareValuesToSend();

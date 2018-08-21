@@ -5,6 +5,7 @@
 /************************************************************************/
 
 #include "asf.h"
+#include "string.h"
 #include "timing.h"
 #include "lcd.h"
 #include "menu.h"
@@ -18,11 +19,11 @@ uint32_t ticks_dot_update;
 uint8_t dots = 0;
 Bool update_dots = 1;
 
-char test_file_name[] = "0:sd_mmc_test.txt";
+/*char test_file_name[] = "0:sd_mmc_test.txt";
 Ctrl_status status;
 FRESULT res;
 FATFS fs;
-FIL file_object;
+FIL file_object;*/
 
 void noOS_bootup_sequence(void);
 
@@ -34,7 +35,7 @@ int main(void)
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
-    sd_mmc_init();
+    //sd_mmc_init();
     
     spi_init();
     
@@ -44,8 +45,8 @@ int main(void)
     bl_state = LCD_LIGHT_ON;
     set_backlight(bl_state);
     
-    while (1)
-    {
+/*//    while (1)
+//    {
         //printf("Please plug an SD, MMC or SDIO card in slot.\n\r");
         do
         {
@@ -80,21 +81,21 @@ int main(void)
             goto main_end_of_test;
         }
         
-        if (0 == f_puts("Test SD/MMC stack\n", &file_object))
-        {
-            f_close(&file_object);
-            //printf("[FAIL]\r\n");
-            goto main_end_of_test;
-        }
+//        if (0 == f_puts("Test SD/MMC stack\n", &file_object))
+//        {
+//            f_close(&file_object);
+//            //printf("[FAIL]\r\n");
+//            goto main_end_of_test;
+//        }
         
         //printf("[OK]\r\n");
         f_close(&file_object);
         //printf("Test is successful.\n\r");
 
-        main_end_of_test:
-            //printf("Please unplug the card.\n\r");
-            //while (CTRL_NO_PRESENT != sd_mmc_check(0));
-    }
+main_end_of_test:
+        //printf("Please unplug the card.\n\r");
+        //while (CTRL_NO_PRESENT != sd_mmc_check(0));
+//    }*/
     
     noOS_bootup_sequence();
     
@@ -117,6 +118,15 @@ int main(void)
         act_event = button_events();
         
         menu(act_event);
+        
+        if (act_event == EVENT_BUTTON_MID_H)
+        {
+            mts.ibit.button = 1;
+        }
+        else
+        {
+            mts.ibit.button = 0;
+        }
     }
 }
 

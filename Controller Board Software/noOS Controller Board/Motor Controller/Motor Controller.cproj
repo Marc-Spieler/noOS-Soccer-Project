@@ -37,14 +37,14 @@
     <option id="common.services.basic.spi_master" value="Add" config="usart_and_standard_spi" content-id="Atmel.ASF" />
     <option id="common.services.basic.twi" value="Add" config="" content-id="Atmel.ASF" />
     <option id="sam.drivers.dmac" value="Add" config="" content-id="Atmel.ASF" />
-    <option id="common.services.fs.fatfs" value="Add" config="" content-id="Atmel.ASF" />
     <option id="sam.drivers.hsmci" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.services.fs.fatfs" value="Add" config="" content-id="Atmel.ASF" />
     <option id="sam.utils.linker_scripts#atsam3x8" value="Add" config="" content-id="Atmel.ASF" />
   </options>
   <configurations>
     <configuration key="config.compiler.armgcc.printf" value="iprintf" default="iprintf" content-id="Atmel.ASF" />
     <configuration key="config.compiler.armgcc.scanf" value="iscanf" default="iscanf" content-id="Atmel.ASF" />
-    <configuration key="config.common.components.memory.sd_mmc.ctrl_access" value="disable" default="disable" content-id="Atmel.ASF" />
+    <configuration key="config.common.components.memory.sd_mmc.ctrl_access" value="enable" default="disable" content-id="Atmel.ASF" />
     <configuration key="config.common.services.fs.fatfs.codepage" value="sbcs" default="sbcs" content-id="Atmel.ASF" />
   </configurations>
   <files>
@@ -333,6 +333,7 @@
       <Value>BOARD=USER_BOARD</Value>
       <Value>ARM_MATH_CM3=true</Value>
       <Value>printf=iprintf</Value>
+      <Value>SD_MMC_ENABLE</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -426,7 +427,7 @@
       <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
-  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
+  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DSD_MMC_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
@@ -482,6 +483,7 @@
       <Value>printf=iprintf</Value>
       <Value>__SAM3X8E__</Value>
       <Value>DEBUG</Value>
+      <Value>SD_MMC_ENABLE</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -575,7 +577,7 @@
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
-  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
+  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DSD_MMC_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>

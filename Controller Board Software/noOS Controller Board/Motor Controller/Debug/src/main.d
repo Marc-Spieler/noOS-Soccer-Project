@@ -1,7 +1,5 @@
-src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.d \
- src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o: \
- ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.c \
- ../src/config/conf_access.h ../src/ASF/sam/utils/compiler.h \
+src/main.d src/main.o: ../src/main.c ../src/asf.h \
+ ../src/ASF/sam/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h \
  ../src/ASF/sam/utils/preprocessor/preprocessor.h \
@@ -119,15 +117,54 @@ src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.d \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\alloca.h \
  ../src/ASF/common/utils/interrupt.h \
  ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h \
- ../src/ASF/common/boards/board.h \
+ ../src/ASF/sam/utils/status_codes.h \
  ../src/ASF/common/boards/user_board/user_board.h \
- ../src/config/conf_board.h ../src/config/conf_sd_mmc.h \
- ../src/ASF/common/components/memory/sd_mmc/sd_mmc.h \
- ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h \
+ ../src/config/conf_board.h ../src/ASF/sam/drivers/dmac/dmac.h \
+ ../src/ASF/common/services/delay/delay.h \
+ ../src/ASF/common/services/clock/sysclk.h ../src/config/conf_clock.h \
+ ../src/ASF/common/services/clock/sam3x/sysclk.h \
+ ../src/ASF/common/services/clock/osc.h \
+ ../src/ASF/common/services/clock/sam3x/osc.h \
+ ../src/ASF/common/boards/board.h ../src/ASF/sam/drivers/pmc/pmc.h \
+ ../src/ASF/common/services/clock/pll.h \
+ ../src/ASF/common/services/clock/sam3x/pll.h \
+ ../src/ASF/common/services/delay/sam/cycle_counter.h \
+ ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/diskio.h \
+ ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/integer.h \
+ ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.h \
+ ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ffconf.h \
+ ../src/config/conf_fatfs.h \
+ ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ffconf.h \
+ ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/integer.h \
+ ../src/ASF/sam/drivers/hsmci/hsmci.h \
+ ../src/ASF/common/components/memory/sd_mmc/sd_mmc_protocol.h \
+ ../src/ASF/common/services/ioport/ioport.h \
+ ../src/ASF/common/services/ioport/sam/ioport_pio.h \
  ../src/ASF/common/services/storage/ctrl_access/ctrl_access.h \
- ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h
+ ../src/config/conf_access.h \
+ ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h \
+ ../src/ASF/sam/drivers/pmc/sleep.h ../src/ASF/sam/drivers/rtc/rtc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
+ ../src/ASF/common/components/memory/sd_mmc/sd_mmc.h \
+ ../src/config/conf_sd_mmc.h \
+ ../src/ASF/common/services/spi/sam_spi/spi_master.h \
+ ../src/ASF/sam/drivers/spi/spi.h ../src/config/conf_spi_master.h \
+ ../src/ASF/common/services/spi/usart_spi.h \
+ ../src/ASF/common/services/spi/sam_usart_spi/usart_spi.h \
+ ../src/ASF/sam/drivers/usart/usart.h ../src/config/conf_usart_spi.h \
+ ../src/ASF/common/services/twi/sam_twi/twi_master.h \
+ ../src/ASF/sam/drivers/twi/twi.h \
+ ../src/ASF/common/services/twi/sam_twi/twi_slave.h \
+ ../src/ASF/common/services/twi/twi_master.h \
+ ../src/ASF/common/services/twi/sam_twi/twi_master.h \
+ ../src/ASF/common/services/twi/twi_slave.h \
+ ../src/ASF/common/services/twi/sam_twi/twi_slave.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\xlocale.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h \
+ ../src/timing.h ../src/lcd.h ../src/menu.h ../src/comm.h
 
-../src/config/conf_access.h:
+../src/asf.h:
 
 ../src/ASF/sam/utils/compiler.h:
 
@@ -365,18 +402,112 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h:
 
-../src/ASF/common/boards/board.h:
+../src/ASF/sam/utils/status_codes.h:
 
 ../src/ASF/common/boards/user_board/user_board.h:
 
 ../src/config/conf_board.h:
 
-../src/config/conf_sd_mmc.h:
+../src/ASF/sam/drivers/dmac/dmac.h:
 
-../src/ASF/common/components/memory/sd_mmc/sd_mmc.h:
+../src/ASF/common/services/delay/delay.h:
 
-../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h:
+../src/ASF/common/services/clock/sysclk.h:
+
+../src/config/conf_clock.h:
+
+../src/ASF/common/services/clock/sam3x/sysclk.h:
+
+../src/ASF/common/services/clock/osc.h:
+
+../src/ASF/common/services/clock/sam3x/osc.h:
+
+../src/ASF/common/boards/board.h:
+
+../src/ASF/sam/drivers/pmc/pmc.h:
+
+../src/ASF/common/services/clock/pll.h:
+
+../src/ASF/common/services/clock/sam3x/pll.h:
+
+../src/ASF/common/services/delay/sam/cycle_counter.h:
+
+../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/diskio.h:
+
+../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/integer.h:
+
+../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.h:
+
+../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ffconf.h:
+
+../src/config/conf_fatfs.h:
+
+../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ffconf.h:
+
+../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/integer.h:
+
+../src/ASF/sam/drivers/hsmci/hsmci.h:
+
+../src/ASF/common/components/memory/sd_mmc/sd_mmc_protocol.h:
+
+../src/ASF/common/services/ioport/ioport.h:
+
+../src/ASF/common/services/ioport/sam/ioport_pio.h:
 
 ../src/ASF/common/services/storage/ctrl_access/ctrl_access.h:
 
+../src/config/conf_access.h:
+
 ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h:
+
+../src/ASF/sam/drivers/pmc/sleep.h:
+
+../src/ASF/sam/drivers/rtc/rtc.h:
+
+../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h:
+
+../src/ASF/common/components/memory/sd_mmc/sd_mmc.h:
+
+../src/config/conf_sd_mmc.h:
+
+../src/ASF/common/services/spi/sam_spi/spi_master.h:
+
+../src/ASF/sam/drivers/spi/spi.h:
+
+../src/config/conf_spi_master.h:
+
+../src/ASF/common/services/spi/usart_spi.h:
+
+../src/ASF/common/services/spi/sam_usart_spi/usart_spi.h:
+
+../src/ASF/sam/drivers/usart/usart.h:
+
+../src/config/conf_usart_spi.h:
+
+../src/ASF/common/services/twi/sam_twi/twi_master.h:
+
+../src/ASF/sam/drivers/twi/twi.h:
+
+../src/ASF/common/services/twi/sam_twi/twi_slave.h:
+
+../src/ASF/common/services/twi/twi_master.h:
+
+../src/ASF/common/services/twi/sam_twi/twi_master.h:
+
+../src/ASF/common/services/twi/twi_slave.h:
+
+../src/ASF/common/services/twi/sam_twi/twi_slave.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\xlocale.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h:
+
+../src/timing.h:
+
+../src/lcd.h:
+
+../src/menu.h:
+
+../src/comm.h:
