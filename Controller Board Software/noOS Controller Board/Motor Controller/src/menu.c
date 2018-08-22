@@ -243,8 +243,9 @@ void print_menu_main(void)
             print_s(8 - menu_main_scroll, 1, "");
             break;
     }
-	
+    
     print_cursor();
+    update_battery(1);
 }
 
 void print_cursor(void)

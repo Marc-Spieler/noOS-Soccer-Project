@@ -105,6 +105,7 @@ main_end_of_test:
     {
         update_comm();
         update_heartbeat();
+        update_battery(0);
         
         if (stm.ibit.heartbeat)
         {
@@ -126,7 +127,7 @@ main_end_of_test:
         else
         {
             mts.ibit.button = 0;
-        }
+        }  
     }
 }
 
