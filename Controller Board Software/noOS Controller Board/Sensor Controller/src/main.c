@@ -6,15 +6,7 @@
 
 #include "asf.h"
 #include "comm.h"
-
-static uint32_t g_ul_ms_ticks = 0;
-
-void mdelay(uint32_t ul_dly_ticks);
-
-void SysTick_Handler(void)
-{
-    g_ul_ms_ticks++;
-}
+#include "timing.h"
 
 int main(void)
 {
@@ -23,6 +15,8 @@ int main(void)
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
     spi_init();
+    
+    adc_start(ADC);
     
     for(int i = 0; i< 3; i++)
     {
@@ -40,6 +34,8 @@ int main(void)
     
     while (1)
     {
+        update_battery();
+        
         if (mts.ibit.heartbeat)
         {
             ioport_set_pin_level(LED_ONBOARD, 1);
@@ -64,12 +60,4 @@ int main(void)
         
         PrepareValuesToSend();
     }
-}
-
-void mdelay(uint32_t ul_dly_ticks)
-{
-    uint32_t ul_cur_ticks;
-
-    ul_cur_ticks = g_ul_ms_ticks;
-    while ((g_ul_ms_ticks - ul_cur_ticks) < ul_dly_ticks);
 }

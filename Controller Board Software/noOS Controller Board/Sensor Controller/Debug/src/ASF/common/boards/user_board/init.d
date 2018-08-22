@@ -1,7 +1,7 @@
 src/ASF/common/boards/user_board/init.d \
  src/ASF/common/boards/user_board/init.o: \
  ../src/ASF/common/boards/user_board/init.c ../src/asf.h \
- ../src/ASF/sam/utils/compiler.h \
+ ../src/ASF/sam/drivers/adc/adc.h ../src/ASF/sam/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h \
  ../src/ASF/sam/utils/preprocessor/preprocessor.h \
@@ -121,8 +121,8 @@ src/ASF/common/boards/user_board/init.d \
  ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h \
  ../src/ASF/sam/utils/status_codes.h \
  ../src/ASF/common/boards/user_board/user_board.h \
- ../src/config/conf_board.h ../src/ASF/sam/drivers/dmac/dmac.h \
- ../src/ASF/common/boards/board.h \
+ ../src/config/conf_board.h ../src/ASF/sam/drivers/dacc/dacc.h \
+ ../src/ASF/sam/drivers/dmac/dmac.h ../src/ASF/common/boards/board.h \
  ../src/ASF/common/services/ioport/ioport.h \
  ../src/ASF/common/services/ioport/sam/ioport_pio.h \
  ../src/ASF/common/services/clock/sysclk.h ../src/config/conf_clock.h \
@@ -137,6 +137,8 @@ src/ASF/common/boards/user_board/init.d \
  ../src/ASF/sam/drivers/spi/spi.h ../src/config/conf_spi_master.h
 
 ../src/asf.h:
+
+../src/ASF/sam/drivers/adc/adc.h:
 
 ../src/ASF/sam/utils/compiler.h:
 
@@ -379,6 +381,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/common/boards/user_board/user_board.h:
 
 ../src/config/conf_board.h:
+
+../src/ASF/sam/drivers/dacc/dacc.h:
 
 ../src/ASF/sam/drivers/dmac/dmac.h:
 

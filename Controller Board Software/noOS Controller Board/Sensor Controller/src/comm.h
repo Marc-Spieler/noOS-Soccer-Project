@@ -17,6 +17,8 @@ typedef struct
         uint8_t button  	 :1;
         uint8_t rsvd		 :6;
     } ibit;
+    
+    uint8_t rsvd;
 } motor_to_sensor_t;
 
 typedef struct
@@ -26,6 +28,8 @@ typedef struct
         uint8_t heartbeat	 :1;
         uint8_t rsvd		 :7;
     } ibit;
+    
+    uint8_t bat_voltage;
 } sensor_to_motor_t;
 
 extern motor_to_sensor_t mts;

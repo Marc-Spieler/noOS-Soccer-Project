@@ -4,6 +4,14 @@
 
 src\ASF\common\services\spi\sam_spi\spi_master.c
 
+src\ASF\sam\drivers\adc\adc.c
+
+src\timing.c
+
+src\ASF\sam\drivers\adc\adc_sam3u.c
+
+src\ASF\sam\drivers\dacc\dacc.c
+
 src\ASF\sam\drivers\spi\spi.c
 
 src\ASF\sam\drivers\dmac\dmac.c

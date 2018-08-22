@@ -1,5 +1,6 @@
-src/comm.d src/comm.o: ../src/comm.c ../src/comm.h ../src/asf.h \
- ../src/ASF/sam/drivers/adc/adc.h ../src/ASF/sam/utils/compiler.h \
+src/ASF/sam/drivers/adc/adc_sam3u.d src/ASF/sam/drivers/adc/adc_sam3u.o: \
+ ../src/ASF/sam/drivers/adc/adc_sam3u.c ../src/ASF/sam/drivers/adc/adc.h \
+ ../src/ASF/sam/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h \
  ../src/ASF/sam/utils/preprocessor/preprocessor.h \
@@ -116,30 +117,7 @@ src/comm.d src/comm.o: ../src/comm.c ../src/comm.h ../src/asf.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\machine\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\alloca.h \
  ../src/ASF/common/utils/interrupt.h \
- ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h \
- ../src/ASF/sam/utils/status_codes.h \
- ../src/ASF/common/boards/user_board/user_board.h \
- ../src/config/conf_board.h ../src/ASF/sam/drivers/dacc/dacc.h \
- ../src/ASF/sam/drivers/dmac/dmac.h ../src/ASF/common/boards/board.h \
- ../src/ASF/common/services/ioport/ioport.h \
- ../src/ASF/common/services/ioport/sam/ioport_pio.h \
- ../src/ASF/common/services/clock/sysclk.h ../src/config/conf_clock.h \
- ../src/ASF/common/services/clock/sam3x/sysclk.h \
- ../src/ASF/common/services/clock/osc.h \
- ../src/ASF/common/services/clock/sam3x/osc.h \
- ../src/ASF/sam/drivers/pmc/pmc.h ../src/ASF/common/services/clock/pll.h \
- ../src/ASF/common/services/clock/sam3x/pll.h \
- ../src/ASF/sam/drivers/pmc/sleep.h \
- ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
- ../src/ASF/common/services/spi/sam_spi/spi_master.h \
- ../src/ASF/sam/drivers/spi/spi.h ../src/config/conf_spi_master.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\xlocale.h \
- c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h
-
-../src/comm.h:
-
-../src/asf.h:
+ ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h
 
 ../src/ASF/sam/drivers/adc/adc.h:
 
@@ -378,51 +356,3 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/common/utils/interrupt.h:
 
 ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h:
-
-../src/ASF/sam/utils/status_codes.h:
-
-../src/ASF/common/boards/user_board/user_board.h:
-
-../src/config/conf_board.h:
-
-../src/ASF/sam/drivers/dacc/dacc.h:
-
-../src/ASF/sam/drivers/dmac/dmac.h:
-
-../src/ASF/common/boards/board.h:
-
-../src/ASF/common/services/ioport/ioport.h:
-
-../src/ASF/common/services/ioport/sam/ioport_pio.h:
-
-../src/ASF/common/services/clock/sysclk.h:
-
-../src/config/conf_clock.h:
-
-../src/ASF/common/services/clock/sam3x/sysclk.h:
-
-../src/ASF/common/services/clock/osc.h:
-
-../src/ASF/common/services/clock/sam3x/osc.h:
-
-../src/ASF/sam/drivers/pmc/pmc.h:
-
-../src/ASF/common/services/clock/pll.h:
-
-../src/ASF/common/services/clock/sam3x/pll.h:
-
-../src/ASF/sam/drivers/pmc/sleep.h:
-
-../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h:
-
-../src/ASF/common/services/spi/sam_spi/spi_master.h:
-
-../src/ASF/sam/drivers/spi/spi.h:
-
-../src/config/conf_spi_master.h:
-
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h:
-
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\xlocale.h:
-
-c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h:

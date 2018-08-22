@@ -17,23 +17,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   6 .comment      00000059  00000000  00000000  00020b79  2**0
                   CONTENTS, READONLY
-  7 .debug_info   0001410a  00000000  00000000  00020bd2  2**0
+  7 .debug_info   0001415e  00000000  00000000  00020bd2  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00002b04  00000000  00000000  00034cdc  2**0
+  8 .debug_abbrev 00002b04  00000000  00000000  00034d30  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    0000618c  00000000  00000000  000377e0  2**0
+  9 .debug_loc    0000618c  00000000  00000000  00037834  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_aranges 00000ae0  00000000  00000000  0003d96c  2**0
+ 10 .debug_aranges 00000ae0  00000000  00000000  0003d9c0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000a58  00000000  00000000  0003e44c  2**0
+ 11 .debug_ranges 00000a58  00000000  00000000  0003e4a0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00006615  00000000  00000000  0003eea4  2**0
+ 12 .debug_macro  00006615  00000000  00000000  0003eef8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_line   0000ee73  00000000  00000000  000454b9  2**0
+ 13 .debug_line   0000ee74  00000000  00000000  0004550d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    00067a96  00000000  00000000  0005432c  2**0
+ 14 .debug_str    00067aa2  00000000  00000000  00054381  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  00003918  00000000  00000000  000bbdc4  2**2
+ 15 .debug_frame  00003918  00000000  00000000  000bbe24  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1151,7 +1151,7 @@ void DMAC_Handler(void)
    80702:	681b      	ldr	r3, [r3, #0]
    80704:	f003 0301 	and.w	r3, r3, #1
    80708:	2b00      	cmp	r3, #0
-   8070a:	d006      	beq.n	8071a <DMAC_Handler+0x2a>
+   8070a:	d007      	beq.n	8071c <DMAC_Handler+0x2c>
     {
         usart_spi_release_chip_select(USART1);
    8070c:	4807      	ldr	r0, [pc, #28]	; (8072c <DMAC_Handler+0x3c>)
@@ -1159,14 +1159,14 @@ void DMAC_Handler(void)
    80710:	4798      	blx	r3
         memcpy(&stm, &sens_buf, sizeof(stm));
    80712:	4b08      	ldr	r3, [pc, #32]	; (80734 <DMAC_Handler+0x44>)
-   80714:	781a      	ldrb	r2, [r3, #0]
-   80716:	4b08      	ldr	r3, [pc, #32]	; (80738 <DMAC_Handler+0x48>)
-   80718:	701a      	strb	r2, [r3, #0]
+   80714:	881b      	ldrh	r3, [r3, #0]
+   80716:	b29b      	uxth	r3, r3
+   80718:	4a07      	ldr	r2, [pc, #28]	; (80738 <DMAC_Handler+0x48>)
+   8071a:	8013      	strh	r3, [r2, #0]
     }
 }
-   8071a:	bf00      	nop
-   8071c:	bd80      	pop	{r7, pc}
-   8071e:	bf00      	nop
+   8071c:	bf00      	nop
+   8071e:	bd80      	pop	{r7, pc}
    80720:	400c4000 	.word	0x400c4000
    80724:	00081d1b 	.word	0x00081d1b
    80728:	20070b70 	.word	0x20070b70
@@ -3943,7 +3943,7 @@ void update_comm(void)
    81844:	681b      	ldr	r3, [r3, #0]
    81846:	1ad3      	subs	r3, r2, r3
    81848:	2b05      	cmp	r3, #5
-   8184a:	d90c      	bls.n	81866 <update_comm+0x2e>
+   8184a:	d90d      	bls.n	81868 <update_comm+0x30>
     {
         ticks_comm = getTicks();
    8184c:	4b07      	ldr	r3, [pc, #28]	; (8186c <update_comm+0x34>)
@@ -3954,19 +3954,19 @@ void update_comm(void)
         
         memcpy(&sens_buf, &mts, sizeof(mts));
    81856:	4b07      	ldr	r3, [pc, #28]	; (81874 <update_comm+0x3c>)
-   81858:	781a      	ldrb	r2, [r3, #0]
-   8185a:	4b07      	ldr	r3, [pc, #28]	; (81878 <update_comm+0x40>)
-   8185c:	701a      	strb	r2, [r3, #0]
+   81858:	881b      	ldrh	r3, [r3, #0]
+   8185a:	b29b      	uxth	r3, r3
+   8185c:	4a06      	ldr	r2, [pc, #24]	; (81878 <update_comm+0x40>)
+   8185e:	8013      	strh	r3, [r2, #0]
         spi_master_transfer(&sens_buf, sizeof(sens_buf));
-   8185e:	2101      	movs	r1, #1
-   81860:	4805      	ldr	r0, [pc, #20]	; (81878 <update_comm+0x40>)
-   81862:	4b06      	ldr	r3, [pc, #24]	; (8187c <update_comm+0x44>)
-   81864:	4798      	blx	r3
+   81860:	2102      	movs	r1, #2
+   81862:	4805      	ldr	r0, [pc, #20]	; (81878 <update_comm+0x40>)
+   81864:	4b05      	ldr	r3, [pc, #20]	; (8187c <update_comm+0x44>)
+   81866:	4798      	blx	r3
     }
 }
-   81866:	bf00      	nop
-   81868:	bd80      	pop	{r7, pc}
-   8186a:	bf00      	nop
+   81868:	bf00      	nop
+   8186a:	bd80      	pop	{r7, pc}
    8186c:	000817f9 	.word	0x000817f9
    81870:	20070be0 	.word	0x20070be0
    81874:	20070bd4 	.word	0x20070bd4

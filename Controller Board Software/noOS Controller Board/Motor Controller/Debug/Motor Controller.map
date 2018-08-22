@@ -89,7 +89,7 @@ __lock___arc4random_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
 pb_mid_prev         0x1               src/menu.o
 errno               0x4               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-reent.o)
-sens_buf            0x1               src/comm.o
+sens_buf            0x2               src/comm.o
 pb_down_prev        0x1               src/menu.o
 pb_left_prev        0x1               src/menu.o
 pb_down_act         0x1               src/menu.o
@@ -105,12 +105,12 @@ pb_right_prev       0x1               src/menu.o
 __lock___malloc_recursive_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
 pb_return_prev      0x1               src/menu.o
-mts                 0x1               src/comm.o
+mts                 0x2               src/comm.o
 ticks_button_update
                     0x4               src/lcd.o
 pb_left_act         0x1               src/menu.o
 ticks_blink_update  0x4               src/main.o
-stm                 0x1               src/comm.o
+stm                 0x2               src/comm.o
 sprintf_cache       0x14              src/menu.o
 pb_mid_act          0x1               src/menu.o
 pb_up_act           0x1               src/menu.o
@@ -9014,7 +9014,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
  .bss           0x20070b50       0x1c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
  .bss.ul_reg_val.7451
                 0x20070b6c        0x4 src/ASF/sam/drivers/usart/usart.o
- .bss.ul_status.8977
+ .bss.ul_status.8979
                 0x20070b70        0x4 src/comm.o
  .bss.backlight
                 0x20070b74        0x1 src/lcd.o
@@ -9049,11 +9049,11 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x20070bcc        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
                 0x20070bcc                __malloc_top_pad
  *(COMMON)
- COMMON         0x20070bd0        0x9 src/comm.o
+ COMMON         0x20070bd0        0xa src/comm.o
                 0x20070bd0                sens_buf
                 0x20070bd4                mts
                 0x20070bd8                stm
- *fill*         0x20070bd9        0x3 
+ *fill*         0x20070bda        0x2 
  COMMON         0x20070bdc       0x10 src/lcd.o
                 0x20070bdc                heart_state
                 0x20070be0                ticks_comm
@@ -9241,23 +9241,23 @@ OUTPUT(Motor Controller.elf elf32-littlearm)
  .comment       0x00000059       0x5a src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .comment       0x00000059       0x5a src/main.o
 
-.debug_info     0x00000000    0x1410a
+.debug_info     0x00000000    0x1415e
  .debug_info    0x00000000     0x132c src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
  .debug_info    0x0000132c     0x22ba src/ASF/sam/drivers/usart/usart.o
- .debug_info    0x000035e6     0x164a src/comm.o
- .debug_info    0x00004c30     0x13a4 src/ASF/sam/drivers/twi/twi.o
- .debug_info    0x00005fd4     0x12b7 src/lcd.o
- .debug_info    0x0000728b     0x15de src/menu.o
- .debug_info    0x00008869     0x1221 src/timing.o
- .debug_info    0x00009a8a     0x1224 src/ASF/common/services/clock/sam3x/sysclk.o
- .debug_info    0x0000acae     0x14d4 src/ASF/sam/drivers/dmac/dmac.o
- .debug_info    0x0000c182     0x19e1 src/ASF/sam/drivers/pmc/pmc.o
- .debug_info    0x0000db63     0x15e4 src/ASF/common/boards/user_board/init.o
- .debug_info    0x0000f147      0xa3a src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
- .debug_info    0x0000fb81      0xd19 src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
- .debug_info    0x0001089a      0xdc6 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
- .debug_info    0x00011660      0xdbc src/ASF/sam/utils/syscalls/gcc/syscalls.o
- .debug_info    0x0001241c     0x1cee src/main.o
+ .debug_info    0x000035e6     0x1666 src/comm.o
+ .debug_info    0x00004c4c     0x13a4 src/ASF/sam/drivers/twi/twi.o
+ .debug_info    0x00005ff0     0x12b7 src/lcd.o
+ .debug_info    0x000072a7     0x15de src/menu.o
+ .debug_info    0x00008885     0x123d src/timing.o
+ .debug_info    0x00009ac2     0x1224 src/ASF/common/services/clock/sam3x/sysclk.o
+ .debug_info    0x0000ace6     0x14d4 src/ASF/sam/drivers/dmac/dmac.o
+ .debug_info    0x0000c1ba     0x19e1 src/ASF/sam/drivers/pmc/pmc.o
+ .debug_info    0x0000db9b     0x15e4 src/ASF/common/boards/user_board/init.o
+ .debug_info    0x0000f17f      0xa3a src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
+ .debug_info    0x0000fbb9      0xd19 src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
+ .debug_info    0x000108d2      0xdc6 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
+ .debug_info    0x00011698      0xdbc src/ASF/sam/utils/syscalls/gcc/syscalls.o
+ .debug_info    0x00012454     0x1d0a src/main.o
 
 .debug_abbrev   0x00000000     0x2b04
  .debug_abbrev  0x00000000      0x2d6 src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
@@ -9379,57 +9379,57 @@ OUTPUT(Motor Controller.elf elf32-littlearm)
  .debug_macro   0x00005d37      0x122 src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_macro   0x00005e59      0x7bc src/main.o
 
-.debug_line     0x00000000     0xee73
+.debug_line     0x00000000     0xee74
  .debug_line    0x00000000      0xe44 src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
  .debug_line    0x00000e44     0x1290 src/ASF/sam/drivers/usart/usart.o
- .debug_line    0x000020d4     0x1199 src/comm.o
- .debug_line    0x0000326d      0xd99 src/ASF/sam/drivers/twi/twi.o
- .debug_line    0x00004006     0x1284 src/lcd.o
- .debug_line    0x0000528a     0x12b9 src/menu.o
- .debug_line    0x00006543     0x1179 src/timing.o
- .debug_line    0x000076bc      0xdcd src/ASF/common/services/clock/sam3x/sysclk.o
- .debug_line    0x00008489      0xdea src/ASF/sam/drivers/dmac/dmac.o
- .debug_line    0x00009273     0x1145 src/ASF/sam/drivers/pmc/pmc.o
- .debug_line    0x0000a3b8     0x11d5 src/ASF/common/boards/user_board/init.o
- .debug_line    0x0000b58d      0xb28 src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
- .debug_line    0x0000c0b5      0xb7b src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
- .debug_line    0x0000cc30      0xbcc src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
- .debug_line    0x0000d7fc      0x417 src/ASF/sam/utils/syscalls/gcc/syscalls.o
- .debug_line    0x0000dc13     0x1260 src/main.o
+ .debug_line    0x000020d4     0x119a src/comm.o
+ .debug_line    0x0000326e      0xd99 src/ASF/sam/drivers/twi/twi.o
+ .debug_line    0x00004007     0x1284 src/lcd.o
+ .debug_line    0x0000528b     0x12b9 src/menu.o
+ .debug_line    0x00006544     0x1179 src/timing.o
+ .debug_line    0x000076bd      0xdcd src/ASF/common/services/clock/sam3x/sysclk.o
+ .debug_line    0x0000848a      0xdea src/ASF/sam/drivers/dmac/dmac.o
+ .debug_line    0x00009274     0x1145 src/ASF/sam/drivers/pmc/pmc.o
+ .debug_line    0x0000a3b9     0x11d5 src/ASF/common/boards/user_board/init.o
+ .debug_line    0x0000b58e      0xb28 src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
+ .debug_line    0x0000c0b6      0xb7b src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
+ .debug_line    0x0000cc31      0xbcc src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
+ .debug_line    0x0000d7fd      0x417 src/ASF/sam/utils/syscalls/gcc/syscalls.o
+ .debug_line    0x0000dc14     0x1260 src/main.o
 
-.debug_str      0x00000000    0x67a96
+.debug_str      0x00000000    0x67aa2
  .debug_str     0x00000000    0x5df0b src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
                               0x5e2ff (size before relaxing)
  .debug_str     0x0005df0b      0x99b src/ASF/sam/drivers/usart/usart.o
                               0x5d481 (size before relaxing)
- .debug_str     0x0005e8a6     0x6d96 src/comm.o
-                              0x64e63 (size before relaxing)
- .debug_str     0x0006563c      0x3c2 src/ASF/sam/drivers/twi/twi.o
+ .debug_str     0x0005e8a6     0x6da2 src/comm.o
+                              0x64e6f (size before relaxing)
+ .debug_str     0x00065648      0x3c2 src/ASF/sam/drivers/twi/twi.o
                               0x5cd5c (size before relaxing)
- .debug_str     0x000659fe      0x1ed src/lcd.o
+ .debug_str     0x00065a0a      0x1ed src/lcd.o
                               0x64a94 (size before relaxing)
- .debug_str     0x00065beb      0x5fa src/menu.o
+ .debug_str     0x00065bf7      0x5fa src/menu.o
                               0x64ccf (size before relaxing)
- .debug_str     0x000661e5       0x7f src/timing.o
-                              0x64a21 (size before relaxing)
- .debug_str     0x00066264      0x3c7 src/ASF/common/services/clock/sam3x/sysclk.o
+ .debug_str     0x000661f1       0x7f src/timing.o
+                              0x64a2d (size before relaxing)
+ .debug_str     0x00066270      0x3c7 src/ASF/common/services/clock/sam3x/sysclk.o
                               0x5e1b6 (size before relaxing)
- .debug_str     0x0006662b      0x305 src/ASF/sam/drivers/dmac/dmac.o
+ .debug_str     0x00066637      0x305 src/ASF/sam/drivers/dmac/dmac.o
                               0x5cd7a (size before relaxing)
- .debug_str     0x00066930      0x576 src/ASF/sam/drivers/pmc/pmc.o
+ .debug_str     0x0006693c      0x576 src/ASF/sam/drivers/pmc/pmc.o
                               0x5d22b (size before relaxing)
- .debug_str     0x00066ea6      0x11a src/ASF/common/boards/user_board/init.o
+ .debug_str     0x00066eb2      0x11a src/ASF/common/boards/user_board/init.o
                               0x64a79 (size before relaxing)
- .debug_str     0x00066fc0       0x4d src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
+ .debug_str     0x00066fcc       0x4d src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
                               0x5c824 (size before relaxing)
- .debug_str     0x0006700d       0xd4 src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
+ .debug_str     0x00067019       0xd4 src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
                               0x5c920 (size before relaxing)
- .debug_str     0x000670e1      0x195 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
+ .debug_str     0x000670ed      0x195 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
                               0x5cafc (size before relaxing)
- .debug_str     0x00067276      0x768 src/ASF/sam/utils/syscalls/gcc/syscalls.o
+ .debug_str     0x00067282      0x768 src/ASF/sam/utils/syscalls/gcc/syscalls.o
                                0x7458 (size before relaxing)
- .debug_str     0x000679de       0xb8 src/main.o
-                              0x651f3 (size before relaxing)
+ .debug_str     0x000679ea       0xb8 src/main.o
+                              0x651ff (size before relaxing)
 
 .debug_frame    0x00000000     0x3918
  .debug_frame   0x00000000      0x28c src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
