@@ -100,8 +100,8 @@ typedef struct twi_packet {
 	uint8_t addr[3];
 	//! Length of the TWI data address segment (1-3 bytes).
 	uint32_t addr_length;
-	//! Where to find the data to be transferred.
-	void *buffer;
+	//! Data to be transferred.
+	uint8_t buffer[500];
 	//! How many bytes do we want to transfer.
 	uint32_t length;
 	//! TWI chip address to communicate with.
@@ -122,6 +122,13 @@ uint32_t twi_set_speed(Twi *p_twi, uint32_t ul_speed, uint32_t ul_mck);
 uint32_t twi_probe(Twi *p_twi, uint8_t uc_slave_addr);
 uint32_t twi_master_read(Twi *p_twi, twi_packet_t *p_packet);
 uint32_t twi_master_write(Twi *p_twi, twi_packet_t *p_packet);
+uint8_t twi_is_busy(void);
+twi_packet_t *twi_get_tx_packet(void);
+twi_packet_t *twi_get_rx_packet(void);
+uint32_t twi_pdc_master_read(Twi *p_twi, twi_packet_t *p_packet);
+uint32_t twi_pdc_master_write(Twi *p_twi, twi_packet_t *p_packet);
+void twi_set_rx_callback(void (*callback)(void));
+void twi_set_tx_callback(void (*callback)(void));
 void twi_enable_interrupt(Twi *p_twi, uint32_t ul_sources);
 void twi_disable_interrupt(Twi *p_twi, uint32_t ul_sources);
 uint32_t twi_get_interrupt_status(Twi *p_twi);

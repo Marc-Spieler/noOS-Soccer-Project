@@ -10,6 +10,8 @@
 #include "lcd.h"
 #include "menu.h"
 
+uint32_t ul_ticks_compass;
+
 static uint32_t g_ul_ms_ticks = 0;
 float battery_voltage = 0;
 float prev_battery_voltage = 0;
@@ -66,7 +68,7 @@ void update_battery(Bool update_forced)
                     sprintf(tmp, " %3.1fV", battery_voltage);
                 }
                 
-                print_s(1, 15, tmp);
+                lcd_print_s(1, 15, tmp);
                 prev_battery_voltage = battery_voltage;
             }
         }
@@ -86,7 +88,7 @@ void update_battery(Bool update_forced)
                 sprintf(tmp, " %3.1fV", battery_voltage);
             }
             
-            print_s(1, 15, tmp);
+            lcd_print_s(1, 15, tmp);
             prev_battery_voltage = battery_voltage;
         }
     }

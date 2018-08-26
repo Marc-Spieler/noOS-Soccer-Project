@@ -117,7 +117,8 @@ src/ASF/sam/drivers/twi/twi.d src/ASF/sam/drivers/twi/twi.o: \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\machine\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\alloca.h \
  ../src/ASF/common/utils/interrupt.h \
- ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h
+ ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h \
+ ../src/ASF/sam/drivers/pdc/pdc.h
 
 ../src/ASF/sam/drivers/twi/twi.h:
 
@@ -356,3 +357,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/common/utils/interrupt.h:
 
 ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h:
+
+../src/ASF/sam/drivers/pdc/pdc.h:

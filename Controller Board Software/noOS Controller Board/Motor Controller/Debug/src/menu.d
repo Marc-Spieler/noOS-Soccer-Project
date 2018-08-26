@@ -143,7 +143,8 @@ src/menu.d src/menu.o: ../src/menu.c ../src/menu.h ../src/asf.h \
  ../src/ASF/common/services/storage/ctrl_access/ctrl_access.h \
  ../src/config/conf_access.h \
  ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h \
- ../src/ASF/sam/drivers/pmc/sleep.h ../src/ASF/sam/drivers/rtc/rtc.h \
+ ../src/ASF/sam/drivers/pdc/pdc.h ../src/ASF/sam/drivers/pmc/sleep.h \
+ ../src/ASF/sam/drivers/rtc/rtc.h \
  ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
  ../src/ASF/common/components/memory/sd_mmc/sd_mmc.h \
  ../src/config/conf_sd_mmc.h \
@@ -458,6 +459,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/config/conf_access.h:
 
 ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h:
+
+../src/ASF/sam/drivers/pdc/pdc.h:
 
 ../src/ASF/sam/drivers/pmc/sleep.h:
 

@@ -11,6 +11,7 @@
 
 uint32_t ticks_button_update;
 uint32_t ticks_comm;
+extern uint32_t ul_ticks_compass;
 uint32_t ticks_battery;
 uint32_t ticks_heartbeat;
 Bool heart_state;

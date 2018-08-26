@@ -39,11 +39,9 @@ int main(void)
     
     spi_init();
     
-    twi_init();
-    
     lcd_init();
     bl_state = LCD_LIGHT_ON;
-    set_backlight(bl_state);
+    lcd_set_backlight(bl_state);
     
 /*//    while (1)
 //    {
@@ -174,16 +172,16 @@ void noOS_bootup_sequence(void)
             switch (dots)
             {
                 case 0:
-                print_s(2, 2, "booting noOS   ");
+                lcd_print_s(2, 2, "booting noOS   ");
                 break;
                 case 1:
-                print_s(2, 14, ".");
+                lcd_print_s(2, 14, ".");
                 break;
                 case 2:
-                print_s(2, 15, ".");
+                lcd_print_s(2, 15, ".");
                 break;
                 case 3:
-                print_s(2, 16, ".");
+                lcd_print_s(2, 16, ".");
                 break;
                 default:
                 break;

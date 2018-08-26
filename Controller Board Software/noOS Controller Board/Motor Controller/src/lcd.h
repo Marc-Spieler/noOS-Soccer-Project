@@ -16,12 +16,11 @@ typedef enum bl_type
 } backlight_t;
 
 void lcd_init(void);
-void set_backlight(backlight_t state);
+void lcd_set_backlight(backlight_t state);
 void lcd_clear(void);
-void print_s(uint8_t line, uint8_t col, const char* data);
-void lcd_print_c(int data);
-void print_c(uint8_t line, uint8_t col, int data);
-void twi_init(void);
-//void update_lcd(void);
+void lcd_print_i(int8_t line, uint8_t col, uint32_t data);
+void lcd_print_s(int8_t line, uint8_t col, const char* str);
+Bool lcd_is_busy(void);
+uint32_t lcd_get_timeout_error_cntr(void);
 
 #endif

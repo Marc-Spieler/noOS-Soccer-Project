@@ -16,6 +16,8 @@ src\ASF\common\services\storage\ctrl_access\ctrl_access.c
 
 src\ASF\sam\drivers\hsmci\hsmci.c
 
+src\ASF\sam\drivers\pdc\pdc.c
+
 src\ASF\sam\drivers\rtc\rtc.c
 
 src\ASF\sam\drivers\spi\spi.c
@@ -37,6 +39,8 @@ src\ASF\sam\drivers\twi\twi.c
 src\lcd.c
 
 src\menu.c
+
+src\support.c
 
 src\timing.c
 

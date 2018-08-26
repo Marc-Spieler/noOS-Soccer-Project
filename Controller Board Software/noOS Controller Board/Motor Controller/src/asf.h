@@ -86,6 +86,9 @@
 // From module: Memory Control Access Interface
 #include <ctrl_access.h>
 
+// From module: PDC - Peripheral DMA Controller Example
+#include <pdc.h>
+
 // From module: PMC - Power Management Controller
 #include <pmc.h>
 #include <sleep.h>

@@ -45,6 +45,7 @@
  */
 
 #include "twi.h"
+#include "pdc.h"
 
 /// @cond 0
 /**INDENT-OFF**/
@@ -90,6 +91,17 @@ extern "C" {
 #define TWI_CLK_DIV_MIN      7
 
 #define TWI_WP_KEY_VALUE TWI_WPMR_WPKEY_PASSWD
+
+#define MASK_ALL_INTERRUPTS (0xffffffffUL)
+#define IER_ERROR_INTERRUPTS (TWI_IER_NACK | TWI_IER_ARBLST | TWI_IER_OVRE)
+#define SR_ERROR_INTERRUPTS (TWI_SR_NACK | TWI_SR_ARBLST | TWI_SR_OVRE)
+#define TWI_TIMEOUT_COUNTER (0x0000ffffUL)
+
+static twi_packet_t txPacket;
+static twi_packet_t rxPacket;
+static uint8_t twiBusy = false;
+static void (*txCallback)(void) = NULL;
+static void (*rxCallback)(void) = NULL;
 
 /**
  * \brief Enable TWI master mode.
@@ -149,6 +161,11 @@ uint32_t twi_master_init(Twi *p_twi, const twi_options_t *p_opt)
 	if (p_opt->smbus == 1) {
 		p_twi->TWI_CR = TWI_CR_QUICK;
 	}
+
+    /* Error interrupts are always enabled. */
+    twi_enable_interrupt(p_twi, IER_ERROR_INTERRUPTS);
+
+    twiBusy = false;
 
 	return status;
 }
@@ -229,10 +246,9 @@ uint32_t twi_set_speed(Twi *p_twi, uint32_t ul_speed, uint32_t ul_mck)
 uint32_t twi_probe(Twi *p_twi, uint8_t uc_slave_addr)
 {
 	twi_packet_t packet;
-	uint8_t data = 0;
 
 	/* Data to send */
-	packet.buffer = &data;
+	packet.buffer[0] = 0;
 	/* Data length */
 	packet.length = 1;
 	/* Slave chip address */
@@ -413,6 +429,223 @@ uint32_t twi_master_write(Twi *p_twi, twi_packet_t *p_packet)
 	}
 
 	return TWI_SUCCESS;
+}
+
+uint8_t twi_is_busy(void)
+{
+    return twiBusy;
+}
+
+twi_packet_t *twi_get_tx_packet(void)
+{
+    return &txPacket;
+}
+
+twi_packet_t *twi_get_rx_packet(void)
+{
+    return &rxPacket;
+}
+
+/**
+ * \brief Read multiple bytes from a TWI compatible slave device.
+ *
+ * \note This function will NOT return until all data has been read or error occurs.
+ *
+ * \param p_twi Pointer to a TWI instance.
+ * \param p_packet Packet information and data (see \ref twi_packet_t).
+ *
+ * \return TWI_SUCCESS if all bytes were read, error code otherwise.
+ */
+uint32_t twi_pdc_master_read(Twi *p_twi, twi_packet_t *p_packet)
+{
+    pdc_packet_t rxPdcPacket;
+
+    // Check argument
+    if(p_packet->length == 0)
+    {
+        return TWI_INVALID_ARGUMENT;
+    }
+    
+    twiBusy = true;
+
+    // Ensure Rx is already empty
+    twi_read_byte(TWI0);
+
+    // Set read mode, slave address and 3 internal address byte lengths
+    p_twi->TWI_MMR = 0;
+    p_twi->TWI_MMR = TWI_MMR_MREAD | TWI_MMR_DADR(p_packet->chip) | ((p_packet->addr_length << TWI_MMR_IADRSZ_Pos) & TWI_MMR_IADRSZ_Msk);
+
+    // Set internal address for remote chip
+    p_twi->TWI_IADR = 0;
+    p_twi->TWI_IADR = twi_mk_addr(p_packet->addr, p_packet->addr_length);
+
+    rxPdcPacket.ul_addr = (uint32_t)p_packet->buffer;
+    rxPdcPacket.ul_size = p_packet->length - 1;
+    pdc_rx_init(PDC_TWI0, &rxPdcPacket, NULL);
+
+    pdc_enable_transfer(PDC_TWI0, PERIPH_PTCR_RXTEN);
+    TWI0->TWI_CR = TWI_CR_START;
+
+    twi_enable_interrupt(p_twi, TWI_IER_ENDRX);
+    NVIC_ClearPendingIRQ(TWI0_IRQn);
+    NVIC_EnableIRQ(TWI0_IRQn);
+
+    return TWI_SUCCESS;
+}
+
+/**
+ * \brief Write multiple bytes to a TWI compatible slave device.
+ *
+ * \note This function will NOT return until all data has been written or error occurred.
+ *
+ * \param p_twi Pointer to a TWI instance.
+ * \param p_packet Packet information and data (see \ref twi_packet_t).
+ *
+ * \return TWI_SUCCESS if all bytes were written, error code otherwise.
+ */
+uint32_t twi_pdc_master_write(Twi *p_twi, twi_packet_t *p_packet)
+{
+    pdc_packet_t txPdcPacket;
+
+    // Check argument
+    if(p_packet->length == 0)
+    {
+        return TWI_INVALID_ARGUMENT;
+    }
+
+    twiBusy = true;
+
+    txPdcPacket.ul_addr = (uint32_t)p_packet->buffer;
+    txPdcPacket.ul_size = p_packet->length - 1;
+    pdc_tx_init(PDC_TWI0, &txPdcPacket, NULL);
+
+    // Set write mode, slave address and 3 internal address byte lengths
+    p_twi->TWI_MMR = 0;
+    p_twi->TWI_MMR = TWI_MMR_DADR(p_packet->chip) | ((p_packet->addr_length << TWI_MMR_IADRSZ_Pos) & TWI_MMR_IADRSZ_Msk);
+
+    // Set internal address for remote chip
+    p_twi->TWI_IADR = 0;
+    p_twi->TWI_IADR = twi_mk_addr(p_packet->addr, p_packet->addr_length);
+
+    pdc_enable_transfer(PDC_TWI0, PERIPH_PTCR_TXTEN);
+
+    twi_enable_interrupt(p_twi, TWI_IER_ENDTX);
+    NVIC_ClearPendingIRQ(TWI0_IRQn);
+    NVIC_EnableIRQ(TWI0_IRQn);
+
+    return TWI_SUCCESS;
+}
+
+/**
+ * \brief Callback function for TWI receive.
+ *
+ * \param callback Pointer to callback function.
+ */
+void twi_set_rx_callback(void (*callback)(void))
+{
+    rxCallback = callback;
+}
+
+/**
+ * \brief Callback function for TWI transmit.
+ *
+ * \param callback Pointer to callback function.
+ */
+void twi_set_tx_callback(void (*callback)(void))
+{
+    txCallback = callback;
+}
+
+/**
+ * \brief TWI0 Interrupt handler.
+ *
+ */
+void TWI0_Handler(void)
+{
+    uint32_t twi_status = twi_get_interrupt_status(TWI0) & twi_get_interrupt_mask(TWI0);
+
+    // End of PDC transfer -> switch PDC off and wait ready flag
+    if(twi_status & TWI_SR_ENDTX)
+    {
+        pdc_disable_transfer(PDC_TWI0, PERIPH_PTCR_TXTDIS);
+        twi_disable_interrupt(TWI0, TWI_IER_ENDTX);
+        twi_enable_interrupt(TWI0, TWI_IER_TXRDY);
+        twi_status |= twi_get_interrupt_status(TWI0);
+    }
+    
+    // Received ready flag -> send last byte
+    if(twi_status & TWI_SR_TXRDY)
+    {
+        twi_disable_interrupt(TWI0, TWI_IER_TXRDY);
+
+		// Complete the transfer - stop and last byte 
+		TWI0->TWI_CR = TWI_CR_STOP;
+		TWI0->TWI_THR = txPacket.buffer[txPacket.length-1];
+
+        twi_enable_interrupt(TWI0, TWI_IER_TXCOMP);
+        twi_status |= twi_get_interrupt_status(TWI0);
+    }
+
+    // End of transfer -> switch TWI off
+    if(twi_status & TWI_SR_TXCOMP)
+    {
+        twi_disable_interrupt(TWI0, TWI_IER_TXCOMP);
+
+        // If defined, call the connected function.
+        if(txCallback != NULL)
+        {
+            txCallback();
+        }
+
+        twiBusy = false;
+    }
+
+    // End of PDC transfer -> switch PDC off
+    if(twi_status & TWI_SR_ENDRX)
+    {
+        pdc_disable_transfer(PDC_TWI0, PERIPH_PTCR_RXTDIS);
+        twi_disable_interrupt(TWI0, TWI_IER_ENDRX);
+
+        twi_enable_interrupt(TWI0, TWI_IER_RXRDY);
+        TWI0->TWI_CR = TWI_CR_STOP;
+
+        twi_status |= twi_get_interrupt_status(TWI0);
+    }
+
+    // End of transfer -> switch TWI off
+    if(twi_status & TWI_SR_RXRDY)
+    {
+        twi_disable_interrupt(TWI0, TWI_IER_RXRDY);
+
+        // Read last data
+        rxPacket.buffer[rxPacket.length-1] = TWI0->TWI_RHR;
+
+        // If defined, call the connected function.
+        if(rxCallback != NULL)
+        {
+            rxCallback();
+        }
+
+        twiBusy = false;
+    }
+
+	// An error occurred in either a transmission or reception.
+    // Abort, stop the transmission and disable interrupts.
+	if(twi_status & SR_ERROR_INTERRUPTS)
+    {
+		// Stop the PDC
+		pdc_disable_transfer(PDC_TWI0, PERIPH_PTCR_TXTDIS | PERIPH_PTCR_RXTDIS);
+
+		if(!(twi_status & TWI_SR_NACK))
+        {
+			// Do not send stop if NACK received. Handled by hardware
+			TWI0->TWI_CR = TWI_CR_STOP;
+		}
+		twi_disable_interrupt(TWI0, TWI_IDR_ENDTX);
+		twi_disable_interrupt(TWI0, TWI_IDR_ENDRX);
+
+        twiBusy = false;
+	}
 }
 
 /**

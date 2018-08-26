@@ -210,37 +210,37 @@ void print_menu_main(void)
     switch(menu_main_column)
     {
         case 0:
-            print_s(1 - menu_main_scroll, 3, "Settings  ");
+            lcd_print_s(1 - menu_main_scroll, 3, "Settings  ");
             sprintf(sprintf_cache, "Robot ID: %1d", rbt_id);
-            print_s(2 - menu_main_scroll, 1, sprintf_cache);
+            lcd_print_s(2 - menu_main_scroll, 1, sprintf_cache);
             sprintf(sprintf_cache, "Speed: %2d", 15);	//speed_preset
-            print_s(3 - menu_main_scroll, 1, sprintf_cache);
+            lcd_print_s(3 - menu_main_scroll, 1, sprintf_cache);
             sprintf(sprintf_cache, "WIFI: %1d", 1);	//rpi_tx.info.wifi
-            print_s(4 - menu_main_scroll, 1, sprintf_cache);
-            print_s(5 - menu_main_scroll, 1, "Calibrate");
-            print_s(6 - menu_main_scroll, 1, "Set field size ref");
-            print_s(7 - menu_main_scroll, 1, "");
-            print_s(8 - menu_main_scroll, 1, "");
+            lcd_print_s(4 - menu_main_scroll, 1, sprintf_cache);
+            lcd_print_s(5 - menu_main_scroll, 1, "Calibrate");
+            lcd_print_s(6 - menu_main_scroll, 1, "Set field size ref");
+            lcd_print_s(7 - menu_main_scroll, 1, "");
+            lcd_print_s(8 - menu_main_scroll, 1, "");
             break;
         case 1:
-            print_s(1 - menu_main_scroll, 3, "  Match  ");
-            print_s(2 - menu_main_scroll, 1, "Start match");
-            print_s(3 - menu_main_scroll, 1, "Sensor values");
-            print_s(4 - menu_main_scroll, 1, "Drive angle pid");
-            print_s(5 - menu_main_scroll, 1, "");
-            print_s(6 - menu_main_scroll, 1, "");
-            print_s(7 - menu_main_scroll, 1, "");
-            print_s(8 - menu_main_scroll, 1, "");
+            lcd_print_s(1 - menu_main_scroll, 3, "  Match  ");
+            lcd_print_s(2 - menu_main_scroll, 1, "Start match");
+            lcd_print_s(3 - menu_main_scroll, 1, "Sensor values");
+            lcd_print_s(4 - menu_main_scroll, 1, "Drive angle pid");
+            lcd_print_s(5 - menu_main_scroll, 1, "");
+            lcd_print_s(6 - menu_main_scroll, 1, "");
+            lcd_print_s(7 - menu_main_scroll, 1, "");
+            lcd_print_s(8 - menu_main_scroll, 1, "");
             break;
         case 2:
-            print_s(1 - menu_main_scroll, 3, "  Tests");
-            print_s(2 - menu_main_scroll, 1, "Turn to start");
-            print_s(3 - menu_main_scroll, 1, "Move to middle");
-            print_s(4 - menu_main_scroll, 1, "Move to ball");
-            print_s(5 - menu_main_scroll, 1, "RPI");
-            print_s(6 - menu_main_scroll, 1, "Stop on line");
-            print_s(7 - menu_main_scroll, 1, "Encoder test");
-            print_s(8 - menu_main_scroll, 1, "");
+            lcd_print_s(1 - menu_main_scroll, 3, "  Tests");
+            lcd_print_s(2 - menu_main_scroll, 1, "Turn to start");
+            lcd_print_s(3 - menu_main_scroll, 1, "Move to middle");
+            lcd_print_s(4 - menu_main_scroll, 1, "Move to ball");
+            lcd_print_s(5 - menu_main_scroll, 1, "RPI");
+            lcd_print_s(6 - menu_main_scroll, 1, "Stop on line");
+            lcd_print_s(7 - menu_main_scroll, 1, "Encoder test");
+            lcd_print_s(8 - menu_main_scroll, 1, "");
             break;
     }
     
@@ -255,17 +255,17 @@ void print_cursor(void)
         switch (menu_main_column)
         {
             case 0:
-                print_s(1, 12, ">");
-                print_s(2, 0, " ");
+                lcd_print_s(1, 12, ">");
+                lcd_print_s(2, 0, " ");
                 break;
             case 1:
-                print_s(1, 3, "<");
-                print_s(1, 11, ">");
-                print_s(2, 0, " ");
+                lcd_print_s(1, 3, "<");
+                lcd_print_s(1, 11, ">");
+                lcd_print_s(2, 0, " ");
                 break;
             case 2:
-                print_s(1, 3, "<");
-                print_s(2, 0, " ");
+                lcd_print_s(1, 3, "<");
+                lcd_print_s(2, 0, " ");
                 break;
             default:
                 break;
@@ -278,22 +278,22 @@ void print_cursor(void)
             switch (menu_main_column)
             {
                 case 0:
-                    print_s(1, 12, " ");
+                    lcd_print_s(1, 12, " ");
                     break;
                 case 1:
-                    print_s(1, 3, " ");
-                    print_s(1, 11, " ");
+                    lcd_print_s(1, 3, " ");
+                    lcd_print_s(1, 11, " ");
                     break;
                 case 2:
-                    print_s(1, 3, " ");
+                    lcd_print_s(1, 3, " ");
                     break;
                 default:
                     break;
             }
         }
         
-        print_s(prev_cursor_line_on_lcd, 0, " ");
-        print_s(act_cursor_line_on_lcd, 0, ">");
+        lcd_print_s(prev_cursor_line_on_lcd, 0, " ");
+        lcd_print_s(act_cursor_line_on_lcd, 0, ">");
     }
     
     prev_cursor_line = act_cursor_line;
