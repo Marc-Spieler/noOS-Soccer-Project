@@ -205,42 +205,35 @@ void menu_settings(event_t event1)
 
 void print_menu_main(void)
 {
+    const char *menu_text[3][8] =
+    {
+        {"   Settings  ", " Robot ID:", " Speed:", " WIFI:", " Calibrate", " Set field size ref", "", ""},
+        {"     Match  ", " Start match", " Sensor values", " Drive angle pid", "", "", "", ""},
+        {"     Tests", " Turn to start", " Move to middle", " Move to ball", " RPI", " Stop on line", " Encoder test", ""}
+    };
+    char *menu_display[4];
+
     lcd_clear();
-	
+
+    menu_display[0] = (char *)menu_text[menu_main_column][menu_main_scroll + 0];
+    menu_display[1] = (char *)menu_text[menu_main_column][menu_main_scroll + 1];
+    menu_display[2] = (char *)menu_text[menu_main_column][menu_main_scroll + 2];
+    menu_display[3] = (char *)menu_text[menu_main_column][menu_main_scroll + 3];
+    lcd_print_m(menu_display);
+
     switch(menu_main_column)
     {
         case 0:
-            lcd_print_s(1 - menu_main_scroll, 3, "Settings  ");
-            sprintf(sprintf_cache, "Robot ID: %1d", rbt_id);
-            lcd_print_s(2 - menu_main_scroll, 1, sprintf_cache);
-            sprintf(sprintf_cache, "Speed: %2d", 15);	//speed_preset
-            lcd_print_s(3 - menu_main_scroll, 1, sprintf_cache);
-            sprintf(sprintf_cache, "WIFI: %1d", 1);	//rpi_tx.info.wifi
-            lcd_print_s(4 - menu_main_scroll, 1, sprintf_cache);
-            lcd_print_s(5 - menu_main_scroll, 1, "Calibrate");
-            lcd_print_s(6 - menu_main_scroll, 1, "Set field size ref");
-            lcd_print_s(7 - menu_main_scroll, 1, "");
-            lcd_print_s(8 - menu_main_scroll, 1, "");
+            sprintf(sprintf_cache, "%1d", rbt_id);
+            lcd_print_s(2 - menu_main_scroll, 11, sprintf_cache);
+            sprintf(sprintf_cache, "%2d", 15);	//speed_preset
+            lcd_print_s(3 - menu_main_scroll, 8, sprintf_cache);
+            sprintf(sprintf_cache, "%1d", 1);	//rpi_tx.info.wifi
+            lcd_print_s(4 - menu_main_scroll, 7, sprintf_cache);
             break;
         case 1:
-            lcd_print_s(1 - menu_main_scroll, 3, "  Match  ");
-            lcd_print_s(2 - menu_main_scroll, 1, "Start match");
-            lcd_print_s(3 - menu_main_scroll, 1, "Sensor values");
-            lcd_print_s(4 - menu_main_scroll, 1, "Drive angle pid");
-            lcd_print_s(5 - menu_main_scroll, 1, "");
-            lcd_print_s(6 - menu_main_scroll, 1, "");
-            lcd_print_s(7 - menu_main_scroll, 1, "");
-            lcd_print_s(8 - menu_main_scroll, 1, "");
             break;
         case 2:
-            lcd_print_s(1 - menu_main_scroll, 3, "  Tests");
-            lcd_print_s(2 - menu_main_scroll, 1, "Turn to start");
-            lcd_print_s(3 - menu_main_scroll, 1, "Move to middle");
-            lcd_print_s(4 - menu_main_scroll, 1, "Move to ball");
-            lcd_print_s(5 - menu_main_scroll, 1, "RPI");
-            lcd_print_s(6 - menu_main_scroll, 1, "Stop on line");
-            lcd_print_s(7 - menu_main_scroll, 1, "Encoder test");
-            lcd_print_s(8 - menu_main_scroll, 1, "");
             break;
     }
     

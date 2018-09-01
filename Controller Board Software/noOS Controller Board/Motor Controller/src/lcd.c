@@ -18,7 +18,7 @@
 
 #define LCD_INIT_WAIT_TIME    6         // ms
 #define LCD_CLEAR_WAIT_TIME   3         // ms
-#define LCD_TIMEOUT_DELAY     10        // ms
+#define LCD_TIMEOUT_DELAY     100       // ms
 
 /************************************************************
 * Local Variables                                           *
@@ -150,6 +150,73 @@ void lcd_print_s(int8_t line, uint8_t col, const char* str)
         tx_packet->buffer[4 + count * 4 + 3] = cmd | LCD_ENABLE_LOW  | ((byte & 0x0F) << 4);
     }
     tx_packet->length = 4 + count * 4;
+
+    lcdIsBusy = true;
+    twi_pdc_master_write(TWI0, tx_packet);
+    lcdStartTicks = getTicks();
+}
+
+void lcd_print_m(char* str[])
+{
+    twi_packet_t *tx_packet = twi_get_tx_packet();
+    uint8_t addr;
+    uint8_t cmd;
+    uint8_t byte;
+    uint8_t count;
+    uint8_t line;
+    uint16_t index = 0;
+    
+    while(lcdIsBusy | twi_is_busy())
+    {
+        if((getTicks() - lcdStartTicks) > LCD_TIMEOUT_DELAY)
+        {
+            lcdIsBusy = false;
+            lcdTimeoutErrorCntr++;
+            pdc_disable_transfer(PDC_TWI0, PERIPH_PTCR_TXTDIS | PERIPH_PTCR_RXTDIS);
+            twi_master_setup(TWI0, &twiConfig);
+            break;
+        }
+    }
+
+    for(line = 0; line < 4; line++)
+    {
+        // Calculate display address
+        switch(line)
+        {
+            case 1:
+                addr = 0x80 | 0x40;   // set address to start of line 2
+                break;
+            case 2:
+                addr = 0x80 | 0x14;   // set address to start of line 3
+                break;
+            case 3:
+                addr = 0x80 | 0x54;   // set address to start of line 4
+                break;
+            case 0:
+            default:
+                addr = 0x80;          // set address to start of line 1
+                break;
+        }
+
+        // Set cursor
+        cmd = LCD_FUNTION_WRITE | backlight;
+        tx_packet->buffer[index++] = cmd | LCD_ENABLE_HIGH | (addr & 0xF0);
+        tx_packet->buffer[index++] = cmd | LCD_ENABLE_LOW  | (addr & 0xF0);
+        tx_packet->buffer[index++] = cmd | LCD_ENABLE_HIGH | ((addr & 0x0F) << 4);
+        tx_packet->buffer[index++] = cmd | LCD_ENABLE_LOW  | ((addr & 0x0F) << 4);
+    
+        // write string ...
+        cmd = LCD_WRITE_DDR | backlight;
+        for(count = 0; count < strlen(str[line]); count++)
+        {
+            byte = str[line][count];
+            tx_packet->buffer[index++] = cmd | LCD_ENABLE_HIGH | (byte & 0xF0);
+            tx_packet->buffer[index++] = cmd | LCD_ENABLE_LOW  | (byte & 0xF0);
+            tx_packet->buffer[index++] = cmd | LCD_ENABLE_HIGH | ((byte & 0x0F) << 4);
+            tx_packet->buffer[index++] = cmd | LCD_ENABLE_LOW  | ((byte & 0x0F) << 4);
+        }
+    }
+    tx_packet->length = index;
 
     lcdIsBusy = true;
     twi_pdc_master_write(TWI0, tx_packet);

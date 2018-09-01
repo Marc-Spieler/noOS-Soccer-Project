@@ -20,6 +20,7 @@ void lcd_set_backlight(backlight_t state);
 void lcd_clear(void);
 void lcd_print_i(int8_t line, uint8_t col, uint32_t data);
 void lcd_print_s(int8_t line, uint8_t col, const char* str);
+void lcd_print_m(char* str[]);
 Bool lcd_is_busy(void);
 uint32_t lcd_get_timeout_error_cntr(void);
 

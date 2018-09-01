@@ -124,7 +124,7 @@ void compass_init(void)
     twi_set_rx_callback(compass_callback);
 
     memset((void *)&twiConfig, 0, sizeof(twiConfig));
-    twiConfig.speed = 100000;
+todo    twiConfig.speed = 100000;
     twi_master_setup(TWI0, &twiConfig);
 }
 
