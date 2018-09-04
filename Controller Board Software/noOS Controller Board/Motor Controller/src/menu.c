@@ -173,8 +173,8 @@ void menu_main(event_t event1)
                 if (menu_main_column >= 1)
                 {
                     menu_main_column--;
+                    print_menu = 1;
                 }
-                print_menu = 1;
             }
             break;
         case EVENT_BUTTON_RIGHT_P:
@@ -183,8 +183,8 @@ void menu_main(event_t event1)
                 if (menu_main_column <= 1)
                 {
                     menu_main_column++;
+                    print_menu = 1;
                 }
-                print_menu = 1;
             }
             break;
         default:

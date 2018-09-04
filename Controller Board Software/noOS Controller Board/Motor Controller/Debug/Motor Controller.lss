@@ -3870,8 +3870,8 @@ void menu_main(event_t event1)
    8179a:	d066      	beq.n	8186a <menu_main+0xe2>
    8179c:	2b04      	cmp	r3, #4
    8179e:	d052      	beq.n	81846 <menu_main+0xbe>
+                    print_menu = 1;
                 }
-                print_menu = 1;
             }
             break;
         default:
@@ -3956,7 +3956,7 @@ void menu_main(event_t event1)
    8184e:	4b18      	ldr	r3, [pc, #96]	; (818b0 <menu_main+0x128>)
    81850:	781b      	ldrb	r3, [r3, #0]
    81852:	2b00      	cmp	r3, #0
-   81854:	d005      	beq.n	81862 <menu_main+0xda>
+   81854:	d01b      	beq.n	8188e <menu_main+0x106>
                     menu_main_column--;
    81856:	4b16      	ldr	r3, [pc, #88]	; (818b0 <menu_main+0x128>)
    81858:	781b      	ldrb	r3, [r3, #0]
@@ -3964,7 +3964,7 @@ void menu_main(event_t event1)
    8185c:	b2da      	uxtb	r2, r3
    8185e:	4b14      	ldr	r3, [pc, #80]	; (818b0 <menu_main+0x128>)
    81860:	701a      	strb	r2, [r3, #0]
-                print_menu = 1;
+                    print_menu = 1;
    81862:	4b15      	ldr	r3, [pc, #84]	; (818b8 <menu_main+0x130>)
    81864:	2201      	movs	r2, #1
    81866:	701a      	strb	r2, [r3, #0]
@@ -3979,7 +3979,7 @@ void menu_main(event_t event1)
    81872:	4b0f      	ldr	r3, [pc, #60]	; (818b0 <menu_main+0x128>)
    81874:	781b      	ldrb	r3, [r3, #0]
    81876:	2b01      	cmp	r3, #1
-   81878:	d805      	bhi.n	81886 <menu_main+0xfe>
+   81878:	d80b      	bhi.n	81892 <menu_main+0x10a>
                     menu_main_column++;
    8187a:	4b0d      	ldr	r3, [pc, #52]	; (818b0 <menu_main+0x128>)
    8187c:	781b      	ldrb	r3, [r3, #0]
@@ -3987,7 +3987,7 @@ void menu_main(event_t event1)
    81880:	b2da      	uxtb	r2, r3
    81882:	4b0b      	ldr	r3, [pc, #44]	; (818b0 <menu_main+0x128>)
    81884:	701a      	strb	r2, [r3, #0]
-                print_menu = 1;
+                    print_menu = 1;
    81886:	4b0c      	ldr	r3, [pc, #48]	; (818b8 <menu_main+0x130>)
    81888:	2201      	movs	r2, #1
    8188a:	701a      	strb	r2, [r3, #0]
