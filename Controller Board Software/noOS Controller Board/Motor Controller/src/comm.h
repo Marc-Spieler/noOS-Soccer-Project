@@ -29,13 +29,14 @@ typedef struct
         uint8_t rsvd		 :7;
     } ibit;
     
-    uint8_t bat_voltage;
+    //uint8_t bat_voltage;
+    uint8_t bat_percentage;
 } sensor_to_motor_t;
 
 extern motor_to_sensor_t mts;
 extern sensor_to_motor_t stm;
 
-extern uint8_t sens_buf[sizeof(stm)];
+extern uint8_t sens_buf[sizeof(mts)];
 
 //static Bool b_trigger = false;
 

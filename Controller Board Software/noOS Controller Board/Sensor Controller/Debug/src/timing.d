@@ -133,7 +133,8 @@ src/timing.d src/timing.o: ../src/timing.c ../src/timing.h ../src/asf.h \
  ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
  ../src/ASF/common/services/spi/sam_spi/spi_master.h \
  ../src/ASF/sam/drivers/spi/spi.h ../src/config/conf_spi_master.h \
- ../src/comm.h
+ ../src/comm.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\math.h
 
 ../src/timing.h:
 
@@ -420,3 +421,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/config/conf_spi_master.h:
 
 ../src/comm.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\math.h:

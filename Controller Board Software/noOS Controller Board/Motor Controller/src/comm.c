@@ -80,7 +80,7 @@ void configure_dmac(void)
     ul_cfg = 0;
     ul_cfg |= DMAC_CFG_DST_PER(13) | DMAC_CFG_DST_H2SEL | DMAC_CFG_SOD | DMAC_CFG_FIFOCFG_ALAP_CFG;
     dmac_channel_set_configuration(DMAC, 1, ul_cfg);
-    #if 0	
+    #if 0
     /* Configure DMA RX channel. */
     ul_cfg = 0;
     ul_cfg |= DMAC_CFG_SRC_PER(2) | DMAC_CFG_SRC_H2SEL | DMAC_CFG_SOD | DMAC_CFG_FIFOCFG_ALAP_CFG;

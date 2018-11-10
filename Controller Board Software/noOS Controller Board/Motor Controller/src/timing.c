@@ -14,7 +14,8 @@ uint32_t ul_ticks_compass;
 
 static uint32_t g_ul_ms_ticks = 0;
 float battery_voltage = 0;
-float prev_battery_voltage = 0;
+uint8_t battery_percentage;
+uint8_t prev_battery_percentage = 0;
 
 void SysTick_Handler(void)
 {
@@ -47,50 +48,59 @@ void update_comm(void)
 
 void update_battery(Bool update_forced)
 {
-    char tmp[7];
+    char tmp[4];
     
     if (menu_main_scroll == 0)
     {
-        if ((getTicks() - ticks_battery) > 500)
+        if ((getTicks() - ticks_battery) >= 100)
         {
             ticks_battery = getTicks();
-            
-            battery_voltage = (float)stm.bat_voltage / 16.0;
-            
-            if ((int)(battery_voltage) != (int)(prev_battery_voltage))
-            {
-                if (battery_voltage >= 10)
-                {
-                    sprintf(tmp, "%3.1fV", battery_voltage);
-                }
-                else
-                {
-                    sprintf(tmp, " %3.1fV", battery_voltage);
-                }
-                
-                lcd_print_s(1, 15, tmp);
-                prev_battery_voltage = battery_voltage;
-            }
-        }
+            lcd_print_i(1, 9, stm.bat_percentage);
+        }            
         
-        if (update_forced)
+        /*if (update_forced)
         {
             ticks_battery = getTicks();
             
-            battery_voltage = (float)stm.bat_voltage / 16.0;
-            
-            if (battery_voltage >= 10)
+            if (stm.bat_percentage >= 100)
             {
-                sprintf(tmp, "%3.1fV", battery_voltage);
+                sprintf(tmp, "%3u%%", stm.bat_percentage);
+            }
+            else if (stm.bat_percentage >= 10)
+            {
+                sprintf(tmp, "%2u%%", stm.bat_percentage);
             }
             else
             {
-                sprintf(tmp, " %3.1fV", battery_voltage);
+                sprintf(tmp, "%1u%%", stm.bat_percentage);
             }
             
-            lcd_print_s(1, 15, tmp);
-            prev_battery_voltage = battery_voltage;
+            lcd_print_s(1, 17, tmp);
+            prev_battery_percentage = stm.bat_percentage;
         }
+        else if ((getTicks() - ticks_battery) >= 500)
+        {
+            ticks_battery = getTicks();
+            
+            if (stm.bat_percentage != prev_battery_percentage)
+            {
+                if (stm.bat_percentage >= 100)
+                {
+                    sprintf(tmp, "%3u%%", stm.bat_percentage);
+                }
+                else if (stm.bat_percentage >= 10)
+                {
+                    sprintf(tmp, "%2u%%", stm.bat_percentage);
+                }
+                else
+                {
+                    sprintf(tmp, "%1u%%", stm.bat_percentage);
+                }
+                
+                lcd_print_s(1, 17, tmp);
+                prev_battery_percentage = stm.bat_percentage;
+            }          
+        }*/
     }
 }
 
