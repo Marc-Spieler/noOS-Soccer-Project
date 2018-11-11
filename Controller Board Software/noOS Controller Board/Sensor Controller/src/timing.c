@@ -11,6 +11,8 @@
 static uint32_t g_ul_ms_ticks = 0;
 uint32_t ul_ticks_bat = 0;
 float adc_bat_value;
+uint8_t bat_percentage_prefiltered = 0;
+uint8_t bat_percentage_filtered = 0;
 
 void SysTick_Handler(void)
 {
@@ -41,8 +43,10 @@ void update_battery(void)
         adc_bat_value = (float)(adc_get_channel_value(ADC, BATTERY_VOLTAGE));
         //stm.bat_voltage = (uint8_t)(adc_bat_value / 18.0f);
         float y = adc_bat_value * 0.003472222;
-        stm.bat_percentage = (uint8_t)(-(y * y - 25.2f * y + 158.76f) / 0.04f + 100.0f);
-        stm.bat_percentage = (stm.bat_percentage - 20.0) * 1.25;
+        bat_percentage_prefiltered = (uint8_t)(-(y * y - 25.2f * y + 158.76f) / 0.04f + 100.0f);
+        bat_percentage_prefiltered = (bat_percentage_prefiltered - 20.0) * 1.25;
+        bat_percentage_filtered = (bat_percentage_filtered * 3 + bat_percentage_prefiltered) / 4;
+        stm.bat_percentage = bat_percentage_filtered;
         adc_start(ADC);
     }
 }

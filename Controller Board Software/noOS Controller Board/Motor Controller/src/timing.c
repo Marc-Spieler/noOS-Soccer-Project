@@ -52,30 +52,26 @@ void update_battery(Bool update_forced)
     
     if (menu_main_scroll == 0)
     {
-        if ((getTicks() - ticks_battery) >= 100)
-        {
-            ticks_battery = getTicks();
-            lcd_print_i(1, 9, stm.bat_percentage);
-        }            
-        
-        /*if (update_forced)
+        if (update_forced)
         {
             ticks_battery = getTicks();
             
             if (stm.bat_percentage >= 100)
             {
                 sprintf(tmp, "%3u%%", stm.bat_percentage);
+                lcd_print_s(1, 16, tmp);
             }
             else if (stm.bat_percentage >= 10)
             {
                 sprintf(tmp, "%2u%%", stm.bat_percentage);
+                lcd_print_s(1, 17, tmp);
             }
             else
             {
                 sprintf(tmp, "%1u%%", stm.bat_percentage);
+                lcd_print_s(1, 18, tmp);
             }
             
-            lcd_print_s(1, 17, tmp);
             prev_battery_percentage = stm.bat_percentage;
         }
         else if ((getTicks() - ticks_battery) >= 500)
@@ -87,20 +83,22 @@ void update_battery(Bool update_forced)
                 if (stm.bat_percentage >= 100)
                 {
                     sprintf(tmp, "%3u%%", stm.bat_percentage);
+                    lcd_print_s(1, 16, tmp);
                 }
                 else if (stm.bat_percentage >= 10)
                 {
                     sprintf(tmp, "%2u%%", stm.bat_percentage);
+                    lcd_print_s(1, 17, tmp);
                 }
                 else
                 {
                     sprintf(tmp, "%1u%%", stm.bat_percentage);
+                    lcd_print_s(1, 18, tmp);
                 }
                 
-                lcd_print_s(1, 17, tmp);
                 prev_battery_percentage = stm.bat_percentage;
             }          
-        }*/
+        }
     }
 }
 
