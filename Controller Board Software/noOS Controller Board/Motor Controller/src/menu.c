@@ -11,7 +11,8 @@
 menu_t act_menu = MENU_MAIN;
 Bool print_menu = 1;
 
-int8_t rbt_id = 1;
+uint8_t rbt_id = 1;
+uint8_t speed_preset = 15;
 
 uint8_t act_cursor_line_on_lcd = 1;
 uint8_t prev_cursor_line_on_lcd = 1;
@@ -76,8 +77,8 @@ void menu(event_t event1)
         case MENU_MAIN:
             menu_main(event1);
             break;
-        case MENU_SETTINGS:
-            menu_settings(event1);
+        case MENU_SENS_VALUES:
+            menu_sens_values();
             break;
         default:
             break;
@@ -176,6 +177,34 @@ void menu_main(event_t event1)
                     print_menu = 1;
                 }
             }
+            switch (menu_main_column)
+            {
+                case 0:
+                    switch (act_cursor_line)
+                    {
+                        case 2:
+                            if (rbt_id == 2)
+                            {
+                                rbt_id = 1;
+                                print_menu = 1;
+                            }
+                    	    break;
+                        case 3:
+                            if (speed_preset > 0)
+                            {
+                                speed_preset -= 1;
+                                print_menu = 1;
+                            }
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            break;
+                    }
+            	    break;
+                default:
+                    break;
+            }
             break;
         case EVENT_BUTTON_RIGHT_P:
             if (act_cursor_line == 1)
@@ -185,6 +214,32 @@ void menu_main(event_t event1)
                     menu_main_column++;
                     print_menu = 1;
                 }
+            }
+            switch (menu_main_column)
+            {
+                case 0:
+                    switch (act_cursor_line)
+                    {
+                        case 2:
+                            if (rbt_id == 1)
+                            {
+                                rbt_id = 2;
+                                print_menu = 1;
+                            }
+                            break;
+                        case 3:
+                            if (speed_preset < 20)
+                            {
+                                speed_preset += 1;
+                                print_menu = 1;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
             }
             break;
         default:
@@ -198,9 +253,9 @@ void menu_main(event_t event1)
     }
 }
 
-void menu_settings(event_t event1)
+void menu_sens_values(void)
 {
-	
+    
 }
 
 void print_menu_main(void)
@@ -226,7 +281,7 @@ void print_menu_main(void)
         case 0:
             sprintf(sprintf_cache, "%1d", rbt_id);
             lcd_print_s(2 - menu_main_scroll, 11, sprintf_cache);
-            sprintf(sprintf_cache, "%2d", 15);	//speed_preset
+            sprintf(sprintf_cache, "%2d", speed_preset);
             lcd_print_s(3 - menu_main_scroll, 8, sprintf_cache);
             sprintf(sprintf_cache, "%1d", 1);	//rpi_tx.info.wifi
             lcd_print_s(4 - menu_main_scroll, 7, sprintf_cache);

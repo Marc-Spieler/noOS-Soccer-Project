@@ -29,7 +29,7 @@ typedef struct
         uint8_t rsvd		 :7;
     } ibit;
     
-    //uint8_t bat_voltage;
+    uint8_t bat_voltage;
     uint8_t bat_percentage;
 } sensor_to_motor_t;
 

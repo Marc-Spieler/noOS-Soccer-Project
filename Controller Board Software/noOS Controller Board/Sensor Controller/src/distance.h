@@ -1,17 +1,23 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: noOS                                                           */
-/* Created: 22.08.18                                                    */
+/* Created: 30.11.18                                                    */
 /************************************************************************/
 
-#ifndef TIMING_H
-#define TIMING_H
+#ifndef DISTANCE_H
+#define DISTANCE_H
 
 #include "asf.h"
 
-uint32_t getTicks(void);
-void mdelay(uint32_t ul_dly_ticks);
-void update_battery(void);
-void update_heartbeat(void);
+typedef struct
+{
+    uint8_t front;
+    uint8_t left;
+    uint8_t right;
+    uint8_t rear;
+} dsense_t;
+
+void init_distance(void);
+void update_distance(void);
 
 #endif

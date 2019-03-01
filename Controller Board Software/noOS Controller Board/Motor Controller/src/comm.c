@@ -10,7 +10,7 @@
 motor_to_sensor_t mts;
 sensor_to_motor_t stm;
 
-uint8_t sens_buf[sizeof(mts)];
+uint8_t sens_buf[sizeof(stm)];
 
 void spi_init(void)
 {

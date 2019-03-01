@@ -37,7 +37,13 @@ void board_init(void)
 	ioport_set_pin_mode(SPI0_NPCS0, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(SPI0_NPCS0);
     
-    
+    /* Configure ADC */
+    pmc_enable_periph_clk(ID_ADC);
+    adc_init(ADC, sysclk_get_cpu_hz(), 6400000, ADC_STARTUP_TIME_4);
+    adc_configure_timing(ADC, 1, ADC_SETTLING_TIME_3, 1);
+    adc_enable_channel(ADC, BATTERY_VOLTAGE);
+    adc_enable_channel(ADC, LIGHT_BARRIER_RX);
+    adc_configure_trigger(ADC, ADC_TRIG_SW, 0);
     
     /* Configure Line Sensor pins */
     ioport_set_pin_mode(LINE1_B, LINE_FLAGS);
@@ -66,11 +72,17 @@ void board_init(void)
     ioport_set_pin_mode(LINE11_W, LINE_FLAGS);
     ioport_set_pin_mode(LINE12_W, LINE_FLAGS);
     
-    /* Configure ADC */
-    pmc_enable_periph_clk(ID_ADC);
-    adc_init(ADC, sysclk_get_cpu_hz(), 6400000, ADC_STARTUP_TIME_4);
-    adc_configure_timing(ADC, 1, ADC_SETTLING_TIME_3, 1);
-    adc_enable_channel(ADC, BATTERY_VOLTAGE);
-    adc_enable_channel(ADC, LIGHT_BARRIER_RX);
-    adc_configure_trigger(ADC, ADC_TRIG_SW, 0);
+    
+    /* Configure Distance Sensor Pins */
+    ioport_set_pin_mode(DFRONT_TRIG_PIN, IOPORT_MODE_MUX_B);
+    ioport_set_pin_mode(DFRONT_ECHO, IOPORT_MODE_MUX_A);
+    
+    ioport_set_pin_mode(DLEFT_TRIG_PIN, IOPORT_MODE_MUX_B);
+    ioport_set_pin_mode(DLEFT_ECHO, IOPORT_MODE_MUX_A);
+    
+    ioport_set_pin_mode(DRIGHT_TRIG_PIN, IOPORT_MODE_MUX_B);
+    ioport_set_pin_mode(DRIGHT_ECHO, IOPORT_MODE_MUX_B);
+    
+    ioport_set_pin_mode(DREAR_TRIG_PIN, IOPORT_MODE_MUX_B);
+    ioport_set_pin_mode(DREAR_ECHO, IOPORT_MODE_MUX_B);
 }

@@ -35,28 +35,8 @@ int main(void)
     while (1)
     {
         update_battery();
+        update_heartbeat();
         
-        if (mts.ibit.heartbeat)
-        {
-            ioport_set_pin_level(LED_ONBOARD, 1);
-            ioport_set_pin_level(LED_S1, 1);
-            stm.ibit.heartbeat = 1;
-        }
-        else
-        {
-            ioport_set_pin_level(LED_ONBOARD, 0);
-            ioport_set_pin_level(LED_S1, 0);
-            stm.ibit.heartbeat = 0;
-        }
-        
-        if (mts.ibit.button)
-        {
-            ioport_set_pin_level(LED_S2, 1);
-        }
-        else
-        {
-            ioport_set_pin_level(LED_S2, 0);
-        }
         
         PrepareValuesToSend();
     }

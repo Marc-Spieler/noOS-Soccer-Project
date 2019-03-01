@@ -26,6 +26,13 @@
 /* Core definition */
 #define cortexm3
 
+/* PWM frequency in Hz */
+#define PWM_FREQUENCY                 50
+/* Period value of PWM output waveform */
+#define PERIOD_VALUE                  20000
+/* Initial duty cycle value */
+#define INIT_DUTY_VALUE               10000
+
 /* Signal LED pin definitions */
 #define LED_ONBOARD						        PIO_PD3_IDX
 #define LED_S1  						        PIO_PD2_IDX
@@ -40,9 +47,7 @@
 
 /* ADC pin definition */
 #define BATTERY_VOLTAGE                         ADC_CHANNEL_1
-//#define BATTERY_VOLTAGE_FLAGS                   (PIO_PA3X1_AD1 | PIOA | ID_PIOA | IOPORT_DIR_INPUT)
 #define LIGHT_BARRIER_RX                        ADC_CHANNEL_2
-//#define LIGHT_BARRIER_RX_FLAGS                  (PIO_PA4X1_AD2 | PIOA | ID_PIOA | IOPORT_DIR_INPUT)
 
 /* DAC pin definition */
 #define DACC_CHANNEL_VREF_BLACK                 0
@@ -79,5 +84,22 @@
 #define LINE10_W                                PIO_PC11_IDX
 #define LINE11_W                                PIO_PC13_IDX
 #define LINE12_W                                PIO_PC15_IDX
+
+/* Distance sensor pin definition */
+#define DFRONT_TRIG            			        PWM_CHANNEL_0
+#define DFRONT_TRIG_PIN					        PIO_PC2_IDX
+#define DFRONT_ECHO                             PIO_PA2_IDX 
+
+#define DRIGHT_TRIG            			        PWM_CHANNEL_2
+#define DRIGHT_TRIG_PIN					        PIO_PC6_IDX
+#define DRIGHT_ECHO                             PIO_PC25_IDX
+
+#define DREAR_TRIG           				    PWM_CHANNEL_3
+#define DREAR_TRIG_PIN					        PIO_PC8_IDX
+#define DREAR_ECHO                              PIO_PC28_IDX
+
+#define DLEFT_TRIG           				    PWM_CHANNEL_1
+#define DLEFT_TRIG_PIN					        PIO_PC4_IDX
+#define DLEFT_ECHO                              PIO_PA5_IDX
 
 #endif

@@ -11,7 +11,7 @@ motor_to_sensor_t mts;
 sensor_to_motor_t stm;
 
 static Bool received_data = 0;
-uint8_t sens_buf[sizeof(mts)];
+uint8_t sens_buf[sizeof(stm)];
 
 void spi_init(void)
 {

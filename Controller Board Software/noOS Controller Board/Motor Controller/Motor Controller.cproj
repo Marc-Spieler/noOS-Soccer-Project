@@ -38,8 +38,8 @@
           <option id="common.services.basic.twi" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.dmac" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.hsmci" value="Add" config="" content-id="Atmel.ASF" />
-          <option id="common.services.fs.fatfs" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.pdc" value="Add" config="" content-id="Atmel.ASF" />
+          <option id="common.services.fs.fatfs" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.utils.linker_scripts#atsam3x8" value="Add" config="" content-id="Atmel.ASF" />
         </options>
         <configurations>

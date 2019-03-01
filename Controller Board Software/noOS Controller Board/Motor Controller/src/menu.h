@@ -35,13 +35,14 @@ typedef enum
 typedef enum
 {
     MENU_MAIN,
-    MENU_SETTINGS
+    MENU_SENS_VALUES
 } menu_t;
 
 extern menu_t act_menu;
 extern Bool print_menu;
 
-extern int8_t rbt_id;
+extern uint8_t rbt_id;
+extern uint8_t speed_preset;
 
 char sprintf_cache[20];
 
@@ -71,7 +72,7 @@ extern uint32_t cnt;
 
 void menu(event_t event1);
 void menu_main(event_t event1);
-void menu_settings(event_t event1);
+void menu_sens_values(void);
 void print_menu_main(void);
 void print_cursor(void);
 event_t button_events(void);

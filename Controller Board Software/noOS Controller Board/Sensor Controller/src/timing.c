@@ -50,3 +50,19 @@ void update_battery(void)
         adc_start(ADC);
     }
 }
+
+void update_heartbeat(void)
+{
+    if (mts.ibit.heartbeat)
+    {
+        ioport_set_pin_level(LED_ONBOARD, 1);
+        ioport_set_pin_level(LED_S1, 1);
+        stm.ibit.heartbeat = 1;
+    }
+    else
+    {
+        ioport_set_pin_level(LED_ONBOARD, 0);
+        ioport_set_pin_level(LED_S1, 0);
+        stm.ibit.heartbeat = 0;
+    }
+}    
