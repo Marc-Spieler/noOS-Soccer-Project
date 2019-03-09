@@ -1,0 +1,456 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:My
+LIBS:Soccer_2v2_v1-cache
+EELAYER 25 0
+EELAYER END
+$Descr User 8268 5846
+encoding utf-8
+Sheet 5 21
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Wire Wire Line
+	4750 2350 5200 2350
+Wire Wire Line
+	4750 1150 4750 3250
+Wire Wire Line
+	4750 1300 5200 1300
+Wire Wire Line
+	4750 1150 6200 1150
+Wire Wire Line
+	6200 1400 6000 1400
+Connection ~ 4750 1300
+Connection ~ 6200 1400
+Wire Wire Line
+	6200 1900 6000 1900
+Connection ~ 6200 1900
+Wire Wire Line
+	6200 2000 6000 2000
+Connection ~ 6200 2000
+Wire Wire Line
+	6200 2450 6000 2450
+Connection ~ 6200 2450
+Wire Wire Line
+	6200 2950 6000 2950
+Connection ~ 6200 2950
+Wire Wire Line
+	6200 3050 6000 3050
+Wire Wire Line
+	6000 2850 6300 2850
+Wire Wire Line
+	6300 2850 6300 1800
+Connection ~ 6300 1800
+Wire Wire Line
+	5200 2650 5150 2650
+Wire Wire Line
+	5150 2650 5150 2200
+Wire Wire Line
+	5150 2200 6400 2200
+Wire Wire Line
+	6400 2200 6400 1600
+Wire Wire Line
+	6400 1600 6000 1600
+Wire Wire Line
+	6000 1300 6100 1300
+Wire Wire Line
+	6100 2350 6000 2350
+Wire Wire Line
+	4750 3050 5200 3050
+Connection ~ 4750 2350
+Wire Wire Line
+	5200 2000 4750 2000
+Connection ~ 4750 2000
+Wire Wire Line
+	6000 1800 6500 1800
+$Comp
+L CD74HC191 U17
+U 1 1 59DE4C97
+P 5600 1650
+F 0 "U17" H 5600 2100 60  0000 C CNN
+F 1 "CD74HC191" H 5600 1200 60  0000 C CNN
+F 2 "Housings_SOIC:SOIC-16_3.9x9.9mm_Pitch1.27mm" H 5400 1750 60  0001 C CNN
+F 3 "" H 5400 1750 60  0001 C CNN
+	1    5600 1650
+	1    0    0    -1  
+$EndComp
+NoConn ~ 6000 1700
+$Comp
+L CD74HC191 U20
+U 1 1 59DE4C98
+P 5600 2700
+F 0 "U20" H 5600 3150 60  0000 C CNN
+F 1 "CD74HC191" H 5600 2250 60  0000 C CNN
+F 2 "Housings_SOIC:SOIC-16_3.9x9.9mm_Pitch1.27mm" H 5400 2800 60  0001 C CNN
+F 3 "" H 5400 2800 60  0001 C CNN
+	1    5600 2700
+	1    0    0    -1  
+$EndComp
+NoConn ~ 6000 2750
+NoConn ~ 6000 2650
+$Comp
+L CD74HC175 U18
+U 1 1 59DE4C99
+P 2100 2100
+F 0 "U18" H 2100 2550 60  0000 C CNN
+F 1 "CD74HC175" H 2100 1650 60  0000 C CNN
+F 2 "Housings_SOIC:SOIC-16_3.9x9.9mm_Pitch1.27mm" H 2050 2150 60  0001 C CNN
+F 3 "" H 2050 2150 60  0001 C CNN
+	1    2100 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L CD74HC86 U19
+U 1 1 59DE4C9A
+P 3950 2200
+F 0 "U19" H 3950 2600 60  0000 C CNN
+F 1 "CD74HC86" H 3950 1800 60  0000 C CNN
+F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" H 3850 2300 60  0001 C CNN
+F 3 "" H 3850 2300 60  0001 C CNN
+	1    3950 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR051
+U 1 1 59DE4C9B
+P 4250 3050
+F 0 "#PWR051" H 4250 2900 50  0001 C CNN
+F 1 "+3.3V" H 4250 3190 50  0000 C CNN
+F 2 "" H 4250 3050 50  0001 C CNN
+F 3 "" H 4250 3050 50  0001 C CNN
+	1    4250 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR052
+U 1 1 59DE4C9C
+P 3700 3050
+F 0 "#PWR052" H 3700 2800 50  0001 C CNN
+F 1 "GND" H 3700 2900 50  0000 C CNN
+F 2 "" H 3700 3050 50  0001 C CNN
+F 3 "" H 3700 3050 50  0001 C CNN
+	1    3700 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 3050 4250 3050
+Wire Wire Line
+	3800 3050 3700 3050
+Wire Wire Line
+	2500 2650 2250 2650
+Wire Wire Line
+	2500 1600 2500 2650
+Wire Wire Line
+	2500 1750 2400 1750
+Wire Wire Line
+	1950 2650 1700 2650
+Wire Wire Line
+	1700 2650 1700 2450
+Wire Wire Line
+	1700 2450 1800 2450
+$Comp
+L C C42
+U 1 1 59DE4C9D
+P 3950 3050
+F 0 "C42" H 3975 3150 50  0000 L CNN
+F 1 "100n" H 3975 2950 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 3988 2900 50  0001 C CNN
+F 3 "" H 3950 3050 50  0001 C CNN
+	1    3950 3050
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	3550 2700 3800 2700
+Wire Wire Line
+	4350 2700 4100 2700
+Wire Wire Line
+	4350 1500 4350 2700
+Wire Wire Line
+	4350 1900 4250 1900
+$Comp
+L +3.3V #PWR053
+U 1 1 59DE4C9E
+P 5900 3450
+F 0 "#PWR053" H 5900 3300 50  0001 C CNN
+F 1 "+3.3V" H 5900 3590 50  0000 C CNN
+F 2 "" H 5900 3450 50  0001 C CNN
+F 3 "" H 5900 3450 50  0001 C CNN
+	1    5900 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR054
+U 1 1 59DE4C9F
+P 5350 3450
+F 0 "#PWR054" H 5350 3200 50  0001 C CNN
+F 1 "GND" H 5350 3300 50  0000 C CNN
+F 2 "" H 5350 3450 50  0001 C CNN
+F 3 "" H 5350 3450 50  0001 C CNN
+	1    5350 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5750 3450 5900 3450
+Wire Wire Line
+	5450 3450 5350 3450
+$Comp
+L C C43
+U 1 1 59DE4CA0
+P 5600 3450
+F 0 "C43" H 5625 3550 50  0000 L CNN
+F 1 "100n" H 5625 3350 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 5638 3300 50  0001 C CNN
+F 3 "" H 5600 3450 50  0001 C CNN
+	1    5600 3450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5750 3250 5750 3650
+Wire Wire Line
+	5450 3250 5450 3650
+Wire Wire Line
+	6100 1300 6100 3250
+Connection ~ 6100 2350
+Wire Wire Line
+	6200 1150 6200 3050
+Connection ~ 4750 3050
+$Comp
+L +3.3V #PWR055
+U 1 1 59DE4CA1
+P 2400 2850
+F 0 "#PWR055" H 2400 2700 50  0001 C CNN
+F 1 "+3.3V" H 2400 2990 50  0000 C CNN
+F 2 "" H 2400 2850 50  0001 C CNN
+F 3 "" H 2400 2850 50  0001 C CNN
+	1    2400 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR056
+U 1 1 59DE4CA2
+P 1850 2850
+F 0 "#PWR056" H 1850 2600 50  0001 C CNN
+F 1 "GND" H 1850 2700 50  0000 C CNN
+F 2 "" H 1850 2850 50  0001 C CNN
+F 3 "" H 1850 2850 50  0001 C CNN
+	1    1850 2850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2250 2850 2400 2850
+Wire Wire Line
+	1950 2850 1850 2850
+$Comp
+L C C41
+U 1 1 59DE4CA3
+P 2100 2850
+F 0 "C41" H 2125 2950 50  0000 L CNN
+F 1 "100n" H 2125 2750 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 2138 2700 50  0001 C CNN
+F 3 "" H 2100 2850 50  0001 C CNN
+	1    2100 2850
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	2250 2650 2250 2850
+Wire Wire Line
+	1950 2850 1950 2650
+$Comp
+L C C44
+U 1 1 59DE4CA4
+P 5600 3650
+F 0 "C44" H 5625 3750 50  0000 L CNN
+F 1 "100n" H 5625 3550 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 5638 3500 50  0001 C CNN
+F 3 "" H 5600 3650 50  0001 C CNN
+	1    5600 3650
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	6100 3250 5750 3250
+Wire Wire Line
+	4750 3250 5450 3250
+Wire Wire Line
+	5200 2750 5050 2750
+Wire Wire Line
+	5050 2750 5050 1700
+Wire Wire Line
+	4700 1700 5200 1700
+Connection ~ 5050 1700
+Wire Wire Line
+	4250 1600 5200 1600
+Wire Wire Line
+	3550 1400 3550 2700
+Wire Wire Line
+	3550 2500 3650 2500
+Wire Wire Line
+	4100 2700 4100 3050
+Wire Wire Line
+	3800 2700 3800 3050
+Text Label 1800 1850 2    60   ~ 0
+0
+Text Label 1800 2350 2    60   ~ 0
+1
+Text Label 2400 2350 0    60   ~ 0
+2
+Text Label 2400 1850 0    60   ~ 0
+3
+Text Label 4250 2100 0    60   ~ 0
+0
+Text Label 3650 1900 2    60   ~ 0
+1
+Text Label 4250 2400 0    60   ~ 0
+1
+Text Label 4250 2000 0    60   ~ 0
+2
+Text Label 3650 2000 2    60   ~ 0
+2
+Text Label 1800 2050 2    60   ~ 0
+2
+Text Label 1800 2150 2    60   ~ 0
+3
+Connection ~ 1950 2850
+Connection ~ 2250 2850
+Connection ~ 5750 3450
+Connection ~ 5450 3450
+Connection ~ 4100 3050
+Connection ~ 3800 3050
+Text Label 4250 2300 0    60   ~ 0
+3
+NoConn ~ 1800 1950
+NoConn ~ 2400 1950
+NoConn ~ 1800 2250
+NoConn ~ 2400 2250
+Text Label 2400 2450 0    60   ~ 0
+CLK
+Wire Wire Line
+	6000 1500 6500 1500
+Wire Wire Line
+	6050 1500 6050 2550
+Wire Wire Line
+	6050 2550 6000 2550
+Connection ~ 6050 1500
+Text Label 6500 1500 0    60   ~ 0
+CLK
+Text Label 3650 2200 2    60   ~ 0
+4
+Text Label 4250 2200 0    60   ~ 0
+4
+Text Label 3650 2300 2    60   ~ 0
+5
+Text Label 4250 2500 0    60   ~ 0
+5
+Text Label 3650 2100 2    60   ~ 0
+Direction
+Text Label 4700 1700 2    60   ~ 0
+Direction
+Text HLabel 2400 2050 2    60   Input ~ 0
+ENC3_out_A
+Text HLabel 2400 2150 2    60   Input ~ 0
+ENC3_out_B
+Text HLabel 6500 1800 2    60   Input ~ 0
+ENC3_LOAD
+Text HLabel 3650 3500 2    60   Input ~ 0
+ENC3_CLK
+Text Label 3450 3500 2    60   ~ 0
+CLK
+Wire Wire Line
+	3450 3500 3650 3500
+Text HLabel 5200 1400 0    60   Input ~ 0
+ENC3_B
+Text HLabel 5200 1500 0    60   Input ~ 0
+ENC3_A
+Text HLabel 5200 1800 0    60   Input ~ 0
+ENC3_C
+Text HLabel 5200 1900 0    60   Input ~ 0
+ENC3_D
+Text HLabel 5200 2450 0    60   Input ~ 0
+ENC3_F
+Text HLabel 5200 2550 0    60   Input ~ 0
+ENC3_E
+Text HLabel 5200 2850 0    60   Input ~ 0
+ENC3_G
+Text HLabel 5200 2950 0    60   Input ~ 0
+ENC3_H
+Wire Wire Line
+	1700 1750 1800 1750
+Wire Wire Line
+	1700 1750 1700 1600
+Wire Wire Line
+	1700 1600 2500 1600
+Connection ~ 2500 1750
+$Comp
+L 74HC2G04 U16
+U 1 1 59F1FB7B
+P 3950 1500
+F 0 "U16" H 3950 1700 60  0000 C CNN
+F 1 "74HC2G04" H 3950 1300 60  0000 C CNN
+F 2 "TO_SOT_Packages_SMD:SOT-363_SC-70-6" H 3950 1500 60  0001 C CNN
+F 3 "" H 3950 1500 60  0001 C CNN
+	1    3950 1500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3650 2400 3200 2400
+Wire Wire Line
+	3200 2400 3200 1600
+Wire Wire Line
+	3200 1600 3650 1600
+Wire Wire Line
+	4250 1500 4350 1500
+Connection ~ 4350 1900
+Wire Wire Line
+	3650 1500 3550 1500
+Connection ~ 3550 2500
+Wire Wire Line
+	3650 1400 3550 1400
+Connection ~ 3550 1500
+NoConn ~ 4250 1400
+$Comp
+L C C95
+U 1 1 5A1C0E86
+P 3950 2750
+F 0 "C95" H 3975 2850 50  0000 L CNN
+F 1 "100n" H 3975 2650 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 3988 2600 50  0001 C CNN
+F 3 "" H 3950 2750 50  0001 C CNN
+	1    3950 2750
+	0    -1   1    0   
+$EndComp
+Connection ~ 3800 2750
+Connection ~ 4100 2750
+$EndSCHEMATC
