@@ -31,20 +31,28 @@
 #define SD_MMC_HSMCI_MEM_CNT                    1
 #define SD_MMC_HSMCI_SLOT_0_SIZE                4
 
-/* Signal LED pin definitions */
+/* Signal LED pin definition */
 #define LED_ONBOARD                             PIO_PD10_IDX
 #define LED_M1                                  PIO_PD7_IDX
 #define LED_M2                                  PIO_PD8_IDX
 #define LED_M3                                  PIO_PD9_IDX
 #define LED_BAT                                 PIO_PD6_IDX
 
-/* Pushbutton pin definitions */
+/* Pushbutton pin definition */
 #define PB_UP                                   PIO_PD0_IDX
 #define PB_LEFT                                 PIO_PD1_IDX
 #define PB_MID                                  PIO_PD2_IDX
 #define PB_RIGHT                                PIO_PD3_IDX
 #define PB_DOWN                                 PIO_PD4_IDX
 #define PB_RETURN                               PIO_PD5_IDX
+
+/* Raspberry Pi GPIO pin definition */
+#define RPI1                                    PIO_PA1_IDX
+#define RPI2                                    PIO_PA8_IDX
+#define RPI3                                    PIO_PA9_IDX
+#define RPI4                                    PIO_PA7_IDX
+#define RPI5                                    PIO_PA5_IDX
+#define RPI6                                    PIO_PA0_IDX
 
 /* I2C0 pin definition */
 #define I2C0_DATA                               PIO_PA17_IDX

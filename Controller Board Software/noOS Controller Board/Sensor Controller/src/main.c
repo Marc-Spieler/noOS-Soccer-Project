@@ -20,15 +20,15 @@ int main(void)
     
     for(int i = 0; i< 3; i++)
     {
-        ioport_set_pin_level(LED_ONBOARD, 1);
-        ioport_set_pin_level(LED_S1, 1);
-        ioport_set_pin_level(LED_S2, 1);
-        ioport_set_pin_level(LED_S3, 1);
+        set_led(LED_ONBOARD, 1);
+        set_led(LED_S1, 1);
+        set_led(LED_S2, 1);
+        set_led(LED_S3, 1);
         mdelay(100);
-        ioport_set_pin_level(LED_ONBOARD, 0);
-        ioport_set_pin_level(LED_S1, 0);
-        ioport_set_pin_level(LED_S2, 0);
-        ioport_set_pin_level(LED_S3, 0);
+        set_led(LED_ONBOARD, 0);
+        set_led(LED_S1, 0);
+        set_led(LED_S2, 0);
+        set_led(LED_S3, 0);
         mdelay(100);
     }
     
@@ -37,7 +37,10 @@ int main(void)
         update_battery();
         update_heartbeat();
         
+        //update_line_values();
+        //calculate_line_esc_direction();
         
         PrepareValuesToSend();
     }
 }
+

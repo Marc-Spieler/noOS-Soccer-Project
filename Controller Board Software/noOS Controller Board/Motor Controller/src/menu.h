@@ -35,7 +35,15 @@ typedef enum
 typedef enum
 {
     MENU_MAIN,
-    MENU_SENS_VALUES
+    MENU_MATCH,
+    MENU_SENSORS,
+    MENU_SETTINGS,
+    MENU_BALL,
+    MENU_LINE,
+    MENU_LINE_CALIBRATION,
+    MENU_COMPASS,
+    MENU_COMPASS_CALIBRATION,
+    MENU_SHUTDOWN
 } menu_t;
 
 extern menu_t act_menu;
@@ -43,6 +51,7 @@ extern Bool print_menu;
 
 extern uint8_t rbt_id;
 extern uint8_t speed_preset;
+extern Bool allow_leds;
 
 char sprintf_cache[20];
 
@@ -59,22 +68,7 @@ Bool pb_down_prev;
 Bool pb_return_act;
 Bool pb_return_prev;
 
-extern uint8_t act_cursor_line_on_lcd;
-extern uint8_t prev_cursor_line_on_lcd;
-extern uint8_t act_cursor_line;
-extern uint8_t prev_cursor_line;
-extern uint8_t min_cursor_line;
-extern uint8_t max_cursor_line;
-extern uint8_t menu_main_column;
-extern uint8_t menu_main_scroll;
-
-extern uint32_t cnt;
-
 void menu(event_t event1);
-void menu_main(event_t event1);
-void menu_sens_values(void);
-void print_menu_main(void);
-void print_cursor(void);
 event_t button_events(void);
 
 #endif

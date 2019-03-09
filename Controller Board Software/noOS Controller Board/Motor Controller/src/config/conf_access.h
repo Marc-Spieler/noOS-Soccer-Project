@@ -57,6 +57,8 @@
 #include "compiler.h"
 #include "board.h"
 
+#define SD_MMC_ENABLE
+#define ACCESS_MEM_TO_RAM_ENABLED
 
 /*! \name Activation of Logical Unit Numbers
  */

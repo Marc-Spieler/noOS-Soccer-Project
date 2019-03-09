@@ -11,8 +11,8 @@
 static uint32_t g_ul_ms_ticks = 0;
 uint32_t ul_ticks_bat = 0;
 float adc_bat_value;
-uint8_t bat_percentage_prefiltered = 0;
-uint8_t bat_percentage_filtered = 0;
+uint8_t bat_percentage_prefiltered = 100;
+uint8_t bat_percentage_filtered = 100;
 
 void SysTick_Handler(void)
 {
@@ -40,7 +40,8 @@ void update_battery(void)
         
         while ((adc_get_status(ADC) & ADC_ISR_DRDY) != ADC_ISR_DRDY);
         
-        adc_bat_value = (float)(adc_get_channel_value(ADC, BATTERY_VOLTAGE));
+        uint32_t temp = adc_get_channel_value(ADC, BATTERY_VOLTAGE);
+        adc_bat_value = (float)temp;
         //stm.bat_voltage = (uint8_t)(adc_bat_value / 18.0f);
         float y = adc_bat_value * 0.003472222;
         bat_percentage_prefiltered = (uint8_t)(-(y * y - 25.2f * y + 158.76f) / 0.04f + 100.0f);
@@ -55,14 +56,26 @@ void update_heartbeat(void)
 {
     if (mts.ibit.heartbeat)
     {
-        ioport_set_pin_level(LED_ONBOARD, 1);
-        ioport_set_pin_level(LED_S1, 1);
+        set_led(LED_ONBOARD, 1);
+        set_led(LED_S1, 1);
         stm.ibit.heartbeat = 1;
     }
     else
     {
-        ioport_set_pin_level(LED_ONBOARD, 0);
-        ioport_set_pin_level(LED_S1, 0);
+        set_led(LED_ONBOARD, 0);
+        set_led(LED_S1, 0);
         stm.ibit.heartbeat = 0;
     }
 }    
+
+void set_led(ioport_pin_t pin, Bool level)
+{
+    if (mts.ibit.sleep_mode == 0)
+    {
+        ioport_set_pin_level(pin, level);
+    }
+    else
+    {
+        ioport_set_pin_level(pin, 0);
+    }
+}

@@ -42,47 +42,19 @@ void board_init(void)
     adc_init(ADC, sysclk_get_cpu_hz(), 6400000, ADC_STARTUP_TIME_4);
     adc_configure_timing(ADC, 1, ADC_SETTLING_TIME_3, 1);
     adc_enable_channel(ADC, BATTERY_VOLTAGE);
-    adc_enable_channel(ADC, LIGHT_BARRIER_RX);
     adc_configure_trigger(ADC, ADC_TRIG_SW, 0);
     
     /* Configure Line Sensor pins */
-    ioport_set_pin_mode(LINE1_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE2_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE3_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE4_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE5_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE6_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE7_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE8_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE9_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE10_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE11_B, LINE_FLAGS);
-    ioport_set_pin_mode(LINE12_B, LINE_FLAGS);
-    
-    ioport_set_pin_mode(LINE1_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE2_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE3_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE4_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE5_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE6_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE7_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE8_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE9_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE10_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE11_W, LINE_FLAGS);
-    ioport_set_pin_mode(LINE12_W, LINE_FLAGS);
-    
-    
-    /* Configure Distance Sensor Pins */
-    ioport_set_pin_mode(DFRONT_TRIG_PIN, IOPORT_MODE_MUX_B);
-    ioport_set_pin_mode(DFRONT_ECHO, IOPORT_MODE_MUX_A);
-    
-    ioport_set_pin_mode(DLEFT_TRIG_PIN, IOPORT_MODE_MUX_B);
-    ioport_set_pin_mode(DLEFT_ECHO, IOPORT_MODE_MUX_A);
-    
-    ioport_set_pin_mode(DRIGHT_TRIG_PIN, IOPORT_MODE_MUX_B);
-    ioport_set_pin_mode(DRIGHT_ECHO, IOPORT_MODE_MUX_B);
-    
-    ioport_set_pin_mode(DREAR_TRIG_PIN, IOPORT_MODE_MUX_B);
-    ioport_set_pin_mode(DREAR_ECHO, IOPORT_MODE_MUX_B);
+    ioport_set_pin_mode(LINE1, LINE_FLAGS);
+    ioport_set_pin_mode(LINE2, LINE_FLAGS);
+    ioport_set_pin_mode(LINE3, LINE_FLAGS);
+    ioport_set_pin_mode(LINE4, LINE_FLAGS);
+    ioport_set_pin_mode(LINE5, LINE_FLAGS);
+    ioport_set_pin_mode(LINE6, LINE_FLAGS);
+    ioport_set_pin_mode(LINE7, LINE_FLAGS);
+    ioport_set_pin_mode(LINE8, LINE_FLAGS);
+    ioport_set_pin_mode(LINE9, LINE_FLAGS);
+    ioport_set_pin_mode(LINE10, LINE_FLAGS);
+    ioport_set_pin_mode(LINE11, LINE_FLAGS);
+    ioport_set_pin_mode(LINE12, LINE_FLAGS);
 }

@@ -36,11 +36,11 @@ src\comm.c
 
 src\ASF\sam\drivers\twi\twi.c
 
+src\compass.c
+
 src\lcd.c
 
 src\menu.c
-
-src\support.c
 
 src\timing.c
 

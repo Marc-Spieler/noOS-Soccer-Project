@@ -101,7 +101,7 @@ typedef struct twi_packet {
 	//! Length of the TWI data address segment (1-3 bytes).
 	uint32_t addr_length;
 	//! Data to be transferred.
-	uint8_t buffer[500];
+	uint8_t buffer[256];
 	//! How many bytes do we want to transfer.
 	uint32_t length;
 	//! TWI chip address to communicate with.
@@ -127,8 +127,9 @@ twi_packet_t *twi_get_tx_packet(void);
 twi_packet_t *twi_get_rx_packet(void);
 uint32_t twi_pdc_master_read(Twi *p_twi, twi_packet_t *p_packet);
 uint32_t twi_pdc_master_write(Twi *p_twi, twi_packet_t *p_packet);
-void twi_set_rx_callback(void (*callback)(void));
-void twi_set_tx_callback(void (*callback)(void));
+void twi_set_compass_rx_callback(void (*callback)(void));
+void twi_set_compass_tx_callback(void (*callback)(void));
+void twi_set_lcd_tx_callback(void (*callback)(void));
 void twi_enable_interrupt(Twi *p_twi, uint32_t ul_sources);
 void twi_disable_interrupt(Twi *p_twi, uint32_t ul_sources);
 uint32_t twi_get_interrupt_status(Twi *p_twi);

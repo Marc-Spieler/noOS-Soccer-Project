@@ -950,6 +950,12 @@
     <None Include="src\config\conf_fatfs.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\compass.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\compass.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\lcd.c">
       <SubType>compile</SubType>
     </Compile>
@@ -960,12 +966,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\menu.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\support.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\support.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\timing.c">
