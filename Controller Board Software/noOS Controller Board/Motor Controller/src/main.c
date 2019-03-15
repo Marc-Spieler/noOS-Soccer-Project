@@ -18,11 +18,11 @@ uint32_t ticks_dot_update;
 uint8_t dots = 0;
 Bool update_dots = 1;
 
-char test_file_name[] = "0:sd_mmc_test.txt";
+/*char test_file_name[] = "0:sd_mmc_test.txt";
 Ctrl_status status;
 FRESULT res;
 FATFS fs;
-FIL file_object;
+FIL file_object;*/
 
 void noOS_bootup_sequence(void);
 void set_led(ioport_pin_t pin, Bool level);
@@ -42,7 +42,7 @@ int main(void)
     compass_init();
     lcd_init();
     
-	sd_mmc_err_t err;
+	/*sd_mmc_err_t err;
 	while (1)
 	{
     	do
@@ -96,7 +96,14 @@ int main(void)
         }
 #endif
     	while (CTRL_NO_PRESENT != sd_mmc_check(0));
-	}
+	}*/
+
+    memset(&fs, 0, sizeof(FATFS));
+    res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
+    test_file_name[0] = LUN_ID_SD_MMC_0_MEM + '0';
+    res = f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
+    f_write(&file_object, "Test SD/MMC stack\n", 18, &bw);
+    f_close(&file_object);
     
     noOS_bootup_sequence();
     
