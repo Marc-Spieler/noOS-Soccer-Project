@@ -11,6 +11,7 @@
 #include "menu.h"
 #include "comm.h"
 #include "compass.h"
+#include "motor.h"
 
 Bool blink_level;
 uint32_t ticks_blink_update;
@@ -34,6 +35,8 @@ int main(void)
     sysclk_init();
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
+    
+    motor_init();
     
     sd_mmc_init();
     
@@ -98,12 +101,12 @@ int main(void)
     	while (CTRL_NO_PRESENT != sd_mmc_check(0));
 	}*/
 
-    memset(&fs, 0, sizeof(FATFS));
+    /*memset(&fs, 0, sizeof(FATFS));
     res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
     test_file_name[0] = LUN_ID_SD_MMC_0_MEM + '0';
     res = f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
     f_write(&file_object, "Test SD/MMC stack\n", 18, &bw);
-    f_close(&file_object);
+    f_close(&file_object);*/
     
     noOS_bootup_sequence();
     
@@ -121,6 +124,8 @@ int main(void)
         {
             set_led(LED_M2, 0);
         }
+        
+        update_motor(5, 5, 5);
         
         act_event = button_events();
         

@@ -26,6 +26,13 @@
 /* Core definition */
 #define cortexm3
 
+/* PWM frequency in Hz */
+#define PWM_FREQUENCY                 20000
+/* Period value of PWM output waveform */
+#define PERIOD_VALUE                  1000
+/* Initial duty cycle value */
+#define INIT_DUTY_VALUE               500
+
 /** Enable SD MMC interface pins through HSMCI */
 #define CONF_BOARD_SD_MMC_HSMCI
 #define SD_MMC_HSMCI_MEM_CNT                    1
@@ -54,6 +61,22 @@
 #define RPI5                                    PIO_PA5_IDX
 #define RPI6                                    PIO_PA0_IDX
 
+/* Motor pin definition */
+#define MOTOR_LEFT           				            PWM_CHANNEL_0
+#define MOTOR_LEFT_L					                  PIO_PC2_IDX
+#define MOTOR_LEFT_H					                  PIO_PC3_IDX
+#define MOTOR_RIGHT            				          PWM_CHANNEL_1
+#define MOTOR_RIGHT_L					                  PIO_PC4_IDX
+#define MOTOR_RIGHT_H					                  PIO_PC5_IDX
+#define MOTOR_REAR           				            PWM_CHANNEL_2
+#define MOTOR_REAR_L					                  PIO_PC6_IDX
+#define MOTOR_REAR_H					                  PIO_PC7_IDX
+
+/* Encoder pin definition */
+#define ENC_CLK_CHANNEL           				      PWM_CHANNEL_4
+#define ENC_CLK 					                      PIO_PC21_IDX
+#define ENC_LOAD					                      PIO_PB0_IDX
+
 /* I2C0 pin definition */
 #define I2C0_DATA                               PIO_PA17_IDX
 #define I2C0_CLK                                PIO_PA18_IDX
@@ -71,5 +94,45 @@
 #define MSD_DATA1                               PIO_PA22_IDX
 #define MSD_DATA2                               PIO_PA23_IDX
 #define MSD_DATA3                               PIO_PA24_IDX
+
+#endif
+
+#if 0
+
+#ifndef CONF_BOARD_H_INCLUDED
+#define CONF_BOARD_H_INCLUDED
+
+/** Enable Com Port. */
+#define CONF_BOARD_UART_CONSOLE
+
+//! [tc_define_peripheral]
+/* Use TC Peripheral 0. */
+#define TC             TC0
+#define TC_PERIPHERAL  0
+//! [tc_define_peripheral]
+
+//! [tc_define_ch1]
+/* Configure TC0 channel 1 as waveform output. */
+#define TC_CHANNEL_WAVEFORM 1
+#define ID_TC_WAVEFORM      ID_TC1
+#define PIN_TC_WAVEFORM     PIN_TC0_TIOA1
+#define PIN_TC_WAVEFORM_MUX PIN_TC0_TIOA1_MUX
+//! [tc_define_ch1]
+
+//! [tc_define_ch2]
+/* Configure TC0 channel 2 as capture input. */
+#define TC_CHANNEL_CAPTURE 2
+#define ID_TC_CAPTURE ID_TC2
+#define PIN_TC_CAPTURE PIN_TC0_TIOA2
+#define PIN_TC_CAPTURE_MUX PIN_TC0_TIOA2_MUX
+//! [tc_define_ch2]
+
+//! [tc_define_irq_handler]
+/* Use TC2_Handler for TC capture interrupt. */
+#define TC_Handler  TC2_Handler
+#define TC_IRQn     TC2_IRQn
+//! [tc_define_irq_handler]
+
+#endif /* CONF_BOARD_H_INCLUDED */
 
 #endif

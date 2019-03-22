@@ -144,7 +144,7 @@ src/lcd.d src/lcd.o: ../src/lcd.c ../src/lcd.h ../src/asf.h \
  ../src/config/conf_access.h \
  ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h \
  ../src/ASF/sam/drivers/pdc/pdc.h ../src/ASF/sam/drivers/pmc/sleep.h \
- ../src/ASF/sam/drivers/rtc/rtc.h \
+ ../src/ASF/sam/drivers/pwm/pwm.h ../src/ASF/sam/drivers/rtc/rtc.h \
  ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
  ../src/ASF/common/components/memory/sd_mmc/sd_mmc.h \
  ../src/config/conf_sd_mmc.h \
@@ -153,6 +153,7 @@ src/lcd.d src/lcd.o: ../src/lcd.c ../src/lcd.h ../src/asf.h \
  ../src/ASF/common/services/spi/usart_spi.h \
  ../src/ASF/common/services/spi/sam_usart_spi/usart_spi.h \
  ../src/ASF/sam/drivers/usart/usart.h ../src/config/conf_usart_spi.h \
+ ../src/ASF/sam/drivers/tc/tc.h \
  ../src/ASF/common/services/twi/sam_twi/twi_master.h \
  ../src/ASF/sam/drivers/twi/twi.h \
  ../src/ASF/common/services/twi/sam_twi/twi_slave.h \
@@ -466,6 +467,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/sam/drivers/pmc/sleep.h:
 
+../src/ASF/sam/drivers/pwm/pwm.h:
+
 ../src/ASF/sam/drivers/rtc/rtc.h:
 
 ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h:
@@ -487,6 +490,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/sam/drivers/usart/usart.h:
 
 ../src/config/conf_usart_spi.h:
+
+../src/ASF/sam/drivers/tc/tc.h:
 
 ../src/ASF/common/services/twi/sam_twi/twi_master.h:
 

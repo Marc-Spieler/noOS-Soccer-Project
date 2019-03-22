@@ -42,16 +42,29 @@ void board_init(void)
 	ioport_set_pin_mode(PB_DOWN, IOPORT_MODE_PULLUP | IOPORT_MODE_DEBOUNCE);
 	ioport_set_pin_dir(PB_RETURN, IOPORT_DIR_INPUT);
 	ioport_set_pin_mode(PB_RETURN, IOPORT_MODE_PULLUP | IOPORT_MODE_DEBOUNCE);
-    
-    /* Configure Raspberry Pi GPIO pins */
-    ioport_set_pin_dir(RPI1, IOPORT_DIR_OUTPUT);
-    ioport_set_pin_level(RPI1, 1);
-    ioport_set_pin_dir(RPI2, IOPORT_DIR_INPUT);
-    ioport_set_pin_dir(RPI3, IOPORT_DIR_INPUT);
-    ioport_set_pin_dir(RPI4, IOPORT_DIR_INPUT);
-    ioport_set_pin_dir(RPI5, IOPORT_DIR_INPUT);
+  
+  /* Configure Motor pins */
+  ioport_set_pin_mode(MOTOR_LEFT_L, IOPORT_MODE_MUX_B);
+  ioport_set_pin_mode(MOTOR_LEFT_H, IOPORT_MODE_MUX_B);
+  ioport_set_pin_mode(MOTOR_RIGHT_L, IOPORT_MODE_MUX_B);
+  ioport_set_pin_mode(MOTOR_RIGHT_H, IOPORT_MODE_MUX_B);
+  ioport_set_pin_mode(MOTOR_REAR_L, IOPORT_MODE_MUX_B);
+  ioport_set_pin_mode(MOTOR_REAR_H, IOPORT_MODE_MUX_B);
+  
+  /* Configure Encoder pins */
+  ioport_set_pin_mode(ENC_CLK, IOPORT_MODE_MUX_B);
+  ioport_set_pin_mode(ENC_LOAD, IOPORT_DIR_OUTPUT);
+  ioport_set_pin_level(ENC_LOAD, 1);
+  
+  /* Configure Raspberry Pi GPIO pins */
+  ioport_set_pin_dir(RPI1, IOPORT_DIR_OUTPUT);
+  ioport_set_pin_level(RPI1, 1);
+  ioport_set_pin_dir(RPI2, IOPORT_DIR_INPUT);
+  ioport_set_pin_dir(RPI3, IOPORT_DIR_INPUT);
+  ioport_set_pin_dir(RPI4, IOPORT_DIR_INPUT);
+  ioport_set_pin_dir(RPI5, IOPORT_DIR_INPUT);
 	ioport_set_pin_dir(RPI6, IOPORT_DIR_INPUT);
-    
+  
 	/* Configure I2C pins */
 	ioport_set_pin_mode(I2C0_DATA, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(I2C0_DATA);
