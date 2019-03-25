@@ -128,7 +128,7 @@ void board_init(void)
 
 
     /* Init PWM */
-    pmc_enable_periph_clk(ID_PWM);
+    /*pmc_enable_periph_clk(ID_PWM);
     pwm_channel_disable(PWM, MOTOR_LEFT);
     pwm_channel_disable(PWM, MOTOR_RIGHT);
     pwm_channel_disable(PWM, MOTOR_REAR);
@@ -138,5 +138,5 @@ void board_init(void)
         .ul_clkb = 0,
         .ul_mck = sysclk_get_cpu_hz()
     };
-    pwm_init(PWM, &clock_setting);
+    pwm_init(PWM, &clock_setting);*/
 }
