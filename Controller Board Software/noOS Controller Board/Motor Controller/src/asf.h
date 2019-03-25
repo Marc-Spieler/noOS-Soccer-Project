@@ -102,6 +102,9 @@
 // From module: SAM3X startup code
 #include <exceptions.h>
 
+// From module: SD/MMC Memory Control Access - Enable
+#include <sd_mmc_mem.h>
+
 // From module: SD/MMC stack on Multimedia Card interface
 #include <sd_mmc.h>
 

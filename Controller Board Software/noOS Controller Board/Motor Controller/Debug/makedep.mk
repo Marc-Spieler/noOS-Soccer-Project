@@ -4,6 +4,8 @@
 
 src\ASF\common\components\memory\sd_mmc\sd_mmc.c
 
+src\ASF\common\components\memory\sd_mmc\sd_mmc_mem.c
+
 src\ASF\common\services\delay\sam\cycle_counter.c
 
 src\ASF\common\services\spi\sam_spi\spi_master.c

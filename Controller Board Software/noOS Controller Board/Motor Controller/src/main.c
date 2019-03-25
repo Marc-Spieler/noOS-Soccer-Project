@@ -35,6 +35,8 @@ int main(void)
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
+    sd_mmc_init();
+
     spi_init();
     
     compass_init();
