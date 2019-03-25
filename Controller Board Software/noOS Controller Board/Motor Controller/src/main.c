@@ -11,6 +11,7 @@
 #include "menu.h"
 #include "comm.h"
 #include "compass.h"
+#include "motor.h"
 
 Bool blink_level;
 uint32_t ticks_blink_update;
@@ -29,12 +30,20 @@ int main(void)
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
+    motor_init();
+
     spi_init();
     
     compass_init();
     lcd_init();
     
     noOS_bootup_sequence();
+
+    enable_motor();
+    /*disable_motor();
+    pwm_channel_enable(PWM, MOTOR_LEFT);
+    pwm_channel_enable(PWM, MOTOR_RIGHT);
+    pwm_channel_enable(PWM, MOTOR_REAR);*/
 
     while (1)
     {
@@ -51,6 +60,12 @@ int main(void)
             set_led(LED_M2, 0);
         }
         
+        /*motor_speed(MOTOR_LEFT, 50);
+        motor_speed(MOTOR_RIGHT, 50);
+        motor_speed(MOTOR_REAR, 50);*/
+
+        //update_motor(1, 1, 1);
+
         act_event = button_events();
         
         menu(act_event);

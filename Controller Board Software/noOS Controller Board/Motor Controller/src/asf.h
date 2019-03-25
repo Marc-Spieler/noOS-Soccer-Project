@@ -78,6 +78,9 @@
 #include <pmc.h>
 #include <sleep.h>
 
+// From module: PWM - Pulse Width Modulation
+#include <pwm.h>
+
 // From module: Part identification macros
 #include <parts.h>
 
@@ -97,6 +100,9 @@
 
 // From module: System Clock Control - SAM3X/A implementation
 #include <sysclk.h>
+
+// From module: TC - Timer Counter
+#include <tc.h>
 
 // From module: TWI - Two-Wire Interface - SAM implementation
 #include <sam_twi/twi_master.h>
