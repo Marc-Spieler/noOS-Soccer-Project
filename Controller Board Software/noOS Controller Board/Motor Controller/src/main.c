@@ -110,6 +110,12 @@ int main(void)
     
     noOS_bootup_sequence();
     
+    enable_motor();
+    /*disable_motor();
+    pwm_channel_enable(PWM, MOTOR_LEFT);
+    pwm_channel_enable(PWM, MOTOR_RIGHT);
+    pwm_channel_enable(PWM, MOTOR_REAR);*/
+
     while (1)
     {
         update_comm();
@@ -125,7 +131,11 @@ int main(void)
             set_led(LED_M2, 0);
         }
         
-        update_motor(5, 5, 5);
+        /*motor_speed(MOTOR_LEFT, 50);
+        motor_speed(MOTOR_RIGHT, 50);
+        motor_speed(MOTOR_REAR, 50);*/
+
+        //update_motor(1, 1, 1);
         
         act_event = button_events();
         

@@ -115,6 +115,27 @@ void motor_init(void)
   mrear_pid_reg = mleft_pid_reg;
 }
 
+void enable_motor(void)
+{
+    pwm_channel_enable(PWM, MOTOR_LEFT);
+    pwm_channel_enable(PWM, MOTOR_RIGHT);
+    pwm_channel_enable(PWM, MOTOR_REAR);
+
+    ioport_set_pin_level(ENC_LOAD, 0);
+    ioport_set_pin_level(ENC_LOAD, 1);
+
+    tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
+}
+
+void disable_motor(void)
+{
+    pwm_channel_disable(PWM, MOTOR_LEFT);
+    pwm_channel_disable(PWM, MOTOR_RIGHT);
+    pwm_channel_disable(PWM, MOTOR_REAR);
+
+    tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
+}
+
 void update_motor(float mleft_ref, float mright_ref, float mrear_ref)
 {
   tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
@@ -208,7 +229,7 @@ void TC1_Handler(void)
     PIOC_value = ioport_get_port_level(IOPORT_PIOC, 0xFFFFFFFF);
     ioport_set_pin_level(ENC_LOAD, 0);
     ioport_set_pin_level(ENC_LOAD, 1);
-    //pwm_channel_enable(PWM, ENC_CLK);
+    pwm_channel_enable(PWM, ENC_CLK);
   
     eleft_counts = (PIOC_value & 0x7F000000) >> 24;
     eleft_counts = (eleft_counts & 0x00000040) ? eleft_counts - 128 : eleft_counts;
@@ -221,7 +242,7 @@ void TC1_Handler(void)
     motor_speed(MOTOR_RIGHT, pidReg(&mright_pid_reg, speed_mright, (float)eright_counts));
     motor_speed(MOTOR_REAR, pidReg(&mrear_pid_reg, speed_mrear, (float)erear_counts));
   
-    pwm_channel_enable(PWM, ENC_CLK);
+    //pwm_channel_enable(PWM, ENC_CLK);
   }
 
   ioport_set_pin_level(LED_M3, 0);

@@ -27,11 +27,11 @@
 #define cortexm3
 
 /* PWM frequency in Hz */
-#define PWM_FREQUENCY                 20000
+#define PWM_FREQUENCY                           20000
 /* Period value of PWM output waveform */
-#define PERIOD_VALUE                  1000
+#define PERIOD_VALUE                            1000
 /* Initial duty cycle value */
-#define INIT_DUTY_VALUE               500
+#define INIT_DUTY_VALUE                         500
 
 /** Enable SD MMC interface pins through HSMCI */
 #define CONF_BOARD_SD_MMC_HSMCI
@@ -62,20 +62,65 @@
 #define RPI6                                    PIO_PA0_IDX
 
 /* Motor pin definition */
-#define MOTOR_LEFT           				            PWM_CHANNEL_0
-#define MOTOR_LEFT_L					                  PIO_PC2_IDX
-#define MOTOR_LEFT_H					                  PIO_PC3_IDX
-#define MOTOR_RIGHT            				          PWM_CHANNEL_1
-#define MOTOR_RIGHT_L					                  PIO_PC4_IDX
-#define MOTOR_RIGHT_H					                  PIO_PC5_IDX
-#define MOTOR_REAR           				            PWM_CHANNEL_2
-#define MOTOR_REAR_L					                  PIO_PC6_IDX
-#define MOTOR_REAR_H					                  PIO_PC7_IDX
+#define MOTOR_LEFT           				    PWM_CHANNEL_0
+#define MOTOR_LEFT_L					        PIO_PC2_IDX
+#define MOTOR_LEFT_H				            PIO_PC3_IDX
+#define MOTOR_RIGHT                             PWM_CHANNEL_1
+#define MOTOR_RIGHT_L                           PIO_PC4_IDX
+#define MOTOR_RIGHT_H                           PIO_PC5_IDX
+#define MOTOR_REAR                              PWM_CHANNEL_2
+#define MOTOR_REAR_L                            PIO_PC6_IDX
+#define MOTOR_REAR_H                            PIO_PC7_IDX
 
 /* Encoder pin definition */
-#define ENC_CLK_CHANNEL           				      PWM_CHANNEL_4
-#define ENC_CLK 					                      PIO_PC21_IDX
-#define ENC_LOAD					                      PIO_PB0_IDX
+#define ENC_CLK_CHANNEL                         PWM_CHANNEL_4
+#define ENC_CLK                                 PIO_PC21_IDX
+#define ENC_LOAD                                PIO_PB0_IDX
+
+#define ENC_LEFT_A						        (PIO_PC24_IDX)
+#define ENC_LEFT_A_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_LEFT_B						        (PIO_PC25_IDX)
+#define ENC_LEFT_B_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_LEFT_C						        (PIO_PC26_IDX)
+#define ENC_LEFT_C_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_LEFT_D						        (PIO_PC27_IDX)
+#define ENC_LEFT_D_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_LEFT_E						        (PIO_PC28_IDX)
+#define ENC_LEFT_E_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_LEFT_F						        (PIO_PC29_IDX)
+#define ENC_LEFT_F_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_LEFT_G						        (PIO_PC30_IDX)
+#define ENC_LEFT_G_FLAGS					    (IOPORT_DIR_INPUT)
+
+#define ENC_RIGHT_A						        (PIO_PC16_IDX)
+#define ENC_RIGHT_A_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_RIGHT_B						        (PIO_PC17_IDX)
+#define ENC_RIGHT_B_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_RIGHT_C						        (PIO_PC18_IDX)
+#define ENC_RIGHT_C_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_RIGHT_D                             (PIO_PC19_IDX)
+#define ENC_RIGHT_D_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_RIGHT_E						        (PIO_PC20_IDX)
+#define ENC_RIGHT_E_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_RIGHT_F						        (PIO_PC22_IDX)
+#define ENC_RIGHT_F_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_RIGHT_G						        (PIO_PC23_IDX)
+#define ENC_RIGHT_G_FLAGS					    (IOPORT_DIR_INPUT)
+
+#define ENC_REAR_A						        (PIO_PC1_IDX)
+#define ENC_REAR_A_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_REAR_B					            (PIO_PC10_IDX)
+#define ENC_REAR_B_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_REAR_C						        (PIO_PC11_IDX)
+#define ENC_REAR_C_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_REAR_D						        (PIO_PC12_IDX)
+#define ENC_REAR_D_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_REAR_E						        (PIO_PC13_IDX)
+#define ENC_REAR_E_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_REAR_F						        (PIO_PC14_IDX)
+#define ENC_REAR_F_FLAGS					    (IOPORT_DIR_INPUT)
+#define ENC_REAR_G						        (PIO_PC15_IDX)
+#define ENC_REAR_G_FLAGS					    (IOPORT_DIR_INPUT)
 
 /* I2C0 pin definition */
 #define I2C0_DATA                               PIO_PA17_IDX

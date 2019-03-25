@@ -24,6 +24,8 @@ extern float CosinMA2;
 extern float CosinMA3;
 
 void motor_init(void);
+void enable_motor(void);
+void disable_motor(void);
 void update_motor(float mleft_ref, float mright_ref, float mrear_ref);
 void motor_speed(uint8_t motor, int16_t speed);
 /*void set_opponent_goal(void);
