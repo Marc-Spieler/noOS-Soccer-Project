@@ -11,18 +11,13 @@
 #include "menu.h"
 #include "comm.h"
 #include "compass.h"
+#include "sd.h"
 
 Bool blink_level;
 uint32_t ticks_blink_update;
 uint32_t ticks_dot_update;
 uint8_t dots = 0;
 Bool update_dots = 1;
-
-char test_file_name[] = "0:sd_mmc_test.txt";
-Ctrl_status status;
-FRESULT res;
-FATFS fs;
-FIL file_object;
 
 void noOS_bootup_sequence(void);
 void set_led(ioport_pin_t pin, Bool level);
@@ -36,71 +31,15 @@ int main(void)
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
     sd_mmc_init();
+    sd_init();
 
     spi_init();
     
     compass_init();
     lcd_init();
-
-    sd_mmc_err_t err;
-	while (1)
-	{
-    	do
-    	{
-        	status = sd_mmc_test_unit_ready(0);
-        	
-        	if (CTRL_FAIL == status)
-        	{
-            	while (CTRL_NO_PRESENT != sd_mmc_check(0));
-        	}
-    	}
-    	while (CTRL_GOOD != status);
-    	memset(&fs, 0, sizeof(FATFS));
-    	res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
-    	
-    	if (FR_INVALID_DRIVE == res)
-    	{
-        	while(1);
-    	}
-    	test_file_name[0] = LUN_ID_SD_MMC_0_MEM + '0';
-    	res = f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
-    	
-    	if (res != FR_OK)
-    	{
-        	while(1);
-    	}
-#if 1
-        uint32_t bw;
-        uint32_t sta = getTicks();
-        set_led(LED_ONBOARD, 0);
-    	for(int i = 0; i < 10000; i++)
-        {
-        	f_write(&file_object, "Test SD/MMC stack\n", 18, &bw);
-        }
-        uint32_t diff = getTicks() - sta;
-  	    f_close(&file_object);
-        set_led(LED_ONBOARD, 1);
-#else
-        uint32_t bw;
-    	if (0 == f_write(&file_object, "Test SD/MMC stack\n", 18, &bw))
-    	{
-    	    f_close(&file_object);
-    	}
-        else
-        {
-        	f_close(&file_object);
-        }
-#endif
-    	while (CTRL_NO_PRESENT != sd_mmc_check(0));
-	}
-
-    /*memset(&fs, 0, sizeof(FATFS));
-    res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
-    test_file_name[0] = LUN_ID_SD_MMC_0_MEM + '0';
-    res = f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
-    f_write(&file_object, "Test SD/MMC stack\n", 18, &bw);
-    f_close(&file_object);*/
     
+    write_time_test();
+
     noOS_bootup_sequence();
 
     while (1)
@@ -119,7 +58,6 @@ int main(void)
         }
         
         act_event = button_events();
-        
         menu(act_event);
     }
 }

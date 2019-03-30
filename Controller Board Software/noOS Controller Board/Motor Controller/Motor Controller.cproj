@@ -968,6 +968,12 @@
     <Compile Include="src\menu.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\sd.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sd.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\timing.c">
       <SubType>compile</SubType>
     </Compile>
