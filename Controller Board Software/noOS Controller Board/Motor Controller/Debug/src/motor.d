@@ -1,4 +1,4 @@
-src/menu.d src/menu.o: ../src/menu.c ../src/menu.h ../src/asf.h \
+src/motor.d src/motor.o: ../src/motor.c ../src/motor.h ../src/asf.h \
  ../src/ASF/sam/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h \
@@ -144,10 +144,9 @@ src/menu.d src/menu.o: ../src/menu.c ../src/menu.h ../src/asf.h \
  ../src/ASF/common/services/twi/twi_master.h \
  ../src/ASF/common/services/twi/sam_twi/twi_master.h \
  ../src/ASF/common/services/twi/twi_slave.h \
- ../src/ASF/common/services/twi/sam_twi/twi_slave.h ../src/lcd.h \
- ../src/timing.h ../src/compass.h
+ ../src/ASF/common/services/twi/sam_twi/twi_slave.h ../src/pid.h
 
-../src/menu.h:
+../src/motor.h:
 
 ../src/asf.h:
 
@@ -455,8 +454,4 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/common/services/twi/sam_twi/twi_slave.h:
 
-../src/lcd.h:
-
-../src/timing.h:
-
-../src/compass.h:
+../src/pid.h:

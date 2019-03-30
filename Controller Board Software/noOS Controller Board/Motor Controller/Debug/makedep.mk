@@ -8,7 +8,11 @@ src\ASF\common\services\spi\sam_usart_spi\usart_spi.c
 
 src\ASF\sam\drivers\pdc\pdc.c
 
+src\ASF\sam\drivers\pwm\pwm.c
+
 src\ASF\sam\drivers\spi\spi.c
+
+src\ASF\sam\drivers\tc\tc.c
 
 src\ASF\sam\drivers\usart\usart.c
 
@@ -21,6 +25,10 @@ src\compass.c
 src\lcd.c
 
 src\menu.c
+
+src\motor.c
+
+src\pid.c
 
 src\timing.c
 

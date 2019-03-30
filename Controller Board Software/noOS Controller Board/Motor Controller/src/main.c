@@ -1,7 +1,7 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: noOS                                                           */
-/* Created: 01.07.18                                                    */
+/* Created: 01.07.2018                                                  */
 /************************************************************************/
 
 #include "asf.h"
@@ -11,6 +11,7 @@
 #include "menu.h"
 #include "comm.h"
 #include "compass.h"
+#include "motor.h"
 
 Bool blink_level;
 uint32_t ticks_blink_update;
@@ -29,12 +30,16 @@ int main(void)
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
+    motor_init();
+
     spi_init();
     
     compass_init();
     lcd_init();
     
     noOS_bootup_sequence();
+
+    enable_motor();
 
     while (1)
     {
@@ -50,9 +55,10 @@ int main(void)
         {
             set_led(LED_M2, 0);
         }
-        
+
+        //update_motor(1, 1, 0);
+
         act_event = button_events();
-        
         menu(act_event);
     }
 }

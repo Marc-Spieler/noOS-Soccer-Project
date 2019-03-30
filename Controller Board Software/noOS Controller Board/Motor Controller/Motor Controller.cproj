@@ -37,6 +37,8 @@
           <option id="common.services.basic.twi" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.dmac" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.pdc" value="Add" config="" content-id="Atmel.ASF" />
+          <option id="sam.drivers.pwm" value="Add" config="" content-id="Atmel.ASF" />
+          <option id="sam.drivers.tc" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.utils.linker_scripts#atsam3x8" value="Add" config="" content-id="Atmel.ASF" />
         </options>
         <configurations>
@@ -206,6 +208,10 @@
           <file path="src/ASF/sam/drivers/pdc/pdc.c" framework="" version="3.35.1" source="sam\drivers\pdc\pdc.c" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/sam/drivers/pdc/pdc.h" framework="" version="3.35.1" source="sam\drivers\pdc\pdc.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/sam/drivers/pdc/pdc_uart_example/pdc_uart_example.h" framework="" version="3.35.1" source="sam\drivers\pdc\pdc_uart_example\pdc_uart_example.h" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam/drivers/pwm/pwm.c" framework="" version="3.35.1" source="sam\drivers\pwm\pwm.c" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam/drivers/pwm/pwm.h" framework="" version="3.35.1" source="sam\drivers\pwm\pwm.h" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam/drivers/tc/tc.c" framework="" version="3.35.1" source="sam\drivers\tc\tc.c" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam/drivers/tc/tc.h" framework="" version="3.35.1" source="sam\drivers\tc\tc.h" changed="False" content-id="Atmel.ASF" />
         </files>
         <documentation help="http://asf.atmel.com/docs/3.35.1/common.applications.user_application.user_board.sam3x/html/index.html" />
         <offline-documentation help="" />
@@ -279,6 +285,8 @@
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -329,6 +337,8 @@
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
@@ -361,6 +371,8 @@
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -411,6 +423,8 @@
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>
@@ -462,6 +476,8 @@
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
@@ -495,6 +511,8 @@
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -517,9 +535,21 @@
     <None Include="src\ASF\sam\drivers\pdc\pdc_uart_example\pdc_uart_example.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\ASF\sam\drivers\pwm\pwm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\pwm\pwm.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\ASF\sam\drivers\spi\spi.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\ASF\sam\drivers\tc\tc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\tc\tc.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\ASF\sam\drivers\usart\usart.c">
       <SubType>compile</SubType>
     </Compile>
@@ -575,6 +605,18 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\menu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\motor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\motor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\pid.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\pid.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\timing.c">
@@ -1041,7 +1083,9 @@
     <Folder Include="src\ASF\sam\drivers\pdc\" />
     <Folder Include="src\ASF\sam\drivers\pdc\pdc_uart_example\" />
     <Folder Include="src\ASF\sam\drivers\pmc\" />
+    <Folder Include="src\ASF\sam\drivers\pwm\" />
     <Folder Include="src\ASF\sam\drivers\spi\" />
+    <Folder Include="src\ASF\sam\drivers\tc\" />
     <Folder Include="src\ASF\sam\drivers\twi\" />
     <Folder Include="src\ASF\sam\drivers\usart\" />
     <Folder Include="src\ASF\sam\utils\" />
