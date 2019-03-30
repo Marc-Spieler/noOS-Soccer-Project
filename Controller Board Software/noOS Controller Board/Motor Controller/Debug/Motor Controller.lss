@@ -29,11 +29,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  12 .debug_macro  00008673  00000000  00000000  0004c0d9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_line   00013305  00000000  00000000  0005474c  2**0
+ 13 .debug_line   00013303  00000000  00000000  0005474c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    000637e5  00000000  00000000  00067a51  2**0
+ 14 .debug_str    0006357e  00000000  00000000  00067a4f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  00004de4  00000000  00000000  000cb238  2**2
+ 15 .debug_frame  00004de4  00000000  00000000  000cafd0  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -6916,238 +6916,238 @@ void motor_init(void)
 {
    82944:	b5b0      	push	{r4, r5, r7, lr}
    82946:	af00      	add	r7, sp, #0
-	/* Initialize PWM channel for MLeft */
-  /* Period is left-aligned */
-  g_pwm_channel_MLeft.alignment = PWM_ALIGN_LEFT;
+    /* Initialize PWM channel for MLeft */
+    /* Period is left-aligned */
+    g_pwm_channel_MLeft.alignment = PWM_ALIGN_LEFT;
    82948:	4b5e      	ldr	r3, [pc, #376]	; (82ac4 <motor_init+0x180>)
    8294a:	2200      	movs	r2, #0
    8294c:	811a      	strh	r2, [r3, #8]
-  /* Output waveform starts at a low level */
-  g_pwm_channel_MLeft.polarity = PWM_LOW;
+    /* Output waveform starts at a low level */
+    g_pwm_channel_MLeft.polarity = PWM_LOW;
    8294e:	4b5d      	ldr	r3, [pc, #372]	; (82ac4 <motor_init+0x180>)
    82950:	2200      	movs	r2, #0
    82952:	729a      	strb	r2, [r3, #10]
-  /* Use PWM clock A as source clock */
-  g_pwm_channel_MLeft.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    /* Use PWM clock A as source clock */
+    g_pwm_channel_MLeft.ul_prescaler = PWM_CMR_CPRE_CLKA;
    82954:	4b5b      	ldr	r3, [pc, #364]	; (82ac4 <motor_init+0x180>)
    82956:	220b      	movs	r2, #11
    82958:	605a      	str	r2, [r3, #4]
-  /* Period value of output waveform */
-  g_pwm_channel_MLeft.ul_period = PERIOD_VALUE;
+    /* Period value of output waveform */
+    g_pwm_channel_MLeft.ul_period = PERIOD_VALUE;
    8295a:	4b5a      	ldr	r3, [pc, #360]	; (82ac4 <motor_init+0x180>)
    8295c:	f44f 727a 	mov.w	r2, #1000	; 0x3e8
    82960:	611a      	str	r2, [r3, #16]
-  /* Duty cycle value of output waveform */
-  g_pwm_channel_MLeft.ul_duty = INIT_DUTY_VALUE;
+    /* Duty cycle value of output waveform */
+    g_pwm_channel_MLeft.ul_duty = INIT_DUTY_VALUE;
    82962:	4b58      	ldr	r3, [pc, #352]	; (82ac4 <motor_init+0x180>)
    82964:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
    82968:	60da      	str	r2, [r3, #12]
-  g_pwm_channel_MLeft.channel = MOTOR_LEFT;
+    g_pwm_channel_MLeft.channel = MOTOR_LEFT;
    8296a:	4b56      	ldr	r3, [pc, #344]	; (82ac4 <motor_init+0x180>)
    8296c:	2200      	movs	r2, #0
    8296e:	601a      	str	r2, [r3, #0]
-  pwm_channel_init(PWM, &g_pwm_channel_MLeft);
+    pwm_channel_init(PWM, &g_pwm_channel_MLeft);
    82970:	4954      	ldr	r1, [pc, #336]	; (82ac4 <motor_init+0x180>)
    82972:	4855      	ldr	r0, [pc, #340]	; (82ac8 <motor_init+0x184>)
    82974:	4b55      	ldr	r3, [pc, #340]	; (82acc <motor_init+0x188>)
    82976:	4798      	blx	r3
 
 
-  /* Initialize PWM channel for MRight */
-  /* Period is left-aligned */
-  g_pwm_channel_MRight.alignment = PWM_ALIGN_LEFT;
+    /* Initialize PWM channel for MRight */
+    /* Period is left-aligned */
+    g_pwm_channel_MRight.alignment = PWM_ALIGN_LEFT;
    82978:	4b55      	ldr	r3, [pc, #340]	; (82ad0 <motor_init+0x18c>)
    8297a:	2200      	movs	r2, #0
    8297c:	811a      	strh	r2, [r3, #8]
-  /* Output waveform starts at a low level */
-  g_pwm_channel_MRight.polarity = PWM_LOW;
+    /* Output waveform starts at a low level */
+    g_pwm_channel_MRight.polarity = PWM_LOW;
    8297e:	4b54      	ldr	r3, [pc, #336]	; (82ad0 <motor_init+0x18c>)
    82980:	2200      	movs	r2, #0
    82982:	729a      	strb	r2, [r3, #10]
-  /* Use PWM clock A as source clock */
-  g_pwm_channel_MRight.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    /* Use PWM clock A as source clock */
+    g_pwm_channel_MRight.ul_prescaler = PWM_CMR_CPRE_CLKA;
    82984:	4b52      	ldr	r3, [pc, #328]	; (82ad0 <motor_init+0x18c>)
    82986:	220b      	movs	r2, #11
    82988:	605a      	str	r2, [r3, #4]
-  /* Period value of output waveform */
-  g_pwm_channel_MRight.ul_period = PERIOD_VALUE;
+    /* Period value of output waveform */
+    g_pwm_channel_MRight.ul_period = PERIOD_VALUE;
    8298a:	4b51      	ldr	r3, [pc, #324]	; (82ad0 <motor_init+0x18c>)
    8298c:	f44f 727a 	mov.w	r2, #1000	; 0x3e8
    82990:	611a      	str	r2, [r3, #16]
-  /* Duty cycle value of output waveform */
-  g_pwm_channel_MRight.ul_duty = INIT_DUTY_VALUE;
+    /* Duty cycle value of output waveform */
+    g_pwm_channel_MRight.ul_duty = INIT_DUTY_VALUE;
    82992:	4b4f      	ldr	r3, [pc, #316]	; (82ad0 <motor_init+0x18c>)
    82994:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
    82998:	60da      	str	r2, [r3, #12]
-  g_pwm_channel_MRight.channel = MOTOR_RIGHT;
+    g_pwm_channel_MRight.channel = MOTOR_RIGHT;
    8299a:	4b4d      	ldr	r3, [pc, #308]	; (82ad0 <motor_init+0x18c>)
    8299c:	2201      	movs	r2, #1
    8299e:	601a      	str	r2, [r3, #0]
-  pwm_channel_init(PWM, &g_pwm_channel_MRight);
+    pwm_channel_init(PWM, &g_pwm_channel_MRight);
    829a0:	494b      	ldr	r1, [pc, #300]	; (82ad0 <motor_init+0x18c>)
    829a2:	4849      	ldr	r0, [pc, #292]	; (82ac8 <motor_init+0x184>)
    829a4:	4b49      	ldr	r3, [pc, #292]	; (82acc <motor_init+0x188>)
    829a6:	4798      	blx	r3
 
 
-  /* Initialize PWM channel for MBack */
-  /* Period is left-aligned */
-  g_pwm_channel_MRear.alignment = PWM_ALIGN_LEFT;
+    /* Initialize PWM channel for MBack */
+    /* Period is left-aligned */
+    g_pwm_channel_MRear.alignment = PWM_ALIGN_LEFT;
    829a8:	4b4a      	ldr	r3, [pc, #296]	; (82ad4 <motor_init+0x190>)
    829aa:	2200      	movs	r2, #0
    829ac:	811a      	strh	r2, [r3, #8]
-  /* Output waveform starts at a low level */
-  g_pwm_channel_MRear.polarity = PWM_LOW;
+    /* Output waveform starts at a low level */
+    g_pwm_channel_MRear.polarity = PWM_LOW;
    829ae:	4b49      	ldr	r3, [pc, #292]	; (82ad4 <motor_init+0x190>)
    829b0:	2200      	movs	r2, #0
    829b2:	729a      	strb	r2, [r3, #10]
-  /* Use PWM clock A as source clock */
-  g_pwm_channel_MRear.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    /* Use PWM clock A as source clock */
+    g_pwm_channel_MRear.ul_prescaler = PWM_CMR_CPRE_CLKA;
    829b4:	4b47      	ldr	r3, [pc, #284]	; (82ad4 <motor_init+0x190>)
    829b6:	220b      	movs	r2, #11
    829b8:	605a      	str	r2, [r3, #4]
-  /* Period value of output waveform */
-  g_pwm_channel_MRear.ul_period = PERIOD_VALUE;
+    /* Period value of output waveform */
+    g_pwm_channel_MRear.ul_period = PERIOD_VALUE;
    829ba:	4b46      	ldr	r3, [pc, #280]	; (82ad4 <motor_init+0x190>)
    829bc:	f44f 727a 	mov.w	r2, #1000	; 0x3e8
    829c0:	611a      	str	r2, [r3, #16]
-  /* Duty cycle value of output waveform */
-  g_pwm_channel_MRear.ul_duty = INIT_DUTY_VALUE;
+    /* Duty cycle value of output waveform */
+    g_pwm_channel_MRear.ul_duty = INIT_DUTY_VALUE;
    829c2:	4b44      	ldr	r3, [pc, #272]	; (82ad4 <motor_init+0x190>)
    829c4:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
    829c8:	60da      	str	r2, [r3, #12]
-  g_pwm_channel_MRear.channel = MOTOR_REAR;
+    g_pwm_channel_MRear.channel = MOTOR_REAR;
    829ca:	4b42      	ldr	r3, [pc, #264]	; (82ad4 <motor_init+0x190>)
    829cc:	2202      	movs	r2, #2
    829ce:	601a      	str	r2, [r3, #0]
-  pwm_channel_init(PWM, &g_pwm_channel_MRear);
+    pwm_channel_init(PWM, &g_pwm_channel_MRear);
    829d0:	4940      	ldr	r1, [pc, #256]	; (82ad4 <motor_init+0x190>)
    829d2:	483d      	ldr	r0, [pc, #244]	; (82ac8 <motor_init+0x184>)
    829d4:	4b3d      	ldr	r3, [pc, #244]	; (82acc <motor_init+0x188>)
    829d6:	4798      	blx	r3
 
-  pwm_channel_disable(PWM, MOTOR_LEFT);
+    pwm_channel_disable(PWM, MOTOR_LEFT);
    829d8:	2100      	movs	r1, #0
    829da:	483b      	ldr	r0, [pc, #236]	; (82ac8 <motor_init+0x184>)
    829dc:	4b3e      	ldr	r3, [pc, #248]	; (82ad8 <motor_init+0x194>)
    829de:	4798      	blx	r3
-  pwm_channel_disable(PWM, MOTOR_RIGHT);
+    pwm_channel_disable(PWM, MOTOR_RIGHT);
    829e0:	2101      	movs	r1, #1
    829e2:	4839      	ldr	r0, [pc, #228]	; (82ac8 <motor_init+0x184>)
    829e4:	4b3c      	ldr	r3, [pc, #240]	; (82ad8 <motor_init+0x194>)
    829e6:	4798      	blx	r3
-  pwm_channel_disable(PWM, MOTOR_REAR);
+    pwm_channel_disable(PWM, MOTOR_REAR);
    829e8:	2102      	movs	r1, #2
    829ea:	4837      	ldr	r0, [pc, #220]	; (82ac8 <motor_init+0x184>)
    829ec:	4b3a      	ldr	r3, [pc, #232]	; (82ad8 <motor_init+0x194>)
    829ee:	4798      	blx	r3
 
-  g_pwm_channel_ENC.alignment = PWM_ALIGN_LEFT;
+    g_pwm_channel_ENC.alignment = PWM_ALIGN_LEFT;
    829f0:	4b3a      	ldr	r3, [pc, #232]	; (82adc <motor_init+0x198>)
    829f2:	2200      	movs	r2, #0
    829f4:	811a      	strh	r2, [r3, #8]
-  g_pwm_channel_ENC.polarity = PWM_LOW;
+    g_pwm_channel_ENC.polarity = PWM_LOW;
    829f6:	4b39      	ldr	r3, [pc, #228]	; (82adc <motor_init+0x198>)
    829f8:	2200      	movs	r2, #0
    829fa:	729a      	strb	r2, [r3, #10]
-  g_pwm_channel_ENC.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    g_pwm_channel_ENC.ul_prescaler = PWM_CMR_CPRE_CLKA;
    829fc:	4b37      	ldr	r3, [pc, #220]	; (82adc <motor_init+0x198>)
    829fe:	220b      	movs	r2, #11
    82a00:	605a      	str	r2, [r3, #4]
-  g_pwm_channel_ENC.ul_period = 330;
+    g_pwm_channel_ENC.ul_period = 330;
    82a02:	4b36      	ldr	r3, [pc, #216]	; (82adc <motor_init+0x198>)
    82a04:	f44f 72a5 	mov.w	r2, #330	; 0x14a
    82a08:	611a      	str	r2, [r3, #16]
-  g_pwm_channel_ENC.ul_duty = 165;
+    g_pwm_channel_ENC.ul_duty = 165;
    82a0a:	4b34      	ldr	r3, [pc, #208]	; (82adc <motor_init+0x198>)
    82a0c:	22a5      	movs	r2, #165	; 0xa5
    82a0e:	60da      	str	r2, [r3, #12]
-  g_pwm_channel_ENC.channel = ENC_CLK;
+    g_pwm_channel_ENC.channel = ENC_CLK;
    82a10:	4b32      	ldr	r3, [pc, #200]	; (82adc <motor_init+0x198>)
-   82a12:	2255      	movs	r2, #85	; 0x55
+   82a12:	2204      	movs	r2, #4
    82a14:	601a      	str	r2, [r3, #0]
-  pwm_channel_init(PWM, &g_pwm_channel_ENC);
+    pwm_channel_init(PWM, &g_pwm_channel_ENC);
    82a16:	4931      	ldr	r1, [pc, #196]	; (82adc <motor_init+0x198>)
    82a18:	482b      	ldr	r0, [pc, #172]	; (82ac8 <motor_init+0x184>)
    82a1a:	4b2c      	ldr	r3, [pc, #176]	; (82acc <motor_init+0x188>)
    82a1c:	4798      	blx	r3
-  pwm_channel_enable(PWM, ENC_CLK);
-   82a1e:	2155      	movs	r1, #85	; 0x55
+    pwm_channel_enable(PWM, ENC_CLK);
+   82a1e:	2104      	movs	r1, #4
    82a20:	4829      	ldr	r0, [pc, #164]	; (82ac8 <motor_init+0x184>)
    82a22:	4b2f      	ldr	r3, [pc, #188]	; (82ae0 <motor_init+0x19c>)
    82a24:	4798      	blx	r3
 
-  sysclk_enable_peripheral_clock(ID_TC1);
+    sysclk_enable_peripheral_clock(ID_TC1);
    82a26:	201c      	movs	r0, #28
    82a28:	4b2e      	ldr	r3, [pc, #184]	; (82ae4 <motor_init+0x1a0>)
    82a2a:	4798      	blx	r3
-  tc_init(TC0, 1, TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_CPCTRG);
+    tc_init(TC0, 1, TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_CPCTRG);
    82a2c:	f244 0203 	movw	r2, #16387	; 0x4003
    82a30:	2101      	movs	r1, #1
    82a32:	482d      	ldr	r0, [pc, #180]	; (82ae8 <motor_init+0x1a4>)
    82a34:	4b2d      	ldr	r3, [pc, #180]	; (82aec <motor_init+0x1a8>)
    82a36:	4798      	blx	r3
-  tc_write_rc(TC0, 1, 5249);  //MCLK / 128 * 0,008
+    tc_write_rc(TC0, 1, 5249);  //MCLK / 128 * 0,008
    82a38:	f241 4281 	movw	r2, #5249	; 0x1481
    82a3c:	2101      	movs	r1, #1
    82a3e:	482a      	ldr	r0, [pc, #168]	; (82ae8 <motor_init+0x1a4>)
    82a40:	4b2b      	ldr	r3, [pc, #172]	; (82af0 <motor_init+0x1ac>)
    82a42:	4798      	blx	r3
-  NVIC_DisableIRQ(TC1_IRQn);
+    NVIC_DisableIRQ(TC1_IRQn);
    82a44:	201c      	movs	r0, #28
    82a46:	4b2b      	ldr	r3, [pc, #172]	; (82af4 <motor_init+0x1b0>)
    82a48:	4798      	blx	r3
-  NVIC_ClearPendingIRQ(TC1_IRQn);
+    NVIC_ClearPendingIRQ(TC1_IRQn);
    82a4a:	201c      	movs	r0, #28
    82a4c:	4b2a      	ldr	r3, [pc, #168]	; (82af8 <motor_init+0x1b4>)
    82a4e:	4798      	blx	r3
-  NVIC_SetPriority(TC1_IRQn, 0);
+    NVIC_SetPriority(TC1_IRQn, 0);
    82a50:	2100      	movs	r1, #0
    82a52:	201c      	movs	r0, #28
    82a54:	4b29      	ldr	r3, [pc, #164]	; (82afc <motor_init+0x1b8>)
    82a56:	4798      	blx	r3
-  NVIC_EnableIRQ(TC1_IRQn);
+    NVIC_EnableIRQ(TC1_IRQn);
    82a58:	201c      	movs	r0, #28
    82a5a:	4b29      	ldr	r3, [pc, #164]	; (82b00 <motor_init+0x1bc>)
    82a5c:	4798      	blx	r3
-  tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
+    tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
    82a5e:	2210      	movs	r2, #16
    82a60:	2101      	movs	r1, #1
    82a62:	4821      	ldr	r0, [pc, #132]	; (82ae8 <motor_init+0x1a4>)
    82a64:	4b27      	ldr	r3, [pc, #156]	; (82b04 <motor_init+0x1c0>)
    82a66:	4798      	blx	r3
-  tc_start(TC0, 1);
+    tc_start(TC0, 1);
    82a68:	2101      	movs	r1, #1
    82a6a:	481f      	ldr	r0, [pc, #124]	; (82ae8 <motor_init+0x1a4>)
    82a6c:	4b26      	ldr	r3, [pc, #152]	; (82b08 <motor_init+0x1c4>)
    82a6e:	4798      	blx	r3
 
-  mleft_pid_reg.kp = 15.0f;
+    mleft_pid_reg.kp = 15.0f;
    82a70:	4b26      	ldr	r3, [pc, #152]	; (82b0c <motor_init+0x1c8>)
    82a72:	4a27      	ldr	r2, [pc, #156]	; (82b10 <motor_init+0x1cc>)
    82a74:	601a      	str	r2, [r3, #0]
-  mleft_pid_reg.ki = 10.0f;
+    mleft_pid_reg.ki = 10.0f;
    82a76:	4b25      	ldr	r3, [pc, #148]	; (82b0c <motor_init+0x1c8>)
    82a78:	4a26      	ldr	r2, [pc, #152]	; (82b14 <motor_init+0x1d0>)
    82a7a:	605a      	str	r2, [r3, #4]
-  mleft_pid_reg.kc = 1.0f;
+    mleft_pid_reg.kc = 1.0f;
    82a7c:	4b23      	ldr	r3, [pc, #140]	; (82b0c <motor_init+0x1c8>)
    82a7e:	f04f 527e 	mov.w	r2, #1065353216	; 0x3f800000
    82a82:	609a      	str	r2, [r3, #8]
-  mleft_pid_reg.kd = 5.0f;
+    mleft_pid_reg.kd = 5.0f;
    82a84:	4b21      	ldr	r3, [pc, #132]	; (82b0c <motor_init+0x1c8>)
    82a86:	4a24      	ldr	r2, [pc, #144]	; (82b18 <motor_init+0x1d4>)
    82a88:	60da      	str	r2, [r3, #12]
-  mleft_pid_reg.outMin = -500.0f;
+    mleft_pid_reg.outMin = -500.0f;
    82a8a:	4b20      	ldr	r3, [pc, #128]	; (82b0c <motor_init+0x1c8>)
    82a8c:	4a23      	ldr	r2, [pc, #140]	; (82b1c <motor_init+0x1d8>)
    82a8e:	619a      	str	r2, [r3, #24]
-  mleft_pid_reg.outMax = 500.0f;
+    mleft_pid_reg.outMax = 500.0f;
    82a90:	4b1e      	ldr	r3, [pc, #120]	; (82b0c <motor_init+0x1c8>)
    82a92:	4a23      	ldr	r2, [pc, #140]	; (82b20 <motor_init+0x1dc>)
    82a94:	615a      	str	r2, [r3, #20]
 
-  mright_pid_reg = mleft_pid_reg;
+    mright_pid_reg = mleft_pid_reg;
    82a96:	4a23      	ldr	r2, [pc, #140]	; (82b24 <motor_init+0x1e0>)
    82a98:	4b1c      	ldr	r3, [pc, #112]	; (82b0c <motor_init+0x1c8>)
    82a9a:	4614      	mov	r4, r2
@@ -7158,7 +7158,7 @@ void motor_init(void)
    82aa4:	c40f      	stmia	r4!, {r0, r1, r2, r3}
    82aa6:	682b      	ldr	r3, [r5, #0]
    82aa8:	6023      	str	r3, [r4, #0]
-  mrear_pid_reg = mleft_pid_reg;
+    mrear_pid_reg = mleft_pid_reg;
    82aaa:	4a1f      	ldr	r2, [pc, #124]	; (82b28 <motor_init+0x1e4>)
    82aac:	4b17      	ldr	r3, [pc, #92]	; (82b0c <motor_init+0x1c8>)
    82aae:	4614      	mov	r4, r2
@@ -7250,8 +7250,8 @@ void enable_motor(void)
    82b78:	000806b3 	.word	0x000806b3
 
 00082b7c <motor_speed>:
-    pwm_channel_enable(PWM, ENC_CLK);
-  }*/ 
+        pwm_channel_enable(PWM, ENC_CLK);
+    }*/ 
 }
 
 void motor_speed(uint8_t motor, int16_t ispeed)
@@ -7264,53 +7264,53 @@ void motor_speed(uint8_t motor, int16_t ispeed)
    82b86:	71fb      	strb	r3, [r7, #7]
    82b88:	4613      	mov	r3, r2
    82b8a:	80bb      	strh	r3, [r7, #4]
-  if (ispeed > 500)
+    if (ispeed > 500)
    82b8c:	f9b7 3004 	ldrsh.w	r3, [r7, #4]
    82b90:	f5b3 7ffa 	cmp.w	r3, #500	; 0x1f4
    82b94:	dd02      	ble.n	82b9c <motor_speed+0x20>
-  {
-    ispeed = 500;
+    {
+        ispeed = 500;
    82b96:	f44f 73fa 	mov.w	r3, #500	; 0x1f4
    82b9a:	80bb      	strh	r3, [r7, #4]
-  }
+    }
 
-  if (ispeed < -500)
+    if (ispeed < -500)
    82b9c:	f9b7 3004 	ldrsh.w	r3, [r7, #4]
    82ba0:	f513 7ffa 	cmn.w	r3, #500	; 0x1f4
    82ba4:	da02      	bge.n	82bac <motor_speed+0x30>
-  {
-    ispeed = -500;
+    {
+        ispeed = -500;
    82ba6:	f64f 630c 	movw	r3, #65036	; 0xfe0c
    82baa:	80bb      	strh	r3, [r7, #4]
-  }
+    }
 
-  uint16_t duty_cycle = (uint16_t)(ispeed + (int16_t)INIT_DUTY_VALUE);
+    uint16_t duty_cycle = (uint16_t)(ispeed + (int16_t)INIT_DUTY_VALUE);
    82bac:	88bb      	ldrh	r3, [r7, #4]
    82bae:	f503 73fa 	add.w	r3, r3, #500	; 0x1f4
    82bb2:	81fb      	strh	r3, [r7, #14]
 
-  if (duty_cycle < 10)
+    if (duty_cycle < 10)
    82bb4:	89fb      	ldrh	r3, [r7, #14]
    82bb6:	2b09      	cmp	r3, #9
    82bb8:	d801      	bhi.n	82bbe <motor_speed+0x42>
-  {
-    duty_cycle = 10;
+    {
+        duty_cycle = 10;
    82bba:	230a      	movs	r3, #10
    82bbc:	81fb      	strh	r3, [r7, #14]
-  }
+    }
 
-  if (duty_cycle > 990)
+    if (duty_cycle > 990)
    82bbe:	89fb      	ldrh	r3, [r7, #14]
    82bc0:	f240 32de 	movw	r2, #990	; 0x3de
    82bc4:	4293      	cmp	r3, r2
    82bc6:	d902      	bls.n	82bce <motor_speed+0x52>
-  {
-    duty_cycle = 990;
+    {
+        duty_cycle = 990;
    82bc8:	f240 33de 	movw	r3, #990	; 0x3de
    82bcc:	81fb      	strh	r3, [r7, #14]
-  }
+    }
 
-  switch(motor)
+    switch(motor)
    82bce:	79fb      	ldrb	r3, [r7, #7]
    82bd0:	2b01      	cmp	r3, #1
    82bd2:	d00b      	beq.n	82bec <motor_speed+0x70>
@@ -7318,41 +7318,41 @@ void motor_speed(uint8_t motor, int16_t ispeed)
    82bd6:	d010      	beq.n	82bfa <motor_speed+0x7e>
    82bd8:	2b00      	cmp	r3, #0
    82bda:	d000      	beq.n	82bde <motor_speed+0x62>
-      break;
-    case MOTOR_REAR:
-      pwm_channel_update_duty(PWM, &g_pwm_channel_MRear, duty_cycle);
-      break;
-    default:
-      break;
+            break;
+        case MOTOR_REAR:
+            pwm_channel_update_duty(PWM, &g_pwm_channel_MRear, duty_cycle);
+            break;
+        default:
+            break;
    82bdc:	e014      	b.n	82c08 <motor_speed+0x8c>
-      pwm_channel_update_duty(PWM, &g_pwm_channel_MLeft, duty_cycle);
+            pwm_channel_update_duty(PWM, &g_pwm_channel_MLeft, duty_cycle);
    82bde:	89fb      	ldrh	r3, [r7, #14]
    82be0:	461a      	mov	r2, r3
    82be2:	490b      	ldr	r1, [pc, #44]	; (82c10 <motor_speed+0x94>)
    82be4:	480b      	ldr	r0, [pc, #44]	; (82c14 <motor_speed+0x98>)
    82be6:	4b0c      	ldr	r3, [pc, #48]	; (82c18 <motor_speed+0x9c>)
    82be8:	4798      	blx	r3
-      break;
+            break;
    82bea:	e00d      	b.n	82c08 <motor_speed+0x8c>
-      pwm_channel_update_duty(PWM, &g_pwm_channel_MRight, duty_cycle);
+            pwm_channel_update_duty(PWM, &g_pwm_channel_MRight, duty_cycle);
    82bec:	89fb      	ldrh	r3, [r7, #14]
    82bee:	461a      	mov	r2, r3
    82bf0:	490a      	ldr	r1, [pc, #40]	; (82c1c <motor_speed+0xa0>)
    82bf2:	4808      	ldr	r0, [pc, #32]	; (82c14 <motor_speed+0x98>)
    82bf4:	4b08      	ldr	r3, [pc, #32]	; (82c18 <motor_speed+0x9c>)
    82bf6:	4798      	blx	r3
-      break;
+            break;
    82bf8:	e006      	b.n	82c08 <motor_speed+0x8c>
-      pwm_channel_update_duty(PWM, &g_pwm_channel_MRear, duty_cycle);
+            pwm_channel_update_duty(PWM, &g_pwm_channel_MRear, duty_cycle);
    82bfa:	89fb      	ldrh	r3, [r7, #14]
    82bfc:	461a      	mov	r2, r3
    82bfe:	4908      	ldr	r1, [pc, #32]	; (82c20 <motor_speed+0xa4>)
    82c00:	4804      	ldr	r0, [pc, #16]	; (82c14 <motor_speed+0x98>)
    82c02:	4b05      	ldr	r3, [pc, #20]	; (82c18 <motor_speed+0x9c>)
    82c04:	4798      	blx	r3
-      break;
+            break;
    82c06:	bf00      	nop
-  }
+    }
 }
    82c08:	bf00      	nop
    82c0a:	3710      	adds	r7, #16
@@ -7371,18 +7371,18 @@ void TC1_Handler(void)
    82c24:	b590      	push	{r4, r7, lr}
    82c26:	b085      	sub	sp, #20
    82c28:	af00      	add	r7, sp, #0
-  uint32_t PIOC_value;
-  int32_t eleft_counts;
-  int32_t eright_counts;
-  int32_t erear_counts;
+    uint32_t PIOC_value;
+    int32_t eleft_counts;
+    int32_t eright_counts;
+    int32_t erear_counts;
 
-  ioport_set_pin_level(LED_M3, 1);
+    ioport_set_pin_level(LED_M3, 1);
    82c2a:	2101      	movs	r1, #1
    82c2c:	2069      	movs	r0, #105	; 0x69
    82c2e:	4b50      	ldr	r3, [pc, #320]	; (82d70 <TC1_Handler+0x14c>)
    82c30:	4798      	blx	r3
 
-  if ((tc_get_status(TC0, 1) & TC_SR_CPCS) == TC_SR_CPCS)
+    if ((tc_get_status(TC0, 1) & TC_SR_CPCS) == TC_SR_CPCS)
    82c32:	2101      	movs	r1, #1
    82c34:	484f      	ldr	r0, [pc, #316]	; (82d74 <TC1_Handler+0x150>)
    82c36:	4b50      	ldr	r3, [pc, #320]	; (82d78 <TC1_Handler+0x154>)
@@ -7391,40 +7391,40 @@ void TC1_Handler(void)
    82c3c:	f003 0310 	and.w	r3, r3, #16
    82c40:	2b10      	cmp	r3, #16
    82c42:	f040 808c 	bne.w	82d5e <TC1_Handler+0x13a>
-  {
-    pwm_channel_disable(PWM, ENC_CLK);
-   82c46:	2155      	movs	r1, #85	; 0x55
+    {
+        pwm_channel_disable(PWM, ENC_CLK);
+   82c46:	2104      	movs	r1, #4
    82c48:	484c      	ldr	r0, [pc, #304]	; (82d7c <TC1_Handler+0x158>)
    82c4a:	4b4d      	ldr	r3, [pc, #308]	; (82d80 <TC1_Handler+0x15c>)
    82c4c:	4798      	blx	r3
-    PIOC_value = ioport_get_port_level(IOPORT_PIOC, 0xFFFFFFFF);
+        PIOC_value = ioport_get_port_level(IOPORT_PIOC, 0xFFFFFFFF);
    82c4e:	f04f 31ff 	mov.w	r1, #4294967295
    82c52:	2002      	movs	r0, #2
    82c54:	4b4b      	ldr	r3, [pc, #300]	; (82d84 <TC1_Handler+0x160>)
    82c56:	4798      	blx	r3
    82c58:	60f8      	str	r0, [r7, #12]
-    ioport_set_pin_level(ENC_LOAD, 0);
+        ioport_set_pin_level(ENC_LOAD, 0);
    82c5a:	2100      	movs	r1, #0
    82c5c:	2020      	movs	r0, #32
    82c5e:	4b44      	ldr	r3, [pc, #272]	; (82d70 <TC1_Handler+0x14c>)
    82c60:	4798      	blx	r3
-    ioport_set_pin_level(ENC_LOAD, 1);
+        ioport_set_pin_level(ENC_LOAD, 1);
    82c62:	2101      	movs	r1, #1
    82c64:	2020      	movs	r0, #32
    82c66:	4b42      	ldr	r3, [pc, #264]	; (82d70 <TC1_Handler+0x14c>)
    82c68:	4798      	blx	r3
-    pwm_channel_enable(PWM, ENC_CLK);
-   82c6a:	2155      	movs	r1, #85	; 0x55
+        pwm_channel_enable(PWM, ENC_CLK);
+   82c6a:	2104      	movs	r1, #4
    82c6c:	4843      	ldr	r0, [pc, #268]	; (82d7c <TC1_Handler+0x158>)
    82c6e:	4b46      	ldr	r3, [pc, #280]	; (82d88 <TC1_Handler+0x164>)
    82c70:	4798      	blx	r3
 
-    eleft_counts = (PIOC_value & 0x7F000000) >> 24;
+        eleft_counts = (PIOC_value & 0x7F000000) >> 24;
    82c72:	68fb      	ldr	r3, [r7, #12]
    82c74:	0e1b      	lsrs	r3, r3, #24
    82c76:	f003 037f 	and.w	r3, r3, #127	; 0x7f
    82c7a:	60bb      	str	r3, [r7, #8]
-    eleft_counts = (eleft_counts & 0x00000040) ? eleft_counts - 128 : eleft_counts;
+        eleft_counts = (eleft_counts & 0x00000040) ? eleft_counts - 128 : eleft_counts;
    82c7c:	68bb      	ldr	r3, [r7, #8]
    82c7e:	f003 0340 	and.w	r3, r3, #64	; 0x40
    82c82:	2b00      	cmp	r3, #0
@@ -7434,7 +7434,7 @@ void TC1_Handler(void)
    82c8a:	e000      	b.n	82c8e <TC1_Handler+0x6a>
    82c8c:	68bb      	ldr	r3, [r7, #8]
    82c8e:	60bb      	str	r3, [r7, #8]
-    eright_counts = ((PIOC_value & 0x00C00000) >> 17) | ((PIOC_value & 0x001F0000) >> 16);
+        eright_counts = ((PIOC_value & 0x00C00000) >> 17) | ((PIOC_value & 0x001F0000) >> 16);
    82c90:	68fb      	ldr	r3, [r7, #12]
    82c92:	0c5b      	lsrs	r3, r3, #17
    82c94:	f003 0260 	and.w	r2, r3, #96	; 0x60
@@ -7443,7 +7443,7 @@ void TC1_Handler(void)
    82c9c:	f003 031f 	and.w	r3, r3, #31
    82ca0:	4313      	orrs	r3, r2
    82ca2:	607b      	str	r3, [r7, #4]
-    eright_counts = (eright_counts & 0x00000040) ? eright_counts - 128 : eright_counts;
+        eright_counts = (eright_counts & 0x00000040) ? eright_counts - 128 : eright_counts;
    82ca4:	687b      	ldr	r3, [r7, #4]
    82ca6:	f003 0340 	and.w	r3, r3, #64	; 0x40
    82caa:	2b00      	cmp	r3, #0
@@ -7453,7 +7453,7 @@ void TC1_Handler(void)
    82cb2:	e000      	b.n	82cb6 <TC1_Handler+0x92>
    82cb4:	687b      	ldr	r3, [r7, #4]
    82cb6:	607b      	str	r3, [r7, #4]
-    erear_counts = ((PIOC_value & 0x0000FC00) >> 9) | ((PIOC_value & 0x00000002) >> 1);
+        erear_counts = ((PIOC_value & 0x0000FC00) >> 9) | ((PIOC_value & 0x00000002) >> 1);
    82cb8:	68fb      	ldr	r3, [r7, #12]
    82cba:	0a5b      	lsrs	r3, r3, #9
    82cbc:	f003 027e 	and.w	r2, r3, #126	; 0x7e
@@ -7462,7 +7462,7 @@ void TC1_Handler(void)
    82cc4:	f003 0301 	and.w	r3, r3, #1
    82cc8:	4313      	orrs	r3, r2
    82cca:	603b      	str	r3, [r7, #0]
-    erear_counts = (erear_counts & 0x00000040) ? erear_counts - 128 : erear_counts;
+        erear_counts = (erear_counts & 0x00000040) ? erear_counts - 128 : erear_counts;
    82ccc:	683b      	ldr	r3, [r7, #0]
    82cce:	f003 0340 	and.w	r3, r3, #64	; 0x40
    82cd2:	2b00      	cmp	r3, #0
@@ -7473,7 +7473,7 @@ void TC1_Handler(void)
    82cdc:	683b      	ldr	r3, [r7, #0]
    82cde:	603b      	str	r3, [r7, #0]
 
-    motor_speed(MOTOR_LEFT, pidReg(&mleft_pid_reg, speed_mleft, (float)eleft_counts));
+        motor_speed(MOTOR_LEFT, pidReg(&mleft_pid_reg, speed_mleft, (float)eleft_counts));
    82ce0:	4b2a      	ldr	r3, [pc, #168]	; (82d8c <TC1_Handler+0x168>)
    82ce2:	681c      	ldr	r4, [r3, #0]
    82ce4:	4b2a      	ldr	r3, [pc, #168]	; (82d90 <TC1_Handler+0x16c>)
@@ -7495,7 +7495,7 @@ void TC1_Handler(void)
    82d04:	2000      	movs	r0, #0
    82d06:	4b26      	ldr	r3, [pc, #152]	; (82da0 <TC1_Handler+0x17c>)
    82d08:	4798      	blx	r3
-    motor_speed(MOTOR_RIGHT, pidReg(&mright_pid_reg, speed_mright, (float)eright_counts));
+        motor_speed(MOTOR_RIGHT, pidReg(&mright_pid_reg, speed_mright, (float)eright_counts));
    82d0a:	4b26      	ldr	r3, [pc, #152]	; (82da4 <TC1_Handler+0x180>)
    82d0c:	681c      	ldr	r4, [r3, #0]
    82d0e:	4b20      	ldr	r3, [pc, #128]	; (82d90 <TC1_Handler+0x16c>)
@@ -7517,7 +7517,7 @@ void TC1_Handler(void)
    82d2e:	2001      	movs	r0, #1
    82d30:	4b1b      	ldr	r3, [pc, #108]	; (82da0 <TC1_Handler+0x17c>)
    82d32:	4798      	blx	r3
-    motor_speed(MOTOR_REAR, pidReg(&mrear_pid_reg, speed_mrear, (float)erear_counts));
+        motor_speed(MOTOR_REAR, pidReg(&mrear_pid_reg, speed_mrear, (float)erear_counts));
    82d34:	4b1d      	ldr	r3, [pc, #116]	; (82dac <TC1_Handler+0x188>)
    82d36:	681c      	ldr	r4, [r3, #0]
    82d38:	4b15      	ldr	r3, [pc, #84]	; (82d90 <TC1_Handler+0x16c>)
@@ -7540,10 +7540,10 @@ void TC1_Handler(void)
    82d5a:	4b11      	ldr	r3, [pc, #68]	; (82da0 <TC1_Handler+0x17c>)
    82d5c:	4798      	blx	r3
 
-    //pwm_channel_enable(PWM, ENC_CLK);
-  }
+        //pwm_channel_enable(PWM, ENC_CLK);
+    }
 
-  ioport_set_pin_level(LED_M3, 0);
+    ioport_set_pin_level(LED_M3, 0);
    82d5e:	2100      	movs	r1, #0
    82d60:	2069      	movs	r0, #105	; 0x69
    82d62:	4b03      	ldr	r3, [pc, #12]	; (82d70 <TC1_Handler+0x14c>)
@@ -10290,19 +10290,19 @@ void board_init(void)
    83d98:	4798      	blx	r3
 
     /* Configure Encoder pins */
-    ioport_set_pin_mode(ENC_CLK, IOPORT_MODE_MUX_B);
+    ioport_set_pin_mode(ENC_CLK_PIN, IOPORT_MODE_MUX_B);
    83d9a:	2101      	movs	r1, #1
    83d9c:	2055      	movs	r0, #85	; 0x55
    83d9e:	4b65      	ldr	r3, [pc, #404]	; (83f34 <board_init+0x2b0>)
    83da0:	4798      	blx	r3
-    ioport_disable_pin(ENC_CLK);
+    ioport_disable_pin(ENC_CLK_PIN);
    83da2:	2055      	movs	r0, #85	; 0x55
    83da4:	4b64      	ldr	r3, [pc, #400]	; (83f38 <board_init+0x2b4>)
    83da6:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_LOAD, IOPORT_DIR_OUTPUT);
+    ioport_set_pin_dir(ENC_LOAD, IOPORT_DIR_OUTPUT);
    83da8:	2101      	movs	r1, #1
    83daa:	2020      	movs	r0, #32
-   83dac:	4b61      	ldr	r3, [pc, #388]	; (83f34 <board_init+0x2b0>)
+   83dac:	4b5f      	ldr	r3, [pc, #380]	; (83f2c <board_init+0x2a8>)
    83dae:	4798      	blx	r3
     ioport_set_pin_level(ENC_LOAD, 1);
    83db0:	2101      	movs	r1, #1
@@ -10310,112 +10310,112 @@ void board_init(void)
    83db4:	4b5e      	ldr	r3, [pc, #376]	; (83f30 <board_init+0x2ac>)
    83db6:	4798      	blx	r3
 
-    ioport_set_pin_mode(ENC_LEFT_A, ENC_LEFT_A_FLAGS);
+    ioport_set_pin_dir(ENC_LEFT_A, IOPORT_DIR_INPUT);
    83db8:	2100      	movs	r1, #0
    83dba:	2058      	movs	r0, #88	; 0x58
-   83dbc:	4b5d      	ldr	r3, [pc, #372]	; (83f34 <board_init+0x2b0>)
+   83dbc:	4b5b      	ldr	r3, [pc, #364]	; (83f2c <board_init+0x2a8>)
    83dbe:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_LEFT_B, ENC_LEFT_B_FLAGS);
+    ioport_set_pin_dir(ENC_LEFT_B, IOPORT_DIR_INPUT);
    83dc0:	2100      	movs	r1, #0
    83dc2:	2059      	movs	r0, #89	; 0x59
-   83dc4:	4b5b      	ldr	r3, [pc, #364]	; (83f34 <board_init+0x2b0>)
+   83dc4:	4b59      	ldr	r3, [pc, #356]	; (83f2c <board_init+0x2a8>)
    83dc6:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_LEFT_C, ENC_LEFT_C_FLAGS);
+    ioport_set_pin_dir(ENC_LEFT_C, IOPORT_DIR_INPUT);
    83dc8:	2100      	movs	r1, #0
    83dca:	205a      	movs	r0, #90	; 0x5a
-   83dcc:	4b59      	ldr	r3, [pc, #356]	; (83f34 <board_init+0x2b0>)
+   83dcc:	4b57      	ldr	r3, [pc, #348]	; (83f2c <board_init+0x2a8>)
    83dce:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_LEFT_D, ENC_LEFT_D_FLAGS);
+    ioport_set_pin_dir(ENC_LEFT_D, IOPORT_DIR_INPUT);
    83dd0:	2100      	movs	r1, #0
    83dd2:	205b      	movs	r0, #91	; 0x5b
-   83dd4:	4b57      	ldr	r3, [pc, #348]	; (83f34 <board_init+0x2b0>)
+   83dd4:	4b55      	ldr	r3, [pc, #340]	; (83f2c <board_init+0x2a8>)
    83dd6:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_LEFT_E, ENC_LEFT_E_FLAGS);
+    ioport_set_pin_dir(ENC_LEFT_E, IOPORT_DIR_INPUT);
    83dd8:	2100      	movs	r1, #0
    83dda:	205c      	movs	r0, #92	; 0x5c
-   83ddc:	4b55      	ldr	r3, [pc, #340]	; (83f34 <board_init+0x2b0>)
+   83ddc:	4b53      	ldr	r3, [pc, #332]	; (83f2c <board_init+0x2a8>)
    83dde:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_LEFT_F, ENC_LEFT_F_FLAGS);
+    ioport_set_pin_dir(ENC_LEFT_F, IOPORT_DIR_INPUT);
    83de0:	2100      	movs	r1, #0
    83de2:	205d      	movs	r0, #93	; 0x5d
-   83de4:	4b53      	ldr	r3, [pc, #332]	; (83f34 <board_init+0x2b0>)
+   83de4:	4b51      	ldr	r3, [pc, #324]	; (83f2c <board_init+0x2a8>)
    83de6:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_LEFT_G, ENC_LEFT_G_FLAGS);
+    ioport_set_pin_dir(ENC_LEFT_G, IOPORT_DIR_INPUT);
    83de8:	2100      	movs	r1, #0
    83dea:	205e      	movs	r0, #94	; 0x5e
-   83dec:	4b51      	ldr	r3, [pc, #324]	; (83f34 <board_init+0x2b0>)
+   83dec:	4b4f      	ldr	r3, [pc, #316]	; (83f2c <board_init+0x2a8>)
    83dee:	4798      	blx	r3
     
-    ioport_set_pin_mode(ENC_RIGHT_A, ENC_RIGHT_A_FLAGS);
+    ioport_set_pin_dir(ENC_RIGHT_A, IOPORT_DIR_INPUT);
    83df0:	2100      	movs	r1, #0
    83df2:	2050      	movs	r0, #80	; 0x50
-   83df4:	4b4f      	ldr	r3, [pc, #316]	; (83f34 <board_init+0x2b0>)
+   83df4:	4b4d      	ldr	r3, [pc, #308]	; (83f2c <board_init+0x2a8>)
    83df6:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_RIGHT_B, ENC_RIGHT_B_FLAGS);
+    ioport_set_pin_dir(ENC_RIGHT_B, IOPORT_DIR_INPUT);
    83df8:	2100      	movs	r1, #0
    83dfa:	2051      	movs	r0, #81	; 0x51
-   83dfc:	4b4d      	ldr	r3, [pc, #308]	; (83f34 <board_init+0x2b0>)
+   83dfc:	4b4b      	ldr	r3, [pc, #300]	; (83f2c <board_init+0x2a8>)
    83dfe:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_RIGHT_C, ENC_RIGHT_C_FLAGS);
+    ioport_set_pin_dir(ENC_RIGHT_C, IOPORT_DIR_INPUT);
    83e00:	2100      	movs	r1, #0
    83e02:	2052      	movs	r0, #82	; 0x52
-   83e04:	4b4b      	ldr	r3, [pc, #300]	; (83f34 <board_init+0x2b0>)
+   83e04:	4b49      	ldr	r3, [pc, #292]	; (83f2c <board_init+0x2a8>)
    83e06:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_RIGHT_D, ENC_RIGHT_D_FLAGS);
+    ioport_set_pin_dir(ENC_RIGHT_D, IOPORT_DIR_INPUT);
    83e08:	2100      	movs	r1, #0
    83e0a:	2053      	movs	r0, #83	; 0x53
-   83e0c:	4b49      	ldr	r3, [pc, #292]	; (83f34 <board_init+0x2b0>)
+   83e0c:	4b47      	ldr	r3, [pc, #284]	; (83f2c <board_init+0x2a8>)
    83e0e:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_RIGHT_E, ENC_RIGHT_E_FLAGS);
+    ioport_set_pin_dir(ENC_RIGHT_E, IOPORT_DIR_INPUT);
    83e10:	2100      	movs	r1, #0
    83e12:	2054      	movs	r0, #84	; 0x54
-   83e14:	4b47      	ldr	r3, [pc, #284]	; (83f34 <board_init+0x2b0>)
+   83e14:	4b45      	ldr	r3, [pc, #276]	; (83f2c <board_init+0x2a8>)
    83e16:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_RIGHT_F, ENC_RIGHT_F_FLAGS);
+    ioport_set_pin_dir(ENC_RIGHT_F, IOPORT_DIR_INPUT);
    83e18:	2100      	movs	r1, #0
    83e1a:	2056      	movs	r0, #86	; 0x56
-   83e1c:	4b45      	ldr	r3, [pc, #276]	; (83f34 <board_init+0x2b0>)
+   83e1c:	4b43      	ldr	r3, [pc, #268]	; (83f2c <board_init+0x2a8>)
    83e1e:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_RIGHT_G, ENC_RIGHT_G_FLAGS);
+    ioport_set_pin_dir(ENC_RIGHT_G, IOPORT_DIR_INPUT);
    83e20:	2100      	movs	r1, #0
    83e22:	2057      	movs	r0, #87	; 0x57
-   83e24:	4b43      	ldr	r3, [pc, #268]	; (83f34 <board_init+0x2b0>)
+   83e24:	4b41      	ldr	r3, [pc, #260]	; (83f2c <board_init+0x2a8>)
    83e26:	4798      	blx	r3
     
-    ioport_set_pin_mode(ENC_REAR_A, ENC_REAR_A_FLAGS);
+    ioport_set_pin_dir(ENC_REAR_A, IOPORT_DIR_INPUT);
    83e28:	2100      	movs	r1, #0
    83e2a:	2041      	movs	r0, #65	; 0x41
-   83e2c:	4b41      	ldr	r3, [pc, #260]	; (83f34 <board_init+0x2b0>)
+   83e2c:	4b3f      	ldr	r3, [pc, #252]	; (83f2c <board_init+0x2a8>)
    83e2e:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_REAR_B, ENC_REAR_B_FLAGS);
+    ioport_set_pin_dir(ENC_REAR_B, IOPORT_DIR_INPUT);
    83e30:	2100      	movs	r1, #0
    83e32:	204a      	movs	r0, #74	; 0x4a
-   83e34:	4b3f      	ldr	r3, [pc, #252]	; (83f34 <board_init+0x2b0>)
+   83e34:	4b3d      	ldr	r3, [pc, #244]	; (83f2c <board_init+0x2a8>)
    83e36:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_REAR_C, ENC_REAR_C_FLAGS);
+    ioport_set_pin_dir(ENC_REAR_C, IOPORT_DIR_INPUT);
    83e38:	2100      	movs	r1, #0
    83e3a:	204b      	movs	r0, #75	; 0x4b
-   83e3c:	4b3d      	ldr	r3, [pc, #244]	; (83f34 <board_init+0x2b0>)
+   83e3c:	4b3b      	ldr	r3, [pc, #236]	; (83f2c <board_init+0x2a8>)
    83e3e:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_REAR_D, ENC_REAR_D_FLAGS);
+    ioport_set_pin_dir(ENC_REAR_D, IOPORT_DIR_INPUT);
    83e40:	2100      	movs	r1, #0
    83e42:	204c      	movs	r0, #76	; 0x4c
-   83e44:	4b3b      	ldr	r3, [pc, #236]	; (83f34 <board_init+0x2b0>)
+   83e44:	4b39      	ldr	r3, [pc, #228]	; (83f2c <board_init+0x2a8>)
    83e46:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_REAR_E, ENC_REAR_E_FLAGS);
+    ioport_set_pin_dir(ENC_REAR_E, IOPORT_DIR_INPUT);
    83e48:	2100      	movs	r1, #0
    83e4a:	204d      	movs	r0, #77	; 0x4d
-   83e4c:	4b39      	ldr	r3, [pc, #228]	; (83f34 <board_init+0x2b0>)
+   83e4c:	4b37      	ldr	r3, [pc, #220]	; (83f2c <board_init+0x2a8>)
    83e4e:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_REAR_F, ENC_REAR_F_FLAGS);
+    ioport_set_pin_dir(ENC_REAR_F, IOPORT_DIR_INPUT);
    83e50:	2100      	movs	r1, #0
    83e52:	204e      	movs	r0, #78	; 0x4e
-   83e54:	4b37      	ldr	r3, [pc, #220]	; (83f34 <board_init+0x2b0>)
+   83e54:	4b35      	ldr	r3, [pc, #212]	; (83f2c <board_init+0x2a8>)
    83e56:	4798      	blx	r3
-    ioport_set_pin_mode(ENC_REAR_G, ENC_REAR_G_FLAGS);
+    ioport_set_pin_dir(ENC_REAR_G, IOPORT_DIR_INPUT);
    83e58:	2100      	movs	r1, #0
    83e5a:	204f      	movs	r0, #79	; 0x4f
-   83e5c:	4b35      	ldr	r3, [pc, #212]	; (83f34 <board_init+0x2b0>)
+   83e5c:	4b33      	ldr	r3, [pc, #204]	; (83f2c <board_init+0x2a8>)
    83e5e:	4798      	blx	r3
   
     /* Configure Raspberry Pi GPIO pins */
@@ -11405,8 +11405,6 @@ int main(void)
     enable_motor();
    84472:	4b19      	ldr	r3, [pc, #100]	; (844d8 <main+0x9c>)
    84474:	4798      	blx	r3
-    pwm_channel_enable(PWM, MOTOR_RIGHT);
-    pwm_channel_enable(PWM, MOTOR_REAR);*/
 
     while (1)
     {
@@ -11440,17 +11438,15 @@ int main(void)
    84498:	2068      	movs	r0, #104	; 0x68
    8449a:	4b13      	ldr	r3, [pc, #76]	; (844e8 <main+0xac>)
    8449c:	4798      	blx	r3
-        motor_speed(MOTOR_RIGHT, 50);
-        motor_speed(MOTOR_REAR, 50);*/
+        }
 
-        //update_motor(1, 1, 1);
+        //update_motor(1, 1, 0);
 
         act_event = button_events();
    8449e:	4b13      	ldr	r3, [pc, #76]	; (844ec <main+0xb0>)
    844a0:	4798      	blx	r3
    844a2:	4603      	mov	r3, r0
    844a4:	71fb      	strb	r3, [r7, #7]
-        
         menu(act_event);
    844a6:	79fb      	ldrb	r3, [r7, #7]
    844a8:	4618      	mov	r0, r3

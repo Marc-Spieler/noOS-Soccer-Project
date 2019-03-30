@@ -1,7 +1,7 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: NoOS                                                           */
-/* Created: 01.07.18                                                    */
+/* Created: 01.07.2018                                                  */
 /************************************************************************/
 
 #include "asf.h"
@@ -58,34 +58,34 @@ void board_init(void)
     ioport_disable_pin(MOTOR_REAR_H);
 
     /* Configure Encoder pins */
-    ioport_set_pin_mode(ENC_CLK, IOPORT_MODE_MUX_B);
-    ioport_disable_pin(ENC_CLK);
-    ioport_set_pin_mode(ENC_LOAD, IOPORT_DIR_OUTPUT);
+    ioport_set_pin_mode(ENC_CLK_PIN, IOPORT_MODE_MUX_B);
+    ioport_disable_pin(ENC_CLK_PIN);
+    ioport_set_pin_dir(ENC_LOAD, IOPORT_DIR_OUTPUT);
     ioport_set_pin_level(ENC_LOAD, 1);
 
-    ioport_set_pin_mode(ENC_LEFT_A, ENC_LEFT_A_FLAGS);
-    ioport_set_pin_mode(ENC_LEFT_B, ENC_LEFT_B_FLAGS);
-    ioport_set_pin_mode(ENC_LEFT_C, ENC_LEFT_C_FLAGS);
-    ioport_set_pin_mode(ENC_LEFT_D, ENC_LEFT_D_FLAGS);
-    ioport_set_pin_mode(ENC_LEFT_E, ENC_LEFT_E_FLAGS);
-    ioport_set_pin_mode(ENC_LEFT_F, ENC_LEFT_F_FLAGS);
-    ioport_set_pin_mode(ENC_LEFT_G, ENC_LEFT_G_FLAGS);
+    ioport_set_pin_dir(ENC_LEFT_A, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_LEFT_B, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_LEFT_C, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_LEFT_D, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_LEFT_E, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_LEFT_F, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_LEFT_G, IOPORT_DIR_INPUT);
     
-    ioport_set_pin_mode(ENC_RIGHT_A, ENC_RIGHT_A_FLAGS);
-    ioport_set_pin_mode(ENC_RIGHT_B, ENC_RIGHT_B_FLAGS);
-    ioport_set_pin_mode(ENC_RIGHT_C, ENC_RIGHT_C_FLAGS);
-    ioport_set_pin_mode(ENC_RIGHT_D, ENC_RIGHT_D_FLAGS);
-    ioport_set_pin_mode(ENC_RIGHT_E, ENC_RIGHT_E_FLAGS);
-    ioport_set_pin_mode(ENC_RIGHT_F, ENC_RIGHT_F_FLAGS);
-    ioport_set_pin_mode(ENC_RIGHT_G, ENC_RIGHT_G_FLAGS);
+    ioport_set_pin_dir(ENC_RIGHT_A, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_RIGHT_B, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_RIGHT_C, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_RIGHT_D, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_RIGHT_E, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_RIGHT_F, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_RIGHT_G, IOPORT_DIR_INPUT);
     
-    ioport_set_pin_mode(ENC_REAR_A, ENC_REAR_A_FLAGS);
-    ioport_set_pin_mode(ENC_REAR_B, ENC_REAR_B_FLAGS);
-    ioport_set_pin_mode(ENC_REAR_C, ENC_REAR_C_FLAGS);
-    ioport_set_pin_mode(ENC_REAR_D, ENC_REAR_D_FLAGS);
-    ioport_set_pin_mode(ENC_REAR_E, ENC_REAR_E_FLAGS);
-    ioport_set_pin_mode(ENC_REAR_F, ENC_REAR_F_FLAGS);
-    ioport_set_pin_mode(ENC_REAR_G, ENC_REAR_G_FLAGS);
+    ioport_set_pin_dir(ENC_REAR_A, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_REAR_B, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_REAR_C, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_REAR_D, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_REAR_E, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_REAR_F, IOPORT_DIR_INPUT);
+    ioport_set_pin_dir(ENC_REAR_G, IOPORT_DIR_INPUT);
   
     /* Configure Raspberry Pi GPIO pins */
     ioport_set_pin_dir(RPI1, IOPORT_DIR_OUTPUT);
