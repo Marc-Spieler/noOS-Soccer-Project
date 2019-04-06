@@ -170,6 +170,9 @@ void PrepareValuesToSend(void)
     if (b_trigger)
     {
         b_trigger = false;
+        
+        mtr.rsvd = 1234;
+        
         memcpy(&rpi_buf, &mtr, sizeof(mtr));
         spi_slave_transfer(&rpi_buf, sizeof(rpi_buf));
     }

@@ -39,49 +39,18 @@ extern sensor_to_motor_t stm;
 
 typedef struct
 {
-    struct
-    {
-        uint8_t x              :4;
-        uint8_t y              :4;
-    } rbt_pos;
-    
-    struct
-    {
-        uint8_t wifi           :1;
-        uint8_t on_field       :1;
-        uint8_t have_ball      :1;
-        uint8_t rbt_posX_valid :1;
-        uint8_t rbt_posY_valid :1;
-        uint8_t rsvd           :3;
-    } info;
-    
-    struct
-    {
-        uint16_t dir           :12;
-        uint16_t rsvd          :4;
-    } ibit;
+    uint16_t rsvd;
 } motor_to_raspberrypi_t;
 
 typedef struct
 {
     struct
     {
-        uint8_t x              :4;
-        uint8_t y              :4;
-    } rbt_pos;
-    
-    struct
-    {
-        uint8_t x              :4;
-        uint8_t y              :4;
-    } ball_pos;
-    
-    struct
-    {
-        uint16_t ball           :12;
-        uint16_t have_ball      :1;
-        uint16_t rsvd           :3;
-    } ibit;
+        uint16_t dir         :8;
+        uint16_t see         :1;
+        uint16_t have        :1;
+        uint16_t rsvd        :6;
+    } ball;
 } raspberrypi_to_motor_t;
 
 extern motor_to_raspberrypi_t mtr;

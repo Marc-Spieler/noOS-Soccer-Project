@@ -57,6 +57,8 @@ int main(void)
         }
 
         //update_motor(1, 1, 0);
+        
+        PrepareValuesToSend();
 
         act_event = button_events();
         menu(act_event);

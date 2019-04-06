@@ -222,21 +222,21 @@ static void menu_ball(event_t event1)
         lcd_clear();
     }
     
-    if (rtm.ibit.ball >= 100 && rtm.ibit.ball <= 162)
+    if (rtm.ball.dir == 0)
     {
-        sprintf(sprintf_buf, "Direction: %4d   ", rtm.ibit.ball - 131);
-        lcd_print_s(2, 0, sprintf_buf);
+        lcd_print_s(2, 0, "RPi inactive   ");
     }
-    else if (rtm.ibit.ball == 0)
+    else if (rtm.ball.see) //  && rtm.ball.dir != 0
     {
-        lcd_print_s(2, 0, "Direction: waiting");
+        sprintf(sprintf_buf, "Direction: %4d   ", rtm.ball.dir - 128);
+        lcd_print_s(2, 0, sprintf_buf);
     }
     else
     {
-        lcd_print_s(2, 0, "Direction: no ball");
+        lcd_print_s(2, 0, "no ball found  ");
     }
     
-    sprintf(sprintf_buf, "Having ball: %1d", rtm.ibit.have_ball);
+    sprintf(sprintf_buf, "Having ball: %1d", rtm.ball.have);
     lcd_print_s(3, 0, sprintf_buf);
     
     if(event1 == EVENT_BUTTON_RETURN_P)
