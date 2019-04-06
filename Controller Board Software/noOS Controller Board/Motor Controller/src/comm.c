@@ -9,13 +9,19 @@
 
 motor_to_sensor_t mts;
 sensor_to_motor_t stm;
+motor_to_raspberrypi_t mtr;
+raspberrypi_to_motor_t rtm;
 
 uint8_t sens_buf[sizeof(stm)];
+uint8_t rpi_buf[sizeof(rtm)];
+
+static Bool b_trigger = false;
 
 void spi_init(void)
 {
     configure_dmac();
     spi_master_initialize();
+    spi_slave_initialize();
 }
 
 void spi_master_initialize(void)
@@ -34,6 +40,26 @@ void spi_master_initialize(void)
     };
     usart_init_spi_master(USART1, &spi_settings, sysclk_get_peripheral_hz());
     usart_spi_enable(USART1);
+}
+
+void spi_slave_initialize(void)
+{
+    dmac_channel_disable(DMAC, 4);
+    dmac_channel_disable(DMAC, 2);
+    pmc_enable_periph_clk(ID_SPI0);
+    spi_disable(SPI0);
+    spi_reset(SPI0);
+    spi_set_slave_mode(SPI0);
+    spi_disable_mode_fault_detect(SPI0);
+    spi_set_peripheral_chip_select_value(SPI0, spi_get_pcs(0));
+    spi_set_clock_polarity(SPI0, 0, 0);
+    spi_set_clock_phase(SPI0, 0, 1);
+    spi_set_bits_per_transfer(SPI0, 0, SPI_CSR_BITS_8_BIT);
+    spi_enable(SPI0);
+
+    /* Start waiting command. */
+    memcpy(&rpi_buf, &mtr, sizeof(mtr));
+    spi_slave_transfer(&rpi_buf, sizeof(rpi_buf));
 }
 
 void spi_master_transfer(void *p_buf, uint32_t ul_size)
@@ -61,6 +87,29 @@ void spi_master_transfer(void *p_buf, uint32_t ul_size)
     dmac_channel_enable(DMAC, 0);
 }
 
+void spi_slave_transfer(void *p_buf, uint32_t ul_size)
+{
+    dma_transfer_descriptor_t dmac_trans;
+
+    dmac_channel_disable(DMAC, 4);
+    dmac_trans.ul_source_addr = (uint32_t) p_buf;
+    dmac_trans.ul_destination_addr = (uint32_t) & SPI0->SPI_TDR;
+    dmac_trans.ul_ctrlA = ul_size | DMAC_CTRLA_SRC_WIDTH_BYTE | DMAC_CTRLA_DST_WIDTH_BYTE;
+    dmac_trans.ul_ctrlB = DMAC_CTRLB_SRC_DSCR | DMAC_CTRLB_DST_DSCR | DMAC_CTRLB_FC_MEM2PER_DMA_FC | DMAC_CTRLB_SRC_INCR_INCREMENTING | DMAC_CTRLB_DST_INCR_FIXED;
+    dmac_trans.ul_descriptor_addr = 0;
+    dmac_channel_single_buf_transfer_init(DMAC, 4, &dmac_trans);
+    dmac_channel_enable(DMAC, 4);
+
+    dmac_channel_disable(DMAC, 2);
+    dmac_trans.ul_source_addr = (uint32_t) & SPI0->SPI_RDR;
+    dmac_trans.ul_destination_addr = (uint32_t) p_buf;
+    dmac_trans.ul_ctrlA = ul_size | DMAC_CTRLA_SRC_WIDTH_BYTE | DMAC_CTRLA_DST_WIDTH_BYTE;
+    dmac_trans.ul_ctrlB = DMAC_CTRLB_SRC_DSCR | DMAC_CTRLB_DST_DSCR | DMAC_CTRLB_FC_PER2MEM_DMA_FC | DMAC_CTRLB_SRC_INCR_FIXED | DMAC_CTRLB_DST_INCR_INCREMENTING;
+    dmac_trans.ul_descriptor_addr = 0;
+    dmac_channel_single_buf_transfer_init(DMAC, 2, (dma_transfer_descriptor_t *) & dmac_trans);
+    dmac_channel_enable(DMAC, 2);
+}
+
 void configure_dmac(void)
 {
     uint32_t ul_cfg;
@@ -80,7 +129,7 @@ void configure_dmac(void)
     ul_cfg = 0;
     ul_cfg |= DMAC_CFG_DST_PER(13) | DMAC_CFG_DST_H2SEL | DMAC_CFG_SOD | DMAC_CFG_FIFOCFG_ALAP_CFG;
     dmac_channel_set_configuration(DMAC, 1, ul_cfg);
-    #if 0
+
     /* Configure DMA RX channel. */
     ul_cfg = 0;
     ul_cfg |= DMAC_CFG_SRC_PER(2) | DMAC_CFG_SRC_H2SEL | DMAC_CFG_SOD | DMAC_CFG_FIFOCFG_ALAP_CFG;
@@ -90,10 +139,11 @@ void configure_dmac(void)
     ul_cfg = 0;
     ul_cfg |= DMAC_CFG_DST_PER(1) | DMAC_CFG_DST_H2SEL | DMAC_CFG_SOD | DMAC_CFG_FIFOCFG_ALAP_CFG;
     dmac_channel_set_configuration(DMAC, 4, ul_cfg);
-    #endif
+
     /* Enable receive channel interrupt for DMAC. */
     NVIC_EnableIRQ(DMAC_IRQn);
     dmac_enable_interrupt(DMAC, (1 << 0));
+    dmac_enable_interrupt(DMAC, (1 << 2));
 }
 
 void DMAC_Handler(void)
@@ -106,5 +156,21 @@ void DMAC_Handler(void)
     {
         usart_spi_release_chip_select(USART1);
         memcpy(&stm, &sens_buf, sizeof(stm));
+    }
+    
+    if (ul_status & (1 << 2))
+    {
+        memcpy(&rtm, &rpi_buf, sizeof(rtm));
+        b_trigger = true;
+    }
+}
+
+void PrepareValuesToSend(void)
+{
+    if (b_trigger)
+    {
+        b_trigger = false;
+        memcpy(&rpi_buf, &mtr, sizeof(mtr));
+        spi_slave_transfer(&rpi_buf, sizeof(rpi_buf));
     }
 }
