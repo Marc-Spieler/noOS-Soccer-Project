@@ -8,6 +8,7 @@
 #include "lcd.h"
 #include "timing.h"
 #include "compass.h"
+#include "comm.h"
 
 menu_t act_menu = MENU_MAIN;
 Bool print_menu = 1;
@@ -221,12 +222,12 @@ static void menu_ball(event_t event1)
         lcd_clear();
     }
     
-    /*if (rpi_rx.ibit.ball >= 100 && rpi_rx.ibit.ball <= 162)
+    if (rtm.ibit.ball >= 100 && rtm.ibit.ball <= 162)
     {
-        sprintf(sprintf_buf, "Direction: %4d   ", rpi_rx.ibit.ball - 131);
+        sprintf(sprintf_buf, "Direction: %4d   ", rtm.ibit.ball - 131);
         lcd_print_s(2, 0, sprintf_buf);
     }
-    else if (rpi_rx.ibit.ball == 0)
+    else if (rtm.ibit.ball == 0)
     {
         lcd_print_s(2, 0, "Direction: waiting");
     }
@@ -235,7 +236,7 @@ static void menu_ball(event_t event1)
         lcd_print_s(2, 0, "Direction: no ball");
     }
     
-    sprintf(sprintf_buf, "Having ball: %1d", rpi_rx.ibit.have_ball);*/
+    sprintf(sprintf_buf, "Having ball: %1d", rtm.ibit.have_ball);
     lcd_print_s(3, 0, sprintf_buf);
     
     if(event1 == EVENT_BUTTON_RETURN_P)

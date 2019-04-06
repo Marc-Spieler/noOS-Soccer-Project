@@ -145,7 +145,7 @@ src/menu.d src/menu.o: ../src/menu.c ../src/menu.h ../src/asf.h \
  ../src/ASF/common/services/twi/sam_twi/twi_master.h \
  ../src/ASF/common/services/twi/twi_slave.h \
  ../src/ASF/common/services/twi/sam_twi/twi_slave.h ../src/lcd.h \
- ../src/timing.h ../src/compass.h
+ ../src/timing.h ../src/compass.h ../src/comm.h
 
 ../src/menu.h:
 
@@ -460,3 +460,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/timing.h:
 
 ../src/compass.h:
+
+../src/comm.h:
