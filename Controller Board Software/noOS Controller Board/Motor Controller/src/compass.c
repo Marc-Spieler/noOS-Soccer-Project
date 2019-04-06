@@ -25,13 +25,29 @@ void compass_init(void)
 
     twi_set_compass_tx_callback(compass_callback);
     twi_set_compass_rx_callback(compass_callback);
+    
+    twi_packet_t *tx_packet = twi_get_tx_packet();
+    
+    tx_packet->chip = 0x60;
+    tx_packet->addr[0] = 0x0c;
+    tx_packet->addr_length = 1;
+    
+    tx_packet->buffer[0] = 0x55;
+    tx_packet->buffer[1] = 0x5a;
+    tx_packet->buffer[2] = 0xa5;
+    tx_packet->buffer[3] = 0x12;
+    tx_packet->length = 4;
+    
+    set_compass_is_busy();
+    twi_pdc_master_write(TWI0, tx_packet);
+    while(compass_is_busy());
 }
 
 void update_compass(void)
 {
     twi_packet_t *rx_packet = twi_get_rx_packet();
 
-    if ((getTicks() - ul_ticks_compass) > 100)
+    if ((getTicks() - ul_ticks_compass) > 33)
     {
         if(lcd_is_busy())
         {
