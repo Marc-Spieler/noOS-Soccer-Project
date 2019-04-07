@@ -10,6 +10,9 @@
 
 uint16_t direction;
 static uint8_t compassIsBusy = false;
+Bool dir_changed[1000];
+uint16_t prev_direction = 0;
+uint16_t ro = 0;
 
 //local function
 static void compass_callback(void);
@@ -47,23 +50,44 @@ void compass_init(void)
 
 void update_compass(void)
 {
+    if(ro == 1000)
+    {
+        ro = 0;
+        ioport_set_pin_level(LED_ONBOARD, 1);
+        while(1);
+    }
+
     twi_packet_t *rx_packet = twi_get_rx_packet();
 
     if ((getTicks() - ul_ticks_compass) > 33)
     {
+        
+
         if(lcd_is_busy())
         {
             return;
         }
 
+        ro++;
+
         ul_ticks_compass = getTicks();
         
-        compassIsBusy = true;
+        compassIsBusy = true;  // Funktion?
         if(twi_pdc_master_read(TWI0, rx_packet) == TWI_SUCCESS)
         {
-            while(compassIsBusy);
+            while(compassIsBusy); // Funktion?
         }
         direction = (rx_packet->buffer[0] << 8) | rx_packet->buffer[1];
+
+        if(direction != prev_direction)
+        {
+            dir_changed[ro] = 1;
+        }
+        else
+        {
+            dir_changed[ro] = 0;
+        }
+        prev_direction = direction;
     }
 }
 
