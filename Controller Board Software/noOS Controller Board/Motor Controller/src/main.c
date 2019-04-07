@@ -35,7 +35,8 @@ int main(void)
     spi_init();
     
     lcd_init();
-    //compass_init();
+    //mdelay(1000);
+    compass_init();
     
     noOS_bootup_sequence();
 

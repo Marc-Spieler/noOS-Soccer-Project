@@ -26,6 +26,8 @@ void compass_init(void)
     twi_set_compass_tx_callback(compass_callback);
     twi_set_compass_rx_callback(compass_callback);
     
+    while(lcd_is_busy());
+
     twi_packet_t *tx_packet = twi_get_tx_packet();
     
     tx_packet->chip = 0x60;
