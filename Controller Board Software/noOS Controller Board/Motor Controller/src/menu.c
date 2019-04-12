@@ -45,7 +45,7 @@ char sprintf_buf[21];
 static void menu_main(event_t event1);
 static void menu_match(event_t event1);
 static void menu_sensors(event_t event1);
-static void menu_ball(event_t event1);
+static void menu_camera(event_t event1);
 static void menu_compass(event_t event1);
 static void menu_compass_calibration(event_t event1);
 static void menu_line(event_t event1);
@@ -73,8 +73,8 @@ void menu(event_t event1)
         case MENU_SETTINGS:
             menu_settings(event1);
             break;
-        case MENU_BALL:
-            menu_ball(event1);
+        case MENU_CAMERA:
+            menu_camera(event1);
             break;
         case MENU_COMPASS:
             menu_compass(event1);
@@ -190,7 +190,7 @@ static void menu_sensors(event_t event1)
             switch (menu_info.sensors.act_cursor_line)
             {
                 case 1:
-                    act_menu = MENU_BALL;
+                    act_menu = MENU_CAMERA;
                     print_menu = 1;
                     break;
                 case 2:
@@ -214,7 +214,7 @@ static void menu_sensors(event_t event1)
     }
 }
 
-static void menu_ball(event_t event1)
+static void menu_camera(event_t event1)
 {
     if(print_menu)
     {
@@ -224,16 +224,30 @@ static void menu_ball(event_t event1)
     
     if (rtm.ball.dir == 0)
     {
-        lcd_print_s(2, 0, "RPi inactive   ");
+        lcd_print_s(1, 0, "RPi inactive ");
     }
     else if (rtm.ball.see) //  && rtm.ball.dir != 0
     {
-        sprintf(sprintf_buf, "Direction: %4d   ", rtm.ball.dir - 128);
+        sprintf(sprintf_buf, "Ball: %4d   ", rtm.ball.dir - 32);
+        lcd_print_s(1, 0, sprintf_buf);
+    }
+    else
+    {
+        lcd_print_s(1, 0, "no ball found");
+    }
+    
+    if (rtm.goal.dir == 0)
+    {
+        lcd_print_s(2, 0, "RPi inactive ");
+    }
+    else if (rtm.goal.see)
+    {
+        sprintf(sprintf_buf, "Goal: %4d   ", rtm.goal.dir - 32);
         lcd_print_s(2, 0, sprintf_buf);
     }
     else
     {
-        lcd_print_s(2, 0, "no ball found  ");
+        lcd_print_s(2, 0, "no goal found");
     }
     
     sprintf(sprintf_buf, "Having ball: %1d", rtm.ball.have);
@@ -365,10 +379,10 @@ static void menu_settings(event_t event1)
             }
             break;
         case EVENT_BUTTON_MID_P:
-            switch (menu_info.settings.act_cursor_line)
+            /*switch (menu_info.settings.act_cursor_line)
             {
                 case 1:
-                    act_menu = MENU_BALL;
+                    act_menu = MENU_CAMERA;
                     print_menu = 1;
                     break;
                 case 2:
@@ -381,7 +395,7 @@ static void menu_settings(event_t event1)
                     break;
                 default:
                     break;
-            }
+            }*/
             break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_MAIN;

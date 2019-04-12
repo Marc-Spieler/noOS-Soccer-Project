@@ -46,11 +46,17 @@ typedef struct
 {
     struct
     {
-        uint16_t dir         :8;
-        uint16_t see         :1;
-        uint16_t have        :1;
-        uint16_t rsvd        :6;
+        uint8_t dir         :6;
+        uint8_t see         :1;
+        uint8_t have        :1;
     } ball;
+    
+    struct
+    {
+        uint8_t dir         :6;
+        uint8_t see         :1;
+        uint8_t rsvd        :1;
+    } goal;
 } raspberrypi_to_motor_t;
 
 extern motor_to_raspberrypi_t mtr;
