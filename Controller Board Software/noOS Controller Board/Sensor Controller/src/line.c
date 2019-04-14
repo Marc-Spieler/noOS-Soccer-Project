@@ -88,12 +88,14 @@ void calculate_line_esc_direction(void)
         line_white[10] = stm.line.segment_11;
         line_white[11] = stm.line.segment_12;
         
+        // reset segment start and end variables
         for (seg_cntr = 0; seg_cntr < SEG_CNT; seg_cntr++)
         {
             seg_sta[seg_cntr] = 0;
             seg_end[seg_cntr] = 0;
         }
 
+        // search first non white led
         for (led_cntr = 0; led_cntr < LED_CNT; led_cntr++)
         {
             if (!line_white[led_cntr])
