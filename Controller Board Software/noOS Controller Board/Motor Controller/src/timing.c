@@ -49,7 +49,7 @@ void update_comm(void)
 void update_battery(Bool update_forced)
 {
     char tmp[6];
-    battery_percentage = stm.bat_percentage;
+    battery_percentage = stm.battery.percentage;
     
     if (update_forced || prev_battery_percentage != battery_percentage)
     {

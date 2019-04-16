@@ -41,6 +41,8 @@ int main(void)
 
     enable_motor();
 
+    mts.line_cal_value = 7;
+
     while (1)
     {
         update_comm();

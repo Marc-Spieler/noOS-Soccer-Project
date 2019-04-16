@@ -1,12 +1,13 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: noOS                                                           */
-/* Created: 01.07.18                                                    */
+/* Created: 01.07.2018                                                  */
 /************************************************************************/
 
 #include "asf.h"
 #include "comm.h"
 #include "timing.h"
+#include "line.h"
 
 int main(void)
 {
@@ -15,7 +16,7 @@ int main(void)
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
     spi_init();
-    
+    dacc_init();
     adc_start(ADC);
     
     for(int i = 0; i< 3; i++)
@@ -37,8 +38,9 @@ int main(void)
         update_battery();
         update_heartbeat();
         
-        //update_line_values();
-        //calculate_line_esc_direction();
+        update_line_values();
+        calculate_line_esc_direction();
+        update_line_calibration_value(mts.line_cal_value * 256);
         
         PrepareValuesToSend();
     }

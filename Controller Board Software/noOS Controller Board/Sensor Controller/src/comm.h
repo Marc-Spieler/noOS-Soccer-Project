@@ -1,7 +1,7 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: noOS                                                           */
-/* Created: 21.08.18                                                    */
+/* Created: 21.08.2018                                                  */
 /************************************************************************/
 
 #ifndef COMM_H
@@ -19,7 +19,9 @@ typedef struct
         uint8_t rsvd		 :5;
     } ibit;
     
-    uint16_t rsvd;
+    uint8_t line_cal_value;
+    uint8_t rsvd_1;
+    uint32_t rsvd_2;
 } motor_to_sensor_t;
 
 typedef struct
@@ -32,23 +34,32 @@ typedef struct
     
     struct
     {
-        uint16_t segment_1   :1;
-        uint16_t segment_2   :1;
-        uint16_t segment_3   :1;
-        uint16_t segment_4   :1;
-        uint16_t segment_5   :1;
-        uint16_t segment_6   :1;
-        uint16_t segment_7   :1;
-        uint16_t segment_8   :1;
-        uint16_t segment_9   :1;
-        uint16_t segment_10  :1;
-        uint16_t segment_11  :1;
-        uint16_t segment_12  :1;
-        uint16_t see         :1;
-        uint16_t rsvd        :3;
+        union
+        {
+            struct
+            {
+                uint16_t segment_1   :1;
+                uint16_t segment_2   :1;
+                uint16_t segment_3   :1;
+                uint16_t segment_4   :1;
+                uint16_t segment_5   :1;
+                uint16_t segment_6   :1;
+                uint16_t segment_7   :1;
+                uint16_t segment_8   :1;
+                uint16_t segment_9   :1;
+                uint16_t segment_10  :1;
+                uint16_t segment_11  :1;
+                uint16_t segment_12  :1;
+            } single;
+            uint16_t all;
+        };
+        
+        uint32_t see         :1;
+        uint32_t esc         :9;
+        uint32_t rsvd        :10;
     } line;
     
-    struct 
+    struct
     {
         uint16_t voltage     :8;
         uint16_t percentage  :8;

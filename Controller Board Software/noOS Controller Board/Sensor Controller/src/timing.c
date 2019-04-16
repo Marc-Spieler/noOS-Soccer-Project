@@ -1,7 +1,7 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: noOS                                                           */
-/* Created: 22.08.18                                                    */
+/* Created: 22.08.2018                                                  */
 /************************************************************************/
 
 #include "timing.h"
@@ -47,7 +47,7 @@ void update_battery(void)
         bat_percentage_prefiltered = (uint8_t)(-(y * y - 25.2f * y + 158.76f) / 0.04f + 100.0f);
         bat_percentage_prefiltered = (bat_percentage_prefiltered - 20.0) * 1.25;
         bat_percentage_filtered = (bat_percentage_filtered * 3 + bat_percentage_prefiltered) / 4;
-        stm.bat_percentage = bat_percentage_filtered;
+        stm.battery.percentage = bat_percentage_filtered;
         adc_start(ADC);
     }
 }
