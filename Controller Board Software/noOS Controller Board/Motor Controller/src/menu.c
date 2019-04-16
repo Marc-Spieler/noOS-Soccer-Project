@@ -11,11 +11,17 @@
 #include "comm.h"
 
 menu_t act_menu = MENU_MAIN;
-Bool print_menu = 1;
+Bool print_menu = true;
 
 uint8_t rbt_id = 1;
 uint8_t speed_preset = 15;
 Bool allow_leds = true;
+
+uint8_t prev_ball_dir = 0;
+Bool prev_ball_see = false;
+uint8_t prev_goal_dir = 0;
+Bool prev_goal_see = false;
+Bool prev_ball_have = false;
 
 typedef struct
 {
@@ -218,45 +224,62 @@ static void menu_camera(event_t event1)
 {
     if(print_menu)
     {
-        print_menu = 0;
         lcd_clear();
     }
     
-    if (rtm.ball.dir == 0)
+    if(rtm.ball.dir != prev_ball_dir || rtm.ball.see != prev_ball_see || print_menu)
     {
-        lcd_print_s(1, 0, "RPi inactive ");
+        if (rtm.ball.dir == 0)
+        {
+            lcd_print_s(1, 0, "RPi inactive ");
+        }
+        else if (rtm.ball.see) //  && rtm.ball.dir != 0
+        {
+            sprintf(sprintf_buf, "Ball: %4d   ", rtm.ball.dir - 32);
+            lcd_print_s(1, 0, sprintf_buf);
+        }
+        else
+        {
+            lcd_print_s(1, 0, "no ball found");
+        }
+        prev_ball_dir = rtm.ball.dir;
+        prev_ball_see = rtm.ball.see;
     }
-    else if (rtm.ball.see) //  && rtm.ball.dir != 0
+
+    if(rtm.goal.dir != prev_goal_dir || rtm.goal.see != prev_goal_see || print_menu)
     {
-        sprintf(sprintf_buf, "Ball: %4d   ", rtm.ball.dir - 32);
-        lcd_print_s(1, 0, sprintf_buf);
-    }
-    else
-    {
-        lcd_print_s(1, 0, "no ball found");
+        if (rtm.goal.dir == 0)
+        {
+            lcd_print_s(2, 0, "RPi inactive ");
+        }
+        else if (rtm.goal.see)
+        {
+            sprintf(sprintf_buf, "Goal: %4d   ", rtm.goal.dir - 32);
+            lcd_print_s(2, 0, sprintf_buf);
+        }
+        else
+        {
+            lcd_print_s(2, 0, "no goal found");
+        }
+        prev_goal_dir = rtm.goal.dir;
+        prev_goal_see = rtm.goal.see;
     }
     
-    if (rtm.goal.dir == 0)
+    if(rtm.ball.have != prev_ball_have || print_menu)
     {
-        lcd_print_s(2, 0, "RPi inactive ");
+        sprintf(sprintf_buf, "Having ball: %1d", rtm.ball.have);
+        lcd_print_s(3, 0, sprintf_buf);
+        prev_ball_have = rtm.ball.have;
     }
-    else if (rtm.goal.see)
-    {
-        sprintf(sprintf_buf, "Goal: %4d   ", rtm.goal.dir - 32);
-        lcd_print_s(2, 0, sprintf_buf);
-    }
-    else
-    {
-        lcd_print_s(2, 0, "no goal found");
-    }
-    
-    sprintf(sprintf_buf, "Having ball: %1d", rtm.ball.have);
-    lcd_print_s(3, 0, sprintf_buf);
     
     if(event1 == EVENT_BUTTON_RETURN_P)
     {
         act_menu = MENU_SENSORS;
-        print_menu = 1;
+        print_menu = true;
+    }
+    else
+    {
+        print_menu = false;
     }
 }
 
