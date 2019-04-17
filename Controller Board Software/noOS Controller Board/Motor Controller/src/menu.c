@@ -254,6 +254,7 @@ static void menu_compass(event_t event1)
     {
         print_menu = 0;
         lcd_clear();
+        lcd_print_s(4, 2, "press mid to cal");
     }
     
     update_compass();
@@ -338,27 +339,58 @@ static void menu_line(event_t event1)
         stm.line.single.segment_8, stm.line.single.segment_9, stm.line.single.segment_10, stm.line.single.segment_11, stm.line.single.segment_12);
         lcd_print_s(3, 0, sprintf_buf);
         prev_line_values = stm.line.all;
+        lcd_print_s(4, 1, "press mid to cal");
     }
     
-    if(event1 == EVENT_BUTTON_RETURN_P)
+    print_menu = false;
+
+    switch(event1)
     {
-        act_menu = MENU_SENSORS;
-        print_menu = true;
-    }
-    else
-    {
-        print_menu = false;
+        case EVENT_BUTTON_MID_P:
+            act_menu = MENU_LINE_CALIBRATION;
+            print_menu = true;
+            break;
+        case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_SENSORS;
+            print_menu = true;
+            break;
+        default:
+            break;
     }
 }
 
 static void menu_line_calibration(event_t event1)
 {
-    
+    if(print_menu)
+    {
+        lcd_clear();
+        sprintf(sprintf_buf, "Cal value: %2d", mts.line_cal_value);
+        lcd_print_s(2, 0, sprintf_buf);
+        print_menu = false;
+    }
+
+    if(event1 == EVENT_BUTTON_LEFT_P)
+    {
+        if(mts.line_cal_value > 0)
+        {
+            mts.line_cal_value -= 1;
+            print_menu = true;
+        }
+    }
+
+    if(event1 == EVENT_BUTTON_RIGHT_P)
+    {
+        if(mts.line_cal_value < 16)
+        {
+            mts.line_cal_value += 1;
+            print_menu = true;
+        }
+    }
     
     if(event1 == EVENT_BUTTON_RETURN_P)
     {
         act_menu = MENU_LINE;
-        print_menu = 1;
+        print_menu = true;
     }
 }
 
