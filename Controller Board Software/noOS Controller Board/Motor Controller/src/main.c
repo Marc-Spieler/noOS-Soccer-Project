@@ -31,14 +31,14 @@ int main(void)
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
     sd_mmc_init();
-    sd_init();
+    //sd_init();
 
     spi_init();
     
     compass_init();
     lcd_init();
     
-    write_time_test();
+    //write_time_test();
 
     noOS_bootup_sequence();
 

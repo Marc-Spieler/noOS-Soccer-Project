@@ -968,9 +968,9 @@
     <Compile Include="src\menu.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\sd.c">
+    <None Include="src\sd.c">
       <SubType>compile</SubType>
-    </Compile>
+    </None>
     <Compile Include="src\sd.h">
       <SubType>compile</SubType>
     </Compile>

@@ -5,6 +5,8 @@
 /************************************************************************/
 
 #include "sd.h"
+#include "string.h"
+#include "timing.h"
 
 char test_file_name[] = "0:sd_mmc_test.txt";
 Ctrl_status status;
@@ -53,16 +55,16 @@ void close_file_match(void)
 void write_data(void)
 {
     uint32_t bytes_written;
-    uint32_t start_time = getTicks();
-    set_led(LED_ONBOARD, 0);
+    //uint32_t start_time = getTicks();
+    ioport_set_pin_level(LED_ONBOARD, 0);
 
     for(int i = 0; i < 10000; i++)
     {
         f_write(&file_object, "Test SD/MMC stack\n", 18, &bytes_written);
     }
     
-    uint32_t diff = getTicks() - start_time;
-    close_file_match;
+    //uint32_t diff = getTicks() - start_time;
+    close_file_match();
 }
 
 void write_time_test(void)
@@ -76,20 +78,23 @@ void write_time_test(void)
     
     uint32_t diff = 0;
     uint32_t bytes_written;
+    char sprintf_buf[21];
 
-    set_led(LED_M3, 0);
+    ioport_set_pin_level(LED_M3, 0);
 
     for(int i = 0; i < 1000; i++)
     {
         uint32_t start_time = getTicks();
-        set_led(LED_ONBOARD, 1);
+        ioport_set_pin_level(LED_ONBOARD, 1);
 
-        f_write(&file_object, diff, 18, &bytes_written);
+        sprintf(sprintf_buf, "%4d", (int)diff);
+        f_write(&file_object, sprintf_buf, 18, &bytes_written);
         
-        set_led(LED_ONBOARD, 0);
+        ioport_set_pin_level(LED_ONBOARD, 0);
         diff = getTicks() - start_time;
     }
 
-    set_led(LED_M3, 1);
+    ioport_set_pin_level(LED_M3, 1);
     f_close(&file_object);
+    while(1);
 }
