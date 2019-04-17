@@ -5,8 +5,13 @@
 /************************************************************************/
 
 #include "sd.h"
+#include "asf.h"
 #include "string.h"
 #include "timing.h"
+#include "lcd.h"
+#include "menu.h"
+#include "comm.h"
+#include "compass.h"
 
 char test_file_name[] = "0:sd_mmc_test.txt";
 Ctrl_status status;
@@ -75,26 +80,27 @@ void write_time_test(void)
     {
         while(1);
     }
-    
+
+    uint32_t bw;
+    uint32_t sta;
     uint32_t diff = 0;
-    uint32_t bytes_written;
-    char sprintf_buf[21];
-
-    ioport_set_pin_level(LED_M3, 0);
-
-    for(int i = 0; i < 1000; i++)
+    char sprintf_buf[8];
+    set_led(LED_ONBOARD, 0);
+    for(int i = 0; i < 10000; i++)
     {
-        uint32_t start_time = getTicks();
-        ioport_set_pin_level(LED_ONBOARD, 1);
-
-        sprintf(sprintf_buf, "%4d", (int)diff);
-        f_write(&file_object, sprintf_buf, 18, &bytes_written);
-        
-        ioport_set_pin_level(LED_ONBOARD, 0);
-        diff = getTicks() - start_time;
+        sta = getTicks();
+        sprintf(sprintf_buf, "%4d\r\n", (int)diff);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+        //f_sync(&file_object);
+        diff = getTicks() - sta;
     }
-
-    ioport_set_pin_level(LED_M3, 1);
+    sta = getTicks();
+    f_sync(&file_object);
+    diff = getTicks() - sta;
+    f_write(&file_object, "\r\n", 2, &bw);
+    sprintf(sprintf_buf, "%4d\r\n", (int)diff);
+    f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
     f_close(&file_object);
+    set_led(LED_ONBOARD, 1);
     while(1);
 }
