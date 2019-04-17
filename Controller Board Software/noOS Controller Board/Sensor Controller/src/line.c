@@ -60,25 +60,25 @@ void update_line_calibration_value(uint16_t calibration_value)
 
 void update_line_values(void)
 {
-    act_line_value = ioport_get_port_level(IOPORT_PIOC, 0x495AA888);
+    act_line_value = ioport_get_port_level(IOPORT_PIOC, 0xFFFFFFFF);
     
-    stm.line.single.segment_1 = (act_line_value & 0x00020000) != 0x00020000 ? 1 : 0;
-    stm.line.single.segment_2 = (act_line_value & 0x00080000) != 0x00080000 ? 1 : 0;
-    stm.line.single.segment_3 = (act_line_value & 0x40000000) != 0x40000000 ? 1 : 0;
-    stm.line.single.segment_4 = (act_line_value & 0x00100000) != 0x00100000 ? 1 : 0;
-    stm.line.single.segment_5 = (act_line_value & 0x00400000) != 0x00400000 ? 1 : 0;
-    stm.line.single.segment_6 = (act_line_value & 0x01000000) != 0x01000000 ? 1 : 0;
-    stm.line.single.segment_7 = (act_line_value & 0x08000000) != 0x08000000 ? 1 : 0;
-    stm.line.single.segment_8 = (act_line_value & 0x00000008) != 0x00000008 ? 1 : 0;
-    stm.line.single.segment_9 = (act_line_value & 0x00000080) != 0x00000080 ? 1 : 0;
-    stm.line.single.segment_10 = (act_line_value & 0x00000800) != 0x00000800 ? 1 : 0;
-    stm.line.single.segment_11 = (act_line_value & 0x00002000) != 0x00002000 ? 1 : 0;
-    stm.line.single.segment_12 = (act_line_value & 0x00008000) != 0x00008000 ? 1 : 0;
+    stm.line.single.segment_1 = (act_line_value & 0x00020000) ? 0 : 1;
+    stm.line.single.segment_2 = (act_line_value & 0x00080000) ? 0 : 1;
+    stm.line.single.segment_3 = (act_line_value & 0x40000000) ? 0 : 1;
+    stm.line.single.segment_4 = (act_line_value & 0x00100000) ? 0 : 1;
+    stm.line.single.segment_5 = (act_line_value & 0x00400000) ? 0 : 1;
+    stm.line.single.segment_6 = (act_line_value & 0x01000000) ? 0 : 1;
+    stm.line.single.segment_7 = (act_line_value & 0x08000000) ? 0 : 1;
+    stm.line.single.segment_8 = (act_line_value & 0x00000008) ? 0 : 1;
+    stm.line.single.segment_9 = (act_line_value & 0x00000080) ? 0 : 1;
+    stm.line.single.segment_10 = (act_line_value & 0x00000800) ? 0 : 1;
+    stm.line.single.segment_11 = (act_line_value & 0x00002000) ? 0 : 1;
+    stm.line.single.segment_12 = (act_line_value & 0x00008000) ? 0 : 1;
 }
 
 void calculate_line_esc_direction(void)
 {
-    if (act_line_value != 0x495AA888)
+    if (stm.line.all != 0)
     {
         line_white[0] = stm.line.single.segment_1;
         line_white[1] = stm.line.single.segment_2;
@@ -154,45 +154,47 @@ void calculate_line_esc_direction(void)
             if (seg_mid[0] - seg_mid[1] > 180)
             {
                 line_esc = (seg_mid[0] + seg_mid[1]) / divider;
+                line_esc -= 180; //
             }
             else
             {
                 line_esc = (seg_mid[0] + seg_mid[1]) / divider;
-                line_esc += 180;
+                //line_esc += 180;
             }
         }
         else if (divider > 0)
         {
+            line_esc = 0;
             for (seg_cntr = 0; seg_cntr < SEG_CNT; seg_cntr++)
             {
-                line_esc = seg_mid[seg_cntr];
+                line_esc += seg_mid[seg_cntr];
             }
             line_esc /= divider;
-            line_esc += 180;
+            //line_esc += 180;
         }
         else if (divider == 0)
         {
-            line_esc = seg_mid[0] + 180;
+            line_esc = seg_mid[0];// + 180;
         }
         
         stm.line.see = 1;
-        set_led(LED_ONBOARD, 1);
-        set_led(LED_S3, 1);
+        ioport_set_pin_level(LED_ONBOARD, 1);
+        ioport_set_pin_level(LED_S3, 1);
     }
     else
     {
-        line_esc = 0;
+        line_esc = 180;
         stm.line.see = 0;
-        set_led(LED_ONBOARD, 0);
-        set_led(LED_S3, 0);
+        ioport_set_pin_level(LED_ONBOARD, 0);
+        ioport_set_pin_level(LED_S3, 0);
     }
     
-    if (line_esc >= 180)
+    if (line_esc >= 360)
     {
         line_esc -= 360;
     }
     
-    if (line_esc <= -180)
+    if (line_esc < 0)
     {
         line_esc += 360;
     }

@@ -322,11 +322,16 @@ static void menu_line(event_t event1)
 {
     static uint16_t prev_line_values;
 
+    if(print_menu)
+    {
+        lcd_clear();
+    }
+
     if(stm.line.all != prev_line_values || print_menu)
     {
         sprintf(sprintf_buf, "See: %1d", stm.line.see);
         lcd_print_s(1, 0, sprintf_buf);
-        sprintf(sprintf_buf, "Esc: %4d", stm.line.esc);
+        sprintf(sprintf_buf, "Esc: %4d", stm.line.esc - 180);
         lcd_print_s(2, 0, sprintf_buf);
         sprintf(sprintf_buf, "Line: %1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d", stm.line.single.segment_1, stm.line.single.segment_2,
         stm.line.single.segment_3, stm.line.single.segment_4, stm.line.single.segment_5, stm.line.single.segment_6, stm.line.single.segment_7,
@@ -338,7 +343,11 @@ static void menu_line(event_t event1)
     if(event1 == EVENT_BUTTON_RETURN_P)
     {
         act_menu = MENU_SENSORS;
-        print_menu = 1;
+        print_menu = true;
+    }
+    else
+    {
+        print_menu = false;
     }
 }
 
