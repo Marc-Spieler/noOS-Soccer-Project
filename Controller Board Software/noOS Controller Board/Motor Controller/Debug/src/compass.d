@@ -141,10 +141,11 @@ src/compass.d src/compass.o: ../src/compass.c ../src/compass.h \
  ../src/ASF/common/services/ioport/ioport.h \
  ../src/ASF/common/services/ioport/sam/ioport_pio.h \
  ../src/ASF/common/services/storage/ctrl_access/ctrl_access.h \
- ../src/config/conf_access.h ../src/ASF/sam/drivers/pdc/pdc.h \
- ../src/ASF/sam/drivers/pmc/sleep.h ../src/ASF/sam/drivers/rtc/rtc.h \
- ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
+ ../src/config/conf_access.h \
  ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h \
+ ../src/ASF/sam/drivers/pdc/pdc.h ../src/ASF/sam/drivers/pmc/sleep.h \
+ ../src/ASF/sam/drivers/rtc/rtc.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
  ../src/ASF/common/components/memory/sd_mmc/sd_mmc.h \
  ../src/config/conf_sd_mmc.h \
  ../src/ASF/common/services/spi/sam_spi/spi_master.h \
@@ -457,6 +458,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/config/conf_access.h:
 
+../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h:
+
 ../src/ASF/sam/drivers/pdc/pdc.h:
 
 ../src/ASF/sam/drivers/pmc/sleep.h:
@@ -464,8 +467,6 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/sam/drivers/rtc/rtc.h:
 
 ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h:
-
-../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h:
 
 ../src/ASF/common/components/memory/sd_mmc/sd_mmc.h:
 

@@ -125,6 +125,7 @@ src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.d \
  ../src/config/conf_access.h ../src/ASF/common/boards/board.h \
  ../src/ASF/common/boards/user_board/user_board.h \
  ../src/config/conf_board.h \
+ ../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\xlocale.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h \
@@ -380,6 +381,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/common/boards/user_board/user_board.h:
 
 ../src/config/conf_board.h:
+
+../src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h:
 

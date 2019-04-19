@@ -42,6 +42,8 @@ src\lcd.c
 
 src\menu.c
 
+src\sd.c
+
 src\timing.c
 
 src\ASF\common\services\clock\sam3x\sysclk.c

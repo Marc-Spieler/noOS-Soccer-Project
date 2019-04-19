@@ -14,5 +14,6 @@ void open_file_match(void);
 void close_file_match(void);
 void write_data(void);
 void write_time_test(void);
+void write_time_test_2(void);
 
 #endif

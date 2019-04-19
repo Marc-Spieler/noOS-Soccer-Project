@@ -59,7 +59,7 @@ void close_file_match(void)
 
 void write_data(void)
 {
-    uint32_t bytes_written;
+    UINT bytes_written;
     //uint32_t start_time = getTicks();
     ioport_set_pin_level(LED_ONBOARD, 0);
 
@@ -81,11 +81,11 @@ void write_time_test(void)
         while(1);
     }
 
-    uint32_t bw;
+    UINT bw;
     uint32_t sta;
     uint32_t diff = 0;
     char sprintf_buf[8];
-    set_led(LED_ONBOARD, 0);
+    ioport_set_pin_level(LED_ONBOARD, 0);
     for(int i = 0; i < 10000; i++)
     {
         sta = getTicks();
@@ -101,6 +101,63 @@ void write_time_test(void)
     sprintf(sprintf_buf, "%4d\r\n", (int)diff);
     f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
     f_close(&file_object);
-    set_led(LED_ONBOARD, 1);
+    ioport_set_pin_level(LED_ONBOARD, 1);
+    while(1);
+}
+
+void write_time_test_2(void)
+{
+    uint8_t m1_act = 255;
+    uint8_t m1_ref = 254;
+    uint8_t m2_act = 253;
+    uint8_t m2_ref = 252;
+    uint8_t m3_act = 251;
+    uint8_t m3_ref = 250;
+
+    res = f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
+    
+    if (res != FR_OK)
+    {
+        while(1);
+    }
+
+    UINT bw;
+    uint32_t sta;
+    uint32_t diff = 0;
+    char sprintf_buf[11];
+    ioport_set_pin_level(LED_ONBOARD, 0);
+    for(int i = 0; i < 10000; i++)
+    {
+        sta = getTicks();
+        sprintf(sprintf_buf, "%6d;", i);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+        sprintf(sprintf_buf, "%4d;", (int)diff);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+
+        sprintf(sprintf_buf, "%8d;", (int)m1_act);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+        sprintf(sprintf_buf, "%8d;", (int)m1_ref);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+
+        sprintf(sprintf_buf, "%8d;", (int)m2_act);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+        sprintf(sprintf_buf, "%8d;", (int)m2_ref);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+
+        sprintf(sprintf_buf, "%8d;", (int)m3_act);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+        sprintf(sprintf_buf, "%8d;\r\n", (int)m3_ref);
+        f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+        //f_sync(&file_object);
+        diff = getTicks() - sta;
+    }
+    sta = getTicks();
+    f_sync(&file_object);
+    diff = getTicks() - sta;
+    f_write(&file_object, "\r\n", 2, &bw);
+    sprintf(sprintf_buf, "%4d\r\n", (int)diff);
+    f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+    f_close(&file_object);
+    ioport_set_pin_level(LED_ONBOARD, 1);
     while(1);
 }
