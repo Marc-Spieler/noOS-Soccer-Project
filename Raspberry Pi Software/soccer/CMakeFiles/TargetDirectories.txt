@@ -1,0 +1,4 @@
+/home/pi/soccer/CMakeFiles/rebuild_cache.dir
+/home/pi/soccer/CMakeFiles/edit_cache.dir
+/home/pi/soccer/CMakeFiles/calibrate.dir
+/home/pi/soccer/CMakeFiles/soccer.dir
