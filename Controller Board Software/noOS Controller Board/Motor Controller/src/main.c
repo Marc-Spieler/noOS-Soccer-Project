@@ -41,6 +41,8 @@ int main(void)
     compass_init();
     lcd_init();
     
+    //write_time_test_2();
+
     noOS_bootup_sequence();
 
     enable_motor();
