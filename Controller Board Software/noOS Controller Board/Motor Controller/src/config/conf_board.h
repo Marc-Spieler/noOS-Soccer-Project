@@ -43,6 +43,10 @@
 #define LED_M3                                  (PIO_PD9_IDX)
 #define LED_BAT                                 (PIO_PD6_IDX)
 
+/* Battery warner pin definition */
+#define BATTERY                                 (PWM_CHANNEL_5)
+#define BATTERY_PIN                             (PIO_PB7_IDX)
+
 /* Pushbutton pin definition */
 #define PB_UP                                   (PIO_PD0_IDX)
 #define PB_LEFT                                 (PIO_PD1_IDX)

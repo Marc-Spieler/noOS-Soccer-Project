@@ -28,6 +28,11 @@ void board_init(void)
 	ioport_set_pin_level(LED_M3, 0);
 	ioport_set_pin_dir(LED_BAT, IOPORT_DIR_OUTPUT);
 	ioport_set_pin_level(LED_BAT, 0);
+
+
+    /* Configure battery warner Pin */
+    ioport_set_pin_mode(BATTERY_PIN, IOPORT_MODE_MUX_B);
+    ioport_disable_pin(BATTERY_PIN);
 	
 	/* Configure pushbutton pins */
 	ioport_set_pin_dir(PB_UP, IOPORT_DIR_INPUT);
@@ -139,4 +144,14 @@ void board_init(void)
         .ul_mck = sysclk_get_cpu_hz()
     };
     pwm_init(PWM, &clock_setting);
+
+    /*pwm_channel_t g_pwm_channel_BATTERY;
+    g_pwm_channel_BATTERY.alignment = PWM_ALIGN_LEFT;
+    g_pwm_channel_BATTERY.polarity = PWM_LOW;
+    g_pwm_channel_BATTERY.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    g_pwm_channel_BATTERY.ul_period = 330;
+    g_pwm_channel_BATTERY.ul_duty = 165;
+    g_pwm_channel_BATTERY.channel = BATTERY;
+    pwm_channel_init(PWM, &g_pwm_channel_BATTERY);
+    //pwm_channel_enable(PWM, BATTERY);*/
 }

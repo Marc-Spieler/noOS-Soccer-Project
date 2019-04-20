@@ -82,6 +82,7 @@ void update_heartbeat(void)
             ioport_set_pin_level(LED_M1, 0);
             mts.ibit.heartbeat = 0;
             heart_state = 0;
+            //pwm_channel_disable(PWM, BATTERY);
         }
     }
     else
@@ -93,6 +94,7 @@ void update_heartbeat(void)
             ioport_set_pin_level(LED_M1, 1);
             mts.ibit.heartbeat = 1;
             heart_state = 1;
+            //pwm_channel_enable(PWM, BATTERY);
         }
     }
 }
