@@ -52,6 +52,7 @@ void update_line_calibration_value(uint16_t calibration_value)
 {
     if(calibration_value != prev_calibration_value)
     {
+        calibration_value = calibration_value == 4096 ? 4095 : calibration_value;
         dacc_set_channel_selection(DACC, DACC_CHANNEL_LINE_VREF);
         dacc_write_conversion_data(DACC, calibration_value);
         prev_calibration_value = calibration_value;
