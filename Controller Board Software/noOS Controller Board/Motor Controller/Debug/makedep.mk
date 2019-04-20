@@ -44,6 +44,10 @@ src\compass.c
 
 src\lcd.c
 
+src\lib\iniparser\dictionary.c
+
+src\lib\iniparser\iniparser.c
+
 src\menu.c
 
 src\motor.c

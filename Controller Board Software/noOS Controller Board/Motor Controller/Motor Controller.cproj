@@ -506,7 +506,6 @@
       <Value>printf=iprintf</Value>
       <Value>__SAM3X8E__</Value>
       <Value>DEBUG</Value>
-      <Value>SD_MMC_ENABLE</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -994,6 +993,18 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\lib\iniparser\dictionary.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\lib\iniparser\dictionary.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\lib\iniparser\iniparser.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\lib\iniparser\iniparser.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\menu.c">
@@ -1532,6 +1543,8 @@
     <Folder Include="src\ASF\thirdparty\fatfs\fatfs-r0.09\src\" />
     <Folder Include="src\ASF\thirdparty\fatfs\fatfs-r0.09\src\option\" />
     <Folder Include="src\config\" />
+    <Folder Include="src\lib" />
+    <Folder Include="src\lib\iniparser" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

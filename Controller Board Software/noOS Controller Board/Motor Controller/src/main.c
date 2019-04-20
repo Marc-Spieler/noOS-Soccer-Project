@@ -11,8 +11,8 @@
 #include "menu.h"
 #include "comm.h"
 #include "compass.h"
+//#include "sd.h"
 #include "motor.h"
-#include "sd.h"
 
 Bool blink_level;
 uint32_t ticks_blink_update;
@@ -28,13 +28,15 @@ int main(void)
     event_t act_event;
 
     sysclk_init();
+
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
     motor_init();
+    init_battery_warning();
 
-	sd_mmc_init();
-    sd_init();
+	//sd_mmc_init();
+    //sd_init();
 
     spi_init();
     
@@ -43,7 +45,7 @@ int main(void)
     
     //write_time_test_2();
 
-    noOS_bootup_sequence();
+    //noOS_bootup_sequence();
 
     enable_motor();
 

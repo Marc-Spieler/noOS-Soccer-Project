@@ -31,8 +31,8 @@ void board_init(void)
 
 
     /* Configure battery warner Pin */
-    ioport_set_pin_mode(BATTERY_PIN, IOPORT_MODE_MUX_B);
-    ioport_disable_pin(BATTERY_PIN);
+    ioport_set_pin_mode(BAT_WARN_PIN, IOPORT_MODE_MUX_B);
+    ioport_disable_pin(BAT_WARN_PIN);
 	
 	/* Configure pushbutton pins */
 	ioport_set_pin_dir(PB_UP, IOPORT_DIR_INPUT);
@@ -131,12 +131,13 @@ void board_init(void)
     ioport_set_pin_mode(MSD_DATA3, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(MSD_DATA3);
 
-
     /* Init PWM */
     pmc_enable_periph_clk(ID_PWM);
     pwm_channel_disable(PWM, MOTOR_LEFT);
     pwm_channel_disable(PWM, MOTOR_RIGHT);
     pwm_channel_disable(PWM, MOTOR_REAR);
+    pwm_channel_disable(PWM, ENC_CLK);
+    pwm_channel_disable(PWM, BAT_WARN);
     pwm_clock_t clock_setting =
     {
         .ul_clka = PWM_FREQUENCY * PERIOD_VALUE,
@@ -144,14 +145,4 @@ void board_init(void)
         .ul_mck = sysclk_get_cpu_hz()
     };
     pwm_init(PWM, &clock_setting);
-
-    /*pwm_channel_t g_pwm_channel_BATTERY;
-    g_pwm_channel_BATTERY.alignment = PWM_ALIGN_LEFT;
-    g_pwm_channel_BATTERY.polarity = PWM_LOW;
-    g_pwm_channel_BATTERY.ul_prescaler = PWM_CMR_CPRE_CLKA;
-    g_pwm_channel_BATTERY.ul_period = 330;
-    g_pwm_channel_BATTERY.ul_duty = 165;
-    g_pwm_channel_BATTERY.channel = BATTERY;
-    pwm_channel_init(PWM, &g_pwm_channel_BATTERY);
-    //pwm_channel_enable(PWM, BATTERY);*/
 }

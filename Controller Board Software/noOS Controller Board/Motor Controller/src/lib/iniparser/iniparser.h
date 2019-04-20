@@ -13,6 +13,7 @@
                                 Includes
  ---------------------------------------------------------------------------*/
 
+#include "asf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -87,7 +88,7 @@ const char * iniparser_getsecname(const dictionary * d, int n);
  */
 /*--------------------------------------------------------------------------*/
 
-void iniparser_dump_ini(const dictionary * d, FILE * f);
+void iniparser_dump_ini(const dictionary * d, FIL * f);
 
 /*-------------------------------------------------------------------------*/
 /**
@@ -101,7 +102,7 @@ void iniparser_dump_ini(const dictionary * d, FILE * f);
  */
 /*--------------------------------------------------------------------------*/
 
-void iniparser_dumpsection_ini(const dictionary * d, const char * s, FILE * f);
+void iniparser_dumpsection_ini(const dictionary * d, const char * s, FIL * f);
 
 /*-------------------------------------------------------------------------*/
 /**
@@ -115,7 +116,7 @@ void iniparser_dumpsection_ini(const dictionary * d, const char * s, FILE * f);
   purposes mostly.
  */
 /*--------------------------------------------------------------------------*/
-void iniparser_dump(const dictionary * d, FILE * f);
+void iniparser_dump(const dictionary * d, FIL * f);
 
 /*-------------------------------------------------------------------------*/
 /**

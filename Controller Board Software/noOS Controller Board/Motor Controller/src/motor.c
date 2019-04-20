@@ -7,11 +7,10 @@
 #include "motor.h"
 #include "pid.h"
 
-pwm_channel_t g_pwm_channel_Dribbler;
 pwm_channel_t g_pwm_channel_MLeft;
 pwm_channel_t g_pwm_channel_MRight;
 pwm_channel_t g_pwm_channel_MRear;
-pwm_channel_t g_pwm_channel_ENC;
+pwm_channel_t g_pwm_channel_ENC;    // do not move - weird thing happen
 
 pidReg_t mleft_pid_reg;
 pidReg_t mright_pid_reg;
@@ -93,7 +92,7 @@ void motor_init(void)
     g_pwm_channel_ENC.channel = ENC_CLK;
     pwm_channel_init(PWM, &g_pwm_channel_ENC);
     pwm_channel_enable(PWM, ENC_CLK);
-
+ 
     sysclk_enable_peripheral_clock(ID_TC1);
     tc_init(TC0, 1, TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_CPCTRG);
     tc_write_rc(TC0, 1, 5249);  //MCLK / 128 * 0,008

@@ -82,7 +82,7 @@ void update_heartbeat(void)
             ioport_set_pin_level(LED_M1, 0);
             mts.ibit.heartbeat = 0;
             heart_state = 0;
-            //pwm_channel_disable(PWM, BATTERY);
+            //pwm_channel_enable(PWM, BAT_WARN);
         }
     }
     else
@@ -94,7 +94,20 @@ void update_heartbeat(void)
             ioport_set_pin_level(LED_M1, 1);
             mts.ibit.heartbeat = 1;
             heart_state = 1;
-            //pwm_channel_enable(PWM, BATTERY);
+            //pwm_channel_disable(PWM, BAT_WARN);
         }
     }
+}
+
+void init_battery_warning(void)
+{
+    pwm_channel_t g_pwm_channel_BAT_WARN;
+    g_pwm_channel_BAT_WARN.alignment = PWM_ALIGN_LEFT;
+    g_pwm_channel_BAT_WARN.polarity = PWM_LOW;
+    g_pwm_channel_BAT_WARN.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    g_pwm_channel_BAT_WARN.ul_period = 33000;
+    g_pwm_channel_BAT_WARN.ul_duty = 16500;
+    g_pwm_channel_BAT_WARN.channel = BAT_WARN;
+    pwm_channel_init(PWM, &g_pwm_channel_BAT_WARN);
+    pwm_channel_enable(PWM, BAT_WARN);
 }
