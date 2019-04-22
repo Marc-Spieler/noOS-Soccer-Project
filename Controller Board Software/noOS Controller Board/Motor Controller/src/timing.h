@@ -20,6 +20,6 @@ void mdelay(uint32_t ul_dly_ticks);
 void update_comm(void);
 void update_battery(Bool update_forced);
 void update_heartbeat(void);
-void init_battery_warning(void);
+//void init_battery_warning(void);
 
 #endif

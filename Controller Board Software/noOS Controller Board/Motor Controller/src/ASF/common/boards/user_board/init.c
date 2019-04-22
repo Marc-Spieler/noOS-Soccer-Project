@@ -31,8 +31,8 @@ void board_init(void)
 
 
     /* Configure battery warner Pin */
-    ioport_set_pin_mode(BAT_WARN_PIN, IOPORT_MODE_MUX_B);
-    ioport_disable_pin(BAT_WARN_PIN);
+    /*ioport_set_pin_mode(BAT_WARN_PIN, IOPORT_MODE_MUX_B);
+    ioport_disable_pin(BAT_WARN_PIN);*/
 	
 	/* Configure pushbutton pins */
 	ioport_set_pin_dir(PB_UP, IOPORT_DIR_INPUT);
@@ -137,7 +137,7 @@ void board_init(void)
     pwm_channel_disable(PWM, MOTOR_RIGHT);
     pwm_channel_disable(PWM, MOTOR_REAR);
     pwm_channel_disable(PWM, ENC_CLK);
-    pwm_channel_disable(PWM, BAT_WARN);
+    //pwm_channel_disable(PWM, BAT_WARN);
     pwm_clock_t clock_setting =
     {
         .ul_clka = PWM_FREQUENCY * PERIOD_VALUE,

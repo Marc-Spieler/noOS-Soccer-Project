@@ -33,7 +33,7 @@ int main(void)
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
     motor_init();
-    init_battery_warning();
+    //init_battery_warning();
 
 	//sd_mmc_init();
     //sd_init();

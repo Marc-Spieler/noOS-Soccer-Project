@@ -44,8 +44,8 @@
 #define LED_BAT                                 (PIO_PD6_IDX)
 
 /* Battery warner pin definition */
-#define BAT_WARN                                (PWM_CHANNEL_3)
-#define BAT_WARN_PIN                            (PIO_PC8_IDX)
+/*#define BAT_WARN                                (PWM_CHANNEL_3)
+#define BAT_WARN_PIN                            (PIO_PC8_IDX)*/
 
 /* Pushbutton pin definition */
 #define PB_UP                                   (PIO_PD0_IDX)

@@ -99,7 +99,7 @@ void update_heartbeat(void)
     }
 }
 
-void init_battery_warning(void)
+/*void init_battery_warning(void)
 {
     pwm_channel_t g_pwm_channel_BAT_WARN;
     g_pwm_channel_BAT_WARN.alignment = PWM_ALIGN_LEFT;
@@ -110,4 +110,4 @@ void init_battery_warning(void)
     g_pwm_channel_BAT_WARN.channel = BAT_WARN;
     pwm_channel_init(PWM, &g_pwm_channel_BAT_WARN);
     pwm_channel_enable(PWM, BAT_WARN);
-}
+}*/
