@@ -56,6 +56,8 @@ src\pid.c
 
 src\sd.c
 
+src\support.c
+
 src\timing.c
 
 src\ASF\common\services\clock\sam3x\sysclk.c

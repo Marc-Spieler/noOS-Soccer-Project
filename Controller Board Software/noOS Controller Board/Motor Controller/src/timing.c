@@ -107,9 +107,27 @@ void check_battery(void)
     static Bool bat_led_state;
     static uint32_t ticks_battery;
 
-    if(battery_percentage < 20)
+    if(battery_percentage < 10)
     {
-        if (getTicks() >= (ticks_battery + 100))
+        if (getTicks() >= (ticks_battery + 75))
+        {
+            ticks_battery = getTicks();
+            bat_led_state = !bat_led_state;
+            ioport_set_pin_level(LED_BAT, bat_led_state);
+        }
+    }
+    else if(battery_percentage < 20)
+    {
+        if (getTicks() >= (ticks_battery + 125))
+        {
+            ticks_battery = getTicks();
+            bat_led_state = !bat_led_state;
+            ioport_set_pin_level(LED_BAT, bat_led_state);
+        }
+    }
+    else if(battery_percentage < 30)
+    {
+        if (getTicks() >= (ticks_battery + 200))
         {
             ticks_battery = getTicks();
             bat_led_state = !bat_led_state;

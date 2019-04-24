@@ -544,6 +544,7 @@
       <Value>../src/ASF/common/services/delay</Value>
       <Value>../src/ASF/sam/drivers/hsmci</Value>
       <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam</Value>
+      <Value>../src/lib/iniparser</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>
@@ -1029,6 +1030,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\sd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\support.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\support.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\timing.c">

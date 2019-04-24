@@ -1,7 +1,7 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: noOS                                                           */
-/* Created: 19.08.18                                                    */
+/* Created: 19.08.2018                                                  */
 /************************************************************************/
 
 #include "menu.h"
@@ -9,13 +9,11 @@
 #include "timing.h"
 #include "compass.h"
 #include "comm.h"
+#include "support.h"
+#include "iniparser.h"
 
 menu_t act_menu = MENU_MAIN;
 Bool print_menu = true;
-
-uint8_t rbt_id = 1;
-uint8_t speed_preset = 15;
-Bool allow_leds = true;
 
 uint8_t prev_ball_dir = 0;
 Bool prev_ball_see = false;
@@ -361,6 +359,17 @@ static void menu_compass_calibration(event_t event1)
             }
             print_menu = true;*/
             break;
+        case EVENT_BUTTON_RETURN_P:
+            if(compass_cal_step == 0)
+            {
+                act_menu = MENU_COMPASS;
+                print_menu = true;
+            }
+            else
+            {
+                print_menu = false;
+            }
+            break;
         default:
             print_menu = false;
             break;
@@ -443,6 +452,8 @@ static void menu_line_calibration(event_t event1)
 
 static void menu_settings(event_t event1)
 {
+    FIL noOS_ini_file;
+
     if (print_menu)
     {
         print_menu_settings();
@@ -464,7 +475,67 @@ static void menu_settings(event_t event1)
                 print_cursor(&menu_info.settings);
             }
             break;
-        case EVENT_BUTTON_MID_P:
+        case EVENT_BUTTON_LEFT_P:
+            switch (menu_info.settings.act_cursor_line)
+            {
+                case 1:
+                    if(robot_id > 1)
+                    {
+                        robot_id--;
+                        if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
+                        {
+                            iniparser_set(noOS_ini_dict, "general:robot_id", (char*)&robot_id);
+                            iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
+                            f_close(&noOS_ini_file);
+                        }
+                        else
+                        {
+                            // todo error menu
+                        }
+                        print_menu = true;
+                    }
+                    break;
+                case 2:
+                    
+                    break;
+                case 3:
+                    
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case EVENT_BUTTON_RIGHT_P:
+            switch (menu_info.settings.act_cursor_line)
+            {
+                case 1:
+                    if(robot_id < 2)
+                    {
+                        robot_id++;
+                        if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
+                        {
+                            iniparser_set(noOS_ini_dict, "general:robot_id", (char*)&robot_id);
+                            iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
+                            f_close(&noOS_ini_file);
+                        }
+                        else
+                        {
+                            // todo error menu
+                        }
+                        print_menu = true;
+                    }
+                    break;
+                case 2:
+                    
+                    break;
+                case 3:
+                    
+                    break;
+                default:
+                    break;
+            }
+            break;
+        /*case EVENT_BUTTON_MID_P:
             switch (menu_info.settings.act_cursor_line)
             {
                 case 1:
@@ -479,7 +550,7 @@ static void menu_settings(event_t event1)
                 default:
                     break;
             }
-            break;
+            break;*/
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_MAIN;
             print_menu = true;
@@ -556,7 +627,17 @@ static void menu_shutdown(event_t event1)
 
 static void print_menu_main(void)
 {
-    const char *text[4] = {"    noOS ONE", " Match", " Sensors", " Settings"};
+    const char* text[4] = {"   no robot id", " Match", " Sensors", " Settings"};
+
+    if(robot_id == 1)
+    {
+        text[0] = "    noOS ONE";
+    }
+    else if(robot_id == 2)
+    {
+        text[0] = "    noOS TWO";
+    }
+    
 //    lcd_print_m(text);
     lcd_clear();
     lcd_print_s(1, 0, text[0]);
@@ -569,7 +650,7 @@ static void print_menu_main(void)
 
 static void print_menu_sensors(void)
 {
-    const char *text[4] = {" Ball", " Compass", " Line", " "};
+    const char* text[4] = {" Ball", " Compass", " Line", " "};
 //    lcd_print_m(text);
     lcd_clear();
     lcd_print_s(1, 0, text[0]);
@@ -581,7 +662,9 @@ static void print_menu_sensors(void)
 
 static void print_menu_settings(void)
 {
-    const char *text[4] = {" ", " ", " ", " "};
+    const char* text[4] = {" ", " ", " ", " "};
+    sprintf(sprintf_buf, " Robot id: %1d", robot_id);
+    text[0] = sprintf_buf;
 //    lcd_print_m(text);
     lcd_clear();
     lcd_print_s(1, 0, text[0]);

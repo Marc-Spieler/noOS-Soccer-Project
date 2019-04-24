@@ -695,7 +695,7 @@ dictionary * iniparser_load(const char * ininame)
 
     dictionary * dict ;
 
-    if ((f_open(in, ininame, FA_READ))==FR_OK) {
+    if ((f_open(in, ininame, FA_READ))!=FR_OK) {
         iniparser_error_callback("iniparser: cannot open %s\n", ininame);
         return NULL ;
     }

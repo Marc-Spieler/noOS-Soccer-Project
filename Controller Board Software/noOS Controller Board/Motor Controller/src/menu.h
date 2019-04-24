@@ -49,10 +49,6 @@ typedef enum
 extern menu_t act_menu;
 extern Bool print_menu;
 
-extern uint8_t rbt_id;
-extern uint8_t speed_preset;
-extern Bool allow_leds;
-
 char sprintf_cache[20];
 
 Bool pb_up_act;

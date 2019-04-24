@@ -61,7 +61,7 @@
 / Functions and Buffer Configurations
 /----------------------------------------------------------------------------*/
 
-#define    _FS_TINY        0    /* 0:Normal or 1:Tiny */
+#define    _FS_TINY        1    /* 0:Normal or 1:Tiny */
 /* When _FS_TINY is set to 1, FatFs uses the sector buffer in the file system
 /  object instead of the sector buffer in the individual file object for file
 /  data transfer. This reduces memory consumption 512 bytes each file object. */
@@ -73,7 +73,7 @@
 /  f_truncate and useless f_getfree. */
 
 
-#define _FS_MINIMIZE    0    /* 0 to 3 */
+#define _FS_MINIMIZE    3    /* 0 to 3 */
 /* The _FS_MINIMIZE option defines minimization level to remove some functions.
 /
 /   0: Full function.
@@ -83,7 +83,7 @@
 /   3: f_lseek is removed in addition to 2. */
 
 
-#define    _USE_STRFUNC    0    /* 0:Disable or 1-2:Enable */
+#define    _USE_STRFUNC    2    /* 0:Disable or 1-2:Enable */
 /* To enable string functions, set _USE_STRFUNC to 1 or 2. */
 
 
