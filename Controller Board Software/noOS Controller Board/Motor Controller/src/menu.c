@@ -8,6 +8,7 @@
 #include "lcd.h"
 #include "timing.h"
 #include "compass.h"
+#include "comm.h"
 
 menu_t act_menu = MENU_MAIN;
 Bool print_menu = true;
@@ -260,6 +261,7 @@ static void menu_compass(event_t event1)
     if(print_menu)
     {
         lcd_clear();
+        lcd_print_s(4, 2, "press mid to cal");
     }
     
     update_compass();
@@ -333,6 +335,26 @@ static void menu_compass_calibration(event_t event1)
 
 static void menu_line(event_t event1)
 {
+    static uint16_t prev_line_values;
+
+    if(print_menu)
+    {
+        lcd_clear();
+    }
+
+    if(stm.line.all != prev_line_values || print_menu)
+    {
+        sprintf(sprintf_buf, "See: %1d", stm.line.see);
+        lcd_print_s(1, 0, sprintf_buf);
+        sprintf(sprintf_buf, "Esc: %4d", stm.line.esc - 180);
+        lcd_print_s(2, 0, sprintf_buf);
+        sprintf(sprintf_buf, "Line: %1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d", stm.line.single.segment_1, stm.line.single.segment_2,
+        stm.line.single.segment_3, stm.line.single.segment_4, stm.line.single.segment_5, stm.line.single.segment_6, stm.line.single.segment_7,
+        stm.line.single.segment_8, stm.line.single.segment_9, stm.line.single.segment_10, stm.line.single.segment_11, stm.line.single.segment_12);
+        lcd_print_s(3, 0, sprintf_buf);
+        prev_line_values = stm.line.all;
+        lcd_print_s(4, 1, "press mid to cal");
+    }
     
     
     switch (event1)
@@ -349,6 +371,31 @@ static void menu_line(event_t event1)
 
 static void menu_line_calibration(event_t event1)
 {
+    if(print_menu)
+    {
+        lcd_clear();
+        sprintf(sprintf_buf, "Cal value: %2d", mts.line_cal_value);
+        lcd_print_s(2, 0, sprintf_buf);
+        print_menu = false;
+    }
+
+    if(event1 == EVENT_BUTTON_LEFT_P)
+    {
+        if(mts.line_cal_value > 0)
+        {
+            mts.line_cal_value -= 1;
+            print_menu = true;
+        }
+    }
+
+    if(event1 == EVENT_BUTTON_RIGHT_P)
+    {
+        if(mts.line_cal_value < 16)
+        {
+            mts.line_cal_value += 1;
+            print_menu = true;
+        }
+    }
     
     
     switch (event1)

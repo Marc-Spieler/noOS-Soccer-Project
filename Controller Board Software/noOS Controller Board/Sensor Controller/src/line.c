@@ -1,10 +1,12 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: noOS                                                           */
-/* Created: 07.03.19                                                    */
+/* Created: 07.03.2019                                                  */
 /************************************************************************/
 
 #include "line.h"
+#include "comm.h"
+#include "timing.h"
 
 #define LED_CNT 12
 #define SEG_CNT 4
@@ -23,79 +25,83 @@ int8_t seg_cntr;
 uint8_t led_cntr;
 int8_t divider;
 uint32_t act_line_value;
-uint32_t act_white_line_value;
-uint32_t act_black_line_value;
 Bool prev_led_white;
+uint16_t prev_calibration_value;
 
 void dacc_init(void)
 {
     sysclk_enable_peripheral_clock(ID_DACC);
     dacc_reset(DACC);
     dacc_set_timing(DACC, 0x08, 0, 0x10);
-    dacc_enable_channel(DACC, DACC_CHANNEL_VREF_WHITE);
-    dacc_enable_channel(DACC, DACC_CHANNEL_VREF_BLACK);
+    dacc_enable_channel(DACC, DACC_CHANNEL_LINE_VREF);
+    //dacc_enable_channel(DACC, DACC_CHANNEL_VREF_BLACK);
     dacc_set_analog_control(DACC, DACC_ANALOG_CONTROL);
-    dacc_set_channel_selection(DACC, DACC_CHANNEL_VREF_WHITE);
+    dacc_set_channel_selection(DACC, DACC_CHANNEL_LINE_VREF);
     dacc_write_conversion_data(DACC, 3000);
-    dacc_set_channel_selection(DACC, DACC_CHANNEL_VREF_BLACK);
-    dacc_write_conversion_data(DACC, 3000);
+    /*dacc_set_channel_selection(DACC, DACC_CHANNEL_VREF_BLACK);
+    dacc_write_conversion_data(DACC, 3000);*/
 }
 
-void set_vref_black(uint16_t value)
+/*void set_vref_black(uint16_t value)
 {
     dacc_set_channel_selection(DACC, DACC_CHANNEL_VREF_BLACK);
     dacc_write_conversion_data(DACC, value);
-}
+}*/
 
-void set_vref_white(uint16_t value)
+void update_line_calibration_value(uint16_t calibration_value)
 {
-    dacc_set_channel_selection(DACC, DACC_CHANNEL_VREF_WHITE);
-    dacc_write_conversion_data(DACC, value);
+    if(calibration_value != prev_calibration_value)
+    {
+        calibration_value = calibration_value == 4096 ? 4095 : calibration_value;
+        dacc_set_channel_selection(DACC, DACC_CHANNEL_LINE_VREF);
+        dacc_write_conversion_data(DACC, calibration_value);
+        prev_calibration_value = calibration_value;
+    }
 }
 
 void update_line_values(void)
 {
-    act_line_value = ioport_get_port_level(IOPORT_PIOC, 0x6DFFFAAA);
-    act_white_line_value = act_line_value & 0x495AA888;
+    act_line_value = ioport_get_port_level(IOPORT_PIOC, 0xFFFFFFFF);
     
-    sensor_values.line_white.s1 = (act_line_value & 0x00020000) != 0x00020000 ? 1 : 0;
-    sensor_values.line_white.s2 = (act_line_value & 0x00080000) != 0x00080000 ? 1 : 0;
-    sensor_values.line_white.s3 = (act_line_value & 0x40000000) != 0x40000000 ? 1 : 0;
-    sensor_values.line_white.s4 = (act_line_value & 0x00100000) != 0x00100000 ? 1 : 0;
-    sensor_values.line_white.s5 = (act_line_value & 0x00400000) != 0x00400000 ? 1 : 0;
-    sensor_values.line_white.s6 = (act_line_value & 0x01000000) != 0x01000000 ? 1 : 0;
-    sensor_values.line_white.s7 = (act_line_value & 0x08000000) != 0x08000000 ? 1 : 0;
-    sensor_values.line_white.s8 = (act_line_value & 0x00000008) != 0x00000008 ? 1 : 0;
-    sensor_values.line_white.s9 = (act_line_value & 0x00000080) != 0x00000080 ? 1 : 0;
-    sensor_values.line_white.s10 = (act_line_value & 0x00000800) != 0x00000800 ? 1 : 0;
-    sensor_values.line_white.s11 = (act_line_value & 0x00002000) != 0x00002000 ? 1 : 0;
-    sensor_values.line_white.s12 = (act_line_value & 0x00008000) != 0x00008000 ? 1 : 0;
-    
+    stm.line.single.segment_1 = (act_line_value & 0x00020000) ? 0 : 1;
+    stm.line.single.segment_2 = (act_line_value & 0x00080000) ? 0 : 1;
+    stm.line.single.segment_3 = (act_line_value & 0x40000000) ? 0 : 1;
+    stm.line.single.segment_4 = (act_line_value & 0x00100000) ? 0 : 1;
+    stm.line.single.segment_5 = (act_line_value & 0x00400000) ? 0 : 1;
+    stm.line.single.segment_6 = (act_line_value & 0x01000000) ? 0 : 1;
+    stm.line.single.segment_7 = (act_line_value & 0x08000000) ? 0 : 1;
+    stm.line.single.segment_8 = (act_line_value & 0x00000008) ? 0 : 1;
+    stm.line.single.segment_9 = (act_line_value & 0x00000080) ? 0 : 1;
+    stm.line.single.segment_10 = (act_line_value & 0x00000800) ? 0 : 1;
+    stm.line.single.segment_11 = (act_line_value & 0x00002000) ? 0 : 1;
+    stm.line.single.segment_12 = (act_line_value & 0x00008000) ? 0 : 1;
 }
 
 void calculate_line_esc_direction(void)
 {
-    if (act_white_line_value != 0x495AA888)
+    if (stm.line.all != 0)
     {
-        line_white[0] = sensor_values.line_white.s1;
-        line_white[1] = sensor_values.line_white.s2;
-        line_white[2] = sensor_values.line_white.s3;
-        line_white[3] = sensor_values.line_white.s4;
-        line_white[4] = sensor_values.line_white.s5;
-        line_white[5] = sensor_values.line_white.s6;
-        line_white[6] = sensor_values.line_white.s7;
-        line_white[7] = sensor_values.line_white.s8;
-        line_white[8] = sensor_values.line_white.s9;
-        line_white[9] = sensor_values.line_white.s10;
-        line_white[10] = sensor_values.line_white.s11;
-        line_white[11] = sensor_values.line_white.s12;
+        line_white[0] = stm.line.single.segment_1;
+        line_white[1] = stm.line.single.segment_2;
+        line_white[2] = stm.line.single.segment_3;
+        line_white[3] = stm.line.single.segment_4;
+        line_white[4] = stm.line.single.segment_5;
+        line_white[5] = stm.line.single.segment_6;
+        line_white[6] = stm.line.single.segment_7;
+        line_white[7] = stm.line.single.segment_8;
+        line_white[8] = stm.line.single.segment_9;
+        line_white[9] = stm.line.single.segment_10;
+        line_white[10] = stm.line.single.segment_11;
+        line_white[11] = stm.line.single.segment_12;
         
+        // reset segment start and end variables
         for (seg_cntr = 0; seg_cntr < SEG_CNT; seg_cntr++)
         {
             seg_sta[seg_cntr] = 0;
             seg_end[seg_cntr] = 0;
         }
 
+        // search first non white led
         for (led_cntr = 0; led_cntr < LED_CNT; led_cntr++)
         {
             if (!line_white[led_cntr])
@@ -149,11 +155,12 @@ void calculate_line_esc_direction(void)
             if (seg_mid[0] - seg_mid[1] > 180)
             {
                 line_esc = (seg_mid[0] + seg_mid[1]) / divider;
+                line_esc -= 180; //
             }
             else
             {
                 line_esc = (seg_mid[0] + seg_mid[1]) / divider;
-                line_esc += 180;
+                //line_esc += 180;
             }
         }
         else if (divider > 0)
@@ -164,52 +171,35 @@ void calculate_line_esc_direction(void)
                 line_esc += seg_mid[seg_cntr];
             }
             line_esc /= divider;
-            line_esc += 180;
+            //line_esc += 180;
         }
         else if (divider == 0)
         {
-            line_esc = seg_mid[0] + 180;
+            line_esc = seg_mid[0];// + 180;
         }
         
-        sensor_values.ibit.white = 1;
-        set_led(LED_ONBOARD, 1);
-        set_led(S3_LED, 1);
+        stm.line.see = 1;
+        ioport_set_pin_level(LED_ONBOARD, 1);
+        ioport_set_pin_level(LED_S3, 1);
     }
     else
     {
-        line_esc = 0;
-        sensor_values.ibit.white = 0;
-        set_led(ONBOARD_LED, 0);
-        set_led(S3_LED, 0);
+        line_esc = 180;
+        stm.line.see = 0;
+        ioport_set_pin_level(LED_ONBOARD, 0);
+        ioport_set_pin_level(LED_S3, 0);
     }
     
-    if (line_esc >= 180)
+    if (line_esc >= 360)
     {
         line_esc -= 360;
     }
     
-    if (line_esc <= -180)
+    if (line_esc < 0)
     {
         line_esc += 360;
     }
     
-    sensor_values.line_esc = line_esc;
+    stm.line.esc = line_esc;
     
 }
-
-/*if ((getTicks() - ul_ticks_vref) > VREF_UPDATE_RATE)
-{
-    ul_ticks_vref = getTicks();
-        
-    if (sensor_parameters.vref_black == 27)
-    {
-        ioport_set_pin_level(S1_LED, 1);
-    }
-    else
-    {
-        ioport_set_pin_level(S1_LED, 0);
-    }
-        
-    set_vref_black(sensor_parameters.vref_black * 65);
-    set_vref_white(sensor_parameters.vref_white * 65);
-}*/

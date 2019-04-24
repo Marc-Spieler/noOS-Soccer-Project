@@ -471,9 +471,9 @@
     <Compile Include="src\ASF\sam\drivers\adc\adc.c">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="src\line.c">
+    <Compile Include="src\line.c">
       <SubType>compile</SubType>
-    </None>
+    </Compile>
     <Compile Include="src\line.h">
       <SubType>compile</SubType>
     </Compile>
