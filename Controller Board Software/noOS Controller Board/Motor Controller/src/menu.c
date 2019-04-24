@@ -355,10 +355,13 @@ static void menu_line(event_t event1)
         prev_line_values = stm.line.all;
         lcd_print_s(4, 1, "press mid to cal");
     }
-    
-    
-    switch (event1)
+
+    switch(event1)
     {
+        case EVENT_BUTTON_MID_P:
+            act_menu = MENU_LINE_CALIBRATION;
+            print_menu = true;
+            break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_SENSORS;
             print_menu = true;
@@ -376,30 +379,24 @@ static void menu_line_calibration(event_t event1)
         lcd_clear();
         sprintf(sprintf_buf, "Cal value: %2d", mts.line_cal_value);
         lcd_print_s(2, 0, sprintf_buf);
-        print_menu = false;
     }
 
-    if(event1 == EVENT_BUTTON_LEFT_P)
-    {
-        if(mts.line_cal_value > 0)
-        {
-            mts.line_cal_value -= 1;
-            print_menu = true;
-        }
-    }
-
-    if(event1 == EVENT_BUTTON_RIGHT_P)
-    {
-        if(mts.line_cal_value < 16)
-        {
-            mts.line_cal_value += 1;
-            print_menu = true;
-        }
-    }
-    
-    
     switch (event1)
     {
+        case EVENT_BUTTON_LEFT_P:
+            if(mts.line_cal_value > 0)
+            {
+                mts.line_cal_value -= 1;
+                print_menu = true;
+            }
+            break;
+        case EVENT_BUTTON_RIGHT_P:
+            if(mts.line_cal_value < 16)
+            {
+                mts.line_cal_value += 1;
+                print_menu = true;
+            }
+            break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_LINE;
             print_menu = true;
