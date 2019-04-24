@@ -69,16 +69,42 @@ typedef struct
 extern motor_to_sensor_t mts;
 extern sensor_to_motor_t stm;
 
+typedef struct
+{
+    uint16_t rsvd;
+} motor_to_raspberrypi_t;
+
+typedef struct
+{
+    struct
+    {
+        uint8_t dir         :6;
+        uint8_t see         :1;
+        uint8_t have        :1;
+    } ball;
+    
+    struct
+    {
+        uint8_t dir         :6;
+        uint8_t see         :1;
+        uint8_t rsvd        :1;
+    } goal;
+} raspberrypi_to_motor_t;
+
+extern motor_to_raspberrypi_t mtr;
+extern raspberrypi_to_motor_t rtm;
+
 extern uint8_t sens_buf[sizeof(stm)];
+extern uint8_t rpi_buf[sizeof(rtm)];
 
 //static Bool b_trigger = false;
 
 void spi_init(void);
 void spi_master_initialize(void);
-//void spi_slave_initialize(void);
+void spi_slave_initialize(void);
 void spi_master_transfer(void *p_buf, uint32_t ul_size);
-//void spi_slave_transfer(void *p_buf, uint32_t ul_size);
+void spi_slave_transfer(void *p_buf, uint32_t ul_size);
 void configure_dmac(void);
-//void PrepareValuesToSend(void);
+void PrepareValuesToSend(void);
 
 #endif

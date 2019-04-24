@@ -17,6 +17,12 @@ uint8_t rbt_id = 1;
 uint8_t speed_preset = 15;
 Bool allow_leds = true;
 
+uint8_t prev_ball_dir = 0;
+Bool prev_ball_see = false;
+uint8_t prev_goal_dir = 0;
+Bool prev_goal_see = false;
+Bool prev_ball_have = false;
+
 typedef struct
 {
     uint8_t act_cursor_line;
@@ -44,7 +50,7 @@ char sprintf_buf[21];
 static void menu_main(event_t event1);
 static void menu_match(event_t event1);
 static void menu_sensors(event_t event1);
-static void menu_ball(event_t event1);
+static void menu_camera(event_t event1);
 static void menu_compass(event_t event1);
 static void menu_compass_calibration(event_t event1);
 static void menu_line(event_t event1);
@@ -72,8 +78,8 @@ void menu(event_t event1)
         case MENU_SETTINGS:
             menu_settings(event1);
             break;
-        case MENU_BALL:
-            menu_ball(event1);
+        case MENU_CAMERA:
+            menu_camera(event1);
             break;
         case MENU_COMPASS:
             menu_compass(event1);
@@ -193,7 +199,7 @@ static void menu_sensors(event_t event1)
             switch (menu_info.sensors.act_cursor_line)
             {
                 case 1:
-                    act_menu = MENU_BALL;
+                    act_menu = MENU_CAMERA;
                     print_menu = true;
                     break;
                 case 2:
@@ -218,34 +224,62 @@ static void menu_sensors(event_t event1)
     }
 }
 
-static void menu_ball(event_t event1)
+static void menu_camera(event_t event1)
 {
     if(print_menu)
     {
         lcd_clear();
     }
     
-    /*if (rpi_rx.ibit.ball >= 100 && rpi_rx.ibit.ball <= 162)
+    if(rtm.ball.dir != prev_ball_dir || rtm.ball.see != prev_ball_see || print_menu)
     {
-        sprintf(sprintf_buf, "Direction: %4d   ", rpi_rx.ibit.ball - 131);
-        lcd_print_s(2, 0, sprintf_buf);
+        if (rtm.ball.dir == 0)
+        {
+            lcd_print_s(1, 0, "RPi inactive ");
+        }
+        else if (rtm.ball.see) //  && rtm.ball.dir != 0
+        {
+            sprintf(sprintf_buf, "Ball: %4d   ", rtm.ball.dir - 32);
+            lcd_print_s(1, 0, sprintf_buf);
+        }
+        else
+        {
+            lcd_print_s(1, 0, "no ball found");
+        }
+        prev_ball_dir = rtm.ball.dir;
+        prev_ball_see = rtm.ball.see;
     }
-    else if (rpi_rx.ibit.ball == 0)
+
+    if(rtm.goal.dir != prev_goal_dir || rtm.goal.see != prev_goal_see || print_menu)
     {
-        lcd_print_s(2, 0, "Direction: waiting");
-    }
-    else
-    {
-        lcd_print_s(2, 0, "Direction: no ball");
+        if (rtm.goal.dir == 0)
+        {
+            lcd_print_s(2, 0, "RPi inactive ");
+        }
+        else if (rtm.goal.see)
+        {
+            sprintf(sprintf_buf, "Goal: %4d   ", rtm.goal.dir - 32);
+            lcd_print_s(2, 0, sprintf_buf);
+        }
+        else
+        {
+            lcd_print_s(2, 0, "no goal found");
+        }
+        prev_goal_dir = rtm.goal.dir;
+        prev_goal_see = rtm.goal.see;
     }
     
-    sprintf(sprintf_buf, "Having ball: %1d", rpi_rx.ibit.have_ball);*/
-    lcd_print_s(3, 0, sprintf_buf);
+    if(rtm.ball.have != prev_ball_have || print_menu)
+    {
+        sprintf(sprintf_buf, "Having ball: %1d", rtm.ball.have);
+        lcd_print_s(3, 0, sprintf_buf);
+        prev_ball_have = rtm.ball.have;
+    }
     
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
-        act_menu = MENU_SENSORS;
+        	act_menu = MENU_SENSORS;
             print_menu = true;
             break;
         default:
