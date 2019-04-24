@@ -10,7 +10,7 @@
 #include "compass.h"
 
 menu_t act_menu = MENU_MAIN;
-Bool print_menu = 1;
+Bool print_menu = true;
 
 uint8_t rbt_id = 1;
 uint8_t speed_preset = 15;
@@ -36,7 +36,6 @@ struct
       { 1, 1, 1, 1 }
   };
 
-uint8_t compass_cal_step = 0;
 Bool shutdown_confirmed = 0;
 
 char sprintf_buf[21];
@@ -98,7 +97,6 @@ static void menu_main(event_t event1)
 {
     if (print_menu)
     {
-        print_menu = 0;
         print_menu_main();
     }
     
@@ -126,15 +124,15 @@ static void menu_main(event_t event1)
                 {
                     case 2:
                         act_menu = MENU_MATCH;
-                        print_menu = 1;
+                        print_menu = true;
                         break;
                     case 3:
                         act_menu = MENU_SENSORS;
-                        print_menu = 1;
+                        print_menu = true;
                         break;
                     case 4:
                         act_menu = MENU_SETTINGS;
-                        print_menu = 1;
+                        print_menu = true;
                         break;
                     default:
                         break;
@@ -143,9 +141,10 @@ static void menu_main(event_t event1)
             break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_SHUTDOWN;
-            print_menu = 1;
+            print_menu = true;
             break;
         default:
+            print_menu = false;
             break;
     }
 }
@@ -154,10 +153,15 @@ static void menu_match(event_t event1)
 {
     
     
-    if(event1 == EVENT_BUTTON_RETURN_P)
+    switch (event1)
     {
-        act_menu = MENU_MAIN;
-        print_menu = 1;
+        case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_MAIN;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
     }
 }
 
@@ -165,7 +169,6 @@ static void menu_sensors(event_t event1)
 {
     if (print_menu)
     {
-        print_menu = 0;
         print_menu_sensors();
     }
     
@@ -190,15 +193,15 @@ static void menu_sensors(event_t event1)
             {
                 case 1:
                     act_menu = MENU_BALL;
-                    print_menu = 1;
+                    print_menu = true;
                     break;
                 case 2:
                     act_menu = MENU_COMPASS;
-                    print_menu = 1;
+                    print_menu = true;
                     break;
                 case 3:
                     act_menu = MENU_LINE;
-                    print_menu = 1;
+                    print_menu = true;
                     break;
                 default:
                     break;
@@ -206,9 +209,10 @@ static void menu_sensors(event_t event1)
             break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_MAIN;
-            print_menu = 1;
+            print_menu = true;
             break;
         default:
+            print_menu = false;
             break;
     }
 }
@@ -217,7 +221,6 @@ static void menu_ball(event_t event1)
 {
     if(print_menu)
     {
-        print_menu = 0;
         lcd_clear();
     }
     
@@ -238,10 +241,15 @@ static void menu_ball(event_t event1)
     sprintf(sprintf_buf, "Having ball: %1d", rpi_rx.ibit.have_ball);*/
     lcd_print_s(3, 0, sprintf_buf);
     
-    if(event1 == EVENT_BUTTON_RETURN_P)
+    switch (event1)
     {
+        case EVENT_BUTTON_RETURN_P:
         act_menu = MENU_SENSORS;
-        print_menu = 1;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
     }
 }
 
@@ -251,7 +259,6 @@ static void menu_compass(event_t event1)
     
     if(print_menu)
     {
-        print_menu = 0;
         lcd_clear();
     }
     
@@ -267,53 +274,60 @@ static void menu_compass(event_t event1)
     {
         case EVENT_BUTTON_MID_P:
             act_menu = MENU_COMPASS_CALIBRATION;
-            print_menu = 1;
+            print_menu = true;
             break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_SENSORS;
-            print_menu = 1;
+            print_menu = true;
             break;
         default:
+            print_menu = false;
             break;
     }
 }
 
 static void menu_compass_calibration(event_t event1)
 {
+    uint8_t compass_cal_step = 0;
+
     if(print_menu)
     {
-        print_menu = 0;
         lcd_clear();
         lcd_print_s(2, 1, "calibrate compass");
         sprintf(sprintf_buf, "  Direction: %1d  ", compass_cal_step + 1);
         lcd_print_s(3, 1, sprintf_buf);
     }
     
-    if(event1 == EVENT_BUTTON_MID_P)
+    switch (event1)
     {
-        twi_packet_t *tx_packet = twi_get_tx_packet();
-        
-        tx_packet->chip = 0x60;
-        tx_packet->addr[0] = 0x0f;
-        tx_packet->addr_length = 1;
-        
-        tx_packet->buffer[0] = 0xff;
-        tx_packet->length = 1;
-        
-        set_compass_is_busy();
-        twi_pdc_master_write(TWI0, tx_packet);
-        while(compass_is_busy());
-        mdelay(500);
-        
-        compass_cal_step++;
-        
-        if(compass_cal_step == 4)
-        {
-            compass_cal_step = 0;
-            act_menu = MENU_COMPASS;
-            print_menu = 1;
-        }
-        print_menu = 1;
+        case EVENT_BUTTON_MID_P:
+            /*twi_packet_t *tx_packet = twi_get_tx_packet();
+            
+            tx_packet->chip = 0x60;
+            tx_packet->addr[0] = 0x0f;
+            tx_packet->addr_length = 1;
+            
+            tx_packet->buffer[0] = 0xff;
+            tx_packet->length = 1;
+            
+            set_compass_is_busy();
+            twi_pdc_master_write(TWI0, tx_packet);
+            while(compass_is_busy());
+            mdelay(500);
+            
+            compass_cal_step++;
+            
+            if(compass_cal_step == 4)
+            {
+                compass_cal_step = 0;
+                act_menu = MENU_COMPASS;
+                print_menu = true;
+            }
+            print_menu = true;*/
+            break;
+        default:
+            print_menu = false;
+            break;
     }
 }
 
@@ -321,10 +335,15 @@ static void menu_line(event_t event1)
 {
     
     
-    if(event1 == EVENT_BUTTON_RETURN_P)
+    switch (event1)
     {
-        act_menu = MENU_SENSORS;
-        print_menu = 1;
+        case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_SENSORS;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
     }
 }
 
@@ -332,10 +351,15 @@ static void menu_line_calibration(event_t event1)
 {
     
     
-    if(event1 == EVENT_BUTTON_RETURN_P)
+    switch (event1)
     {
-        act_menu = MENU_LINE;
-        print_menu = 1;
+        case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_LINE;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
     }
 }
 
@@ -343,7 +367,6 @@ static void menu_settings(event_t event1)
 {
     if (print_menu)
     {
-        print_menu = 0;
         print_menu_settings();
     }
     
@@ -367,16 +390,13 @@ static void menu_settings(event_t event1)
             switch (menu_info.settings.act_cursor_line)
             {
                 case 1:
-                    act_menu = MENU_BALL;
-                    print_menu = 1;
+                    
                     break;
                 case 2:
-                    act_menu = MENU_COMPASS;
-                    print_menu = 1;
+                    
                     break;
                 case 3:
-                    act_menu = MENU_LINE;
-                    print_menu = 1;
+                    
                     break;
                 default:
                     break;
@@ -384,9 +404,10 @@ static void menu_settings(event_t event1)
             break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_MAIN;
-            print_menu = 1;
+            print_menu = true;
             break;
         default:
+            print_menu = false;
             break;
     }
 }
@@ -404,14 +425,12 @@ static void menu_shutdown(event_t event1)
         ioport_set_pin_level(LED_M2, 0);
         ioport_set_pin_level(LED_M3, 0);
         
-        /*pwm_channel_disable(PWM, DRIBBLER);
-        pwm_channel_disable(PWM, MLEFT);
-        pwm_channel_disable(PWM, MRIGHT);
-        pwm_channel_disable(PWM, MREAR);
-        
+        pwm_channel_disable(PWM, MOTOR_LEFT);
+        pwm_channel_disable(PWM, MOTOR_RIGHT);
+        pwm_channel_disable(PWM, MOTOR_REAR);
         pwm_channel_disable(PWM, ENC_CLK);
         
-        sensor_parameters.ibit.sleep_mode = 1;*/
+        //sensor_parameters.ibit.sleep_mode = 1;
         update_comm();
         
         ioport_set_pin_level(RPI1, 0);
@@ -437,7 +456,6 @@ static void menu_shutdown(event_t event1)
     {
         if(print_menu)
         {
-            print_menu = 0;
             lcd_clear();
             lcd_print_s(2, 1, "confirm shutdown?");
         }
@@ -450,9 +468,10 @@ static void menu_shutdown(event_t event1)
             break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_MAIN;
-            print_menu = 1;
+            print_menu = true;
             break;
         default:
+            print_menu = false;
             break;
     }
 }

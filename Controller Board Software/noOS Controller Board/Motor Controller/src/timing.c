@@ -73,6 +73,9 @@ void update_battery(Bool update_forced)
 
 void update_heartbeat(void)
 {
+    static Bool heart_state;
+    static uint32_t ticks_heartbeat;
+
     if (heart_state)
     {
         if (getTicks() >= (ticks_heartbeat + 100))
@@ -96,6 +99,26 @@ void update_heartbeat(void)
             heart_state = 1;
             //pwm_channel_disable(PWM, BAT_WARN);
         }
+    }
+}
+
+void check_battery(void)
+{
+    static Bool bat_led_state;
+    static uint32_t ticks_battery;
+
+    if(battery_percentage < 20)
+    {
+        if (getTicks() >= (ticks_battery + 100))
+        {
+            ticks_battery = getTicks();
+            bat_led_state = !bat_led_state;
+            ioport_set_pin_level(LED_BAT, bat_led_state);
+        }
+    }
+    else
+    {
+        ioport_set_pin_level(LED_BAT, 0);
     }
 }
 

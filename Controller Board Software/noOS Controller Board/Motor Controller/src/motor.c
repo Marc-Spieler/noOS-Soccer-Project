@@ -6,6 +6,8 @@
 
 #include "motor.h"
 #include "pid.h"
+#include "asf.h"
+#include "string.h"
 
 pwm_channel_t g_pwm_channel_MLeft;
 pwm_channel_t g_pwm_channel_MRight;
@@ -34,48 +36,41 @@ float CosinMA1 = -0.866025404f;
 float CosinMA2 = 0.866025404f;
 float CosinMA3 = 0.0f;
 
+uint16_t log_cnt = 0;
+int8_t eleft_counts_log[1200];
+int8_t eright_counts_log[1200];
+int8_t erear_counts_log[1200];
+int8_t speed_mleft_log[1200];
+int8_t speed_mright_log[1200];
+int8_t speed_mrear_log[1200];
+
 void motor_init(void)
 {
     /* Initialize PWM channel for MLeft */
-    /* Period is left-aligned */
     g_pwm_channel_MLeft.alignment = PWM_ALIGN_LEFT;
-    /* Output waveform starts at a low level */
     g_pwm_channel_MLeft.polarity = PWM_LOW;
-    /* Use PWM clock A as source clock */
     g_pwm_channel_MLeft.ul_prescaler = PWM_CMR_CPRE_CLKA;
-    /* Period value of output waveform */
     g_pwm_channel_MLeft.ul_period = PERIOD_VALUE;
-    /* Duty cycle value of output waveform */
     g_pwm_channel_MLeft.ul_duty = INIT_DUTY_VALUE;
     g_pwm_channel_MLeft.channel = MOTOR_LEFT;
     pwm_channel_init(PWM, &g_pwm_channel_MLeft);
 
 
     /* Initialize PWM channel for MRight */
-    /* Period is left-aligned */
     g_pwm_channel_MRight.alignment = PWM_ALIGN_LEFT;
-    /* Output waveform starts at a low level */
     g_pwm_channel_MRight.polarity = PWM_LOW;
-    /* Use PWM clock A as source clock */
     g_pwm_channel_MRight.ul_prescaler = PWM_CMR_CPRE_CLKA;
-    /* Period value of output waveform */
     g_pwm_channel_MRight.ul_period = PERIOD_VALUE;
-    /* Duty cycle value of output waveform */
     g_pwm_channel_MRight.ul_duty = INIT_DUTY_VALUE;
     g_pwm_channel_MRight.channel = MOTOR_RIGHT;
     pwm_channel_init(PWM, &g_pwm_channel_MRight);
 
 
     /* Initialize PWM channel for MBack */
-    /* Period is left-aligned */
     g_pwm_channel_MRear.alignment = PWM_ALIGN_LEFT;
-    /* Output waveform starts at a low level */
     g_pwm_channel_MRear.polarity = PWM_LOW;
-    /* Use PWM clock A as source clock */
     g_pwm_channel_MRear.ul_prescaler = PWM_CMR_CPRE_CLKA;
-    /* Period value of output waveform */
     g_pwm_channel_MRear.ul_period = PERIOD_VALUE;
-    /* Duty cycle value of output waveform */
     g_pwm_channel_MRear.ul_duty = INIT_DUTY_VALUE;
     g_pwm_channel_MRear.channel = MOTOR_REAR;
     pwm_channel_init(PWM, &g_pwm_channel_MRear);
@@ -84,6 +79,7 @@ void motor_init(void)
     pwm_channel_disable(PWM, MOTOR_RIGHT);
     pwm_channel_disable(PWM, MOTOR_REAR);
 
+    /* Initialize PWM channel for Encoders */
     g_pwm_channel_ENC.alignment = PWM_ALIGN_LEFT;
     g_pwm_channel_ENC.polarity = PWM_LOW;
     g_pwm_channel_ENC.ul_prescaler = PWM_CMR_CPRE_CLKA;
@@ -142,35 +138,6 @@ void update_motor(float mleft_ref, float mright_ref, float mrear_ref)
     speed_mright = (float)mright_ref;
     speed_mrear = (float)mrear_ref;
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
-
-    /*uint32_t PIOC_value;
-    int32_t eleft_counts;
-    int32_t eright_counts;
-    int32_t erear_counts;
-  
-    if ((getTicks() - ul_ticks_motor) >= MOTOR_UPDATE_RATE)
-    {
-        ul_ticks_motor = getTicks();
-  
-        pwm_channel_disable(PWM, ENC_CLK);
-        PIOC_value = ioport_get_port_level(IOPORT_PIOC, 0xFFFFFFFF);
-        ioport_set_pin_level(ENC_LOAD, 0);
-        ioport_set_pin_level(ENC_LOAD, 1);
-        //pwm_channel_enable(PWM, ENC_CLK);
-  
-        eleft_counts = (PIOC_value & 0x7F000000) >> 24;
-        eleft_counts = (eleft_counts & 0x00000040) ? eleft_counts - 128 : eleft_counts;
-        eright_counts = ((PIOC_value & 0x00C00000) >> 17) | ((PIOC_value & 0x001F0000) >> 16);
-        eright_counts = (eright_counts & 0x00000040) ? eright_counts - 128 : eright_counts;
-        erear_counts = ((PIOC_value & 0x0000FC00) >> 9) | ((PIOC_value & 0x00000002) >> 1);
-        erear_counts = (erear_counts & 0x00000040) ? erear_counts - 128 : erear_counts;
-  
-        motor_speed(MLEFT, pidReg(&mleft_pid_reg, (float)mleft_ref, (float)eleft_counts));
-        motor_speed(MRIGHT, pidReg(&mright_pid_reg, (float)mright_ref, (float)eright_counts));
-        motor_speed(MREAR, pidReg(&mrear_pid_reg, (float)mrear_ref, (float)erear_counts));
-    
-        pwm_channel_enable(PWM, ENC_CLK);
-    }*/ 
 }
 
 void motor_speed(uint8_t motor, int16_t ispeed)
@@ -241,6 +208,48 @@ void TC1_Handler(void)
         motor_speed(MOTOR_RIGHT, pidReg(&mright_pid_reg, speed_mright, (float)eright_counts));
         motor_speed(MOTOR_REAR, pidReg(&mrear_pid_reg, speed_mrear, (float)erear_counts));
 
+        if(log_cnt < 1200)
+        {
+            eleft_counts_log[log_cnt] = eleft_counts;
+            eright_counts_log[log_cnt] = eright_counts;
+            erear_counts_log[log_cnt] = erear_counts;
+            speed_mleft_log[log_cnt] = speed_mleft;
+            speed_mright_log[log_cnt] = speed_mright;
+            speed_mrear_log[log_cnt] = speed_mrear;
+        }
+        /*else
+        {
+            tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
+            UINT bw;
+            FIL file_object;
+            char test_file_name[] = "0:sd_mmc_test.txt";
+            char sprintf_buf[11];
+            f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
+            
+            for(int i = 0; i < log_cnt; i++)
+            {
+                sprintf(sprintf_buf, "%5d;", log_cnt);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+
+                sprintf(sprintf_buf, "%3d;", eleft_counts_log[log_cnt]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+                sprintf(sprintf_buf, "%3d;", eright_counts_log[log_cnt]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+                sprintf(sprintf_buf, "%3d;", erear_counts_log[log_cnt]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+
+                sprintf(sprintf_buf, "%3d;", speed_mleft_log[log_cnt]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+                sprintf(sprintf_buf, "%3d;", speed_mright_log[log_cnt]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+                sprintf(sprintf_buf, "%3d\r\n", speed_mrear_log[log_cnt]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+            }
+
+            f_close(&file_object);
+            ioport_set_pin_level(LED_ONBOARD, 1);
+            while(1);
+        }*/
         //pwm_channel_enable(PWM, ENC_CLK);
     }
 

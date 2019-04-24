@@ -11,8 +11,9 @@
 #include "menu.h"
 #include "comm.h"
 #include "compass.h"
-//#include "sd.h"
+#include "sd.h"
 #include "motor.h"
+#include "lib/iniparser/iniparser.h"
 
 Bool blink_level;
 uint32_t ticks_blink_update;
@@ -20,6 +21,7 @@ uint32_t ticks_dot_update;
 uint8_t dots = 0;
 Bool update_dots = 1;
 
+void create_default_ini_file(void);
 void noOS_bootup_sequence(void);
 void set_led(ioport_pin_t pin, Bool level);
 
@@ -43,17 +45,18 @@ int main(void)
     compass_init();
     lcd_init();
     
-    //write_time_test_2();
+    //create_default_ini_file();
 
-    //noOS_bootup_sequence();
+    noOS_bootup_sequence();
 
     enable_motor();
+    disable_motor();
 
     while (1)
     {
         update_comm();
         update_heartbeat();
-        //check_battery();
+        check_battery();
         
         if (stm.ibit.heartbeat)
         {
@@ -69,6 +72,26 @@ int main(void)
         act_event = button_events();
         menu(act_event);
     }
+}
+
+void create_default_ini_file(void)
+{
+    FIL f;
+    char s[512];
+    UINT wb;
+
+    if (f_open(&f, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
+    {
+        while(1);
+    }
+
+    sprintf(s,
+    "[General]\n"\
+    "robot_id = 1\n"\
+    "speed = 15\n"\
+    "heartbeat = 1\n");
+    f_write(&f, s, strlen(s), &wb);
+    f_close(&f);
 }
 
 void noOS_bootup_sequence(void)
@@ -148,7 +171,7 @@ void noOS_bootup_sequence(void)
     }
 }
 
-void set_led(ioport_pin_t pin, Bool level)
+inline void set_led(ioport_pin_t pin, Bool level)
 {
     if (allow_leds)
     {
