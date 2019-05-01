@@ -1,0 +1,6 @@
+6 Bit	ball direction
+1 Bit	see ball
+1 bit	have ball
+6 bit	goal direction
+1 bit	see goal
+1 bit	reserved
