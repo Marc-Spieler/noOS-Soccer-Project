@@ -22,6 +22,7 @@ void *goalTask(void *arguments){
 		
 	int index = *((int *)arguments);
 
+	// get values from calibrateGoal.txt
 	printf( "[*Goal] Open calibration file\r\n" );
 	std::ifstream file("/home/pi/soccer/calibrateGoal.txt");
 	if( !file.is_open() )
@@ -147,12 +148,13 @@ void *goalTask(void *arguments){
 
 				if( a.getPixelCount() > bigArea.getPixelCount() ) bigArea = a;
 			}
-
+			
+			// get area proportions
 			float prop1 = (float) bigArea.getWidth() / (float) bigArea.getHeight();
 			float prop2 = (float) bigArea.getHeight() / (float) bigArea.getWidth();
       
 			// Goal found
-			if( bigArea.getPixelCount() > 20)
+			if( bigArea.getPixelCount() > 20) // check size of area
 			//if( bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5 )
 			//if( bigArea.getPixelCount() > 20 && prop1 > 1.0 && prop2 < 1.0 )
 			{
@@ -161,7 +163,7 @@ void *goalTask(void *arguments){
 				objGoal.y += bigArea.getHeight() / 2;
 
 				float horizontal = 0, vertical = 0, HalfWidth = 0;
-				horizontal = ((float)(objGoal.x - (WIDTH / 2)) / (float)(WIDTH / 2)) * 31.0f;
+				horizontal = ((float)(objGoal.x - (WIDTH / 2)) / (float)(WIDTH / 2)) * 31.0f; // horizontal goal position on a scale from -31.0 to 31.0
 				vertical = ((float) ((HEIGHT / 2) - objGoal.y) / (float) HEIGHT) * 50.0f;
 				HalfWidth = ((float)(objGoal.x - WIDTH ) / (float) WIDTH ) * 31.0f;
 				printf("HalfWidth: %f  Horizontal: %f",HalfWidth, horizontal);
@@ -176,7 +178,7 @@ void *goalTask(void *arguments){
 					horizontal = 31.0f;
 				}
 
-				horizontal += 32.0f;
+				horizontal += 32.0f; // horizontal values are now 1.0 - 63.0
 //				printf("Obj.x mid.x WIDTH :%d %d %d\r\n", obj.x, mid.x, WIDTH);
 				infoGoal.ball1.horizontal = (unsigned short) horizontal;
 				infoGoal.ball1.vertical = (unsigned short) vertical;
@@ -192,8 +194,8 @@ void *goalTask(void *arguments){
       
 
 
-			frameGoalReady = 0;
-			comGoalReady = 1;
+			frameGoalReady = 0; //signal for camera thread to begin its task
+			comGoalReady = 1; //signal for com thread to begin its task
 			//printf("GoalPos %d %d\r\n", infoGoal.goal1.horizontal, infoGoal.goal1.vertical);
 		}
 		else

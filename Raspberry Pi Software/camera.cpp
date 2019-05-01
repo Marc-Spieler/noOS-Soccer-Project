@@ -19,7 +19,7 @@ int TopBorder = 80;
 void *cameraTask(void *arguments)
 {
   int index = *((int *)arguments);
-  
+  //open camera
   cam.set( CV_CAP_PROP_FRAME_HEIGHT, HEIGHT );
   cam.set( CV_CAP_PROP_FRAME_WIDTH,  WIDTH );
   cam.set( CV_CAP_PROP_FORMAT, CV_8UC3 );
@@ -66,7 +66,7 @@ void *cameraTask(void *arguments)
     // Get picture
     cam.grab();
     cam.retrieve( frame );
-    
+    // add TopBorder mask
     cv::Mat mask = frame( cv::Rect(0, 0, WIDTH, TopBorder) );
     mask.setTo( cv::Scalar(0, 0, 0) );
 //    frameBall = frame.clone();
@@ -76,11 +76,12 @@ void *cameraTask(void *arguments)
     
     // Convert image from BGR to HSV
     cv::cvtColor( frame, hsv, cv::COLOR_RGB2HSV );
-    frameBallReady = 1;
-    frameGoalReady = 1;
+    frameBallReady = 1; //signal for ball thread to begin its task
+    frameGoalReady = 1; //signal for goal thread to begin its task
     //std::thread t( writeFrame, frame );
     //t.detach();
-
+    
+	//draw line to goal/ball for video output
     while ((frameBallReady==1)&&(frameGoalReady==1));
 	cv::line( frame, objBall, mid, cv::Scalar( 255, 100, 100 ), 4 );
 	cv::line( frame, objGoal, mid, cv::Scalar( 100, 255, 100 ), 4 );

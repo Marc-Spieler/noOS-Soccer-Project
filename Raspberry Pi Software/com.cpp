@@ -53,6 +53,8 @@ void *comTask(void *arguments)
 	
 			printf("BallPos %d %d", horizontal, vertical);
 #endif			
+			
+			// send data over spi
 			//pOut.roboPos.x = infoBall.roboPos2.x;
 			//pOut.roboPos.y = infoBall.roboPos2.y;
 			//pOut.ballPos.x = infoBall.ballPos.x;
@@ -314,8 +316,8 @@ void *comTask(void *arguments)
 			if( !info.status.s2 ) info.go = true;
 			if( info.ball1.vertical <= info.ball2.vertical ) info.go = true;
 #endif				
-			comBallReady=0;
-			comGoalReady=0;			
+			comBallReady=0; //reset signal for com thread to begin its task
+			comGoalReady=0;	//reset signal for com thread to begin its task		
 		}
 			
 		usleep(10*1000); 

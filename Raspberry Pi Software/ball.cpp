@@ -21,7 +21,7 @@ static int V_MIN = 0, V_MAX = 255;
 void *ballTask(void *arguments)
 {		
 	int index = *((int *)arguments);
-
+	// get values from calibrateBall.txt
 	printf( "[*Ball] Open calibration file\r\n" );
 	std::ifstream file("/home/pi/soccer/calibrateBall.txt");
 	if( !file.is_open() )
@@ -152,18 +152,19 @@ void *ballTask(void *arguments)
 				if( a.getPixelCount() > bigArea.getPixelCount() ) bigArea = a;
 			}
 
+			// get area proportions
 			float prop1 = (float) bigArea.getWidth() / (float) bigArea.getHeight();
 			float prop2 = (float) bigArea.getHeight() / (float) bigArea.getWidth();
       
 			// Ball found
-			if( bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5 )
+			if( bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5 )  // check proportions of the area
 			{
 				objBall = bigArea.getStart();
 				objBall.x += bigArea.getWidth() / 2;
 				objBall.y += bigArea.getHeight() / 2;
 
 				float horizontal = 0, vertical = 0;
-				horizontal = ((float)(objBall.x - (WIDTH / 2)) / (float)(WIDTH / 2)) * 31.0f;
+				horizontal = ((float)(objBall.x - (WIDTH / 2)) / (float)(WIDTH / 2)) * 31.0f; // horizontal ball position on a scale from -31.0 to 31.0
 				vertical = ((float) ((HEIGHT / 2) - objBall.y) / (float) HEIGHT) * 50.0f;
 
 				if ( horizontal < -31.0f )
@@ -176,7 +177,7 @@ void *ballTask(void *arguments)
 					horizontal = 31.0f;
 				}
 
-				horizontal += 32.0f;
+				horizontal += 32.0f; // horizontal values are now 1.0 - 63.0
 //				printf("Obj.x mid.x WIDTH :%d %d %d\r\n", obj.x, mid.x, WIDTH);
 				infoBall.ball1.horizontal = (unsigned short) horizontal;
 				infoBall.ball1.vertical = (unsigned short) vertical;
@@ -345,8 +346,8 @@ void *ballTask(void *arguments)
 				infoBall.status.have1 = 0;
 			}
 
-			frameBallReady = 0;
-			comBallReady = 1;
+			frameBallReady = 0; //signal for camera thread to begin its task
+			comBallReady = 1; //signal for com thread to begin its task
 			//printf("BallPos %d %d\r\n", infoBall.ball1.horizontal, infoBall.ball1.vertical);
 		}
 		else
