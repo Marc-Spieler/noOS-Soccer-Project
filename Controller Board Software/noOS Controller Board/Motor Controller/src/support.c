@@ -38,7 +38,7 @@ void create_default_ini_file(void)
     "[general]\n"\
     "robot_id = 1\n"\
     "speed = 15\n"\
-    "heartbeat = 1\n");
+    "heartbeat = 0\n");
     f_close(&noOS_ini_file);
 }
 
@@ -57,13 +57,15 @@ void parse_ini_file(void)
 
     if(noOS_ini_dict->n == 0)
     {
-        iniparser_set(noOS_ini_dict, "general", NULL);
+        /*iniparser_set(noOS_ini_dict, "general", NULL);
         val = 1;
         iniparser_set(noOS_ini_dict, "general:robot_id", &val);
         val = 15;
         iniparser_set(noOS_ini_dict, "general:speed", &val);
         val = false;
-        iniparser_set(noOS_ini_dict, "general:heartbeat", &val);
+        iniparser_set(noOS_ini_dict, "general:heartbeat", &val);*/
+        create_default_ini_file();
+        noOS_ini_dict = iniparser_load("noOS.ini");
     }
     robot_id = iniparser_getint(noOS_ini_dict, "general:robot_id", 1);
     speed_preset = iniparser_getint(noOS_ini_dict, "general:speed", 15);

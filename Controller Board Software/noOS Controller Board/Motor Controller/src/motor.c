@@ -22,10 +22,13 @@ float speed_mleft;
 float speed_mright;
 float speed_mrear;
 
+int16_t mleft_out;
+int16_t mright_out;
+int16_t mrear_out;
+
 int16_t opponent_goal;
 int16_t own_goal;
 //int16_t rel_deviation;
-float speed = 0.0f;
 float mleft;
 float mright;
 float mrear;
@@ -37,12 +40,15 @@ float CosinMA2 = 0.866025404f;
 float CosinMA3 = 0.0f;
 
 uint16_t log_cnt = 0;
-int8_t eleft_counts_log[1200];
-int8_t eright_counts_log[1200];
-int8_t erear_counts_log[1200];
-int8_t speed_mleft_log[1200];
-int8_t speed_mright_log[1200];
-int8_t speed_mrear_log[1200];
+int8_t eleft_counts_log[400]; //1200
+int8_t eright_counts_log[400];
+int8_t erear_counts_log[400];
+int8_t speed_mleft_log[400];
+int8_t speed_mright_log[400];
+int8_t speed_mrear_log[400];
+int16_t mleft_out_log[400];
+int16_t mright_out_log[400];
+int16_t mrear_out_log[400];
 
 void motor_init(void)
 {
@@ -99,10 +105,10 @@ void motor_init(void)
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
     tc_start(TC0, 1);
 
-    mleft_pid_reg.kp = 15.0f;
-    mleft_pid_reg.ki = 10.0f;
+    mleft_pid_reg.kp = 10.0f;
+    mleft_pid_reg.ki = 0.7f;
     mleft_pid_reg.kc = 1.0f;
-    mleft_pid_reg.kd = 5.0f;
+    mleft_pid_reg.kd = 0.0f;
     mleft_pid_reg.outMin = -500.0f;
     mleft_pid_reg.outMax = 500.0f;
 
@@ -183,9 +189,9 @@ void motor_speed(uint8_t motor, int16_t ispeed)
 void TC1_Handler(void)
 {
     uint32_t PIOC_value;
-    int32_t eleft_counts;
-    int32_t eright_counts;
-    int32_t erear_counts;
+    int8_t eleft_counts;
+    int8_t eright_counts;
+    int8_t erear_counts;
 
     ioport_set_pin_level(LED_M3, 1);
 
@@ -204,45 +210,60 @@ void TC1_Handler(void)
         erear_counts = ((PIOC_value & 0x0000FC00) >> 9) | ((PIOC_value & 0x00000002) >> 1);
         erear_counts = (erear_counts & 0x00000040) ? erear_counts - 128 : erear_counts;
 
-        motor_speed(MOTOR_LEFT, pidReg(&mleft_pid_reg, speed_mleft, (float)eleft_counts));
-        motor_speed(MOTOR_RIGHT, pidReg(&mright_pid_reg, speed_mright, (float)eright_counts));
-        motor_speed(MOTOR_REAR, pidReg(&mrear_pid_reg, speed_mrear, (float)erear_counts));
+        mleft_out = pidReg(&mleft_pid_reg, speed_mleft, (float)eleft_counts);
+        mright_out = pidReg(&mright_pid_reg, speed_mright, (float)eright_counts);
+        mrear_out = pidReg(&mrear_pid_reg, speed_mrear, (float)erear_counts);
+        motor_speed(MOTOR_LEFT, mleft_out);
+        motor_speed(MOTOR_RIGHT, mright_out);
+        motor_speed(MOTOR_REAR, mrear_out);
 
-        if(log_cnt < 1200)
+        /*if(log_cnt < 400)
         {
             eleft_counts_log[log_cnt] = eleft_counts;
             eright_counts_log[log_cnt] = eright_counts;
             erear_counts_log[log_cnt] = erear_counts;
-            speed_mleft_log[log_cnt] = speed_mleft;
-            speed_mright_log[log_cnt] = speed_mright;
-            speed_mrear_log[log_cnt] = speed_mrear;
+            speed_mleft_log[log_cnt] = (int8_t)speed_mleft;
+            speed_mright_log[log_cnt] = (int8_t)speed_mright;
+            speed_mrear_log[log_cnt] = (int8_t)speed_mrear;
+            mleft_out_log[log_cnt] = mleft_out;
+            mright_out_log[log_cnt] = mright_out;
+            mrear_out_log[log_cnt] = mrear_out;
+            log_cnt++;
         }
-        /*else
+        else
         {
             tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
+            disable_motor();
             UINT bw;
             FIL file_object;
-            char test_file_name[] = "0:sd_mmc_test.txt";
+            char test_file_name[] = "motor_logging_p10_i0.7_c1_d0_+-5_teppich.txt";
             char sprintf_buf[11];
             f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
             
             for(int i = 0; i < log_cnt; i++)
             {
-                sprintf(sprintf_buf, "%5d;", log_cnt);
+                sprintf(sprintf_buf, "%5d;", i);
                 f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
 
-                sprintf(sprintf_buf, "%3d;", eleft_counts_log[log_cnt]);
+                sprintf(sprintf_buf, "%3d;", eleft_counts_log[i]);
                 f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
-                sprintf(sprintf_buf, "%3d;", eright_counts_log[log_cnt]);
+                sprintf(sprintf_buf, "%3d;", eright_counts_log[i]);
                 f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
-                sprintf(sprintf_buf, "%3d;", erear_counts_log[log_cnt]);
+                sprintf(sprintf_buf, "%3d;", erear_counts_log[i]);
                 f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
 
-                sprintf(sprintf_buf, "%3d;", speed_mleft_log[log_cnt]);
+                sprintf(sprintf_buf, "%3d;", speed_mleft_log[i]);
                 f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
-                sprintf(sprintf_buf, "%3d;", speed_mright_log[log_cnt]);
+                sprintf(sprintf_buf, "%3d;", speed_mright_log[i]);
                 f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
-                sprintf(sprintf_buf, "%3d\r\n", speed_mrear_log[log_cnt]);
+                sprintf(sprintf_buf, "%3d;", speed_mrear_log[i]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+
+                sprintf(sprintf_buf, "%4d;", mleft_out_log[i]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+                sprintf(sprintf_buf, "%4d;", mright_out_log[i]);
+                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+                sprintf(sprintf_buf, "%4d\r\n", mrear_out_log[i]);
                 f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
             }
 

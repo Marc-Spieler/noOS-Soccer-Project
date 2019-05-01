@@ -12,7 +12,6 @@
 extern int16_t opponent_goal;
 extern int16_t own_goal;
 //extern int16_t rel_deviation;
-extern float speed;
 extern float mleft;
 extern float mright;
 extern float mrear;

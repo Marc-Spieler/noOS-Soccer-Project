@@ -11,6 +11,7 @@
 #include "comm.h"
 #include "support.h"
 #include "iniparser.h"
+#include "motor.h"
 
 menu_t act_menu = MENU_MAIN;
 Bool print_menu = true;
@@ -156,7 +157,136 @@ static void menu_main(event_t event1)
 
 static void menu_match(event_t event1)
 {
-    
+    /*
+    avaiable sensors:
+    - ball
+    - goal
+    - line
+    - compass
+
+    line.see == 0:
+        speed = normal;
+        ball.having == 1:
+            goal.see == 1:
+                |goal.dir| < goal.diff:
+                    speed = max;
+                dir = goal.dir;
+            goal.see == 0:
+                dir = 0;
+        ball.having == 0:
+            ball.see == 1:
+                |goal.dir| < goal.diff:
+                    dir = 0;
+                    speed = max;
+                else:
+                    dir = ball.dir * factor;
+            ball.see == 0:
+                dir = 180;
+    line.see == 1:
+        dir = line.esc;
+        speed = max;
+    */
+
+    float robot_speed = speed_preset;
+    float robot_dir = 0;
+    float robot_trn = 0;
+
+    if(!stm.line.see)
+    {
+        if(rtm.ball.have)
+        {
+            if(rtm.goal.see)
+            {
+                if(abs(rtm.goal.dir) <= rtm.goal.diff)
+                {
+                    robot_speed = 30;
+                }
+                else
+                {
+                    robot_speed = 10;
+                }
+                robot_trn += rtm.goal.dir;
+            }
+            else
+            {
+                if(abs(compass_dev) < 10)
+                {
+                    robot_speed = 30;
+                }
+                else
+                {
+                    robot_speed = 10;
+                }
+                robot_trn += compass_dev;
+            }
+        }
+        else
+        {
+            if(rtm.ball.see)
+            {
+                if(rtm.goal.see)
+                {
+                    if(abs(rtm.ball.dir) < 3 && abs(rtm.goal.dir) <= rtm.goal.diff)
+                    {
+                        robot_speed = 30;
+                    }
+                    else
+                    {
+                        if(rtm.ball.dir > rtm.goal.dir)
+                        {
+                            robot_dir = 90;
+                        }
+                        else
+                        {
+                            robot_dir = -90;
+                        }
+                        
+                        if(abs(rtm.goal.dir) <= rtm.goal.diff)
+                        {
+                            robot_trn += rtm.goal.dir;
+                        }
+                        else
+                        {
+                            robot_trn += rtm.ball.dir;
+                        }
+                        robot_speed = 10;
+                    }
+                }
+                else
+                {
+                    if(abs(rtm.ball.dir) < 3 && abs(compass_dev) < 10)
+                    {
+                        robot_speed = 30;
+                        robot_dir = rtm.ball.dir;
+                        robot_trn += compass_dev;
+                    }
+                    else
+                    {
+                        if(compass_dev > 0)
+                        {
+                            robot_dir = 90;
+                        }
+                        else
+                        {
+                            robot_dir = -90;
+                        }
+                        robot_trn += rtm.ball.dir;
+                    }
+                }
+            }
+            else
+            {
+                robot_speed = 10;
+                robot_dir = 180;
+                robot_trn += compass_dev;
+            }
+        }
+    }
+    else
+    {
+        robot_dir = stm.line.esc;
+        robot_speed = 30;
+    }
     
     switch (event1)
     {
