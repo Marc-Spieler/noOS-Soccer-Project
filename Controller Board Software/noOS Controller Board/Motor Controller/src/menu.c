@@ -19,9 +19,10 @@ Bool print_menu = true;
 
 uint8_t prev_ball_dir = 0;
 Bool prev_ball_see = false;
+Bool prev_ball_have = false;
 uint8_t prev_goal_dir = 0;
 Bool prev_goal_see = false;
-Bool prev_ball_have = false;
+uint8_t prev_goal_diff = 0;
 
 typedef struct
 {
@@ -394,31 +395,50 @@ static void menu_camera(event_t event1)
         prev_ball_dir = rtm.ball.dir;
         prev_ball_see = rtm.ball.see;
     }
-
+    
+    if(rtm.ball.have != prev_ball_have || print_menu)
+    {
+        sprintf(sprintf_buf, "Having ball: %1d", rtm.ball.have);
+        lcd_print_s(2, 0, sprintf_buf);
+        prev_ball_have = rtm.ball.have;
+    }
+    
     if(rtm.goal.dir != prev_goal_dir || rtm.goal.see != prev_goal_see || print_menu)
     {
         if (rtm.goal.dir == 0)
         {
-            lcd_print_s(2, 0, "RPi inactive ");
+            lcd_print_s(3, 0, "RPi inactive ");
         }
         else if (rtm.goal.see)
         {
             sprintf(sprintf_buf, "Goal: %4d   ", rtm.goal.dir - 32);
-            lcd_print_s(2, 0, sprintf_buf);
+            lcd_print_s(3, 0, sprintf_buf);
         }
         else
         {
-            lcd_print_s(2, 0, "no goal found");
+            lcd_print_s(3, 0, "no goal found");
         }
         prev_goal_dir = rtm.goal.dir;
         prev_goal_see = rtm.goal.see;
     }
     
-    if(rtm.ball.have != prev_ball_have || print_menu)
+    if(rtm.goal.diff != prev_goal_diff || rtm.goal.see != prev_goal_see || print_menu)
     {
-        sprintf(sprintf_buf, "Having ball: %1d", rtm.ball.have);
-        lcd_print_s(3, 0, sprintf_buf);
-        prev_ball_have = rtm.ball.have;
+        if (rtm.goal.dir == 0)
+        {
+            lcd_print_s(4, 0, "RPi inactive  ");
+        }
+        else if (rtm.goal.see)
+        {
+            sprintf(sprintf_buf, "1/2 width: %3d", rtm.goal.diff);
+            lcd_print_s(4, 0, sprintf_buf);
+        }
+        else
+        {
+            lcd_print_s(4, 0, "no goal found ");
+        }
+        prev_goal_diff = rtm.goal.diff;
+        prev_goal_see = rtm.goal.see;
     }
     
     switch (event1)

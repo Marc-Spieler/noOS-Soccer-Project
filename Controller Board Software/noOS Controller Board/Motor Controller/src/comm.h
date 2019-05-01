@@ -71,18 +71,11 @@ extern sensor_to_motor_t stm;
 
 typedef struct
 {
-    uint16_t rsvd;
+    uint32_t rsvd;
 } motor_to_raspberrypi_t;
 
 typedef struct
 {
-    struct
-    {
-        uint8_t dir         :6;
-        uint8_t see         :1;
-        uint8_t have        :1;
-    } ball;
-    
     struct
     {
         uint16_t dir         :6;
@@ -90,6 +83,13 @@ typedef struct
         uint16_t diff        :5;
         uint16_t rsvd        :4;
     } goal;
+    
+    struct
+    {
+        uint8_t dir         :6;
+        uint8_t see         :1;
+        uint8_t have        :1;
+    } ball;
 
     uint8_t rsvd;
 } raspberrypi_to_motor_t;
