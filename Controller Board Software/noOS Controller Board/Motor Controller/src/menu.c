@@ -14,6 +14,8 @@
 #include "motor.h"
 #include "math.h"
 
+uint32_t ticks_test = 0;
+
 menu_t act_menu = MENU_MAIN;
 Bool print_menu = true;
 
@@ -50,6 +52,7 @@ char sprintf_buf[21];
 
 static void menu_main(event_t event1);
 static void menu_match(event_t event1);
+static void menu_test(event_t event1);
 static void menu_sensors(event_t event1);
 static void menu_camera(event_t event1);
 static void menu_compass(event_t event1);
@@ -71,7 +74,7 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_match(event1);
+            menu_test(event1);
             break;
         case MENU_SENSORS:
             menu_sensors(event1);
@@ -157,6 +160,60 @@ static void menu_main(event_t event1)
     }
 }
 
+static void menu_test(event_t event1)
+{
+    float robot_speed = speed_preset;
+    float robot_dir = 0;
+    float robot_trn = 0;
+    mleft = 0;
+    mright = 0;
+    mrear = 0;
+    
+    if(print_menu)
+    {
+        lcd_clear();
+        set_opponent_goal();
+        enable_motor();
+    }
+    
+    estimate_rel_deviation();
+    
+    /*robot_dir *= (3.14159265359f / 180.0f);
+    
+    mleft = robot_speed * (cos(robot_dir) * CosinMA1 - sin(robot_dir) * SinMA1);
+    mright = robot_speed * (cos(robot_dir) * CosinMA2 - sin(robot_dir) * SinMA2);
+    mrear = robot_speed * (cos(robot_dir) * CosinMA3 - sin(robot_dir) * SinMA3);*/
+    
+    robot_trn = compass_dev / 180;
+      
+    mleft += robot_trn;
+    mright += robot_trn;
+    mrear += robot_trn;
+    
+    compensate_motor_output(mleft, mright, mrear);
+
+    update_motor(mleft, mright, mrear);
+
+    if ((getTicks() - ticks_test) > 100)
+    {
+        ticks_comm = getTicks();
+        
+        lcd_print_i(1, 0, compass_dev);
+    }        
+    
+    switch (event1)
+    {
+        case EVENT_BUTTON_RETURN_P:
+            disable_motor();
+            act_menu = MENU_MAIN;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
+    }
+}
+
 static void menu_match(event_t event1)
 {
     /*
@@ -192,7 +249,15 @@ static void menu_match(event_t event1)
     float robot_speed = speed_preset;
     float robot_dir = 0;
     float robot_trn = 0;
-
+    
+    if(print_menu)
+    {
+        lcd_set_backlight(LCD_LIGHT_OFF);
+        lcd_clear();    // required to turn backlight on/off
+        set_opponent_goal();
+        enable_motor();
+    }
+    
     estimate_rel_deviation();
 
     if(!stm.line.see)
@@ -309,6 +374,9 @@ static void menu_match(event_t event1)
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
+            disable_motor();
+            lcd_set_backlight(LCD_LIGHT_ON);
+            lcd_clear();    // required to turn backlight on/off
             act_menu = MENU_MAIN;
             print_menu = true;
             break;

@@ -10,7 +10,7 @@
 #include "asf.h"
 
 extern uint16_t direction;
-extern uint16_t compass_dev;
+extern int16_t compass_dev;
 
 void compass_init(void);
 void update_compass(void);

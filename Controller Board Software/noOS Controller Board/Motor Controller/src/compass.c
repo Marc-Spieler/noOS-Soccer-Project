@@ -9,7 +9,7 @@
 #include "timing.h"
 
 uint16_t direction;
-uint16_t compass_dev;
+int16_t compass_dev;
 int16_t opponent_goal;
 static uint8_t compassIsBusy = false;
 
