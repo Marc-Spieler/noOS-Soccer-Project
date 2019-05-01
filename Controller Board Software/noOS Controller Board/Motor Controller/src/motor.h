@@ -11,7 +11,6 @@
 
 extern int16_t opponent_goal;
 extern int16_t own_goal;
-//extern int16_t rel_deviation;
 extern float mleft;
 extern float mright;
 extern float mrear;
@@ -27,9 +26,6 @@ void enable_motor(void);
 void disable_motor(void);
 void update_motor(float mleft_ref, float mright_ref, float mrear_ref);
 void motor_speed(uint8_t motor, int16_t speed);
-/*void set_opponent_goal(void);
-void set_inv_opponent_goal(void);
-void set_own_goal(void);
-int16_t estimate_rel_deviation(uint16_t dir, int16_t tar);*/
+void compensate_motor_output(float motor_1, float motor_2, float motor_3);
 
 #endif

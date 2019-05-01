@@ -44,7 +44,7 @@ void create_default_ini_file(void)
 
 void parse_ini_file(void)
 {
-    char val;
+    //char val;
 
     noOS_ini_dict = iniparser_load("noOS.ini");
 

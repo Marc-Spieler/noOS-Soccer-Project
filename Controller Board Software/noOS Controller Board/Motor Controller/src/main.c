@@ -36,71 +36,44 @@ int main(void)
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
-    //motor_init();
+    motor_init();
     //init_battery_warning();
 
-    //sd_mmc_init();
-    //sd_init();
+    compass_init();
+    lcd_init();
+
+    sd_mmc_init();
+    sd_init();
     //write_time_test_2();
     //create_default_ini_file();
     //parse_ini_file();
-    //set_led(LED_ONBOARD, 1);
-    //while(1);
-    //spi_init();
-    
-    //compass_init();
-    //lcd_init();
+    spi_init();
 
-    //noOS_bootup_sequence();
-    while (ioport_get_pin_level(PB_MID) == 1);
+    noOS_bootup_sequence();
     motor_init();
     enable_motor();
-    //disable_motor();
-	//mts.line_cal_value = 7;
+    disable_motor();
+	mts.line_cal_value = 7;
 
     while (1)
     {
-        #if 1
-            float dir = -30;
-            float robot_speed = 30;
-            dir *= (3.14159265359f / 180.0f);
+        update_comm();
+        update_heartbeat();
+        check_battery();
         
-            mleft = robot_speed * (cos(dir) * CosinMA1 - sin(dir) * SinMA1);
-            mright = robot_speed * (cos(dir) * CosinMA2 - sin(dir) * SinMA2);
-            mrear = robot_speed * (cos(dir) * CosinMA3 - sin(dir) * SinMA3);
-        
-            /*mleft += (float)rel_deviation;
-            mright += (float)rel_deviation;
-            mrear += (float)rel_deviation;*/
-        
-            update_motor(mleft, mright, mrear);
-            while (ioport_get_pin_level(PB_RETURN) == 1);
-            update_motor(0, 0, 0);
-            while(1);
-        #else
-        
-            /*update_comm();
-            update_heartbeat();
-            check_battery();
-        
-            if (stm.ibit.heartbeat)
-            {
-                set_led(LED_M2, 1);
-            }
-            else
-            {
-                set_led(LED_M2, 0);
-            }*/
+        if (stm.ibit.heartbeat)
+        {
+            set_led(LED_M2, 1);
+        }
+        else
+        {
+            set_led(LED_M2, 0);
+        }
 
-            update_motor(trn, trn, trn);
-            mdelay(1000);
-            update_motor(-trn, -trn, -trn);
-            mdelay(1000);
-            //PrepareValuesToSend();
+        PrepareValuesToSend();
 
-            //act_event = button_events();
-            //menu(act_event);
-        #endif
+        act_event = button_events();
+        menu(act_event);
     }
 }
 

@@ -26,9 +26,6 @@ int16_t mleft_out;
 int16_t mright_out;
 int16_t mrear_out;
 
-int16_t opponent_goal;
-int16_t own_goal;
-//int16_t rel_deviation;
 float mleft;
 float mright;
 float mrear;
@@ -277,34 +274,27 @@ void TC1_Handler(void)
     ioport_set_pin_level(LED_M3, 0);
 }
 
-/*void set_opponent_goal(void)
+void compensate_motor_output(float motor_1, float motor_2, float motor_3)
 {
-    update_compass();
-    opponent_goal = direction;
-}
-void set_inv_opponent_goal(void)
-{
-    update_compass();
-    opponent_goal = direction + 180;;
-}
-void set_own_goal(void)
-{
-    update_compass();
-    own_goal = direction;
-}
-int16_t estimate_rel_deviation(uint16_t dir, int16_t tar)
-{
-    int16_t rel_dev = dir - tar;
-    if (rel_dev >= 1800)
+    float motor[3] = {motor_1, motor_2, motor_3};
+
+    if(motor[1] > 30 || motor[2] > 30 || motor[3] > 30)
     {
-        rel_dev -= 3600;
+        uint8_t high = 0;
+        uint8_t high_m = 0;
+
+        for(int i = 1; i > 3; i++)
+        {
+            if(motor[i] > high)
+            {
+                high = motor[i];
+                high_m = i;
+            }
+        }
+
+        float factor = motor[high_m] / 30;
+        mleft /= factor;
+        mright /= factor;
+        mrear /= factor;
     }
-    
-    if (rel_dev <= -1800)
-    {
-        rel_dev += 3600;
-    }
-    
-    return rel_dev;
 }
-*/

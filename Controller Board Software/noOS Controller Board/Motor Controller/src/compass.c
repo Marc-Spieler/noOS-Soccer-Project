@@ -9,6 +9,8 @@
 #include "timing.h"
 
 uint16_t direction;
+uint16_t compass_dev;
+int16_t opponent_goal;
 static uint8_t compassIsBusy = false;
 
 //local function
@@ -58,6 +60,31 @@ uint8_t compass_is_busy(void)
 {
     return compassIsBusy;
 }
+
+void set_opponent_goal(void)
+{
+    update_compass();
+    opponent_goal = direction;
+}
+
+void estimate_rel_deviation(void)
+{
+    update_compass();
+    int16_t rel_dev = direction - opponent_goal;
+
+    if (rel_dev >= 1800)
+    {
+        rel_dev -= 3600;
+    }
+    
+    if (rel_dev <= -1800)
+    {
+        rel_dev += 3600;
+    }
+    
+    compass_dev = rel_dev;
+}
+
 
 /*float update_correction(pidReg_t *reg)
 {

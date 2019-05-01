@@ -12,6 +12,7 @@
 #include "support.h"
 #include "iniparser.h"
 #include "motor.h"
+#include "math.h"
 
 menu_t act_menu = MENU_MAIN;
 Bool print_menu = true;
@@ -191,6 +192,8 @@ static void menu_match(event_t event1)
     float robot_dir = 0;
     float robot_trn = 0;
 
+    estimate_rel_deviation();
+
     if(!stm.line.see)
     {
         if(rtm.ball.have)
@@ -287,7 +290,21 @@ static void menu_match(event_t event1)
         robot_dir = stm.line.esc;
         robot_speed = 30;
     }
+
+    robot_dir *= (3.14159265359f / 180.0f);
     
+    mleft = robot_speed * (cos(robot_dir) * CosinMA1 - sin(robot_dir) * SinMA1);
+    mright = robot_speed * (cos(robot_dir) * CosinMA2 - sin(robot_dir) * SinMA2);
+    mrear = robot_speed * (cos(robot_dir) * CosinMA3 - sin(robot_dir) * SinMA3);
+    
+    mleft += robot_trn;
+    mright += robot_trn;
+    mrear += robot_trn;
+    
+    compensate_motor_output(mleft, mright, mrear);
+
+    update_motor(mleft, mright, mrear);
+
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
