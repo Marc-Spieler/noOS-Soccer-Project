@@ -1,1 +1,0 @@
-void *goalTask(void *arguments);
