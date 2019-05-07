@@ -5,7 +5,6 @@
 /************************************************************************/
 
 #include "motor.h"
-#include "pid.h"
 #include "asf.h"
 #include "string.h"
 
@@ -102,10 +101,10 @@ void motor_init(void)
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
     tc_start(TC0, 1);
 
-    mleft_pid_reg.kp = 10.0f;
-    mleft_pid_reg.ki = 0.7f;
-    mleft_pid_reg.kc = 1.0f;
-    mleft_pid_reg.kd = 0.0f;
+    mleft_pid_reg.kp = 30.0f; //10
+    mleft_pid_reg.ki = 5.0f; //0.7
+    mleft_pid_reg.kc = 1.0f; //1
+    mleft_pid_reg.kd = 1.0f; //0
     mleft_pid_reg.outMin = -500.0f;
     mleft_pid_reg.outMax = 500.0f;
 
@@ -190,7 +189,7 @@ void TC1_Handler(void)
     int8_t eright_counts;
     int8_t erear_counts;
 
-    ioport_set_pin_level(LED_M3, 1);
+    //ioport_set_pin_level(LED_M3, 1);
 
     if ((tc_get_status(TC0, 1) & TC_SR_CPCS) == TC_SR_CPCS)
     {
@@ -271,19 +270,19 @@ void TC1_Handler(void)
         //pwm_channel_enable(PWM, ENC_CLK);
     }
 
-    ioport_set_pin_level(LED_M3, 0);
+    //ioport_set_pin_level(LED_M3, 0);
 }
 
-void compensate_motor_output(float motor_1, float motor_2, float motor_3)
+void compensate_motor_output(void)
 {
-    float motor[3] = {motor_1, motor_2, motor_3};
+    float motor[3] = {mleft, mright, mrear};
 
-    if(motor[1] > 30 || motor[2] > 30 || motor[3] > 30)
+    if(motor[0] > 30 || motor[1] > 30 || motor[2] > 30)
     {
         uint8_t high = 0;
         uint8_t high_m = 0;
 
-        for(int i = 1; i > 3; i++)
+        for(int i = 0; i < 3; i++)
         {
             if(motor[i] > high)
             {

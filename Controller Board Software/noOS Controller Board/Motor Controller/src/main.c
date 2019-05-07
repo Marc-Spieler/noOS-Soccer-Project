@@ -50,15 +50,13 @@ int main(void)
     spi_init();
 
     noOS_bootup_sequence();
-    motor_init();
-    enable_motor();
-    disable_motor();
-    mts.line_cal_value = 7;
+    
+    mts.line_cal_value = 12;
 
     while (1)
     {
         update_comm();
-        update_heartbeat();
+        //update_heartbeat();
         check_battery();
         
         if (stm.ibit.heartbeat)

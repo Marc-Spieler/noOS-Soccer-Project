@@ -78,11 +78,11 @@ void lcd_clear(void)
     mdelay(LCD_CLEAR_WAIT_TIME);
 }
 
-void lcd_print_i(uint8_t line, uint8_t col, uint32_t data)
+void lcd_print_i(uint8_t line, uint8_t col, int32_t data)
 {
     char str[11];
 
-    sprintf(str, "%10lu", data);
+    sprintf(str, "%10ld", data);
     lcd_print_s(line, col, str);
 }
 

@@ -84,12 +84,35 @@ typedef struct
         uint16_t rsvd        :4;
     } goal;
     
+    /*struct
+    {
+        uint16_t dir         :6;
+        uint16_t see         :1;
+        uint16_t diff        :5;
+        uint16_t rsvd        :4;
+    } yellow_goal;
+    
+    struct
+    {
+        uint16_t dir         :6;
+        uint16_t see         :1;
+        uint16_t diff        :5;
+        uint16_t rsvd        :4;
+    } blue_goal;*/
+    
     struct
     {
         uint8_t dir         :6;
         uint8_t see         :1;
         uint8_t have        :1;
     } ball;
+    
+    /*struct
+    {
+        uint8_t dir         :6;
+        uint8_t see         :1;
+        uint8_t have        :1;
+    } purple_ball;*/
 
     uint8_t rsvd;
 } raspberrypi_to_motor_t;

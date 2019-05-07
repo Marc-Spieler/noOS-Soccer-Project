@@ -42,7 +42,7 @@
 #define BATTERY_VOLTAGE                         ADC_CHANNEL_1
 
 /* DAC pin definition */
-#define DACC_CHANNEL_LINE_VREF                  1
+#define DACC_CHANNEL_LINE_VREF                  0
 #define DACC_ANALOG_CONTROL                     (DACC_ACR_IBCTLCH0(0x02) \
                                                 | DACC_ACR_IBCTLCH1(0x02) \
                                                 | DACC_ACR_IBCTLDACCORE(0x01))

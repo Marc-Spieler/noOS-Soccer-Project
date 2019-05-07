@@ -8,7 +8,11 @@
 #define MOTOR_H
 
 #include "asf.h"
+#include "pid.h"
 
+extern pidReg_t mleft_pid_reg;
+extern pidReg_t mright_pid_reg;
+extern pidReg_t mrear_pid_reg;
 extern int16_t opponent_goal;
 extern int16_t own_goal;
 extern float mleft;
@@ -26,6 +30,6 @@ void enable_motor(void);
 void disable_motor(void);
 void update_motor(float mleft_ref, float mright_ref, float mrear_ref);
 void motor_speed(uint8_t motor, int16_t speed);
-void compensate_motor_output(float motor_1, float motor_2, float motor_3);
+void compensate_motor_output(void);
 
 #endif
