@@ -331,12 +331,14 @@ void *ballTask(void *arguments)
 				//cv::line( frame, cv::Point(tru2.x, tru2.y - 2), cv::Point(tru2.x, tru2.y + 2), cv::Scalar(0, 0, 255), 2 );
 			}
 
-			if( countU <= 2 && countL >= 3 && countL < 5 )
+			//if( countU <= 2 && countL >= 3 && countL < 5 ) //originalvalues
+			if( countU <= 3 && countL >= 3 ) //working
 			{
 				//cv::line( frame, cv::Point(0, 0), cv::Point(WIDTH, HEIGHT), cv::Scalar(0, 0, 255), 4 );
 				infoBall.status.have1 = 1;
 			}
-			else if( countL >= 1 && countM > 2 && countM <= 4 )
+			//else if( countL >= 2 && countM > 3 && countM <= 5 ) //testvalues
+			else if( countL >= 1 && countM > 2 && countM <= 4 ) //working
 			{
 				//cv::line( frame, cv::Point(0, 0), cv::Point(WIDTH, HEIGHT), cv::Scalar(0, 0, 255), 4 );
 				infoBall.status.have1 = 1;

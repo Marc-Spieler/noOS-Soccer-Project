@@ -10,29 +10,45 @@
 #include "raspicam/raspicam_cv.h"
 #include "area.hpp"
 #define PI 3.14159265
-#define WIDTH 320
-#define HEIGHT 240
+#define WIDTH 320 //before:320
+#define HEIGHT 240  //before:240
 
 
 
 void *cameraTask(void *arguments);
-extern int frameBallReady;
-extern int frameGoalReady;
+extern volatile int frameBallReady;
+extern volatile int frameGoalReady;
 extern int TopBorder;
 extern cv::Mat hsv;
+extern cv::Mat frame;
 extern cv::Point objBall;
 extern cv::Point objGoal;
+#define facTWidth 0.9
+#define facTHeightUpper 1
+#define tml_par ( WIDTH / 2, HEIGHT - 26 ) //before: 53 instead of 26
+#define tll1_par ( WIDTH / 2 - WIDTH / 5*facTWidth, HEIGHT - 26 )
+#define tll2_par ( WIDTH / 2 - (2*WIDTH / 5*facTWidth), HEIGHT - 26 )
+#define trl1_par ( WIDTH / 2 + WIDTH / 5*facTWidth, HEIGHT - 26 )
+#define trl2_par ( WIDTH / 2 + (2*WIDTH / 5*facTWidth), HEIGHT - 26 )
 
-#define tml_par ( WIDTH / 2, HEIGHT - 53 )
-#define tll1_par ( WIDTH / 2 - WIDTH / 5, HEIGHT - 53 )
-#define tll2_par ( WIDTH / 2 - (2*WIDTH / 5), HEIGHT - 53 )
-#define trl1_par ( WIDTH / 2 + WIDTH / 5, HEIGHT - 53 )
-#define trl2_par ( WIDTH / 2 + (2*WIDTH / 5), HEIGHT - 53 )
+#define tmu_par ( WIDTH / 2, HEIGHT - 75*facTHeightUpper )//before: 103 intead of 75
+#define tlu1_par ( WIDTH / 2 - WIDTH / 5*facTWidth, HEIGHT - 75*facTHeightUpper )
+#define tlu2_par ( WIDTH / 2 - (2*WIDTH / 5*facTWidth), HEIGHT - 75*facTHeightUpper )
+#define tru1_par ( WIDTH / 2 + WIDTH / 5*facTWidth, HEIGHT - 75*facTHeightUpper )
+#define  tru2_par ( WIDTH / 2 + (2*WIDTH / 5*facTWidth), HEIGHT - 75*facTHeightUpper )
 
-#define tmu_par ( WIDTH / 2, HEIGHT - 103 )
-#define tlu1_par ( WIDTH / 2 - WIDTH / 5, HEIGHT - 103 )
-#define tlu2_par ( WIDTH / 2 - (2*WIDTH / 5), HEIGHT - 103 )
-#define tru1_par ( WIDTH / 2 + WIDTH / 5, HEIGHT - 103 )
-#define  tru2_par ( WIDTH / 2 + (2*WIDTH / 5), HEIGHT - 103 )
+//old:
+//#define tml_par ( WIDTH / 2, HEIGHT - 26 ) //before: 53 instead of 26
+//#define tll1_par ( WIDTH / 2 - WIDTH / 5, HEIGHT - 26 )
+//#define tll2_par ( WIDTH / 2 - (2*WIDTH / 5), HEIGHT - 26 )
+//#define trl1_par ( WIDTH / 2 + WIDTH / 5, HEIGHT - 26 )
+//#define trl2_par ( WIDTH / 2 + (2*WIDTH / 5), HEIGHT - 26 )
+
+//#define tmu_par ( WIDTH / 2, HEIGHT - 75 )//before: 103 intead of 75
+//#define tlu1_par ( WIDTH / 2 - WIDTH / 5, HEIGHT - 75 )
+//#define tlu2_par ( WIDTH / 2 - (2*WIDTH / 5), HEIGHT - 75 )
+//#define tru1_par ( WIDTH / 2 + WIDTH / 5, HEIGHT - 75 )
+//#define  tru2_par ( WIDTH / 2 + (2*WIDTH / 5), HEIGHT - 75 )
+
 
 #endif

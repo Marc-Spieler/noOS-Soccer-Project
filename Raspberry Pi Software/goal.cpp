@@ -19,23 +19,43 @@ static int S_MIN = 0, S_MAX = 255;
 static int V_MIN = 0, V_MAX = 255;
 
 void *goalTask(void *arguments){
-		
-	int index = *((int *)arguments);
+	std::ifstream fileIn;	
+	int isBlue = *((int *)arguments);
+	printf( "isBlue = %d\r\n", isBlue );
 
 	// get values from calibrateGoal.txt
 	printf( "[*Goal] Open calibration file\r\n" );
-	std::ifstream file("/home/pi/soccer/calibrateGoal.txt");
-	if( !file.is_open() )
+	if ( isBlue==0 )
 	{
-		printf( "[*Goal] Error: Failed to open calibration file\r\n" );
-		exit( 0 );
+
+		printf( "[*] Open calibrationGoal_yellow file\n" );
+		fileIn.open( "/home/pi/soccer/calibrateGoal_yellow.txt" );
+		if( !fileIn.is_open() ) 
+		{
+		  printf( "[*] Error: Failed to open calibrationGoal_yellow file\n" );
+		  exit( 0 );
+		}
+			
+		}
+		else
+		{
+
+		printf( "[*] Open calibrationGoal_blue file\n" );
+		fileIn.open( "/home/pi/soccer/calibrateGoal_blue.txt" );
+		if( !fileIn.is_open() ) 
+		{
+		  printf( "[*] Error: Failed to open calibrationGoal_blue file\n" );
+		  exit( 0 );
+		}
 	}
+		
+	
 		
 	std::string line = "EMPTY";
 	size_t val;
 	for( int i = 0; i < 6; i++ )
 	{
-		if( !std::getline( file, line ) )
+		if( !std::getline( fileIn, line ) )
 		{
 			printf( "[*Goal] Error: Calibration file wrong format\r\n" );
 			exit( 0 );
@@ -70,7 +90,8 @@ void *goalTask(void *arguments){
 				break;
 		}
 	}
-
+	fileIn.close();
+	
 	while (1)
 	{  
 		if (frameGoalReady==1)
@@ -162,11 +183,11 @@ void *goalTask(void *arguments){
 				objGoal.x += bigArea.getWidth() / 2;
 				objGoal.y += bigArea.getHeight() / 2;
 
-				float horizontal = 0, vertical = 0, HalfWidth = 0;
+				float horizontal = 0, vertical = 0, GoalHalfWidth = 0;
 				horizontal = ((float)(objGoal.x - (WIDTH / 2)) / (float)(WIDTH / 2)) * 31.0f; // horizontal goal position on a scale from -31.0 to 31.0
 				vertical = ((float) ((HEIGHT / 2) - objGoal.y) / (float) HEIGHT) * 50.0f;
-				HalfWidth = ((float)(objGoal.x - WIDTH ) / (float) WIDTH ) * 31.0f;
-				printf("HalfWidth: %f  Horizontal: %f",HalfWidth, horizontal);
+				GoalHalfWidth = ((float)(bigArea.getWidth()/2) / (float) WIDTH ) * 62.0f;
+				//printf("HalfWidth: %f  Horizontal: %f\r\n",GoalHalfWidth, horizontal);
 				
 				if ( horizontal < -31.0f )
 				{
@@ -182,7 +203,7 @@ void *goalTask(void *arguments){
 //				printf("Obj.x mid.x WIDTH :%d %d %d\r\n", obj.x, mid.x, WIDTH);
 				infoGoal.ball1.horizontal = (unsigned short) horizontal;
 				infoGoal.ball1.vertical = (unsigned short) vertical;
-				infoGoal.ball1.HalfWidth = (unsigned short) HalfWidth;
+				infoGoal.ball1.GoalHalfWidth = (unsigned short) GoalHalfWidth;
 				infoGoal.status.see = 1;
 			}
 			else
