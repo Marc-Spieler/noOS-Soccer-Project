@@ -484,25 +484,25 @@ static void menu_match_magdeburg(event_t event1)
     {
         if (rtm.ball.have == 1)
         {
-            robot_speed = 20.0f;
+            robot_speed = 100.0f;//20.0f;
             robot_dir = 0.0f;
             
             if(rtm.goal.see)
             {
                 if(abs(rtm.goal.dir - 32) <= rtm.goal.diff)
                 {
-                    robot_speed = 20;//
+                    robot_speed = 100.0f;//20.0f;
                 }
                 else
                 {
-                    robot_speed = 10;
+                    robot_speed = 50.0f;//10;
                 }
                 
-                robot_trn = -(rtm.goal.dir - 32) / 3;
+                robot_trn = -(rtm.goal.dir - 32) / 0.6;//3;
             }
             else
             {
-                robot_trn = compass_dev / 10.0f;
+                robot_trn = compass_dev / 50.0f;//10.0f;
             }
 #if FORCE_LIMIT_ON == 1
             tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
@@ -532,7 +532,7 @@ static void menu_match_magdeburg(event_t event1)
                 }
                 else
                 {*/
-                    robot_speed = 15;
+                    robot_speed = 75.0f;//15.0f;
                 //}
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
@@ -548,7 +548,7 @@ static void menu_match_magdeburg(event_t event1)
             else
             {
                 robot_dir = 180.0f;
-                robot_speed = 15.0f;
+                robot_speed = 75,0f;//15.0f;
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
                 pid_motor_left.outMax = FORCE_LIMIT;
@@ -561,13 +561,13 @@ static void menu_match_magdeburg(event_t event1)
 #endif
             }
             
-            robot_trn = compass_dev / 15.0f;
+            robot_trn = compass_dev / 75,0f;//15.0f;
         }
     }
     else
     {
         robot_dir = (float)(stm.line.esc - 180);
-        robot_speed = 15.0f;
+        robot_speed = 75.0f;//15.0f;
 #if FORCE_LIMIT_ON == 1
         tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
         pid_motor_left.outMax = STANDARD_FORCE;
@@ -580,7 +580,7 @@ static void menu_match_magdeburg(event_t event1)
 #endif        
     }
 
-    robot_dir *= (3.14159265359f / 180.0f);
+    /*robot_dir *= (3.14159265359f / 180.0f);
     
     mleft = robot_speed * (cos(robot_dir) * CosinMA1 - sin(robot_dir) * SinMA1);
     mright = robot_speed * (cos(robot_dir) * CosinMA2 - sin(robot_dir) * SinMA2);
@@ -592,7 +592,8 @@ static void menu_match_magdeburg(event_t event1)
     
     compensate_motor_output();
     
-    set_motor_individual(mleft, mright, mrear);
+    set_motor_individual(mleft, mright, mrear);*/
+    set_motor(robot_speed, robot_dir, robot_trn);
 
     switch (event1)
     {

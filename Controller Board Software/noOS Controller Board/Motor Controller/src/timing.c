@@ -37,7 +37,7 @@ void mdelay(uint32_t ul_dly_ticks)
 
 void update_comm(void)
 {
-    if ((getTicks() - ticks_comm) > 5)
+    if ((getTicks() - ticks_comm) > 8)
     {
         ticks_comm = getTicks();
         

@@ -166,41 +166,41 @@ void set_motor(float speed, float dir, float trn)
     set_motor_individual(left, right, rear);
 }
 
-void set_motor_individual(float mleft_ref, float mright_ref, float mrear_ref)
+void set_motor_individual(float left, float right, float rear)
 {
     /* compensate motor output */
-    float motor[3] = {mleft_ref, mright_ref, mrear_ref};
+    float motor[3] = {left, right, rear};
 
     if(motor[0] > MAX_MOTOR_SPEED || motor[1] > MAX_MOTOR_SPEED || motor[2] > MAX_MOTOR_SPEED)
     {
-        uint8_t high_value = 0;
-        uint8_t high_motor = 0;
+        uint8_t highest_value = 0;
+        uint8_t highest_motor = 0;
 
         for(int i = 0; i < 3; i++)
         {
-            if(motor[i] > high_value)
+            if(motor[i] > highest_value)
             {
-                high_value = motor[i];
-                high_motor = i;
+                highest_value = motor[i];
+                highest_motor = i;
             }
         }
 
-        float factor = motor[high_motor] / MAX_MOTOR_SPEED;
-        mleft_ref /= factor;
-        mright_ref /= factor;
-        mrear_ref /= factor;
+        float factor = motor[highest_motor] / MAX_MOTOR_SPEED;
+        left /= factor;
+        right /= factor;
+        rear /= factor;
     }
 
     /* Convert cm/s in ticks per loop */
-    mleft_ref /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
-    mright_ref /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
-    mrear_ref /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+    left /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+    right /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+    rear /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
 
     /* update PID input values */
     tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-    speed_mleft = (float)mleft_ref;
-    speed_mright = (float)mright_ref;
-    speed_mrear = (float)mrear_ref;
+    speed_mleft = (float)left;
+    speed_mright = (float)right;
+    speed_mrear = (float)rear;
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 }*/
 
