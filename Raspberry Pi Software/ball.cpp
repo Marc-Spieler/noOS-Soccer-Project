@@ -190,17 +190,17 @@ void *ballTask(void *arguments)
 			}	
    
 			// Testpoints for having ball [Test][Left/Mid/Right][Lower/Upper]
-			cv::Point tml( WIDTH / 2, HEIGHT - 53 );
-			cv::Point tll1( WIDTH / 2 - WIDTH / 5, HEIGHT - 53 );
-			cv::Point tll2( WIDTH / 2 - (2*WIDTH / 5), HEIGHT - 53 );
-			cv::Point trl1( WIDTH / 2 + WIDTH / 5, HEIGHT - 53 );
-			cv::Point trl2( WIDTH / 2 + (2*WIDTH / 5), HEIGHT - 53 );
+			static cv::Point tml tml_par;
+			static cv::Point tll1 tll1_par;
+			static cv::Point tll2 tll2_par;
+			static cv::Point trl1 trl1_par;
+			static cv::Point trl2 trl2_par;
 
-			cv::Point tmu( WIDTH / 2, HEIGHT - 103 );
-			cv::Point tlu1( WIDTH / 2 - WIDTH / 5, HEIGHT - 103 );
-			cv::Point tlu2( WIDTH / 2 - (2*WIDTH / 5), HEIGHT - 103 );
-			cv::Point tru1( WIDTH / 2 + WIDTH / 5, HEIGHT - 103 );
-			cv::Point tru2( WIDTH / 2 + (2*WIDTH / 5), HEIGHT - 103 );
+			static cv::Point tmu tmu_par;
+			static cv::Point tlu1 tlu1_par;
+			static cv::Point tlu2 tlu2_par;
+			static cv::Point tru1 tru1_par;
+			static cv::Point tru2 tru2_par;
       
 			// Check lower row testpoints
 			int countM = 0;

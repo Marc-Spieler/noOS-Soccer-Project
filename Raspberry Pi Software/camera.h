@@ -22,4 +22,17 @@ extern int TopBorder;
 extern cv::Mat hsv;
 extern cv::Point objBall;
 extern cv::Point objGoal;
+
+#define tml_par ( WIDTH / 2, HEIGHT - 53 )
+#define tll1_par ( WIDTH / 2 - WIDTH / 5, HEIGHT - 53 )
+#define tll2_par ( WIDTH / 2 - (2*WIDTH / 5), HEIGHT - 53 )
+#define trl1_par ( WIDTH / 2 + WIDTH / 5, HEIGHT - 53 )
+#define trl2_par ( WIDTH / 2 + (2*WIDTH / 5), HEIGHT - 53 )
+
+#define tmu_par ( WIDTH / 2, HEIGHT - 103 )
+#define tlu1_par ( WIDTH / 2 - WIDTH / 5, HEIGHT - 103 )
+#define tlu2_par ( WIDTH / 2 - (2*WIDTH / 5), HEIGHT - 103 )
+#define tru1_par ( WIDTH / 2 + WIDTH / 5, HEIGHT - 103 )
+#define  tru2_par ( WIDTH / 2 + (2*WIDTH / 5), HEIGHT - 103 )
+
 #endif
