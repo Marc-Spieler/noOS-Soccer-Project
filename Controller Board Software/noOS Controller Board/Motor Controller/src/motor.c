@@ -7,15 +7,27 @@
 #include "motor.h"
 #include "asf.h"
 #include "string.h"
+#include "math.h"
 
-pwm_channel_t g_pwm_channel_MLeft;
-pwm_channel_t g_pwm_channel_MRight;
-pwm_channel_t g_pwm_channel_MRear;
-pwm_channel_t g_pwm_channel_ENC;    // do not move - weird thing happen
+#define MAX_MOTOR_SPEED         (150) //cm/s
+#define CM_PER_TICK             ((2 * M_PI * 3) / 464,64)
+#define ENCODER_UPDATE_RATE     (0,008) //in seconds
 
-pidReg_t mleft_pid_reg;
-pidReg_t mright_pid_reg;
-pidReg_t mrear_pid_reg;
+#define MOTOR_LEFT_SIN          (0.5f)
+#define MOTOR_RIGHT_SIN         (0.5f)
+#define MOTOR_REAR_SIN          (-1.0f)
+#define MOTOR_LEFT_COSIN        (-0.866025404f)
+#define MOTOR_RIGHT_COSIN       (0.866025404f)
+#define MOTOR_REAR_COSIN        (0.0f)
+
+pwm_channel_t pwm_motor_left;
+pwm_channel_t pwm_motor_right;
+pwm_channel_t pwm_motor_rear;
+pwm_channel_t pwm_encoder;    // do not move - weird thing happen
+
+pidReg_t pid_motor_left;
+pidReg_t pid_motor_right;
+pidReg_t pid_motor_rear;
 
 float speed_mleft;
 float speed_mright;
@@ -25,7 +37,11 @@ int16_t mleft_out;
 int16_t mright_out;
 int16_t mrear_out;
 
-float mleft;
+int8_t act_motor_speed_left;
+int8_t act_motor_speed_right;
+int8_t act_motor_speed_rear;
+
+/*float mleft;
 float mright;
 float mrear;
 float SinMA1 = 0.5f;
@@ -33,7 +49,7 @@ float SinMA2 = 0.5f;
 float SinMA3 = -1.0f;
 float CosinMA1 = -0.866025404f;
 float CosinMA2 = 0.866025404f;
-float CosinMA3 = 0.0f;
+float CosinMA3 = 0.0f;*/
 
 uint16_t log_cnt = 0;
 int8_t eleft_counts_log[400]; //1200
@@ -48,47 +64,45 @@ int16_t mrear_out_log[400];
 
 void motor_init(void)
 {
-    /* Initialize PWM channel for MLeft */
-    g_pwm_channel_MLeft.alignment = PWM_ALIGN_LEFT;
-    g_pwm_channel_MLeft.polarity = PWM_LOW;
-    g_pwm_channel_MLeft.ul_prescaler = PWM_CMR_CPRE_CLKA;
-    g_pwm_channel_MLeft.ul_period = PERIOD_VALUE;
-    g_pwm_channel_MLeft.ul_duty = INIT_DUTY_VALUE;
-    g_pwm_channel_MLeft.channel = MOTOR_LEFT;
-    pwm_channel_init(PWM, &g_pwm_channel_MLeft);
+    /* Initialize PWM channel for left motor */
+    pwm_motor_left.alignment = PWM_ALIGN_LEFT;
+    pwm_motor_left.polarity = PWM_LOW;
+    pwm_motor_left.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    pwm_motor_left.ul_period = PERIOD_VALUE;
+    pwm_motor_left.ul_duty = INIT_DUTY_VALUE;
+    pwm_motor_left.channel = MOTOR_LEFT;
+    pwm_channel_init(PWM, &pwm_motor_left);
 
+    /* Initialize PWM channel for right motor */
+    pwm_motor_right.alignment = PWM_ALIGN_LEFT;
+    pwm_motor_right.polarity = PWM_LOW;
+    pwm_motor_right.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    pwm_motor_right.ul_period = PERIOD_VALUE;
+    pwm_motor_right.ul_duty = INIT_DUTY_VALUE;
+    pwm_motor_right.channel = MOTOR_RIGHT;
+    pwm_channel_init(PWM, &pwm_motor_right);
 
-    /* Initialize PWM channel for MRight */
-    g_pwm_channel_MRight.alignment = PWM_ALIGN_LEFT;
-    g_pwm_channel_MRight.polarity = PWM_LOW;
-    g_pwm_channel_MRight.ul_prescaler = PWM_CMR_CPRE_CLKA;
-    g_pwm_channel_MRight.ul_period = PERIOD_VALUE;
-    g_pwm_channel_MRight.ul_duty = INIT_DUTY_VALUE;
-    g_pwm_channel_MRight.channel = MOTOR_RIGHT;
-    pwm_channel_init(PWM, &g_pwm_channel_MRight);
-
-
-    /* Initialize PWM channel for MBack */
-    g_pwm_channel_MRear.alignment = PWM_ALIGN_LEFT;
-    g_pwm_channel_MRear.polarity = PWM_LOW;
-    g_pwm_channel_MRear.ul_prescaler = PWM_CMR_CPRE_CLKA;
-    g_pwm_channel_MRear.ul_period = PERIOD_VALUE;
-    g_pwm_channel_MRear.ul_duty = INIT_DUTY_VALUE;
-    g_pwm_channel_MRear.channel = MOTOR_REAR;
-    pwm_channel_init(PWM, &g_pwm_channel_MRear);
+    /* Initialize PWM channel for rear motor */
+    pwm_motor_rear.alignment = PWM_ALIGN_LEFT;
+    pwm_motor_rear.polarity = PWM_LOW;
+    pwm_motor_rear.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    pwm_motor_rear.ul_period = PERIOD_VALUE;
+    pwm_motor_rear.ul_duty = INIT_DUTY_VALUE;
+    pwm_motor_rear.channel = MOTOR_REAR;
+    pwm_channel_init(PWM, &pwm_motor_rear);
 
     pwm_channel_disable(PWM, MOTOR_LEFT);
     pwm_channel_disable(PWM, MOTOR_RIGHT);
     pwm_channel_disable(PWM, MOTOR_REAR);
 
-    /* Initialize PWM channel for Encoders */
-    g_pwm_channel_ENC.alignment = PWM_ALIGN_LEFT;
-    g_pwm_channel_ENC.polarity = PWM_LOW;
-    g_pwm_channel_ENC.ul_prescaler = PWM_CMR_CPRE_CLKA;
-    g_pwm_channel_ENC.ul_period = 330;
-    g_pwm_channel_ENC.ul_duty = 165;
-    g_pwm_channel_ENC.channel = ENC_CLK;
-    pwm_channel_init(PWM, &g_pwm_channel_ENC);
+    /* Initialize PWM channel for encoders */
+    pwm_encoder.alignment = PWM_ALIGN_LEFT;
+    pwm_encoder.polarity = PWM_LOW;
+    pwm_encoder.ul_prescaler = PWM_CMR_CPRE_CLKA;
+    pwm_encoder.ul_period = 330;
+    pwm_encoder.ul_duty = 165;
+    pwm_encoder.channel = ENC_CLK;
+    pwm_channel_init(PWM, &pwm_encoder);
     pwm_channel_enable(PWM, ENC_CLK);
  
     sysclk_enable_peripheral_clock(ID_TC1);
@@ -101,15 +115,15 @@ void motor_init(void)
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
     tc_start(TC0, 1);
 
-    mleft_pid_reg.kp = 30.0f; //10
-    mleft_pid_reg.ki = 5.0f; //0.7
-    mleft_pid_reg.kc = 1.0f; //1
-    mleft_pid_reg.kd = 1.0f; //0
-    mleft_pid_reg.outMin = -500.0f;
-    mleft_pid_reg.outMax = 500.0f;
+    pid_motor_left.kp = 30.0f; //10
+    pid_motor_left.ki = 5.0f; //0.7
+    pid_motor_left.kc = 1.0f; //1
+    pid_motor_left.kd = 1.0f; //0
+    pid_motor_left.outMin = -500.0f;
+    pid_motor_left.outMax = 500.0f;
 
-    mright_pid_reg = mleft_pid_reg;
-    mrear_pid_reg = mleft_pid_reg;
+    pid_motor_right = pid_motor_left;
+    pid_motor_rear = pid_motor_left;
 }
 
 void enable_motor(void)
@@ -133,16 +147,64 @@ void disable_motor(void)
     tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
 }
 
-void update_motor(float mleft_ref, float mright_ref, float mrear_ref)
+void set_motor(float speed, float dir, float trn)
 {
+    float left;
+    float right;
+    float rear;
+
+    dir *= (3.14159265359f / 180.0f);
+    
+    left = speed * (cos(dir) * MOTOR_LEFT_COSIN - sin(dir) * MOTOR_LEFT_SIN);
+    right = speed * (cos(dir) * MOTOR_RIGHT_COSIN - sin(dir) * MOTOR_RIGHT_SIN);
+    rear = speed * (cos(dir) * MOTOR_REAR_COSIN - sin(dir) * MOTOR_REAR_SIN);
+    
+    left += trn;
+    right += trn;
+    rear += trn;
+    
+    set_motor_individual(left, right, rear);
+}
+
+void set_motor_individual(float mleft_ref, float mright_ref, float mrear_ref)
+{
+    /* compensate motor output */
+    float motor[3] = {mleft_ref, mright_ref, mrear_ref};
+
+    if(motor[0] > MAX_MOTOR_SPEED || motor[1] > MAX_MOTOR_SPEED || motor[2] > MAX_MOTOR_SPEED)
+    {
+        uint8_t high_value = 0;
+        uint8_t high_motor = 0;
+
+        for(int i = 0; i < 3; i++)
+        {
+            if(motor[i] > high_value)
+            {
+                high_value = motor[i];
+                high_motor = i;
+            }
+        }
+
+        float factor = motor[high_motor] / MAX_MOTOR_SPEED;
+        mleft_ref /= factor;
+        mright_ref /= factor;
+        mrear_ref /= factor;
+    }
+
+    /* Convert cm/s in ticks per loop */
+    mleft_ref /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+    mright_ref /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+    mrear_ref /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+
+    /* update PID input values */
     tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
     speed_mleft = (float)mleft_ref;
     speed_mright = (float)mright_ref;
     speed_mrear = (float)mrear_ref;
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
-}
+}*/
 
-void motor_speed(uint8_t motor, int16_t ispeed)
+void update_motor_pwm(uint8_t motor, int16_t ispeed)
 {
     if (ispeed > 500)
     {
@@ -169,13 +231,13 @@ void motor_speed(uint8_t motor, int16_t ispeed)
     switch(motor)
     {
         case MOTOR_LEFT:
-            pwm_channel_update_duty(PWM, &g_pwm_channel_MLeft, duty_cycle);
+            pwm_channel_update_duty(PWM, &pwm_motor_left, duty_cycle);
             break;
         case MOTOR_RIGHT:
-            pwm_channel_update_duty(PWM, &g_pwm_channel_MRight, duty_cycle);
+            pwm_channel_update_duty(PWM, &pwm_motor_right, duty_cycle);
             break;
         case MOTOR_REAR:
-            pwm_channel_update_duty(PWM, &g_pwm_channel_MRear, duty_cycle);
+            pwm_channel_update_duty(PWM, &pwm_motor_rear, duty_cycle);
             break;
         default:
             break;
@@ -185,9 +247,9 @@ void motor_speed(uint8_t motor, int16_t ispeed)
 void TC1_Handler(void)
 {
     uint32_t PIOC_value;
-    int8_t eleft_counts;
-    int8_t eright_counts;
-    int8_t erear_counts;
+    int8_t left_enc_counts;
+    int8_t right_enc_counts;
+    int8_t rear_enc_counts;
 
     //ioport_set_pin_level(LED_M3, 1);
 
@@ -199,19 +261,23 @@ void TC1_Handler(void)
         ioport_set_pin_level(ENC_LOAD, 1);
         pwm_channel_enable(PWM, ENC_CLK);
 
-        eleft_counts = (PIOC_value & 0x7F000000) >> 24;
-        eleft_counts = (eleft_counts & 0x00000040) ? eleft_counts - 128 : eleft_counts;
-        eright_counts = ((PIOC_value & 0x00C00000) >> 17) | ((PIOC_value & 0x001F0000) >> 16);
-        eright_counts = (eright_counts & 0x00000040) ? eright_counts - 128 : eright_counts;
-        erear_counts = ((PIOC_value & 0x0000FC00) >> 9) | ((PIOC_value & 0x00000002) >> 1);
-        erear_counts = (erear_counts & 0x00000040) ? erear_counts - 128 : erear_counts;
+        left_enc_counts = (PIOC_value & 0x7F000000) >> 24;
+        left_enc_counts = (left_enc_counts & 0x00000040) ? left_enc_counts - 128 : left_enc_counts;
+        right_enc_counts = ((PIOC_value & 0x00C00000) >> 17) | ((PIOC_value & 0x001F0000) >> 16);
+        right_enc_counts = (right_enc_counts & 0x00000040) ? right_enc_counts - 128 : right_enc_counts;
+        rear_enc_counts = ((PIOC_value & 0x0000FC00) >> 9) | ((PIOC_value & 0x00000002) >> 1);
+        rear_enc_counts = (rear_enc_counts & 0x00000040) ? rear_enc_counts - 128 : rear_enc_counts;
 
-        mleft_out = pidReg(&mleft_pid_reg, speed_mleft, (float)eleft_counts);
-        mright_out = pidReg(&mright_pid_reg, speed_mright, (float)eright_counts);
-        mrear_out = pidReg(&mrear_pid_reg, speed_mrear, (float)erear_counts);
-        motor_speed(MOTOR_LEFT, mleft_out);
-        motor_speed(MOTOR_RIGHT, mright_out);
-        motor_speed(MOTOR_REAR, mrear_out);
+        mleft_out = pidReg(&pid_motor_left, speed_mleft, (float)left_enc_counts);
+        mright_out = pidReg(&pid_motor_right, speed_mright, (float)right_enc_counts);
+        mrear_out = pidReg(&pid_motor_rear, speed_mrear, (float)rear_enc_counts);
+        update_motor_pwm(MOTOR_LEFT, mleft_out);
+        update_motor_pwm(MOTOR_RIGHT, mright_out);
+        update_motor_pwm(MOTOR_REAR, mrear_out);
+
+        act_motor_speed_left = left_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_right = right_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_rear = rear_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
 
         /*if(log_cnt < 400)
         {
@@ -271,29 +337,4 @@ void TC1_Handler(void)
     }
 
     //ioport_set_pin_level(LED_M3, 0);
-}
-
-void compensate_motor_output(void)
-{
-    float motor[3] = {mleft, mright, mrear};
-
-    if(motor[0] > 30 || motor[1] > 30 || motor[2] > 30)
-    {
-        uint8_t high = 0;
-        uint8_t high_m = 0;
-
-        for(int i = 0; i < 3; i++)
-        {
-            if(motor[i] > high)
-            {
-                high = motor[i];
-                high_m = i;
-            }
-        }
-
-        float factor = motor[high_m] / 30;
-        mleft /= factor;
-        mright /= factor;
-        mrear /= factor;
-    }
 }

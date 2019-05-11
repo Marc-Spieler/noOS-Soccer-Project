@@ -238,7 +238,7 @@ static void menu_test(event_t event1)
             while(1);
         }
     
-        update_motor(30, -30, 0);//mleft, mright, mrear);
+        set_motor_individual(30, -30, 0);//mleft, mright, mrear);
     }    
     /*if ((getTicks() - ticks_test) > 100)
     {
@@ -438,7 +438,7 @@ static void menu_match(event_t event1)
     
     compensate_motor_output();
 
-    update_motor(mleft, mright, mrear);
+    set_motor_individual(mleft, mright, mrear);
 
     switch (event1)
     {
@@ -506,12 +506,12 @@ static void menu_match_magdeburg(event_t event1)
             }
 #if FORCE_LIMIT_ON == 1
             tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-            mleft_pid_reg.outMax = STANDARD_FORCE;
-            mleft_pid_reg.outMin = -STANDARD_FORCE;
-            mright_pid_reg.outMax = STANDARD_FORCE;
-            mright_pid_reg.outMin = -STANDARD_FORCE;
-            mrear_pid_reg.outMax = STANDARD_FORCE;
-            mrear_pid_reg.outMin = -STANDARD_FORCE;
+            pid_motor_left.outMax = STANDARD_FORCE;
+            pid_motor_left.outMin = -STANDARD_FORCE;
+            pid_motor_right.outMax = STANDARD_FORCE;
+            pid_motor_right.outMin = -STANDARD_FORCE;
+            pid_motor_rear.outMax = STANDARD_FORCE;
+            pid_motor_rear.outMin = -STANDARD_FORCE;
             tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 #endif
         }
@@ -536,12 +536,12 @@ static void menu_match_magdeburg(event_t event1)
                 //}
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-                mleft_pid_reg.outMax = STANDARD_FORCE;
-                mleft_pid_reg.outMin = -STANDARD_FORCE;
-                mright_pid_reg.outMax = STANDARD_FORCE;
-                mright_pid_reg.outMin = -STANDARD_FORCE;
-                mrear_pid_reg.outMax = STANDARD_FORCE;
-                mrear_pid_reg.outMin = -STANDARD_FORCE;
+                pid_motor_left.outMax = STANDARD_FORCE;
+                pid_motor_left.outMin = -STANDARD_FORCE;
+                pid_motor_right.outMax = STANDARD_FORCE;
+                pid_motor_right.outMin = -STANDARD_FORCE;
+                pid_motor_rear.outMax = STANDARD_FORCE;
+                pid_motor_rear.outMin = -STANDARD_FORCE;
                 tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 #endif
             }
@@ -551,12 +551,12 @@ static void menu_match_magdeburg(event_t event1)
                 robot_speed = 15.0f;
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-                mleft_pid_reg.outMax = FORCE_LIMIT;
-                mleft_pid_reg.outMin = -FORCE_LIMIT;
-                mright_pid_reg.outMax = FORCE_LIMIT;
-                mright_pid_reg.outMin = -FORCE_LIMIT;
-                mrear_pid_reg.outMax = FORCE_LIMIT;
-                mrear_pid_reg.outMin = -FORCE_LIMIT;
+                pid_motor_left.outMax = FORCE_LIMIT;
+                pid_motor_left.outMin = -FORCE_LIMIT;
+                pid_motor_right.outMax = FORCE_LIMIT;
+                pid_motor_right.outMin = -FORCE_LIMIT;
+                pid_motor_rear.outMax = FORCE_LIMIT;
+                pid_motor_rear.outMin = -FORCE_LIMIT;
                 tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 #endif
             }
@@ -570,12 +570,12 @@ static void menu_match_magdeburg(event_t event1)
         robot_speed = 15.0f;
 #if FORCE_LIMIT_ON == 1
         tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-        mleft_pid_reg.outMax = STANDARD_FORCE;
-        mleft_pid_reg.outMin = -STANDARD_FORCE;
-        mright_pid_reg.outMax = STANDARD_FORCE;
-        mright_pid_reg.outMin = -STANDARD_FORCE;
-        mrear_pid_reg.outMax = STANDARD_FORCE;
-        mrear_pid_reg.outMin = -STANDARD_FORCE;
+        pid_motor_left.outMax = STANDARD_FORCE;
+        pid_motor_left.outMin = -STANDARD_FORCE;
+        pid_motor_right.outMax = STANDARD_FORCE;
+        pid_motor_right.outMin = -STANDARD_FORCE;
+        pid_motor_rear.outMax = STANDARD_FORCE;
+        pid_motor_rear.outMin = -STANDARD_FORCE;
         tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 #endif        
     }
@@ -592,7 +592,7 @@ static void menu_match_magdeburg(event_t event1)
     
     compensate_motor_output();
     
-    update_motor(mleft, mright, mrear);
+    set_motor_individual(mleft, mright, mrear);
 
     switch (event1)
     {
@@ -645,12 +645,12 @@ static void menu_match_voehringen_optimized(event_t event1)
             }
 #if FORCE_LIMIT_ON == 1
             tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-            mleft_pid_reg.outMax = STANDARD_FORCE;
-            mleft_pid_reg.outMin = -STANDARD_FORCE;
-            mright_pid_reg.outMax = STANDARD_FORCE;
-            mright_pid_reg.outMin = -STANDARD_FORCE;
-            mrear_pid_reg.outMax = STANDARD_FORCE;
-            mrear_pid_reg.outMin = -STANDARD_FORCE;
+            pid_motor_left.outMax = STANDARD_FORCE;
+            pid_motor_left.outMin = -STANDARD_FORCE;
+            pid_motor_right.outMax = STANDARD_FORCE;
+            pid_motor_right.outMin = -STANDARD_FORCE;
+            pid_motor_rear.outMax = STANDARD_FORCE;
+            pid_motor_rear.outMin = -STANDARD_FORCE;
             tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 #endif
         }
@@ -662,12 +662,12 @@ static void menu_match_voehringen_optimized(event_t event1)
                 robot_dir = (float)((rtm.ball.dir - 32) * 2);
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-                mleft_pid_reg.outMax = STANDARD_FORCE;
-                mleft_pid_reg.outMin = -STANDARD_FORCE;
-                mright_pid_reg.outMax = STANDARD_FORCE;
-                mright_pid_reg.outMin = -STANDARD_FORCE;
-                mrear_pid_reg.outMax = STANDARD_FORCE;
-                mrear_pid_reg.outMin = -STANDARD_FORCE;
+                pid_motor_left.outMax = STANDARD_FORCE;
+                pid_motor_left.outMin = -STANDARD_FORCE;
+                pid_motor_right.outMax = STANDARD_FORCE;
+                pid_motor_right.outMin = -STANDARD_FORCE;
+                pid_motor_rear.outMax = STANDARD_FORCE;
+                pid_motor_rear.outMin = -STANDARD_FORCE;
                 tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 #endif
             }
@@ -677,12 +677,12 @@ static void menu_match_voehringen_optimized(event_t event1)
                 robot_speed = 10.0f;
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-                mleft_pid_reg.outMax = FORCE_LIMIT;
-                mleft_pid_reg.outMin = -FORCE_LIMIT;
-                mright_pid_reg.outMax = FORCE_LIMIT;
-                mright_pid_reg.outMin = -FORCE_LIMIT;
-                mrear_pid_reg.outMax = FORCE_LIMIT;
-                mrear_pid_reg.outMin = -FORCE_LIMIT;
+                pid_motor_left.outMax = FORCE_LIMIT;
+                pid_motor_left.outMin = -FORCE_LIMIT;
+                pid_motor_right.outMax = FORCE_LIMIT;
+                pid_motor_right.outMin = -FORCE_LIMIT;
+                pid_motor_rear.outMax = FORCE_LIMIT;
+                pid_motor_rear.outMin = -FORCE_LIMIT;
                 tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 #endif
             }
@@ -694,12 +694,12 @@ static void menu_match_voehringen_optimized(event_t event1)
         robot_speed = 15.0f;
 #if FORCE_LIMIT_ON == 1
         tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-        mleft_pid_reg.outMax = STANDARD_FORCE;
-        mleft_pid_reg.outMin = -STANDARD_FORCE;
-        mright_pid_reg.outMax = STANDARD_FORCE;
-        mright_pid_reg.outMin = -STANDARD_FORCE;
-        mrear_pid_reg.outMax = STANDARD_FORCE;
-        mrear_pid_reg.outMin = -STANDARD_FORCE;
+        pid_motor_left.outMax = STANDARD_FORCE;
+        pid_motor_left.outMin = -STANDARD_FORCE;
+        pid_motor_right.outMax = STANDARD_FORCE;
+        pid_motor_right.outMin = -STANDARD_FORCE;
+        pid_motor_rear.outMax = STANDARD_FORCE;
+        pid_motor_rear.outMin = -STANDARD_FORCE;
         tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 #endif
     }    
@@ -716,7 +716,7 @@ static void menu_match_voehringen_optimized(event_t event1)
     
     compensate_motor_output();
     
-    update_motor(mleft, mright, mrear);
+    set_motor_individual(mleft, mright, mrear);
 
     switch (event1)
     {
@@ -825,7 +825,7 @@ static void menu_match_voehringen(event_t event1)
     
     //compensate_motor_output(mleft, mright, mrear);
     
-    update_motor(mleft, mright, mrear);
+    set_motor_individual(mleft, mright, mrear);
 
     switch (event1)
     {

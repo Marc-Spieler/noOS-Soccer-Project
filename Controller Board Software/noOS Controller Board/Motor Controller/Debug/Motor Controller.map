@@ -200,12 +200,10 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../l
 Allocating common symbols
 Common symbol       size              file
 
-g_pwm_channel_MLeft
-                    0x28              src/motor.o
 __lock___atexit_recursive_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
 pb_return_act       0x1               src/menu.o
-g_pwm_channel_ENC   0x28              src/motor.o
+pwm_motor_left      0x28              src/motor.o
 __lock___arc4random_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
 pb_mid_prev         0x1               src/menu.o
@@ -213,7 +211,6 @@ mright_out_log      0x320             src/motor.o
 errno               0x4               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-reent.o)
 fs                  0x230             src/sd.o
 mright_out          0x2               src/motor.o
-mright_pid_reg      0x24              src/motor.o
 file_object         0x24              src/sd.o
 sens_buf            0x10              src/comm.o
 mtr                 0x4               src/comm.o
@@ -223,6 +220,7 @@ rpi_buf             0x4               src/comm.o
 pb_down_act         0x1               src/menu.o
 ticks_comm          0x4               src/compass.o
 pb_up_prev          0x1               src/menu.o
+pwm_motor_right     0x28              src/motor.o
 rtm                 0x4               src/comm.o
 __lock___env_recursive_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
@@ -238,11 +236,9 @@ __lock___malloc_recursive_mutex
 direction           0x2               src/compass.o
 mleft_out           0x2               src/motor.o
 pb_return_prev      0x1               src/menu.o
-g_pwm_channel_MRear
-                    0x28              src/motor.o
+pwm_motor_rear      0x28              src/motor.o
 mts                 0x8               src/comm.o
 noOS_ini_dict       0x4               src/support.o
-mrear_pid_reg       0x24              src/motor.o
 ticks_button_update
                     0x4               src/compass.o
 pb_left_act         0x1               src/menu.o
@@ -254,16 +250,15 @@ ul_ticks_compass    0x4               src/timing.o
 sprintf_cache       0x14              src/menu.o
 speed_mleft         0x4               src/motor.o
 pb_mid_act          0x1               src/menu.o
+pid_motor_rear      0x24              src/motor.o
 pb_up_act           0x1               src/menu.o
+pid_motor_right     0x24              src/motor.o
 compass_dev         0x4               src/compass.o
 erear_counts_log    0x190             src/motor.o
 __lock___at_quick_exit_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
-g_pwm_channel_MRight
-                    0x28              src/motor.o
 speed_mleft_log     0x190             src/motor.o
 mrear_out_log       0x320             src/motor.o
-mleft_pid_reg       0x24              src/motor.o
 res                 0x1               src/sd.o
 pb_right_act        0x1               src/menu.o
 ticks_dot_update    0x4               src/main.o
@@ -273,10 +268,12 @@ __lock___dd_hash_mutex
                     0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
 __lock___tz_mutex   0x1               c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
 eleft_counts_log    0x190             src/motor.o
+pwm_encoder         0x28              src/motor.o
 sprintf_buf         0x15              src/menu.o
 eright_counts_log   0x190             src/motor.o
 speed_mrear_log     0x190             src/motor.o
 speed_mright_log    0x190             src/motor.o
+pid_motor_left      0x24              src/motor.o
 mrear               0x4               src/motor.o
 status              0x1               src/sd.o
 speed_mrear         0x4               src/motor.o
@@ -937,7 +934,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3ca src/ASF/common/services/delay/sam/cycle_counter.o
  .debug_macro   0x00000000       0x22 src/ASF/common/services/delay/sam/cycle_counter.o
  .debug_line    0x00000000      0xb4e src/ASF/common/services/delay/sam/cycle_counter.o
- .debug_str     0x00000000    0x5c967 src/ASF/common/services/delay/sam/cycle_counter.o
+ .debug_str     0x00000000    0x5c96f src/ASF/common/services/delay/sam/cycle_counter.o
  .comment       0x00000000       0x5a src/ASF/common/services/delay/sam/cycle_counter.o
  .debug_frame   0x00000000       0x20 src/ASF/common/services/delay/sam/cycle_counter.o
  .ARM.attributes
@@ -1251,7 +1248,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x28 src/ASF/common/services/spi/sam_spi/spi_master.o
  .debug_macro   0x00000000       0x2e src/ASF/common/services/spi/sam_spi/spi_master.o
  .debug_line    0x00000000      0xf1e src/ASF/common/services/spi/sam_spi/spi_master.o
- .debug_str     0x00000000    0x5e9a3 src/ASF/common/services/spi/sam_spi/spi_master.o
+ .debug_str     0x00000000    0x5e9ab src/ASF/common/services/spi/sam_spi/spi_master.o
  .comment       0x00000000       0x5a src/ASF/common/services/spi/sam_spi/spi_master.o
  .debug_frame   0x00000000      0x3c0 src/ASF/common/services/spi/sam_spi/spi_master.o
  .ARM.attributes
@@ -8507,7 +8504,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x2c6 src/ASF/sam/drivers/pmc/sleep.o
  .debug_macro   0x00000000      0x1d8 src/ASF/sam/drivers/pmc/sleep.o
  .debug_line    0x00000000      0xce2 src/ASF/sam/drivers/pmc/sleep.o
- .debug_str     0x00000000    0x5de46 src/ASF/sam/drivers/pmc/sleep.o
+ .debug_str     0x00000000    0x5de4e src/ASF/sam/drivers/pmc/sleep.o
  .comment       0x00000000       0x5a src/ASF/sam/drivers/pmc/sleep.o
  .debug_frame   0x00000000       0x80 src/ASF/sam/drivers/pmc/sleep.o
  .ARM.attributes
@@ -9050,7 +9047,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3ca src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_macro   0x00000000       0x3f src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_line    0x00000000      0xb6a src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- .debug_str     0x00000000    0x5c843 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_str     0x00000000    0x5c84b src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .comment       0x00000000       0x5a src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_frame   0x00000000       0x58 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .ARM.attributes
@@ -11547,9 +11544,9 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
  .text.update_motor
                 0x000898f0       0x54 src/motor.o
                 0x000898f0                update_motor
- .text.motor_speed
+ .text.update_motor_pwm
                 0x00089944       0xa8 src/motor.o
-                0x00089944                motor_speed
+                0x00089944                update_motor_pwm
  .text.TC1_Handler
                 0x000899ec      0x1dc src/motor.o
                 0x000899ec                TC1_Handler
@@ -12394,29 +12391,29 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x20070ef8                sprintf_buf
  *fill*         0x20070f0d        0x3 
  COMMON         0x20070f10     0x13f0 src/motor.o
-                0x20070f10                g_pwm_channel_MLeft
-                0x20070f38                g_pwm_channel_ENC
-                0x20070f60                mright_out_log
-                0x20071280                mright_out
-                0x20071284                mright_pid_reg
-                0x200712a8                speed_mright
-                0x200712ac                mleft_out_log
-                0x200715cc                mleft_out
-                0x200715d0                g_pwm_channel_MRear
-                0x200715f8                mrear_pid_reg
-                0x2007161c                mleft
-                0x20071620                mrear_out
-                0x20071624                speed_mleft
+                0x20070f10                pwm_motor_left
+                0x20070f38                mright_out_log
+                0x20071258                mright_out
+                0x2007125c                pwm_motor_right
+                0x20071284                speed_mright
+                0x20071288                mleft_out_log
+                0x200715a8                mleft_out
+                0x200715ac                pwm_motor_rear
+                0x200715d4                mleft
+                0x200715d8                mrear_out
+                0x200715dc                speed_mleft
+                0x200715e0                pid_motor_rear
+                0x20071604                pid_motor_right
                 0x20071628                erear_counts_log
-                0x200717b8                g_pwm_channel_MRight
-                0x200717e0                speed_mleft_log
-                0x20071970                mrear_out_log
-                0x20071c90                mleft_pid_reg
-                0x20071cb4                mright
-                0x20071cb8                eleft_counts_log
-                0x20071e48                eright_counts_log
-                0x20071fd8                speed_mrear_log
-                0x20072168                speed_mright_log
+                0x200717b8                speed_mleft_log
+                0x20071948                mrear_out_log
+                0x20071c68                mright
+                0x20071c6c                eleft_counts_log
+                0x20071dfc                pwm_encoder
+                0x20071e24                eright_counts_log
+                0x20071fb4                speed_mrear_log
+                0x20072144                speed_mright_log
+                0x200722d4                pid_motor_left
                 0x200722f8                mrear
                 0x200722fc                speed_mrear
  COMMON         0x20072300      0x256 src/sd.o
@@ -13171,79 +13168,79 @@ OUTPUT(Motor Controller.elf elf32-littlearm)
  .debug_line    0x0001f5a9      0x417 src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_line    0x0001f9c0     0x135a src/main.o
 
-.debug_str      0x00000000    0x6e758
- .debug_str     0x00000000    0x63746 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
-                              0x63b9d (size before relaxing)
- .debug_str     0x00063746     0x10fc src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
-                              0x5ed1f (size before relaxing)
- .debug_str     0x00064842      0x5d8 src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
-                              0x5e737 (size before relaxing)
- .debug_str     0x00064e1a      0x239 src/ASF/common/services/storage/ctrl_access/ctrl_access.o
-                              0x5ea6a (size before relaxing)
- .debug_str     0x00065053      0xef1 src/ASF/sam/drivers/hsmci/hsmci.o
-                              0x6516f (size before relaxing)
- .debug_str     0x00065f44      0x1ec src/ASF/sam/drivers/pdc/pdc.o
-                              0x5c9b6 (size before relaxing)
- .debug_str     0x00066130      0xc62 src/ASF/sam/drivers/pwm/pwm.o
-                              0x5d4ea (size before relaxing)
- .debug_str     0x00066d92      0x30a src/ASF/sam/drivers/rtc/rtc.o
-                              0x5cb25 (size before relaxing)
- .debug_str     0x0006709c      0x3cd src/ASF/sam/drivers/spi/spi.o
-                              0x5e5ea (size before relaxing)
- .debug_str     0x00067469      0x2e8 src/ASF/sam/drivers/tc/tc.o
-                              0x5cb9b (size before relaxing)
- .debug_str     0x00067751      0x8fc src/ASF/sam/drivers/usart/usart.o
-                              0x5d469 (size before relaxing)
- .debug_str     0x0006804d      0x153 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.o
-                              0x5ec2c (size before relaxing)
- .debug_str     0x000681a0       0x4b src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam/fattime_rtc.o
-                              0x5c8ec (size before relaxing)
- .debug_str     0x000681eb      0xcf2 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
-                               0x3b27 (size before relaxing)
- .debug_str     0x00068edd       0x5a src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
-                               0x2be5 (size before relaxing)
- .debug_str     0x00068f37      0x545 src/comm.o
-                              0x655b3 (size before relaxing)
- .debug_str     0x0006947c      0x5bd src/ASF/sam/drivers/twi/twi.o
-                              0x5d259 (size before relaxing)
- .debug_str     0x00069a39      0x151 src/compass.o
-                              0x64db9 (size before relaxing)
- .debug_str     0x00069b8a      0x1cb src/lcd.o
-                              0x6509b (size before relaxing)
- .debug_str     0x00069d55     0x115a src/lib/iniparser/dictionary.o
-                               0x7f01 (size before relaxing)
- .debug_str     0x0006aeaf      0xb5e src/lib/iniparser/iniparser.o
-                              0x66a79 (size before relaxing)
- .debug_str     0x0006ba0d     0x1259 src/menu.o
-                              0x676ec (size before relaxing)
- .debug_str     0x0006cc66      0x265 src/motor.o
-                              0x65a5a (size before relaxing)
- .debug_str     0x0006cecb       0x22 src/pid.o
-                               0x2645 (size before relaxing)
- .debug_str     0x0006ceed       0xa0 src/sd.o
-                              0x654af (size before relaxing)
- .debug_str     0x0006cf8d       0x40 src/support.o
-                              0x66097 (size before relaxing)
- .debug_str     0x0006cfcd       0xc5 src/timing.o
-                              0x6524c (size before relaxing)
- .debug_str     0x0006d092      0x3bb src/ASF/common/services/clock/sam3x/sysclk.o
-                              0x5e5ee (size before relaxing)
- .debug_str     0x0006d44d      0x2fb src/ASF/sam/drivers/dmac/dmac.o
-                              0x5cd62 (size before relaxing)
- .debug_str     0x0006d748      0x50b src/ASF/sam/drivers/pmc/pmc.o
-                              0x5d213 (size before relaxing)
- .debug_str     0x0006dc53      0x128 src/ASF/common/boards/user_board/init.o
-                              0x65289 (size before relaxing)
- .debug_str     0x0006dd7b       0x4d src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
-                              0x5c80c (size before relaxing)
- .debug_str     0x0006ddc8       0xd4 src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
-                              0x5c908 (size before relaxing)
- .debug_str     0x0006de9c      0x195 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
-                              0x5cae4 (size before relaxing)
- .debug_str     0x0006e031      0x692 src/ASF/sam/utils/syscalls/gcc/syscalls.o
-                               0x7440 (size before relaxing)
- .debug_str     0x0006e6c3       0x95 src/main.o
-                              0x671d0 (size before relaxing)
+.debug_str      0x00000000    0x6e75c
+ .debug_str     0x00000000    0x6374e src/ASF/common/components/memory/sd_mmc/sd_mmc.o
+                              0x63ba5 (size before relaxing)
+ .debug_str     0x0006374e     0x10fc src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
+                              0x5ed27 (size before relaxing)
+ .debug_str     0x0006484a      0x5d8 src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
+                              0x5e73f (size before relaxing)
+ .debug_str     0x00064e22      0x239 src/ASF/common/services/storage/ctrl_access/ctrl_access.o
+                              0x5ea72 (size before relaxing)
+ .debug_str     0x0006505b      0xef1 src/ASF/sam/drivers/hsmci/hsmci.o
+                              0x65177 (size before relaxing)
+ .debug_str     0x00065f4c      0x1ec src/ASF/sam/drivers/pdc/pdc.o
+                              0x5c9be (size before relaxing)
+ .debug_str     0x00066138      0xc62 src/ASF/sam/drivers/pwm/pwm.o
+                              0x5d4f2 (size before relaxing)
+ .debug_str     0x00066d9a      0x30a src/ASF/sam/drivers/rtc/rtc.o
+                              0x5cb2d (size before relaxing)
+ .debug_str     0x000670a4      0x3cd src/ASF/sam/drivers/spi/spi.o
+                              0x5e5f2 (size before relaxing)
+ .debug_str     0x00067471      0x2e8 src/ASF/sam/drivers/tc/tc.o
+                              0x5cba3 (size before relaxing)
+ .debug_str     0x00067759      0x8fc src/ASF/sam/drivers/usart/usart.o
+                              0x5d471 (size before relaxing)
+ .debug_str     0x00068055      0x153 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.o
+                              0x5ec34 (size before relaxing)
+ .debug_str     0x000681a8       0x4b src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam/fattime_rtc.o
+                              0x5c8f4 (size before relaxing)
+ .debug_str     0x000681f3      0xcf2 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o
+                               0x3b2f (size before relaxing)
+ .debug_str     0x00068ee5       0x5a src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o
+                               0x2bed (size before relaxing)
+ .debug_str     0x00068f3f      0x545 src/comm.o
+                              0x655bb (size before relaxing)
+ .debug_str     0x00069484      0x5bd src/ASF/sam/drivers/twi/twi.o
+                              0x5d261 (size before relaxing)
+ .debug_str     0x00069a41      0x151 src/compass.o
+                              0x64dc1 (size before relaxing)
+ .debug_str     0x00069b92      0x1cb src/lcd.o
+                              0x650a3 (size before relaxing)
+ .debug_str     0x00069d5d     0x115a src/lib/iniparser/dictionary.o
+                               0x7f09 (size before relaxing)
+ .debug_str     0x0006aeb7      0xb5e src/lib/iniparser/iniparser.o
+                              0x66a81 (size before relaxing)
+ .debug_str     0x0006ba15     0x125c src/menu.o
+                              0x676f7 (size before relaxing)
+ .debug_str     0x0006cc71      0x25e src/motor.o
+                              0x65a5e (size before relaxing)
+ .debug_str     0x0006cecf       0x22 src/pid.o
+                               0x264d (size before relaxing)
+ .debug_str     0x0006cef1       0xa0 src/sd.o
+                              0x654b7 (size before relaxing)
+ .debug_str     0x0006cf91       0x40 src/support.o
+                              0x6609f (size before relaxing)
+ .debug_str     0x0006cfd1       0xc5 src/timing.o
+                              0x65254 (size before relaxing)
+ .debug_str     0x0006d096      0x3bb src/ASF/common/services/clock/sam3x/sysclk.o
+                              0x5e5f6 (size before relaxing)
+ .debug_str     0x0006d451      0x2fb src/ASF/sam/drivers/dmac/dmac.o
+                              0x5cd6a (size before relaxing)
+ .debug_str     0x0006d74c      0x50b src/ASF/sam/drivers/pmc/pmc.o
+                              0x5d21b (size before relaxing)
+ .debug_str     0x0006dc57      0x128 src/ASF/common/boards/user_board/init.o
+                              0x65291 (size before relaxing)
+ .debug_str     0x0006dd7f       0x4d src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
+                              0x5c814 (size before relaxing)
+ .debug_str     0x0006ddcc       0xd4 src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
+                              0x5c910 (size before relaxing)
+ .debug_str     0x0006dea0      0x195 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
+                              0x5caec (size before relaxing)
+ .debug_str     0x0006e035      0x692 src/ASF/sam/utils/syscalls/gcc/syscalls.o
+                               0x7448 (size before relaxing)
+ .debug_str     0x0006e6c7       0x95 src/main.o
+                              0x671db (size before relaxing)
 
 .debug_frame    0x00000000     0x7594
  .debug_frame   0x00000000      0x6d0 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
@@ -14254,10 +14251,6 @@ fwrite                                            c:/program files (x86)/atmel/s
                                                   src/lib/iniparser/dictionary.o
 g_interrupt_enabled                               src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
                                                   src/ASF/sam/drivers/pmc/sleep.o
-g_pwm_channel_ENC                                 src/motor.o
-g_pwm_channel_MLeft                               src/motor.o
-g_pwm_channel_MRear                               src/motor.o
-g_pwm_channel_MRight                              src/motor.o
 getTicks                                          src/timing.o
                                                   src/main.o
                                                   src/sd.o
@@ -14413,21 +14406,17 @@ mleft                                             src/motor.o
                                                   src/menu.o
 mleft_out                                         src/motor.o
 mleft_out_log                                     src/motor.o
-mleft_pid_reg                                     src/motor.o
 mmc_trans_multipliers                             src/ASF/common/components/memory/sd_mmc/sd_mmc.o
 motor_init                                        src/motor.o
                                                   src/main.o
-motor_speed                                       src/motor.o
 mrear                                             src/motor.o
                                                   src/menu.o
 mrear_out                                         src/motor.o
 mrear_out_log                                     src/motor.o
-mrear_pid_reg                                     src/motor.o
 mright                                            src/motor.o
                                                   src/menu.o
 mright_out                                        src/motor.o
 mright_out_log                                    src/motor.o
-mright_pid_reg                                    src/motor.o
 mtr                                               src/comm.o
 mts                                               src/comm.o
                                                   src/main.o
@@ -14511,6 +14500,9 @@ pdc_tx_init                                       src/ASF/sam/drivers/pdc/pdc.o
                                                   src/ASF/sam/drivers/twi/twi.o
 pidReg                                            src/pid.o
                                                   src/motor.o
+pid_motor_left                                    src/motor.o
+pid_motor_rear                                    src/motor.o
+pid_motor_right                                   src/motor.o
 pmc_clr_fast_startup_input                        src/ASF/sam/drivers/pmc/pmc.o
 pmc_disable_all_pck                               src/ASF/sam/drivers/pmc/pmc.o
 pmc_disable_all_periph_clk                        src/ASF/sam/drivers/pmc/pmc.o
@@ -14637,6 +14629,7 @@ pwm_cmp_get_update_counter                        src/ASF/sam/drivers/pwm/pwm.o
 pwm_cmp_init                                      src/ASF/sam/drivers/pwm/pwm.o
 pwm_disable_protect                               src/ASF/sam/drivers/pwm/pwm.o
 pwm_enable_protect                                src/ASF/sam/drivers/pwm/pwm.o
+pwm_encoder                                       src/motor.o
 pwm_fault_clear_status                            src/ASF/sam/drivers/pwm/pwm.o
 pwm_fault_get_input_level                         src/ASF/sam/drivers/pwm/pwm.o
 pwm_fault_get_status                              src/ASF/sam/drivers/pwm/pwm.o
@@ -14646,6 +14639,9 @@ pwm_get_interrupt_status                          src/ASF/sam/drivers/pwm/pwm.o
 pwm_get_protect_status                            src/ASF/sam/drivers/pwm/pwm.o
 pwm_init                                          src/ASF/sam/drivers/pwm/pwm.o
                                                   src/ASF/common/boards/user_board/init.o
+pwm_motor_left                                    src/motor.o
+pwm_motor_rear                                    src/motor.o
+pwm_motor_right                                   src/motor.o
 pwm_pdc_disable_interrupt                         src/ASF/sam/drivers/pwm/pwm.o
 pwm_pdc_enable_interrupt                          src/ASF/sam/drivers/pwm/pwm.o
 pwm_pdc_set_request_mode                          src/ASF/sam/drivers/pwm/pwm.o
@@ -14989,6 +14985,7 @@ update_dots                                       src/main.o
 update_heartbeat                                  src/timing.o
 update_motor                                      src/motor.o
                                                   src/menu.o
+update_motor_pwm                                  src/motor.o
 usart_disable_interrupt                           src/ASF/sam/drivers/usart/usart.o
 usart_disable_rx                                  src/ASF/sam/drivers/usart/usart.o
                                                   src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
