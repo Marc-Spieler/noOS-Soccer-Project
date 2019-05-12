@@ -468,7 +468,7 @@ long int iniparser_getlongint(const dictionary * d, const char * key, long int n
 /*--------------------------------------------------------------------------*/
 int iniparser_getint(const dictionary * d, const char * key, int notfound)
 {
-    return (int)iniparser_getlongint(d, key, notfound);
+    return iniparser_getlongint(d, key, notfound);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -679,7 +679,7 @@ static line_status iniparser_line(
 /*--------------------------------------------------------------------------*/
 dictionary * iniparser_load(const char * ininame)
 {
-    FIL * in=NULL ;
+    FIL in;
 
     char line    [ASCIILINESZ+1] ;
     char section [ASCIILINESZ+1] ;
@@ -695,14 +695,14 @@ dictionary * iniparser_load(const char * ininame)
 
     dictionary * dict ;
 
-    if ((f_open(in, ininame, FA_READ))!=FR_OK) {
+    if ((f_open(&in, ininame, FA_READ))!=FR_OK) {
         iniparser_error_callback("iniparser: cannot open %s\n", ininame);
         return NULL ;
     }
 
     dict = dictionary_new(0) ;
     if (!dict) {
-        f_close(in);
+        f_close(&in);
         return NULL ;
     }
 
@@ -712,19 +712,19 @@ dictionary * iniparser_load(const char * ininame)
     memset(val,     0, ASCIILINESZ);
     last=0 ;
 
-    while (f_gets(line+last, ASCIILINESZ-last, in)!=NULL) {
+    while (f_gets(line+last, ASCIILINESZ-last, &in)!=NULL) {
         lineno++ ;
         len = (int)strlen(line)-1;
         if (len<=0)
             continue;
         /* Safety check against buffer overflows */
-        if (line[len]!='\n' && !f_eof(in)) {
+        if (line[len]!='\n' && !f_eof(&in)) {
             iniparser_error_callback(
               "iniparser: input line too long in %s (%d)\n",
               ininame,
               lineno);
             dictionary_del(dict);
-            f_close(in);
+            f_close(&in);
             return NULL ;
         }
         /* Get rid of \n and spaces at end of line */
@@ -781,7 +781,7 @@ dictionary * iniparser_load(const char * ininame)
         dictionary_del(dict);
         dict = NULL ;
     }
-    f_close(in);
+    f_close(&in);
     return dict ;
 }
 

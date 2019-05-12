@@ -11,7 +11,7 @@
 
 #define MAX_MOTOR_SPEED         (150) //cm/s
 #define CM_PER_TICK             ((2 * M_PI * 3) / 464,64)
-#define ENCODER_UPDATE_RATE     (0,008) //in seconds
+#define ENCODER_UPDATE_RATE     (0.008) //in seconds
 
 #define MOTOR_LEFT_SIN          (0.5f)
 #define MOTOR_RIGHT_SIN         (0.5f)
@@ -202,7 +202,7 @@ void set_motor_individual(float left, float right, float rear)
     speed_mright = (float)right;
     speed_mrear = (float)rear;
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
-}*/
+}
 
 void update_motor_pwm(uint8_t motor, int16_t ispeed)
 {

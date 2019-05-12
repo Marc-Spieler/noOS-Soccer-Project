@@ -8,8 +8,8 @@
 
 dictionary* noOS_ini_dict;
 
-uint8_t robot_id = 1;
-uint8_t speed_preset = 15;
+uint16_t robot_id = 1;
+uint16_t speed_preset = 15;
 Bool heartbeat = false;
 Bool allow_leds = true;
 
@@ -57,13 +57,6 @@ void parse_ini_file(void)
 
     if(noOS_ini_dict->n == 0)
     {
-        /*iniparser_set(noOS_ini_dict, "general", NULL);
-        val = 1;
-        iniparser_set(noOS_ini_dict, "general:robot_id", &val);
-        val = 15;
-        iniparser_set(noOS_ini_dict, "general:speed", &val);
-        val = false;
-        iniparser_set(noOS_ini_dict, "general:heartbeat", &val);*/
         create_default_ini_file();
         noOS_ini_dict = iniparser_load("noOS.ini");
     }

@@ -23,6 +23,10 @@ void spi_slave_transfer(void *p_buf, uint32_t ul_size)
 {
     dma_transfer_descriptor_t dmac_trans;
 
+    /* required to ensure proper byte alignment between master and slave */
+    uint8_t dummyRead = SPI0->SPI_RDR;
+    (void)dummyRead;
+
     dmac_channel_disable(DMAC, 1);
     dmac_trans.ul_source_addr = (uint32_t) p_buf;
     dmac_trans.ul_destination_addr = (uint32_t) & SPI0->SPI_TDR;

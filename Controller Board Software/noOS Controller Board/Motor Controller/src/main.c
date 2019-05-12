@@ -46,7 +46,7 @@ int main(void)
     sd_init();
     //write_time_test_2();
     //create_default_ini_file();
-    //parse_ini_file();
+    parse_ini_file();
     spi_init();
 
     noOS_bootup_sequence();

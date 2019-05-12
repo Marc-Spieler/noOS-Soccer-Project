@@ -82,7 +82,7 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_match_magdeburg(event1);
+            //menu_match_magdeburg(event1);
             break;
         case MENU_SENSORS:
             menu_sensors(event1);
@@ -173,7 +173,7 @@ static void menu_main(event_t event1)
             break;
     }
 }
-
+#if 0
 static void menu_test(event_t event1)
 {
     if ((getTicks() - ticks_test) > 33)
@@ -842,7 +842,7 @@ static void menu_match_voehringen(event_t event1)
             break;
     }
 }
-
+#endif
 static void menu_sensors(event_t event1)
 {
     if (print_menu)
@@ -1172,6 +1172,7 @@ static void menu_line_calibration(event_t event1)
 static void menu_settings(event_t event1)
 {
     FIL noOS_ini_file;
+    char str[8];
 
     if (print_menu)
     {
@@ -1203,7 +1204,8 @@ static void menu_settings(event_t event1)
                         robot_id--;
                         if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
                         {
-                            iniparser_set(noOS_ini_dict, "general:robot_id", (char*)&robot_id);
+                            sprintf(str, "%d", robot_id);
+                            iniparser_set(noOS_ini_dict, "general:robot_id", str);
                             iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
                             f_close(&noOS_ini_file);
                         }
@@ -1233,7 +1235,8 @@ static void menu_settings(event_t event1)
                         robot_id++;
                         if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
                         {
-                            iniparser_set(noOS_ini_dict, "general:robot_id", (char*)&robot_id);
+                            sprintf(str, "%d", robot_id);
+                            iniparser_set(noOS_ini_dict, "general:robot_id", str);
                             iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
                             f_close(&noOS_ini_file);
                         }

@@ -12,8 +12,8 @@
 
 extern dictionary* noOS_ini_dict;
 
-extern uint8_t robot_id;
-extern uint8_t speed_preset;
+extern uint16_t robot_id;
+extern uint16_t speed_preset;
 extern Bool heartbeat;
 extern Bool allow_leds;
 
