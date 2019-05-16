@@ -106,6 +106,7 @@ void check_battery(void)
 {
     static Bool bat_led_state;
     static uint32_t ticks_battery;
+    battery_percentage = stm.battery.percentage;
 
     if(battery_percentage < 10)
     {

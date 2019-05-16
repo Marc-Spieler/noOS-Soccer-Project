@@ -32,6 +32,8 @@ extern int8_t act_motor_speed_rear;
 void motor_init(void);
 void enable_motor(void);
 void disable_motor(void);
+
+void set_motor(float speed, float dir, float trn);
 void set_motor_individual(float mleft_ref, float mright_ref, float mrear_ref);
 void update_motor_pwm(uint8_t motor, int16_t speed);
 

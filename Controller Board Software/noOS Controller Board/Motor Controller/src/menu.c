@@ -20,8 +20,14 @@
 
 uint32_t ticks_test = 0;
 
-menu_t act_menu = MENU_MAIN;
+menu_t act_menu = MENU_BOOTUP;
 Bool print_menu = true;
+
+Bool blink_level;
+uint32_t ticks_blink_update;
+uint32_t ticks_dot_update;
+uint8_t dots = 0;
+Bool update_dots = 1;
 
 uint8_t prev_ball_dir = 0;
 Bool prev_ball_see = false;
@@ -68,6 +74,7 @@ static void menu_compass_calibration(event_t event1);
 static void menu_line(event_t event1);
 static void menu_line_calibration(event_t event1);
 static void menu_settings(event_t event1);
+static void menu_bootup(event_t event1);
 static void menu_shutdown(event_t event1);
 static void print_menu_main(void);
 static void print_menu_sensors(void);
@@ -82,7 +89,7 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            //menu_match_magdeburg(event1);
+            menu_test(event1);
             break;
         case MENU_SENSORS:
             menu_sensors(event1);
@@ -105,8 +112,12 @@ void menu(event_t event1)
         case MENU_LINE_CALIBRATION:
             menu_line_calibration(event1);
             break;
+        case MENU_BOOTUP:
+            menu_bootup(event1);
+            break;
         case MENU_SHUTDOWN:
             menu_shutdown(event1);
+            break;
         default:
             break;
     }
@@ -173,79 +184,23 @@ static void menu_main(event_t event1)
             break;
     }
 }
-#if 0
+
 static void menu_test(event_t event1)
 {
-    if ((getTicks() - ticks_test) > 33)
+    float robot_speed = speed_preset;
+    float robot_dir = 0;
+    float robot_trn = 0;
+    
+    if(print_menu)
     {
-        ticks_test = getTicks();
-        float robot_speed = speed_preset;
-        float robot_dir = 0;
-        float robot_trn = 0;
-        mleft = 0;
-        mright = 0;
-        mrear = 0;
-        static uint16_t log_cnt = 0;
-        static int16_t compass_log[45];
+        lcd_clear();
+        set_opponent_goal();
+        enable_motor();
+    }
     
-        if(print_menu)
-        {
-            lcd_clear();
-            set_opponent_goal();
-            enable_motor();
-        }
+    estimate_rel_deviation();
     
-        estimate_rel_deviation();
-    
-        /*robot_dir *= (3.14159265359f / 180.0f);
-    
-        mleft = robot_speed * (cos(robot_dir) * CosinMA1 - sin(robot_dir) * SinMA1);
-        mright = robot_speed * (cos(robot_dir) * CosinMA2 - sin(robot_dir) * SinMA2);
-        mrear = robot_speed * (cos(robot_dir) * CosinMA3 - sin(robot_dir) * SinMA3);*/
-    
-        //robot_trn = compass_dev / 180;
-    
-        /*mleft += robot_trn;
-        mright += robot_trn;
-        mrear += robot_trn;*/
-    
-        //compensate_motor_output(mleft, mright, mrear);
-
-        if(log_cnt < 45)
-        {
-            compass_log[log_cnt] = compass_dev;
-            log_cnt++;
-        }
-        else
-        {
-            disable_motor();
-            UINT bw;
-            FIL file_object;
-            char test_file_name[] = "comppass_logging_hotel_30.txt";
-            //char sprintf_buf[11];
-            f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
-        
-            for(int i = 0; i < log_cnt; i++)
-            {
-                sprintf(sprintf_buf, "%5d;", i);
-                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
-                sprintf(sprintf_buf, "%4d\r\n", compass_log[i]);
-                f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
-            }
-
-            f_close(&file_object);
-            ioport_set_pin_level(LED_ONBOARD, 1);
-            while(1);
-        }
-    
-        set_motor_individual(30, -30, 0);//mleft, mright, mrear);
-    }    
-    /*if ((getTicks() - ticks_test) > 100)
-    {
-        ticks_test = getTicks();
-        
-        lcd_print_i(1, 0, compass_dev);
-    }*/ 
+    set_motor(0, 0, compass_dev / 2);
     
     switch (event1)
     {
@@ -259,7 +214,7 @@ static void menu_test(event_t event1)
             break;
     }
 }
-
+#if 0
 static void menu_match(event_t event1)
 {
     /*
@@ -881,6 +836,10 @@ static void menu_sensors(event_t event1)
                     act_menu = MENU_LINE;
                     print_menu = true;
                     break;
+                case 4:
+                    act_menu = MENU_ENCODER;
+                    print_menu = true;
+                    break;
                 default:
                     break;
             }
@@ -1283,6 +1242,86 @@ static void menu_settings(event_t event1)
     }
 }
 
+static void menu_bootup(event_t event1)
+{
+    /*if (getTicks() >= (ticks_blink_update + 800))
+    {
+        ticks_blink_update = getTicks();
+            
+        if (blink_level)
+        {
+            blink_level = 0;
+        }
+        else
+        {
+            blink_level = 1;
+        }
+            
+        ioport_set_pin_level(LED_BAT, blink_level);
+    }*/
+        
+    if (getTicks() >= (ticks_dot_update + 500))
+    {
+        ticks_dot_update = getTicks();
+            
+        if (dots < 3)
+        {
+            dots++;
+        }
+        else
+        {
+            dots = 0;
+        }
+            
+        update_dots = 1;
+    }
+        
+    if (update_dots)
+    {
+        update_dots = 0;
+            
+        switch (dots)
+        {
+            case 0:
+                lcd_print_s(2, 2, "booting noOS   ");
+                break;
+            case 1:
+                lcd_print_s(2, 14, ".");
+                break;
+            case 2:
+                lcd_print_s(2, 15, ".");
+                break;
+            case 3:
+                lcd_print_s(2, 16, ".");
+                break;
+            default:
+                break;
+        }
+    }
+    
+    if(ioport_get_pin_level(RPI2) || event1 == EVENT_BUTTON_MID_P)
+    {
+        act_menu = MENU_MAIN;
+        print_menu = true;
+
+        for(int i = 0; i< 3; i++)
+        {
+            ioport_set_pin_level(LED_ONBOARD, 1);
+            ioport_set_pin_level(LED_BAT, 1);
+            ioport_set_pin_level(LED_M1, 1);
+            ioport_set_pin_level(LED_M2, 1);
+            ioport_set_pin_level(LED_M3, 1);
+            mdelay(100);
+            ioport_set_pin_level(LED_ONBOARD, 0);
+            ioport_set_pin_level(LED_BAT, 0);
+            ioport_set_pin_level(LED_M1, 0);
+            ioport_set_pin_level(LED_M2, 0);
+            ioport_set_pin_level(LED_M3, 0);
+            mdelay(100);
+        }
+    }
+}
+
 static void menu_shutdown(event_t event1)
 {
     if(shutdown_confirmed)
@@ -1320,7 +1359,7 @@ static void menu_shutdown(event_t event1)
         while(1)
         {
             update_comm();
-            //check_bat();
+            check_battery();
         }
     }
     else

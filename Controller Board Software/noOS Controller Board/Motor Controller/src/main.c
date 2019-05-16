@@ -17,12 +17,6 @@
 #include "support.h"
 #include "math.h"
 
-Bool blink_level;
-uint32_t ticks_blink_update;
-uint32_t ticks_dot_update;
-uint8_t dots = 0;
-Bool update_dots = 1;
-
 uint8_t trn = 5;
 
 void noOS_bootup_sequence(void);
@@ -49,7 +43,7 @@ int main(void)
     parse_ini_file();
     spi_init();
 
-    noOS_bootup_sequence();
+    //noOS_bootup_sequence();
     
     mts.line_cal_value = 12;
 
@@ -75,7 +69,7 @@ int main(void)
     }
 }
 
-void noOS_bootup_sequence(void)
+/*void noOS_bootup_sequence(void)
 {
     while (!ioport_get_pin_level(RPI2) && ioport_get_pin_level(PB_MID))
     {
@@ -151,3 +145,4 @@ void noOS_bootup_sequence(void)
         mdelay(100);
     }
 }
+*/
