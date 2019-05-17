@@ -22,11 +22,6 @@ int GoalBall = 0;
 bool isBall;
 bool isGoal_blue;
 bool isGoal_yellow;
-//int H_MIN = 0, H_MAX = 180;
-//int S_MIN = 0, S_MAX = 255;
-//int V_MIN = 0, V_MAX = 255;
-//int THOLD = 40;
-//int TCENTER = 40;
 typedef struct
 {
   int H_MIN;
@@ -239,17 +234,6 @@ int main(int argc, char** argv)
             }
 		}
 		
-		
-		/* std::vector<cv::Vec3f> circles;
-		cv::HoughCircles( filtered, circles, CV_HOUGH_GRADIENT, 1, filtered.rows / 5, THOLD, TCENTER, 0, 0 );
-		for( size_t i = 0; i < circles.size(); i++ ) {
-			cv::Point center( cvRound(circles[i][0]), cvRound(circles[i][1]) );
-			int radius = cvRound(circles[i][2]);
-			
-			cv::circle( frame, center, 3, cv::Scalar(0, 255, 0), -1, 8, 0 );
-			cv::circle( frame, center, radius, cv::Scalar(0, 0, 255), 3, 8, 0 );
-		} */
-
 
 		Area bigArea( cv::Point(0,0) );
 
@@ -298,14 +282,10 @@ int main(int argc, char** argv)
 		}
 		
 		cv::cvtColor( filtered, filtered, cv::COLOR_GRAY2BGR );
-		//cv::cvtColor( gray, gray, cv::COLOR_GRAY2BGR );
-		//cv::cvtColor( canny, canny, cv::COLOR_GRAY2BGR );
 		
 		
 		frame.copyTo( container(cv::Rect(0, 0, WIDTH, HEIGHT)) );
 		filtered.copyTo( container(cv::Rect(WIDTH, 0, WIDTH, HEIGHT)) );
-		/* gray.copyTo( container(cv::Rect(0, HEIGHT, WIDTH, HEIGHT)) ); 
-		canny.copyTo( container(cv::Rect(WIDTH, HEIGHT, WIDTH, HEIGHT)) ); */
 		cv::imshow( "Images", container );
 		
 		if( cv::waitKey( 2 ) == 27 ) break;
