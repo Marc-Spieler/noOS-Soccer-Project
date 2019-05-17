@@ -10,6 +10,8 @@
 #include "asf.h"
 #include "pid.h"
 
+#define MAX_MOTOR_SPEED         (150) //cm/s
+
 extern pidReg_t pid_motor_left;
 extern pidReg_t pid_motor_right;
 extern pidReg_t pid_motor_rear;

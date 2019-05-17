@@ -9,7 +9,6 @@
 #include "string.h"
 #include "math.h"
 
-#define MAX_MOTOR_SPEED         (150) //cm/s
 #define CM_PER_TICK             ((2 * M_PI * 3) / 464.64)
 #define ENCODER_UPDATE_RATE     (0.008) //in seconds
 

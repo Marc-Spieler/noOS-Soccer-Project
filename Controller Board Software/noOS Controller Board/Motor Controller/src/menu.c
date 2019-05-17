@@ -49,11 +49,13 @@ struct
     menu_info_t main;
     menu_info_t sensors;
     menu_info_t settings;
+    menu_info_t encoder;
 } menu_info =
   {
       { 2, 2, 2, 4 },
-      { 1, 1, 1, 3 },
-      { 1, 1, 1, 1 }
+      { 1, 1, 1, 4 },
+      { 1, 1, 1, 1 },
+      { 1, 1, 1, 3 }
   };
 
 Bool shutdown_confirmed = 0;
@@ -409,7 +411,7 @@ static void menu_match(event_t event1)
             break;
     }
 }
-
+#endif
 static void menu_match_magdeburg(event_t event1)
 {
     float robot_speed = speed_preset;
@@ -457,7 +459,7 @@ static void menu_match_magdeburg(event_t event1)
             }
             else
             {
-                robot_trn = compass_dev / 50.0f;//10.0f;
+                robot_trn = compass_dev / 2.0f;//10.0f;
             }
 #if FORCE_LIMIT_ON == 1
             tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
@@ -472,7 +474,7 @@ static void menu_match_magdeburg(event_t event1)
         }
         else
         {
-            if (rtm.ball.see)
+            if(rtm.ball.see)
             {
                 //robot_speed = (float)speed_preset;
                 robot_dir = (float)((rtm.ball.dir - 32) * 2);
@@ -503,7 +505,7 @@ static void menu_match_magdeburg(event_t event1)
             else
             {
                 robot_dir = 180.0f;
-                robot_speed = 75,0f;//15.0f;
+                robot_speed = 75.0f;//15.0f;
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
                 pid_motor_left.outMax = FORCE_LIMIT;
@@ -516,7 +518,7 @@ static void menu_match_magdeburg(event_t event1)
 #endif
             }
             
-            robot_trn = compass_dev / 75,0f;//15.0f;
+            robot_trn = compass_dev / 3.0f;//15.0f;
         }
     }
     else
@@ -564,7 +566,7 @@ static void menu_match_magdeburg(event_t event1)
         break;
     }
 }
-
+#if 0
 static void menu_match_voehringen_optimized(event_t event1)
 {
     float robot_speed = speed_preset;
@@ -1127,6 +1129,118 @@ static void menu_line_calibration(event_t event1)
             break;
     }
 }
+
+static void menu_encoder(event_t event1)
+{
+    static int8_t ref_motor_speed_left = 0;
+    static int8_t ref_motor_speed_right = 0;
+    static int8_t ref_motor_speed_rear = 0;
+    static uint8_t prev_motor_speed_left = 0;
+    static uint8_t prev_motor_speed_right = 0;
+    static uint8_t prev_motor_speed_rear = 0;
+    
+    if(print_menu)
+    {
+        lcd_clear();
+    }
+    
+    if(prev_motor_speed_left != act_motor_speed_left)
+    {
+        prev_motor_speed_left = act_motor_speed_left;
+        sprintf(sprintf_buf, "Left: %3d  ", act_motor_speed_left);
+        lcd_print_s(1, 0, sprintf_buf);
+    }
+
+    if(prev_motor_speed_right != act_motor_speed_right)
+    {
+        prev_motor_speed_right = act_motor_speed_right;
+        sprintf(sprintf_buf, "Right: %3d  ", act_motor_speed_right);
+        lcd_print_s(2, 0, sprintf_buf);
+    }
+
+    if(prev_motor_speed_rear != act_motor_speed_rear)
+    {
+        prev_motor_speed_rear = act_motor_speed_rear;
+        sprintf(sprintf_buf, "Rear: %3d  ", act_motor_speed_rear);
+        lcd_print_s(3, 0, sprintf_buf);
+    }
+    
+    switch(event1)
+    {
+        case EVENT_BUTTON_UP_P:
+            if (menu_info.encoder.act_cursor_line > menu_info.encoder.min_cursor_line)
+            {
+                menu_info.encoder.act_cursor_line--;
+                print_cursor(&menu_info.encoder);
+            }
+            break;
+        case EVENT_BUTTON_DOWN_P:
+            if (menu_info.encoder.act_cursor_line < menu_info.encoder.max_cursor_line)
+            {
+                menu_info.encoder.act_cursor_line++;
+                print_cursor(&menu_info.encoder);
+            }
+            break;
+        case EVENT_BUTTON_LEFT_P:
+            switch(menu_info.encoder.act_cursor_line)
+            {
+                case 1:
+                    if (ref_motor_speed_left > -MAX_MOTOR_SPEED)
+                    {
+                        ref_motor_speed_left--;
+                    }
+                    break;
+                case 2:
+                    if (ref_motor_speed_right > -MAX_MOTOR_SPEED)
+                    {
+                        ref_motor_speed_right--;
+                    }
+                    break;
+                case 3:
+                    if (ref_motor_speed_rear > -MAX_MOTOR_SPEED)
+                    {
+                        ref_motor_speed_rear--;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case EVENT_BUTTON_RIGHT_P:
+            switch(menu_info.encoder.act_cursor_line)
+            {
+                case 1:
+                if (ref_motor_speed_left < MAX_MOTOR_SPEED)
+                {
+                    ref_motor_speed_left++;
+                }
+                break;
+                case 2:
+                if (ref_motor_speed_right < MAX_MOTOR_SPEED)
+                {
+                    ref_motor_speed_right++;
+                }
+                break;
+                case 3:
+                if (ref_motor_speed_rear < MAX_MOTOR_SPEED)
+                {
+                    ref_motor_speed_rear++;
+                }
+                break;
+                default:
+                break;
+            }
+            break;
+        case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_SENSORS;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
+    }
+}
+
 
 static void menu_settings(event_t event1)
 {
