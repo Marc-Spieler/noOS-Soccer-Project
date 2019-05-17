@@ -21,6 +21,7 @@ struct Info {
 	struct {
 		uint16_t horizontal;
 		uint16_t vertical;
+    uint16_t GoalHalfWidth;
 	} ball1;
 	
 	struct {
@@ -38,6 +39,7 @@ struct Info {
 		struct {
 			uint32_t horizontal :12;
 			uint32_t vertical :9;
+      //uint32_t GoalHalfWidth :9;
 		} ball1;
 		
 		struct {
@@ -105,13 +107,14 @@ struct PacketSPI_OUT {
 	//} ballPos;
 	
 	struct {
-		uint32_t ball :6;
-    uint32_t seeBall :1;
-		uint32_t have :1;
     uint32_t goal :6;
     uint32_t seeGoal :1;
     uint32_t GoalHalfWidth :5;
-		uint32_t rsvd :12;
+		uint32_t rsvd_1 :4;
+		uint32_t ball :6;
+    uint32_t seeBall :1;
+		uint32_t have :1;
+		uint32_t rsvd_2 :8;
 	} bits;
 	
 };

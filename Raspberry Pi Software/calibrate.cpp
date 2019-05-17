@@ -20,6 +20,8 @@
 
 int GoalBall = 0;
 bool isBall;
+bool isGoal_blue;
+bool isGoal_yellow;
 //int H_MIN = 0, H_MAX = 180;
 //int S_MIN = 0, S_MAX = 255;
 //int V_MIN = 0, V_MAX = 255;
@@ -39,7 +41,8 @@ typedef struct
 }calPar_t;
 
 calPar_t ball;
-calPar_t goal;
+calPar_t goal_blue;
+calPar_t goal_yellow;
 
 cv::Mat frame; // Original image
 cv::Mat hsv; // HSV Image
@@ -51,19 +54,20 @@ cv::Mat canny;
 cv::VideoWriter vidOut;
 
 
-bool loadCalibration( bool isBall, calPar_t *par );
+bool loadCalibration(bool isBall, bool isGoal_yellow, calPar_t *par);
 
 int main(int argc, char** argv)
 {
   calPar_t par;
-	
-	if( !loadCalibration(true, &ball) ) return 0;
-  if( !loadCalibration(false, &goal) ) return 0;
-  memcpy( &par, &goal, sizeof( calPar_t ) );
+	//printf("%d %s", argc, argv[1]);
+	if( !loadCalibration(true, false, &ball) ) return 0;
+  if( !loadCalibration(false, true, &goal_yellow) ) return 0;
+  if( !loadCalibration(false, false, &goal_blue) ) return 0;
+  memcpy( &par, &goal_blue, sizeof( calPar_t ) );
 	
 	// Create sliders
 	cv::namedWindow( "Slider" );
-	cv::createTrackbar( "Goal/Ball", "Slider", &GoalBall, 1 );
+	cv::createTrackbar( "goal_blue/goal_yellow/Ball", "Slider", &GoalBall, 2 );
 	cv::createTrackbar( "H_MIN", "Slider", &par.H_MIN, 255 );
 	cv::createTrackbar( "H_MAX", "Slider", &par.H_MAX, 180 );
 	cv::createTrackbar( "S_MIN", "Slider", &par.S_MIN, 255 );
@@ -73,7 +77,8 @@ int main(int argc, char** argv)
   cv::createTrackbar( "TopBorder", "Slider", &par.TopBorder, 255 );
 	cv::createTrackbar( "THOLD", "Slider", &par.THOLD, 300 );
 	cv::createTrackbar( "TCENTER", "Slider", &par.TCENTER, 300 );
-	goal.TopBorder = par.TopBorder;
+	goal_blue.TopBorder = par.TopBorder;
+	goal_yellow.TopBorder = par.TopBorder;
 	ball.TopBorder = par.TopBorder;
   
 	// Camera object
@@ -135,17 +140,23 @@ int main(int argc, char** argv)
 			first = false;
 			continue;
 		}
-    goal.TopBorder = par.TopBorder;
+    goal_blue.TopBorder = par.TopBorder;
+    goal_yellow.TopBorder = par.TopBorder;
     ball.TopBorder = par.TopBorder;
-    isBall = (GoalBall==1)?true:false;	
+    isGoal_yellow = (GoalBall==1)?true:false;
+    isBall = (GoalBall==2)?true:false;	
 		if( isBall )
     {
       memcpy( &par, &ball, sizeof( calPar_t ) );
   
     }
+    else if( isGoal_yellow )
+    {
+      memcpy( &par, &goal_yellow, sizeof( calPar_t ) );
+    }
     else
     {
-      memcpy( &par, &goal, sizeof( calPar_t ) );
+      memcpy( &par, &goal_blue, sizeof( calPar_t ) );
     }
     
     //setTrackbarPos
@@ -304,9 +315,13 @@ int main(int argc, char** argv)
       memcpy( &ball, &par, sizeof( calPar_t ) );
   
     }
+    else if ( isGoal_yellow )
+    {
+      memcpy( &goal_yellow, &par, sizeof( calPar_t ) );
+    }
     else
     {
-      memcpy( &goal, &par, sizeof( calPar_t ) );
+      memcpy( &goal_blue, &par, sizeof( calPar_t ) );
     }
     
 		clock_gettime( CLOCK_REALTIME, &t_end );
@@ -337,14 +352,25 @@ int main(int argc, char** argv)
 	fileOut.close();
   
   // Write calibration data out
-	fileOut.open("/home/pi/soccer/calibrateGoal.txt");
-	fileOut << goal.H_MIN << "\n";
-	fileOut << goal.H_MAX << "\n";
-	fileOut << goal.S_MIN << "\n";
-	fileOut << goal.S_MAX << "\n";
-	fileOut << goal.V_MIN << "\n";
-	fileOut << goal.V_MAX << "\n";
-  fileOut << goal.TopBorder;
+	fileOut.open("/home/pi/soccer/calibrateGoal_blue.txt");
+	fileOut << goal_blue.H_MIN << "\n";
+	fileOut << goal_blue.H_MAX << "\n";
+	fileOut << goal_blue.S_MIN << "\n";
+	fileOut << goal_blue.S_MAX << "\n";
+	fileOut << goal_blue.V_MIN << "\n";
+	fileOut << goal_blue.V_MAX << "\n";
+  fileOut << goal_blue.TopBorder;
+	fileOut.close();
+  
+  // Write calibration data out
+	fileOut.open("/home/pi/soccer/calibrateGoal_yellow.txt");
+	fileOut << goal_yellow.H_MIN << "\n";
+	fileOut << goal_yellow.H_MAX << "\n";
+	fileOut << goal_yellow.S_MIN << "\n";
+	fileOut << goal_yellow.S_MAX << "\n";
+	fileOut << goal_yellow.V_MIN << "\n";
+	fileOut << goal_yellow.V_MAX << "\n";
+  fileOut << goal_yellow.TopBorder;
 	fileOut.close();
   
 
@@ -356,7 +382,7 @@ int main(int argc, char** argv)
 }
 
 
-bool loadCalibration(bool isBall, calPar_t *par) {
+bool loadCalibration(bool isBall, bool isGoal_yellow, calPar_t *par) {
   
   std::ifstream fileIn;
   
@@ -370,13 +396,23 @@ bool loadCalibration(bool isBall, calPar_t *par) {
       return false;
     }
   }	
-  else
+  else if (isGoal_yellow)
   {
-    printf( "[*] Open calibrationGoal file\n" );
-    fileIn.open( "/home/pi/soccer/calibrateGoal.txt" );
+    printf( "[*] Open calibrationGoal_yellow file\n" );
+    fileIn.open( "/home/pi/soccer/calibrateGoal_yellow.txt" );
     if( !fileIn.is_open() ) 
     {
-      printf( "[*] Error: Failed to open calibrationGaol file\n" );
+      printf( "[*] Error: Failed to open calibrationGoal_yellow file\n" );
+      return false;
+    }
+  }
+  else
+  {
+    printf( "[*] Open calibrationGoal_blue file\n" );
+    fileIn.open( "/home/pi/soccer/calibrateGoal_blue.txt" );
+    if( !fileIn.is_open() ) 
+    {
+      printf( "[*] Error: Failed to open calibrationGoal_blue file\n" );
       return false;
     }
   }
