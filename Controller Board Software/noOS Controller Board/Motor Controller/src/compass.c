@@ -7,13 +7,12 @@
 #include "compass.h"
 #include "lcd.h"
 #include "timing.h"
+#include "comm.h"
 
 uint16_t direction;
-float compass_dev;
 int16_t opponent_goal;
 static uint8_t compassIsBusy = false;
 
-//local function
 static void compass_callback(void);
 
 void compass_init(void)
@@ -98,7 +97,7 @@ void estimate_rel_deviation(void)
         rel_dev += 3600;
     }
     
-    compass_dev = rel_dev / 10;
+    s.compass = rel_dev / 10;
 }
 
 

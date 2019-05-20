@@ -39,6 +39,9 @@ int16_t mrear_out;
 int8_t act_motor_speed_left;
 int8_t act_motor_speed_right;
 int8_t act_motor_speed_rear;
+int8_t act_motor_speed_right_raw;
+int8_t act_motor_speed_left_raw;
+int8_t act_motor_speed_rear_raw;
 
 /*float mleft;
 float mright;
@@ -274,9 +277,12 @@ void TC1_Handler(void)
         update_motor_pwm(MOTOR_RIGHT, mright_out);
         update_motor_pwm(MOTOR_REAR, mrear_out);
 
-        act_motor_speed_left = left_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
-        act_motor_speed_right = right_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
-        act_motor_speed_rear = rear_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_left_raw = left_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_right_raw = right_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_rear_raw = rear_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_left = (int8_t)(act_motor_speed_left_raw * 0.1 + act_motor_speed_left * 0.9);
+        act_motor_speed_right = (int8_t)(act_motor_speed_right_raw * 0.1 + act_motor_speed_right * 0.9);
+        act_motor_speed_rear = (int8_t)(act_motor_speed_rear_raw * 0.1 + act_motor_speed_rear * 0.9);
 
         /*if(log_cnt < 400)
         {

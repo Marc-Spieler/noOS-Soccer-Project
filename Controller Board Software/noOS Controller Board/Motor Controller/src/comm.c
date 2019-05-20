@@ -7,6 +7,8 @@
 #include "comm.h"
 #include "string.h"
 
+
+sensors_t s;
 motor_to_sensor_t mts;
 sensor_to_motor_t stm;
 motor_to_raspberrypi_t mtr;
@@ -15,7 +17,9 @@ raspberrypi_to_motor_t rtm;
 uint8_t sens_buf[sizeof(stm)];
 uint8_t rpi_buf[sizeof(rtm)];
 
-static Bool b_trigger = false;
+static Bool prepare_new_values = false;
+static Bool new_sc_data_arrived = false;
+static Bool new_pi_data_arrived = false;
 
 void spi_init(void)
 {
@@ -160,24 +164,73 @@ void DMAC_Handler(void)
     {
         usart_spi_release_chip_select(USART1);
         memcpy(&stm, &sens_buf, sizeof(stm));
+        new_sc_data_arrived = true;
     }
     
     if (ul_status & (1 << 2))
     {
         memcpy(&rtm, &rpi_buf, sizeof(rtm));
-        b_trigger = true;
+        prepare_new_values = true;
+        new_pi_data_arrived = true;
     }
 }
 
-void PrepareValuesToSend(void)
+void prepare_values_to_send(void)
 {
-    if (b_trigger)
+    if (prepare_new_values)
     {
-        b_trigger = false;
+        prepare_new_values = false;
         
         mtr.rsvd = 1234;
         
         memcpy(&rpi_buf, &mtr, sizeof(mtr));
         spi_slave_transfer(&rpi_buf, sizeof(rpi_buf));
+    }
+}
+
+void process_new_sensor_values(void)
+{
+    static float ball_see_avg = 0.0f;
+    static float ball_have_avg = 0.0f;
+    static float goal_see_avg = 0.0f;
+    float ball_see_tmp = 0.0f;
+    float ball_have_tmp = 0.0f;
+    float goal_see_tmp = 0.0f;
+
+    if (new_sc_data_arrived)
+    {
+        new_sc_data_arrived = false;
+        memcpy(&s.line, &stm.line, sizeof(s.line));
+        memcpy(&s.battery, &stm.battery, sizeof(s.battery));
+    }
+
+    if (new_pi_data_arrived)
+    {
+        new_pi_data_arrived = false;
+
+        if(rtm.ball.dir == 0 || rtm.goal.dir == 0)// || rtm.goal.diff == 0)
+        {
+            s.rpi_inactive = true;
+        }
+        else
+        {
+            s.rpi_inactive = false;
+        }
+
+        ball_see_tmp = (rtm.ball.see) ? 0.1f : 0.0f;
+        ball_have_tmp = (rtm.ball.have) ? 0.1f : 0.0f;
+        goal_see_tmp = (rtm.goal.see) ? 0.1f : 0.0f;
+
+        ball_see_avg = ball_see_avg * 0.9 + ball_see_tmp;
+        ball_have_avg = ball_have_avg * 0.9 + ball_have_tmp;
+        goal_see_avg = goal_see_avg * 0.9 + goal_see_tmp;
+
+        s.ball.see = (ball_see_avg > 0.3) ? true : false;
+        s.ball.have = (ball_have_avg > 0.3) ? true : false;
+        s.goal.see = (goal_see_avg > 0.3) ? true : false;
+
+        s.ball.dir = (rtm.ball.have - 32) * 2;
+        s.goal.dir = (rtm.goal.dir- 32) * 2;
+        s.goal.diff = (rtm.goal.diff - 32) * 2;
     }
 }

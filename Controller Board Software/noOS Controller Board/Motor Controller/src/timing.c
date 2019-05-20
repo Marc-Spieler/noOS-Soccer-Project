@@ -9,6 +9,7 @@
 #include "string.h"
 #include "lcd.h"
 #include "menu.h"
+#include "support.h"
 
 uint32_t ul_ticks_compass;
 
@@ -76,28 +77,40 @@ void update_heartbeat(void)
     static Bool heart_state;
     static uint32_t ticks_heartbeat;
 
-    if (heart_state)
+    if(heartbeat)
     {
-        if (getTicks() >= (ticks_heartbeat + 100))
+        if (heart_state)
         {
-            ticks_heartbeat = getTicks();
-            ioport_set_pin_level(LED_ONBOARD, 0);
-            ioport_set_pin_level(LED_M1, 0);
-            mts.ibit.heartbeat = 0;
-            heart_state = 0;
-            //pwm_channel_enable(PWM, BAT_WARN);
+            if (getTicks() >= (ticks_heartbeat + 100))
+            {
+                ticks_heartbeat = getTicks();
+                ioport_set_pin_level(LED_ONBOARD, 0);
+                ioport_set_pin_level(LED_M1, 0);
+                mts.ibit.heartbeat = 0;
+                heart_state = 0;
+                //pwm_channel_enable(PWM, BAT_WARN);
+            }
         }
-    }
-    else
-    {
-        if (getTicks() >= (ticks_heartbeat + 900))
+        else
         {
-            ticks_heartbeat = getTicks();
-            ioport_set_pin_level(LED_ONBOARD, 1);
-            ioport_set_pin_level(LED_M1, 1);
-            mts.ibit.heartbeat = 1;
-            heart_state = 1;
-            //pwm_channel_disable(PWM, BAT_WARN);
+            if (getTicks() >= (ticks_heartbeat + 900))
+            {
+                ticks_heartbeat = getTicks();
+                ioport_set_pin_level(LED_ONBOARD, 1);
+                ioport_set_pin_level(LED_M1, 1);
+                mts.ibit.heartbeat = 1;
+                heart_state = 1;
+                //pwm_channel_disable(PWM, BAT_WARN);
+            }
+        }
+
+        if (stm.ibit.heartbeat)
+        {
+            set_led(LED_M2, 1);
+        }
+        else
+        {
+            set_led(LED_M2, 0);
         }
     }
 }
@@ -110,7 +123,7 @@ void check_battery(void)
 
     if(battery_percentage < 10)
     {
-        if (getTicks() >= (ticks_battery + 75))
+        if (getTicks() >= (ticks_battery + 100))
         {
             ticks_battery = getTicks();
             bat_led_state = !bat_led_state;
@@ -119,7 +132,7 @@ void check_battery(void)
     }
     else if(battery_percentage < 20)
     {
-        if (getTicks() >= (ticks_battery + 125))
+        if (getTicks() >= (ticks_battery + 250))
         {
             ticks_battery = getTicks();
             bat_led_state = !bat_led_state;
@@ -128,7 +141,7 @@ void check_battery(void)
     }
     else if(battery_percentage < 30)
     {
-        if (getTicks() >= (ticks_battery + 200))
+        if (getTicks() >= (ticks_battery + 500))
         {
             ticks_battery = getTicks();
             bat_led_state = !bat_led_state;

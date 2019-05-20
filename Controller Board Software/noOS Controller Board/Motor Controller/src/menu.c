@@ -23,18 +23,19 @@ uint32_t ticks_test = 0;
 menu_t act_menu = MENU_BOOTUP;
 Bool print_menu = true;
 
+FIL noOS_ini_file;
+char str[8];
+
 Bool blink_level;
 uint32_t ticks_blink_update;
 uint32_t ticks_dot_update;
-uint8_t dots = 0;
+uint8_t dots = 3;
 Bool update_dots = 1;
 
-uint8_t prev_ball_dir = 0;
-Bool prev_ball_see = false;
-Bool prev_ball_have = false;
-uint8_t prev_goal_dir = 0;
-Bool prev_goal_see = false;
-uint8_t prev_goal_diff = 0;
+Bool ini_update_robot_id = false;
+Bool ini_update_speed = false;
+Bool ini_update_heartbeat = false;
+Bool ini_update_line_cal = false;
 
 typedef struct
 {
@@ -54,7 +55,7 @@ struct
   {
       { 2, 2, 2, 4 },
       { 1, 1, 1, 4 },
-      { 1, 1, 1, 1 },
+      { 1, 1, 1, 3 },
       { 1, 1, 1, 3 }
   };
 
@@ -75,6 +76,7 @@ static void menu_compass(event_t event1);
 static void menu_compass_calibration(event_t event1);
 static void menu_line(event_t event1);
 static void menu_line_calibration(event_t event1);
+static void menu_encoder(event_t event1);
 static void menu_settings(event_t event1);
 static void menu_bootup(event_t event1);
 static void menu_shutdown(event_t event1);
@@ -91,7 +93,7 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_test(event1);
+            menu_match_magdeburg(event1);
             break;
         case MENU_SENSORS:
             menu_sensors(event1);
@@ -113,6 +115,9 @@ void menu(event_t event1)
             break;
         case MENU_LINE_CALIBRATION:
             menu_line_calibration(event1);
+            break;
+        case MENU_ENCODER:
+            menu_encoder(event1);
             break;
         case MENU_BOOTUP:
             menu_bootup(event1);
@@ -459,7 +464,7 @@ static void menu_match_magdeburg(event_t event1)
             }
             else
             {
-                robot_trn = compass_dev / 2.0f;//10.0f;
+                robot_trn = s.compass / 2.0f;//10.0f;
             }
 #if FORCE_LIMIT_ON == 1
             tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
@@ -518,7 +523,7 @@ static void menu_match_magdeburg(event_t event1)
 #endif
             }
             
-            robot_trn = compass_dev / 3.0f;//15.0f;
+            robot_trn = s.compass / 3.0f;//15.0f;
         }
     }
     else
@@ -858,11 +863,92 @@ static void menu_sensors(event_t event1)
 
 static void menu_camera(event_t event1)
 {
+    static Bool prev_rpi_inactive = false;
+    static int8_t prev_ball_dir = 0;
+    static Bool prev_ball_see = false;
+    static Bool prev_ball_have = false;
+    static int8_t prev_goal_dir = 0;
+    static Bool prev_goal_see = false;
+    static int8_t prev_goal_diff = 0;
+
+    if(prev_rpi_inactive != s.rpi_inactive)
+    {
+        prev_rpi_inactive = s.rpi_inactive;
+        print_menu = true;
+    }
+
     if(print_menu)
     {
         lcd_clear();
     }
     
+    if(!s.rpi_inactive)
+    {
+        if(s.ball.dir != prev_ball_dir || s.ball.see != prev_ball_see || print_menu)
+        {
+            if(s.ball.see)
+            {
+                sprintf(sprintf_buf, "Ball: %4d   ", s.ball.dir);
+                lcd_print_s(1, 0, sprintf_buf);
+            }
+            else
+            {
+                lcd_print_s(1, 0, "no ball found");
+            }
+
+            prev_ball_dir = s.ball.dir;
+            prev_ball_see = s.ball.see;
+        }
+
+        if(s.ball.have != prev_ball_have || print_menu)
+        {
+            sprintf(sprintf_buf, "Having ball: %1d", s.ball.have);
+            lcd_print_s(2, 0, sprintf_buf);
+
+            prev_ball_have = s.ball.have;
+        }
+
+        if(s.goal.dir != prev_goal_dir || s.goal.see != prev_goal_see || print_menu)
+        {
+            if (s.goal.see)
+            {
+                sprintf(sprintf_buf, "Goal: %4d   ", s.goal.dir);
+                lcd_print_s(3, 0, sprintf_buf);
+            }
+            else
+            {
+                lcd_print_s(3, 0, "no goal found");
+            }
+
+            prev_goal_dir = s.goal.dir;
+            prev_goal_see = s.goal.see;
+        }
+        
+        if(s.goal.diff != prev_goal_diff || s.goal.see != prev_goal_see || print_menu)
+        {
+            if (s.goal.see)
+            {
+                sprintf(sprintf_buf, "1/2 width: %3d", s.goal.diff);
+                lcd_print_s(4, 0, sprintf_buf);
+            }
+            else
+            {
+                lcd_print_s(4, 0, "no goal found ");
+            }
+
+            prev_goal_diff = s.goal.diff;
+            prev_goal_see = s.goal.see;
+        }
+    }
+    else
+    {
+        if(print_menu)
+        {
+            lcd_print_s(2, 4, "RPi inactive");
+        }
+    }
+
+#if 0
     if(rtm.ball.dir != prev_ball_dir || rtm.ball.see != prev_ball_see || print_menu)
     {
         if (rtm.ball.dir == 0)
@@ -926,7 +1012,7 @@ static void menu_camera(event_t event1)
         prev_goal_diff = rtm.goal.diff;
         prev_goal_see = rtm.goal.see;
     }
-    
+#endif
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
@@ -1109,18 +1195,35 @@ static void menu_line_calibration(event_t event1)
         case EVENT_BUTTON_LEFT_P:
             if(mts.line_cal_value > 0)
             {
-                mts.line_cal_value -= 1;
+                mts.line_cal_value--;
+                ini_update_line_cal = true;
                 print_menu = true;
             }
             break;
         case EVENT_BUTTON_RIGHT_P:
             if(mts.line_cal_value < 16)
             {
-                mts.line_cal_value += 1;
+                mts.line_cal_value++;
+                ini_update_line_cal = true;
                 print_menu = true;
             }
             break;
         case EVENT_BUTTON_RETURN_P:
+            if(ini_update_line_cal)
+            {
+                ini_update_line_cal = false;
+                if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
+                {
+                    sprintf(str, "%2d", mts.line_cal_value);
+                    iniparser_set(noOS_ini_dict, "general:line_cal", str);
+                    iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
+                    f_close(&noOS_ini_file);
+                }
+                else
+                {
+                    // todo error menu
+                }
+            }
             act_menu = MENU_LINE;
             print_menu = true;
             break;
@@ -1132,6 +1235,8 @@ static void menu_line_calibration(event_t event1)
 
 static void menu_encoder(event_t event1)
 {
+    static Bool updated_ref = true;
+
     static int8_t ref_motor_speed_left = 0;
     static int8_t ref_motor_speed_right = 0;
     static int8_t ref_motor_speed_rear = 0;
@@ -1141,30 +1246,34 @@ static void menu_encoder(event_t event1)
     
     if(print_menu)
     {
+        enable_motor();
         lcd_clear();
+        print_cursor(&menu_info.encoder);
     }
     
-    if(prev_motor_speed_left != act_motor_speed_left)
+    if(prev_motor_speed_left != act_motor_speed_left || updated_ref || print_menu)
     {
         prev_motor_speed_left = act_motor_speed_left;
-        sprintf(sprintf_buf, "Left: %3d  ", act_motor_speed_left);
-        lcd_print_s(1, 0, sprintf_buf);
+        sprintf(sprintf_buf, "Left: %3d  %3d", act_motor_speed_left, ref_motor_speed_left);
+        lcd_print_s(1, 1, sprintf_buf);
     }
 
-    if(prev_motor_speed_right != act_motor_speed_right)
+    if(prev_motor_speed_right != act_motor_speed_right || updated_ref || print_menu)
     {
         prev_motor_speed_right = act_motor_speed_right;
-        sprintf(sprintf_buf, "Right: %3d  ", act_motor_speed_right);
-        lcd_print_s(2, 0, sprintf_buf);
+        sprintf(sprintf_buf, "Right: %3d  %3d", act_motor_speed_right, ref_motor_speed_right);
+        lcd_print_s(2, 1, sprintf_buf);
     }
 
-    if(prev_motor_speed_rear != act_motor_speed_rear)
+    if(prev_motor_speed_rear != act_motor_speed_rear || updated_ref || print_menu)
     {
         prev_motor_speed_rear = act_motor_speed_rear;
-        sprintf(sprintf_buf, "Rear: %3d  ", act_motor_speed_rear);
-        lcd_print_s(3, 0, sprintf_buf);
+        sprintf(sprintf_buf, "Rear: %3d  %3d", act_motor_speed_rear, ref_motor_speed_rear);
+        lcd_print_s(3, 1, sprintf_buf);
     }
     
+    set_motor_individual(ref_motor_speed_left, ref_motor_speed_right, ref_motor_speed_rear);
+
     switch(event1)
     {
         case EVENT_BUTTON_UP_P:
@@ -1187,19 +1296,22 @@ static void menu_encoder(event_t event1)
                 case 1:
                     if (ref_motor_speed_left > -MAX_MOTOR_SPEED)
                     {
-                        ref_motor_speed_left--;
+                        ref_motor_speed_left -= 2;
+                        updated_ref = true;
                     }
                     break;
                 case 2:
                     if (ref_motor_speed_right > -MAX_MOTOR_SPEED)
                     {
-                        ref_motor_speed_right--;
+                        ref_motor_speed_right -= 2;
+                        updated_ref = true;
                     }
                     break;
                 case 3:
                     if (ref_motor_speed_rear > -MAX_MOTOR_SPEED)
                     {
-                        ref_motor_speed_rear--;
+                        ref_motor_speed_rear -= 2;
+                        updated_ref = true;
                     }
                     break;
                 default:
@@ -1212,19 +1324,22 @@ static void menu_encoder(event_t event1)
                 case 1:
                 if (ref_motor_speed_left < MAX_MOTOR_SPEED)
                 {
-                    ref_motor_speed_left++;
+                    ref_motor_speed_left += 2;
+                    updated_ref = true;
                 }
                 break;
                 case 2:
                 if (ref_motor_speed_right < MAX_MOTOR_SPEED)
                 {
-                    ref_motor_speed_right++;
+                    ref_motor_speed_right += 2;
+                    updated_ref = true;
                 }
                 break;
                 case 3:
                 if (ref_motor_speed_rear < MAX_MOTOR_SPEED)
                 {
-                    ref_motor_speed_rear++;
+                    ref_motor_speed_rear += 2;
+                    updated_ref = true;
                 }
                 break;
                 default:
@@ -1232,21 +1347,23 @@ static void menu_encoder(event_t event1)
             }
             break;
         case EVENT_BUTTON_RETURN_P:
+            ref_motor_speed_left = 0;
+            ref_motor_speed_right = 0;
+            ref_motor_speed_rear = 0;
+            set_motor_individual(0, 0, 0);
+            disable_motor();
             act_menu = MENU_SENSORS;
             print_menu = true;
             break;
         default:
+            updated_ref = false;
             print_menu = false;
             break;
     }
 }
 
-
 static void menu_settings(event_t event1)
 {
-    FIL noOS_ini_file;
-    char str[8];
-
     if (print_menu)
     {
         print_menu_settings();
@@ -1275,25 +1392,28 @@ static void menu_settings(event_t event1)
                     if(robot_id > 1)
                     {
                         robot_id--;
-                        if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
-                        {
-                            sprintf(str, "%d", robot_id);
-                            iniparser_set(noOS_ini_dict, "general:robot_id", str);
-                            iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
-                            f_close(&noOS_ini_file);
-                        }
-                        else
-                        {
-                            // todo error menu
-                        }
+                        ini_update_robot_id = true;
                         print_menu = true;
                     }
                     break;
                 case 2:
-                    
+                    if(speed_preset > 4)
+                    {
+                        speed_preset -= 5;
+                        ini_update_speed = true;
+                        print_menu = true;
+                    }
                     break;
                 case 3:
-                    
+                    if(heartbeat)
+                    {
+                        heartbeat = false;
+                        ioport_set_pin_level(LED_ONBOARD, 0);
+                        ioport_set_pin_level(LED_M1, 0);
+                        mts.ibit.heartbeat = 0;
+                        ini_update_heartbeat = true;
+                        print_menu = true;
+                    }
                     break;
                 default:
                     break;
@@ -1306,25 +1426,25 @@ static void menu_settings(event_t event1)
                     if(robot_id < 2)
                     {
                         robot_id++;
-                        if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
-                        {
-                            sprintf(str, "%d", robot_id);
-                            iniparser_set(noOS_ini_dict, "general:robot_id", str);
-                            iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
-                            f_close(&noOS_ini_file);
-                        }
-                        else
-                        {
-                            // todo error menu
-                        }
+                        ini_update_robot_id = true;
                         print_menu = true;
                     }
                     break;
                 case 2:
-                    
+                    if(speed_preset < MAX_MOTOR_SPEED)
+                    {
+                        speed_preset += 5;
+                        ini_update_speed = true;
+                        print_menu = true;
+                    }
                     break;
                 case 3:
-                    
+                    if(!heartbeat)
+                    {
+                        heartbeat = true;
+                        ini_update_heartbeat = true;
+                        print_menu = true;
+                    }
                     break;
                 default:
                     break;
@@ -1347,6 +1467,51 @@ static void menu_settings(event_t event1)
             }
             break;*/
         case EVENT_BUTTON_RETURN_P:
+            if(ini_update_robot_id)
+            {
+                ini_update_robot_id = false;
+                if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
+                {
+                    sprintf(str, "%d", robot_id);
+                    iniparser_set(noOS_ini_dict, "general:robot_id", str);
+                    iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
+                    f_close(&noOS_ini_file);
+                }
+                else
+                {
+                    // todo error menu
+                }
+            }
+            if(ini_update_speed)
+            {
+                ini_update_speed = false;
+                if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
+                {
+                    sprintf(str, "%3d", speed_preset);
+                    iniparser_set(noOS_ini_dict, "general:speed", str);
+                    iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
+                    f_close(&noOS_ini_file);
+                }
+                else
+                {
+                    // todo error menu
+                }
+            }
+            if(ini_update_heartbeat)
+            {
+                ini_update_heartbeat = false;
+                if (f_open(&noOS_ini_file, "noOS.ini", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
+                {
+                    sprintf(str, "%d", heartbeat);
+                    iniparser_set(noOS_ini_dict, "general:heartbeat", str);
+                    iniparser_dump_ini(noOS_ini_dict, &noOS_ini_file);
+                    f_close(&noOS_ini_file);
+                }
+                else
+                {
+                    // todo error menu
+                }
+            }
             act_menu = MENU_MAIN;
             print_menu = true;
             break;
@@ -1358,22 +1523,27 @@ static void menu_settings(event_t event1)
 
 static void menu_bootup(event_t event1)
 {
-    /*if (getTicks() >= (ticks_blink_update + 800))
+    if (print_menu)
     {
-        ticks_blink_update = getTicks();
-            
-        if (blink_level)
+        for(int i = 0; i< 3; i++)
         {
-            blink_level = 0;
+            ioport_set_pin_level(LED_ONBOARD, 1);
+            ioport_set_pin_level(LED_BAT, 1);
+            ioport_set_pin_level(LED_M1, 1);
+            ioport_set_pin_level(LED_M2, 1);
+            ioport_set_pin_level(LED_M3, 1);
+            mdelay(100);
+            ioport_set_pin_level(LED_ONBOARD, 0);
+            ioport_set_pin_level(LED_BAT, 0);
+            ioport_set_pin_level(LED_M1, 0);
+            ioport_set_pin_level(LED_M2, 0);
+            ioport_set_pin_level(LED_M3, 0);
+            mdelay(100);
         }
-        else
-        {
-            blink_level = 1;
-        }
-            
-        ioport_set_pin_level(LED_BAT, blink_level);
-    }*/
-        
+
+        print_menu = false;
+    }
+
     if (getTicks() >= (ticks_dot_update + 500))
     {
         ticks_dot_update = getTicks();
@@ -1417,27 +1587,13 @@ static void menu_bootup(event_t event1)
     {
         act_menu = MENU_MAIN;
         print_menu = true;
-
-        for(int i = 0; i< 3; i++)
-        {
-            ioport_set_pin_level(LED_ONBOARD, 1);
-            ioport_set_pin_level(LED_BAT, 1);
-            ioport_set_pin_level(LED_M1, 1);
-            ioport_set_pin_level(LED_M2, 1);
-            ioport_set_pin_level(LED_M3, 1);
-            mdelay(100);
-            ioport_set_pin_level(LED_ONBOARD, 0);
-            ioport_set_pin_level(LED_BAT, 0);
-            ioport_set_pin_level(LED_M1, 0);
-            ioport_set_pin_level(LED_M2, 0);
-            ioport_set_pin_level(LED_M3, 0);
-            mdelay(100);
-        }
     }
 }
 
 static void menu_shutdown(event_t event1)
 {
+    static uint32_t ticks_shutdown;
+
     if(shutdown_confirmed)
     {
         lcd_clear();
@@ -1458,8 +1614,20 @@ static void menu_shutdown(event_t event1)
         update_comm();
         
         ioport_set_pin_level(RPI1, 0);
-        while (ioport_get_pin_level(RPI2) == 1);
-        mdelay(7500);
+
+        while (ioport_get_pin_level(RPI2) == 1)
+        {
+            update_comm();
+            check_battery();
+        }
+
+        ticks_shutdown = getTicks();
+
+        while((getTicks() - ticks_shutdown) < 7500)
+        {
+            update_comm();
+            check_battery();
+        }
         
         lcd_set_backlight(LCD_LIGHT_OFF);
         lcd_clear();    // required to turn backlight on/off
@@ -1525,7 +1693,7 @@ static void print_menu_main(void)
 
 static void print_menu_sensors(void)
 {
-    const char* text[4] = {" Ball", " Compass", " Line", " "};
+    const char* text[4] = {" Ball", " Compass", " Line", " Encoder"};
 //    lcd_print_m(text);
     lcd_clear();
     lcd_print_s(1, 0, text[0]);
@@ -1538,14 +1706,23 @@ static void print_menu_sensors(void)
 static void print_menu_settings(void)
 {
     const char* text[4] = {" ", " ", " ", " "};
+    
+    lcd_clear();
+
     sprintf(sprintf_buf, " Robot id: %1d", robot_id);
     text[0] = sprintf_buf;
-//    lcd_print_m(text);
-    lcd_clear();
     lcd_print_s(1, 0, text[0]);
+
+    sprintf(sprintf_buf, " Speed: %3d", speed_preset);
+    text[1] = sprintf_buf;
     lcd_print_s(2, 0, text[1]);
+
+    sprintf(sprintf_buf, " Heartbeat: %d", heartbeat);
+    text[2] = sprintf_buf;
     lcd_print_s(3, 0, text[2]);
+
     lcd_print_s(4, 0, text[3]);
+
     print_cursor(&menu_info.settings);
 }
 

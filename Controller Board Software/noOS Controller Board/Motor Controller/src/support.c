@@ -5,6 +5,7 @@
 /************************************************************************/
 
 #include "support.h"
+#include "comm.h"
 
 dictionary* noOS_ini_dict;
 
@@ -38,7 +39,8 @@ void create_default_ini_file(void)
     "[general]\n"\
     "robot_id = 1\n"\
     "speed = 15\n"\
-    "heartbeat = 0\n");
+    "heartbeat = 0\n"\
+    "line_cal = 12\n");
     f_close(&noOS_ini_file);
 }
 
@@ -63,4 +65,5 @@ void parse_ini_file(void)
     robot_id = iniparser_getint(noOS_ini_dict, "general:robot_id", 1);
     speed_preset = iniparser_getint(noOS_ini_dict, "general:speed", 15);
     heartbeat = iniparser_getboolean(noOS_ini_dict, "general:heartbeat", false);
+    mts.line_cal_value = iniparser_getint(noOS_ini_dict, "general:line_cal", 12);
 }

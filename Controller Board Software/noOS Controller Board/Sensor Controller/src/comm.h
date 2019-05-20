@@ -14,9 +14,8 @@ typedef struct
     struct
     {
         uint8_t heartbeat	 :1;
-        uint8_t button  	 :1;
         uint8_t sleep_mode   :1;
-        uint8_t rsvd		 :5;
+        uint8_t rsvd		 :6;
     } ibit;
     
     uint8_t line_cal_value;
@@ -50,13 +49,17 @@ typedef struct
                 uint16_t segment_10  :1;
                 uint16_t segment_11  :1;
                 uint16_t segment_12  :1;
+                uint16_t rsvd        :4;
             } single;
             uint16_t all;
         };
         
-        uint32_t see         :1;
-        uint32_t esc         :9;
-        uint32_t rsvd        :10;
+        struct
+        {
+            uint16_t see         :1;
+            uint16_t esc         :9;
+            uint16_t rsvd        :6;
+        };
     } line;
     
     struct
