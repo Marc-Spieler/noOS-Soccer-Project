@@ -50,7 +50,7 @@ int main(void)
         check_battery();
         
         prepare_values_to_send();
-        //process_new_sensor_values();
+        process_new_sensor_values();
 
         act_event = button_events();
         menu(act_event);

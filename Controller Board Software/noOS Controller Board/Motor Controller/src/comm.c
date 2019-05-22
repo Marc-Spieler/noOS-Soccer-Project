@@ -190,6 +190,9 @@ void prepare_values_to_send(void)
 
 void process_new_sensor_values(void)
 {
+    static int8_t prev_s_ball_dir = 0;
+    static int8_t prev_s_goal_dir = 0;
+    static uint8_t prev_s_goal_diff = 0;
     static float ball_see_avg = 0.0f;
     static float ball_have_avg = 0.0f;
     static float goal_see_avg = 0.0f;
@@ -229,8 +232,27 @@ void process_new_sensor_values(void)
         s.ball.have = (ball_have_avg > 0.3) ? true : false;
         s.goal.see = (goal_see_avg > 0.3) ? true : false;
 
-        s.ball.dir = (rtm.ball.have - 32) * 2;
-        s.goal.dir = (rtm.goal.dir- 32) * 2;
-        s.goal.diff = (rtm.goal.diff - 32) * 2;
+        if(rtm.ball.see)
+        {
+            s.ball.dir = (rtm.ball.dir - 32) * 2;
+            prev_s_ball_dir = s.ball.dir;
+        }
+        else
+        {
+            s.ball.dir = prev_s_ball_dir;
+        }
+
+        if(rtm.goal.see)
+        {
+            s.goal.dir = (rtm.goal.dir - 32) * 2;
+            s.goal.diff = rtm.goal.diff * 2;
+            prev_s_goal_dir = s.goal.dir;
+            prev_s_goal_diff = s.goal.diff;
+        }
+        else
+        {
+            s.goal.dir = prev_s_goal_dir;
+            s.goal.diff = prev_s_goal_diff;
+        }
     }
 }

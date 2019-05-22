@@ -13,17 +13,16 @@ typedef struct
 {
     struct
     {
-        uint16_t dir         :6;
-        uint16_t see         :1;
-        uint16_t diff        :5;
-        uint16_t rsvd        :4;
+        int8_t dir;
+        Bool see;
+        uint8_t diff;
     } goal;
     
     struct
     {
-        uint8_t dir         :6;
-        uint8_t see         :1;
-        uint8_t have        :1;
+        int8_t dir;
+        Bool see;
+        Bool have;
     } ball;
 
     struct

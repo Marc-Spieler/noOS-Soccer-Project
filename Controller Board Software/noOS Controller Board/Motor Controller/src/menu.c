@@ -957,7 +957,7 @@ static void menu_camera(event_t event1)
         }
         else if (rtm.ball.see) //  && rtm.ball.dir != 0
         {
-            sprintf(sprintf_buf, "Ball: %4d   ", rtm.ball.dir - 32);
+            sprintf(sprintf_buf, "Ball: %4d   ", (rtm.ball.dir - 32) * 2);
             lcd_print_s(1, 0, sprintf_buf);
         }
         else
@@ -983,7 +983,7 @@ static void menu_camera(event_t event1)
         }
         else if (rtm.goal.see)
         {
-            sprintf(sprintf_buf, "Goal: %4d   ", rtm.goal.dir - 32);
+            sprintf(sprintf_buf, "Goal: %4d   ", (rtm.goal.dir - 32) * 2);
             lcd_print_s(3, 0, sprintf_buf);
         }
         else
@@ -1002,7 +1002,7 @@ static void menu_camera(event_t event1)
         }
         else if (rtm.goal.see)
         {
-            sprintf(sprintf_buf, "1/2 width: %3d", rtm.goal.diff);
+            sprintf(sprintf_buf, "1/2 width: %3d", rtm.goal.diff * 2);
             lcd_print_s(4, 0, sprintf_buf);
         }
         else
