@@ -210,43 +210,53 @@ void *ballTask(void *arguments)
 			{ 
 			countL++;
 				countM++;
+				tll1_stat = 1;
 			}
 			else
 			{
+				tll1_stat = 0;
 			}
 
 			if( flatted.at<uchar>( tll2.y, tll2.x ) > 0 )
 			{
 				countL++;
+				tll2_stat = 1;
 			}
 			else
 			{
+				tll2_stat = 0;
 			}
 
 			if( flatted.at<uchar>( tml.y, tml.x ) > 0 )
 			{
 				countL++; 
 				countM++;
+				tml_stat = 1;
 			}
 			else
 			{
+				tml_stat = 0;
 			}
 
 			if( flatted.at<uchar>( trl1.y, trl1.x ) > 0 )
 			{
 				countL++;
 				countM++;
+				trl1_stat = 1;
 			}
 			else
 			{
+				trl1_stat = 0;
 			}
 
 			if( flatted.at<uchar>( trl2.y, trl2.x ) > 0 )
 			{
 				countL++;
+				trl2_stat = 1;
 			}
 			else
 			{
+				trl2_stat = 0;
 			}
 
 
@@ -256,39 +266,49 @@ void *ballTask(void *arguments)
 			{
 				countU++;
 				countM++;
+				tlu1_stat = 1;
 			}
 			else
 			{
+				tlu1_stat = 0;
 			}
 			if( flatted.at<uchar>( tlu2.y, tlu2.x ) > 0 )
 			{
 				countU++;
+				tlu2_stat = 1;
 			}
 			else
 			{
+				tlu2_stat = 0;
 			}
 			if( flatted.at<uchar>( tmu.y, tml.x ) > 0 )
 			{
 				countU++;
 				countM++;
+				tmu_stat = 1;
 			}
 			else
 			{
+				tmu_stat = 0;
 			}
 			if( flatted.at<uchar>( tru1.y, tru1.x ) > 0 )
 			{
 				countU++;
 				countM++;
+				tru1_stat = 1;
 			}
 			else
 			{
+				tru1_stat = 0;
 			}
 			if( flatted.at<uchar>( tru2.y, tru2.x ) > 0 )
 			{
 				countU++;
+				tru2_stat = 1;
 			}
 			else
 			{
+				tru2_stat = 0;
 			}
 
 			//if( countU <= 2 && countL >= 3 && countL < 5 ) //originalvalues

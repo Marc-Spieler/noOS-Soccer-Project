@@ -252,7 +252,8 @@ int main(int argc, char** argv)
 		float prop2 = Height / Width;
 		
 		// Draw rectangle around biggest area
-		if( bigArea.getPixelCount() > 20 && prop1 < 2 && prop2 < 2 ) {
+		if( bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5 || infoBall.ball1.horizontal < (7) || infoBall.ball1.horizontal > (57) )  // check proportions of the area //or out of "proportion border": bounding box around ball not possible 
+		{
 			cv::Point obj = bigArea.getStart();
 			obj.x += Width / 2;
 			obj.y += Height / 2;

@@ -18,6 +18,19 @@
 void *cameraTask(void *arguments);
 extern volatile int frameBallReady;
 extern volatile int frameGoalReady;
+
+extern volatile int tml_stat;
+extern volatile int tll1_stat;
+extern volatile int tll2_stat;
+extern volatile int trl1_stat;
+extern volatile int trl2_stat;
+
+extern volatile int tmu_stat;
+extern volatile int tlu1_stat;
+extern volatile int tlu2_stat;
+extern volatile int tru1_stat;
+extern volatile int tru2_stat;
+
 extern int TopBorder;
 extern cv::Mat hsv;
 extern cv::Mat frame;
