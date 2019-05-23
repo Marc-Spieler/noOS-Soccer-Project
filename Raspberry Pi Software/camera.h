@@ -23,13 +23,15 @@ extern cv::Mat hsv;
 extern cv::Mat frame;
 extern cv::Point objBall;
 extern cv::Point objGoal;
-#define facTWidth 0.9
-#define facTHeightUpper 1
-#define tml_par ( WIDTH / 2, HEIGHT - 26 ) //before: 53 instead of 26
-#define tll1_par ( WIDTH / 2 - WIDTH / 5*facTWidth, HEIGHT - 26 )
-#define tll2_par ( WIDTH / 2 - (2*WIDTH / 5*facTWidth), HEIGHT - 26 )
-#define trl1_par ( WIDTH / 2 + WIDTH / 5*facTWidth, HEIGHT - 26 )
-#define trl2_par ( WIDTH / 2 + (2*WIDTH / 5*facTWidth), HEIGHT - 26 )
+#define fac 0.5
+#define facTWidth 0.9*fac
+#define facTHeightLower 1*fac 
+#define facTHeightUpper 1*fac
+#define tml_par ( WIDTH / 2, HEIGHT - 26*facTHeightLower ) //before: 53 instead of 26
+#define tll1_par ( WIDTH / 2 - WIDTH / 5*facTWidth, HEIGHT - 26*facTHeightLower )
+#define tll2_par ( WIDTH / 2 - (2*WIDTH / 5*facTWidth), HEIGHT - 26*facTHeightLower )
+#define trl1_par ( WIDTH / 2 + WIDTH / 5*facTWidth, HEIGHT - 26*facTHeightLower )
+#define trl2_par ( WIDTH / 2 + (2*WIDTH / 5*facTWidth), HEIGHT - 26*facTHeightLower )
 
 #define tmu_par ( WIDTH / 2, HEIGHT - 75*facTHeightUpper )//before: 103 intead of 75
 #define tlu1_par ( WIDTH / 2 - WIDTH / 5*facTWidth, HEIGHT - 75*facTHeightUpper )
