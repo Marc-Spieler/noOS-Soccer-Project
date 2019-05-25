@@ -11361,65 +11361,65 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
  .text.menu     0x00088dc0      0x100 src/menu.o
                 0x00088dc0                menu
  .text.menu_main
-                0x00088ec0      0x144 src/menu.o
- *fill*         0x00089004        0x4 
+                0x00088ec0      0x150 src/menu.o
  .text.menu_match_magdeburg
-                0x00089008      0x208 src/menu.o
+                0x00089010      0x1fc src/menu.o
  .text.menu_sensors
-                0x00089210      0x13c src/menu.o
+                0x0008920c      0x13c src/menu.o
  .text.menu_camera
-                0x0008934c      0x228 src/menu.o
+                0x00089348      0x228 src/menu.o
  .text.menu_compass
-                0x00089574       0xe4 src/menu.o
+                0x00089570       0xe4 src/menu.o
  .text.menu_compass_calibration
-                0x00089658      0x11c src/menu.o
+                0x00089654      0x11c src/menu.o
  .text.menu_line
-                0x00089774      0x1a4 src/menu.o
+                0x00089770      0x1a4 src/menu.o
  .text.menu_line_calibration
-                0x00089918      0x13c src/menu.o
+                0x00089914      0x13c src/menu.o
  .text.menu_encoder
-                0x00089a54      0x360 src/menu.o
+                0x00089a50      0x360 src/menu.o
  .text.menu_settings
-                0x00089db4      0x358 src/menu.o
+                0x00089db0      0x358 src/menu.o
  .text.menu_bootup
-                0x0008a10c      0x178 src/menu.o
+                0x0008a108      0x178 src/menu.o
  .text.menu_shutdown
-                0x0008a284      0x174 src/menu.o
+                0x0008a280      0x174 src/menu.o
  .text.print_menu_main
-                0x0008a3f8       0x98 src/menu.o
+                0x0008a3f4       0x98 src/menu.o
  .text.print_menu_sensors
-                0x0008a490       0x68 src/menu.o
+                0x0008a48c       0x68 src/menu.o
  .text.print_menu_settings
-                0x0008a4f8       0xbc src/menu.o
+                0x0008a4f4       0xbc src/menu.o
  .text.print_cursor
-                0x0008a5b4       0x40 src/menu.o
+                0x0008a5b0       0x40 src/menu.o
  .text.button_events
-                0x0008a5f4      0x21c src/menu.o
-                0x0008a5f4                button_events
+                0x0008a5f0      0x21c src/menu.o
+                0x0008a5f0                button_events
  .text.NVIC_EnableIRQ
-                0x0008a810       0x30 src/motor.o
+                0x0008a80c       0x30 src/motor.o
  .text.NVIC_DisableIRQ
-                0x0008a840       0x34 src/motor.o
+                0x0008a83c       0x34 src/motor.o
  .text.NVIC_ClearPendingIRQ
-                0x0008a874       0x34 src/motor.o
+                0x0008a870       0x34 src/motor.o
  .text.NVIC_SetPriority
-                0x0008a8a8       0x54 src/motor.o
+                0x0008a8a4       0x54 src/motor.o
  .text.sysclk_enable_peripheral_clock
-                0x0008a8fc       0x1c src/motor.o
+                0x0008a8f8       0x1c src/motor.o
  .text.ioport_set_pin_level
-                0x0008a918       0x6a src/motor.o
+                0x0008a914       0x6a src/motor.o
  .text.ioport_get_port_level
-                0x0008a982       0x34 src/motor.o
- *fill*         0x0008a9b6        0x2 
+                0x0008a97e       0x34 src/motor.o
+ *fill*         0x0008a9b2        0x2 
  .text.motor_init
-                0x0008a9b8      0x1e4 src/motor.o
-                0x0008a9b8                motor_init
+                0x0008a9b4      0x1e4 src/motor.o
+                0x0008a9b4                motor_init
  .text.enable_motor
-                0x0008ab9c       0x50 src/motor.o
-                0x0008ab9c                enable_motor
+                0x0008ab98       0x50 src/motor.o
+                0x0008ab98                enable_motor
  .text.disable_motor
-                0x0008abec       0x3c src/motor.o
-                0x0008abec                disable_motor
+                0x0008abe8       0x3c src/motor.o
+                0x0008abe8                disable_motor
+ *fill*         0x0008ac24        0x4 
  .text.set_motor
                 0x0008ac28      0x200 src/motor.o
                 0x0008ac28                set_motor
@@ -12189,7 +12189,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
  .data.menu_info
                 0x20070194       0x10 src/menu.o
                 0x20070194                menu_info
- .data.updated_ref.10724
+ .data.updated_ref.10727
                 0x200701a4        0x1 src/menu.o
  *fill*         0x200701a5        0x3 
  .data.test_file_name
@@ -12324,38 +12324,38 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
  .bss.inverted_start
                 0x20070e35        0x1 src/menu.o
                 0x20070e35                inverted_start
- .bss.prev_rpi_inactive.10675
+ .bss.prev_rpi_inactive.10678
                 0x20070e36        0x1 src/menu.o
- .bss.prev_ball_dir.10676
+ .bss.prev_ball_dir.10679
                 0x20070e37        0x1 src/menu.o
- .bss.prev_ball_see.10677
+ .bss.prev_ball_see.10680
                 0x20070e38        0x1 src/menu.o
- .bss.prev_ball_have.10678
+ .bss.prev_ball_have.10681
                 0x20070e39        0x1 src/menu.o
- .bss.prev_goal_dir.10679
+ .bss.prev_goal_dir.10682
                 0x20070e3a        0x1 src/menu.o
- .bss.prev_goal_see.10680
+ .bss.prev_goal_see.10683
                 0x20070e3b        0x1 src/menu.o
- .bss.prev_goal_diff.10681
+ .bss.prev_goal_diff.10684
                 0x20070e3c        0x1 src/menu.o
  *fill*         0x20070e3d        0x1 
- .bss.prev_direction.10688
+ .bss.prev_direction.10691
                 0x20070e3e        0x2 src/menu.o
- .bss.prev_line_values.10708
+ .bss.prev_line_values.10711
                 0x20070e40        0x2 src/menu.o
- .bss.prev_motor_speed_left.10728
+ .bss.prev_motor_speed_left.10731
                 0x20070e42        0x1 src/menu.o
- .bss.ref_motor_speed_left.10725
+ .bss.ref_motor_speed_left.10728
                 0x20070e43        0x1 src/menu.o
- .bss.prev_motor_speed_right.10729
+ .bss.prev_motor_speed_right.10732
                 0x20070e44        0x1 src/menu.o
- .bss.ref_motor_speed_right.10726
+ .bss.ref_motor_speed_right.10729
                 0x20070e45        0x1 src/menu.o
- .bss.prev_motor_speed_rear.10730
+ .bss.prev_motor_speed_rear.10733
                 0x20070e46        0x1 src/menu.o
- .bss.ref_motor_speed_rear.10727
+ .bss.ref_motor_speed_rear.10730
                 0x20070e47        0x1 src/menu.o
- .bss.ticks_shutdown.10784
+ .bss.ticks_shutdown.10787
                 0x20070e48        0x4 src/menu.o
  .bss.heartbeat
                 0x20070e4c        0x1 src/support.o
@@ -13200,7 +13200,7 @@ OUTPUT(Motor Controller.elf elf32-littlearm)
  .debug_macro   0x00021040      0x122 src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_macro   0x00021162      0x86d src/main.o
 
-.debug_line     0x00000000    0x20dc5
+.debug_line     0x00000000    0x20dcd
  .debug_line    0x00000000     0x14a7 src/ASF/common/components/memory/sd_mmc/sd_mmc.o
  .debug_line    0x000014a7      0xdb7 src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.o
  .debug_line    0x0000225e      0xe44 src/ASF/common/services/spi/sam_usart_spi/usart_spi.o
@@ -13222,21 +13222,21 @@ OUTPUT(Motor Controller.elf elf32-littlearm)
  .debug_line    0x00010303     0x1379 src/lcd.o
  .debug_line    0x0001167c      0x5b0 src/lib/iniparser/dictionary.o
  .debug_line    0x00011c2c     0x15a8 src/lib/iniparser/iniparser.o
- .debug_line    0x000131d4     0x1776 src/menu.o
- .debug_line    0x0001494a     0x13ad src/motor.o
- .debug_line    0x00015cf7       0x54 src/pid.o
- .debug_line    0x00015d4b     0x12f6 src/sd.o
- .debug_line    0x00017041     0x1207 src/support.o
- .debug_line    0x00018248     0x12af src/timing.o
- .debug_line    0x000194f7      0xdcd src/ASF/common/services/clock/sam3x/sysclk.o
- .debug_line    0x0001a2c4      0xdea src/ASF/sam/drivers/dmac/dmac.o
- .debug_line    0x0001b0ae     0x1145 src/ASF/sam/drivers/pmc/pmc.o
- .debug_line    0x0001c1f3     0x12bf src/ASF/common/boards/user_board/init.o
- .debug_line    0x0001d4b2      0xb28 src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
- .debug_line    0x0001dfda      0xb7b src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
- .debug_line    0x0001eb55      0xbcc src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
- .debug_line    0x0001f721      0x417 src/ASF/sam/utils/syscalls/gcc/syscalls.o
- .debug_line    0x0001fb38     0x128d src/main.o
+ .debug_line    0x000131d4     0x177e src/menu.o
+ .debug_line    0x00014952     0x13ad src/motor.o
+ .debug_line    0x00015cff       0x54 src/pid.o
+ .debug_line    0x00015d53     0x12f6 src/sd.o
+ .debug_line    0x00017049     0x1207 src/support.o
+ .debug_line    0x00018250     0x12af src/timing.o
+ .debug_line    0x000194ff      0xdcd src/ASF/common/services/clock/sam3x/sysclk.o
+ .debug_line    0x0001a2cc      0xdea src/ASF/sam/drivers/dmac/dmac.o
+ .debug_line    0x0001b0b6     0x1145 src/ASF/sam/drivers/pmc/pmc.o
+ .debug_line    0x0001c1fb     0x12bf src/ASF/common/boards/user_board/init.o
+ .debug_line    0x0001d4ba      0xb28 src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
+ .debug_line    0x0001dfe2      0xb7b src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
+ .debug_line    0x0001eb5d      0xbcc src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
+ .debug_line    0x0001f729      0x417 src/ASF/sam/utils/syscalls/gcc/syscalls.o
+ .debug_line    0x0001fb40     0x128d src/main.o
 
 .debug_str      0x00000000    0x6ea2e
  .debug_str     0x00000000    0x6374e src/ASF/common/components/memory/sd_mmc/sd_mmc.o
@@ -13620,6 +13620,7 @@ __aeabi_dmul                                      c:/program files (x86)/atmel/s
                                                   c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libm.a(lib_a-k_cos.o)
                                                   c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libm.a(lib_a-e_rem_pio2.o)
                                                   src/motor.o
+                                                  src/menu.o
                                                   src/comm.o
 __aeabi_drsub                                     c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
 __aeabi_dsub                                      c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
@@ -14765,7 +14766,6 @@ rtc_set_time_alarm                                src/ASF/sam/drivers/rtc/rtc.o
 rtc_set_time_event                                src/ASF/sam/drivers/rtc/rtc.o
 rtc_set_writeprotect                              src/ASF/sam/drivers/rtc/rtc.o
 rtm                                               src/comm.o
-                                                  src/menu.o
 s                                                 src/comm.o
                                                   src/menu.o
                                                   src/compass.o

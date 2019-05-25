@@ -178,9 +178,16 @@ static void menu_main(event_t event1)
             }
             break;
         case EVENT_BUTTON_RIGHT_P:
-            act_menu = MENU_MATCH;
-            print_menu = true;
-            inverted_start = true;
+            switch (menu_info.main.act_cursor_line)
+            {
+                case 2:
+                    act_menu = MENU_MATCH;
+                    print_menu = true;
+                    inverted_start = true;
+                    break;
+                default:
+                    break;
+            }
             break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_SHUTDOWN;
@@ -442,16 +449,16 @@ static void menu_match_magdeburg(event_t event1)
     
     estimate_rel_deviation();
     
-    if (!stm.line.see)
+    if (!s.line.see)
     {
-        if (rtm.ball.have == 1)
+        if (s.ball.have)
         {
             robot_speed = 100.0f;//20.0f;
             robot_dir = 0.0f;
             
-            if(rtm.goal.see)
+            if(s.goal.see)
             {
-                if(abs(rtm.goal.dir - 32) <= rtm.goal.diff)
+                if(abs(s.goal.dir) <= s.goal.diff)
                 {
                     robot_speed = 100.0f;//20.0f;
                 }
@@ -460,7 +467,7 @@ static void menu_match_magdeburg(event_t event1)
                     robot_speed = 50.0f;//10;
                 }
                 
-                robot_trn = -(rtm.goal.dir - 32) / 0.6;//3;
+                robot_trn = -s.goal.dir / 0.6;//3;
             }
             else
             {
@@ -479,10 +486,10 @@ static void menu_match_magdeburg(event_t event1)
         }
         else
         {
-            if(rtm.ball.see)
+            if(s.ball.see)
             {
                 //robot_speed = (float)speed_preset;
-                robot_dir = (float)((rtm.ball.dir - 32) * 2);
+                robot_dir = (float)(s.ball.dir * 2.1);
                 
                 /*if(abs(robot_dir) > 25 && abs(robot_dir) < 40)
                 {
@@ -528,7 +535,7 @@ static void menu_match_magdeburg(event_t event1)
     }
     else
     {
-        robot_dir = (float)(stm.line.esc - 180);
+        robot_dir = (float)(s.line.esc - 180);
         robot_speed = 75.0f;//15.0f;
 #if FORCE_LIMIT_ON == 1
         tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
