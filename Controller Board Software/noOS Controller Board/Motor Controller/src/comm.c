@@ -6,7 +6,7 @@
 
 #include "comm.h"
 #include "string.h"
-
+#include "timing.h"
 
 sensors_t s;
 motor_to_sensor_t mts;
@@ -190,6 +190,8 @@ void prepare_values_to_send(void)
 
 void process_new_sensor_values(void)
 {
+    static uint32_t ticks_line_seen = 0;
+    static uint16_t prev_esc_dir = 0;
     static int8_t prev_s_ball_dir = 0;
     static int8_t prev_s_goal_dir = 0;
     static uint8_t prev_s_goal_diff = 0;
@@ -204,6 +206,28 @@ void process_new_sensor_values(void)
     {
         new_sc_data_arrived = false;
         memcpy(&s.line, &stm.line, sizeof(s.line));
+        
+        if(stm.line.see)
+        {
+            ticks_line_seen = getTicks();
+            s.line.see = 1;
+            prev_esc_dir = stm.line.esc;
+        }
+        else
+        {
+            if((getTicks() - ticks_line_seen) > 500)
+            {
+                s.line.see = 0;
+                ioport_set_pin_level(LED_M2, 0);
+            }
+            else
+            {
+                s.line.see = 1;
+                s.line.esc = prev_esc_dir;
+                ioport_set_pin_level(LED_M2, 1);
+            }
+        }
+        
         memcpy(&s.battery, &stm.battery, sizeof(s.battery));
     }
 
