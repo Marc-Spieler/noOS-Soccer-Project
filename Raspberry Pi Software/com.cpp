@@ -19,6 +19,18 @@ struct Info infoGeneral;
 volatile int comBallReady;
 volatile int comGoalReady;
 
+int tml_stat = 0;
+int tll1_stat = 0;
+int tll2_stat = 0;
+int trl1_stat = 0;
+int trl2_stat = 0;
+
+int tmu_stat = 0;
+int tlu1_stat = 0;
+int tlu2_stat = 0;
+int tru1_stat = 0;
+int tru2_stat = 0;
+
 
 // Testpoints for having ball [Test][Left/Mid/Right][Lower/Upper]
 static cv::Point tml tml_par;
