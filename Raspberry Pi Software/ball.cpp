@@ -157,7 +157,7 @@ void *ballTask(void *arguments)
 			float prop2 = (float) bigArea.getHeight() / (float) bigArea.getWidth();
       
 			// Ball found
-			if( bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5 || infoBall.ball1.horizontal < (7) || infoBall.ball1.horizontal > (57) )  // check proportions of the area //or out of "proportion border": bounding box around ball not possible 
+			if( bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5 )  // check proportions of the area
 			{
 				objBall = bigArea.getStart();
 				objBall.x += bigArea.getWidth() / 2;
