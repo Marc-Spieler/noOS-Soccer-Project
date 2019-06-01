@@ -443,6 +443,7 @@ static void menu_match(event_t event1)
 
 static void menu_match_magdeburg(event_t event1)
 {
+    static Bool arrived_rear = false;
     float robot_speed = speed_preset;
     float robot_dir = 0.0f;
     float robot_trn = 0.0f;
@@ -474,18 +475,18 @@ static void menu_match_magdeburg(event_t event1)
     {
         if (s.ball.have)
         {
-            robot_speed = 100.0f;//100
+            robot_speed = 100.0f;
             robot_dir = 0.0f;
             
             if(s.goal.see)
             {
                 if(abs(s.goal.dir) <= s.goal.diff)
                 {
-                    robot_speed = 100.0f;//100
+                    robot_speed = 100.0f;
                 }
                 else
                 {
-                    robot_speed = 50.0f;//50
+                    robot_speed = 50.0f;
                 }
                 
                 robot_trn = -s.goal.dir;// / 0.6;
@@ -509,21 +510,8 @@ static void menu_match_magdeburg(event_t event1)
         {
             if(s.ball.see)
             {
-                //robot_speed = (float)speed_preset;
-                robot_dir = (float)(s.ball.dir * 2.1);//2.1
-                
-                /*if(abs(robot_dir) > 25 && abs(robot_dir) < 40)
-                {
-                    robot_speed = 12;
-                }
-                else if(abs(robot_dir) >= 40)
-                {
-                    robot_speed = 8;
-                }
-                else
-                {*/
-                    robot_speed = 75.0f;//75
-                //}
+                robot_dir = (float)(s.ball.dir * 2.1);
+                robot_speed = 75.0f;
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
                 pid_motor_left.outMax = STANDARD_FORCE;
@@ -537,30 +525,54 @@ static void menu_match_magdeburg(event_t event1)
             }
             else
             {
-                if(s.goal.see)
+                robot_speed = 20.0f;//75
+
+                if(!arrived_rear)
                 {
-                    if(s.goal.dir < -5)
+                    if(s.goal.see)
                     {
-                        ioport_set_pin_level(LED_M1, 1);
-                        robot_dir = -135.0f;
-                    }
-                    else if(s.goal.dir > 5)
-                    {
-                        ioport_set_pin_level(LED_M2, 1);
-                        robot_dir = 135.0f;
+                        if(s.goal.dir < -5)
+                        {
+                            ioport_set_pin_level(LED_M1, 1);
+                            robot_dir = -135.0f;
+                        }
+                        else if(s.goal.dir > 5)
+                        {
+                            ioport_set_pin_level(LED_M2, 1);
+                            robot_dir = 135.0f;
+                        }
+                        else
+                        {
+                            ioport_set_pin_level(LED_M3, 1);
+                            robot_dir = 180.0f;
+                        }
                     }
                     else
                     {
-                        ioport_set_pin_level(LED_M3, 1);
                         robot_dir = 180.0f;
                     }
                 }
                 else
                 {
-                    robot_dir = 180.0f;
+                    if(s.goal.dir < -5)
+                    {
+                        ioport_set_pin_level(LED_M1, 1);
+                        robot_dir = -90.0f;
+                    }
+                    else if(s.goal.dir > 5)
+                    {
+                        ioport_set_pin_level(LED_M2, 1);
+                        robot_dir = 90.0f;
+                    }
+                    else
+                    {
+                        ioport_set_pin_level(LED_M3, 1);
+                        robot_speed = 0.0f;
+                    }
+
+                    arrived_rear = false;
                 }
                 
-                robot_speed = 20.0f;//75
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
                 pid_motor_left.outMax = FORCE_LIMIT;
@@ -579,7 +591,12 @@ static void menu_match_magdeburg(event_t event1)
     else
     {
         robot_dir = (float)(s.line.esc);
-        robot_speed = 75.0f;//75
+        robot_speed = 75.0f;
+
+        if(!s.ball.see)
+        {
+            arrived_rear = true;
+        }
 #if FORCE_LIMIT_ON == 1
         tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
         pid_motor_left.outMax = STANDARD_FORCE;
@@ -610,15 +627,15 @@ static void menu_match_magdeburg(event_t event1)
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
-        disable_motor();
-        lcd_set_backlight(LCD_LIGHT_ON);
-        lcd_clear();    // required to turn backlight on/off
-        act_menu = MENU_MAIN;
-        print_menu = true;
-        break;
+            disable_motor();
+            lcd_set_backlight(LCD_LIGHT_ON);
+            lcd_clear();    // required to turn backlight on/off
+            act_menu = MENU_MAIN;
+            print_menu = true;
+            break;
         default:
-        print_menu = false;
-        break;
+            print_menu = false;
+            break;
     }
 }
 #if 0
@@ -952,7 +969,7 @@ static void menu_camera(event_t event1)
 
         if(s.ball.have != prev_ball_have || print_menu)
         {
-            sprintf(sprintf_buf, "Having ball: %1d", s.ball.have);
+            sprintf(sprintf_buf, "Having ball: %1d %1d", s.ball.have, s.ball.have_2);
             lcd_print_s(2, 0, sprintf_buf);
 
             prev_ball_have = s.ball.have;
@@ -1749,7 +1766,7 @@ static void print_menu_main(void)
 
 static void print_menu_sensors(void)
 {
-    const char* text[4] = {" Ball", " Compass", " Line", " Encoder"};
+    const char* text[4] = {" Camera", " Compass", " Line", " Encoder"};
 //    lcd_print_m(text);
     lcd_clear();
     lcd_print_s(1, 0, text[0]);

@@ -23,6 +23,7 @@ typedef struct
         int8_t dir;
         Bool see;
         Bool have;
+        Bool have_2;
     } ball;
 
     struct

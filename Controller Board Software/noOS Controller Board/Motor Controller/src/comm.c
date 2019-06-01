@@ -197,9 +197,11 @@ void process_new_sensor_values(void)
     static uint8_t prev_s_goal_diff = 0;
     static float ball_see_avg = 0.0f;
     static float ball_have_avg = 0.0f;
+    static float ball_have_2_avg = 0.0f;
     static float goal_see_avg = 0.0f;
     float ball_see_tmp = 0.0f;
     float ball_have_tmp = 0.0f;
+    float ball_have_2_tmp = 0.0f;
     float goal_see_tmp = 0.0f;
 
     if (new_sc_data_arrived)
@@ -248,14 +250,17 @@ void process_new_sensor_values(void)
 
         ball_see_tmp = (rtm.ball.see) ? 0.1f : 0.0f;
         ball_have_tmp = (rtm.ball.have) ? 0.1f : 0.0f;
+        ball_have_2_tmp = (rtm.ball.have_2) ? 0.1f : 0.0f;
         goal_see_tmp = (rtm.goal.see) ? 0.1f : 0.0f;
 
         ball_see_avg = ball_see_avg * 0.9 + ball_see_tmp;
         ball_have_avg = ball_have_avg * 0.9 + ball_have_tmp;
+        ball_have_2_avg = ball_have_2_avg * 0.9 + ball_have_2_tmp;
         goal_see_avg = goal_see_avg * 0.9 + goal_see_tmp;
 
         s.ball.see = (ball_see_avg > 0.1) ? true : false;
         s.ball.have = (ball_have_avg > 0.1) ? true : false;
+        s.ball.have_2 = (ball_have_2_avg > 0.1) ? true : false;
         s.goal.see = (goal_see_avg > 0.1) ? true : false;
 
         if(rtm.ball.see)
