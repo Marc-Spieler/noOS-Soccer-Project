@@ -21,6 +21,8 @@ static int V_MIN = 0, V_MAX = 255;
 void *goalTask(void *arguments){
 	std::ifstream fileIn;	
 	int isBlue = *((int *)arguments);
+	int frameGoalReadyLocal = 0;
+	
 	printf( "isBlue = %d\r\n", isBlue );
 
 	// get values from calibrateGoal.txt
@@ -94,7 +96,11 @@ void *goalTask(void *arguments){
 	
 	while (1)
 	{  
-		if (frameGoalReady==1)
+        pthread_mutex_lock(&ready_mutex);
+        frameGoalReadyLocal = frameGoalReady;	
+        pthread_mutex_unlock(&ready_mutex);	
+        	   
+		if (frameGoalReadyLocal==1)
 		{
 			// Filter pixel for specific values in given range
 			cv::inRange( hsv, cv::Scalar( H_MIN, S_MIN, V_MIN ), cv::Scalar( H_MAX, S_MAX, V_MAX ), filtered );
@@ -214,15 +220,20 @@ void *goalTask(void *arguments){
    
       
 
-
+		    pthread_mutex_unlock(&ready_mutex);	
 			frameGoalReady = 0; //signal for camera thread to begin its task
+			pthread_mutex_unlock(&ready_mutex);	
+			
+			
 			comGoalReady = 1; //signal for com thread to begin its task
+
 			//printf("GoalPos %d %d\r\n", infoGoal.goal1.horizontal, infoGoal.goal1.vertical);
 		}
 		else
 		{
 			usleep(1000);
 		}
+	   
 	}
    
 }

@@ -9,6 +9,9 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/rfcomm.h>
 #include <fcntl.h>
+#include <sys/socket.h>
+//#include <bluetooth/hci.h>
+//#include <bluetooth/hci_lib.h>
 
 struct PacketSPI_OUT pOut = { 0 };
 struct PacketSPI_IN pIn = { 0 };
@@ -44,8 +47,10 @@ int tru2_stat = 0;
 const char PI_ONE[18]  = "B8:27:EB:EA:F3:FD";
 const char PI_TWO[18] = "B8:27:EB:0D:95:42";
 
+
 bdaddr_t temp = { 0 };
 bdaddr_t* bdaddr_any = &temp;
+
 int sock = 0;
 int client = 0;
 struct sockaddr_rc con = { 0 };
@@ -83,26 +88,44 @@ void *comTask(void *arguments)
 	// 'Setup pin listener
 	wiringPiSetup() ;
 	//pinMode( 1, INPUT );
-	
-	////connect bluetooth
-	//printf( "[*] Connect bluetooth\r\n" );
-	////liveCounter = 750;
-	//fcntl( sock, F_SETFL, ~O_NONBLOCK );
-	//int result = connect( sock, (struct sockaddr*) &con, sizeof(con) );
-	//if( result < 0 ) {
-		////printf( "[*] Error: Failed to connect. %d\r\n" );
-		//printf("[*] Error: Failed to connect. %d(%s)\r\n", errno, strerror(errno) );
-		//stateConnected = false;
-	//} else if( result == 0 ) {
-		//// Connected
-		////printf( "[*] Connected to master\r\n" );
-		//printf("[*] Connected to master\r\n" );
-		//stateConnected = true;		
-	//}
-	////liveCounter = 705;
-	
-	
-	
+/*
+	//connect bluetooth
+	printf( "[*] Connect bluetooth\r\n" );
+	//liveCounter = 750;
+	fcntl( sock, F_SETFL, ~O_NONBLOCK );
+	int result = connect( sock, (struct sockaddr*) &con, sizeof(con) );
+	if( result < 0 ) {
+		//printf( "[*] Error: Failed to connect. %d\r\n" );
+		printf("[*] Error: Failed to connect. %d(%s)\r\n", errno, strerror(errno) );
+		stateConnected = false;
+	} else if( result == 0 ) {
+		// Connected
+		//printf( "[*] Connected to master\r\n" );
+		printf("[*] Connected to master\r\n" );
+		stateConnected = true;		
+	}
+	//liveCounter = 705;
+
+	if( isSLAVE == 0 )
+	{
+		printf( "[*] Starting as Master\r\n" );
+		
+		// create server-socket
+		sock = socket( AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM );
+		
+		// bind socket to port 1
+		con.rc_family = AF_BLUETOOTH;
+		con.rc_bdaddr = *bdaddr_any;
+		con.rc_channel = (uint8_t) 1;
+		bind( sock, (struct sockaddr*) &con, sizeof(con) );
+		
+		// listen to port 1
+		listen( sock, 1 );
+		fcntl( sock, F_SETFL, O_NONBLOCK );
+	}
+
+    while (1);
+*/
 	time_t rawtime;
 	struct tm *dateTime;
 	char filenameBuffer[80];
@@ -203,7 +226,7 @@ void *comTask(void *arguments)
 			pOut.bits.GoalHalfWidth = infoGoal.ball1.GoalHalfWidth;
 			pOut.bits.seeBall = infoBall.status.see;
 			pOut.bits.have = infoBall.status.have1;
-			pOut.bits.haveFar = infoBall.status.have2;
+			pOut.bits.haveFar = infoBall.status.haveFar;
 			pOut.bits.rsvd_1 = 0;
 			pOut.bits.rsvd_2 = 0;
 

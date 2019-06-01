@@ -17,8 +17,11 @@ cv::Point objGoal;
 
 
 int frameCount = 0;
-volatile int frameBallReady = 0;
-volatile int frameGoalReady = 0;
+int frameBallReady = 0;
+int frameGoalReady = 0;
+
+pthread_mutex_t ready_mutex = PTHREAD_MUTEX_INITIALIZER;	
+
 int TopBorder = 80;
 uint8_t minT = 255;
 uint8_t maxT = 0;
@@ -28,6 +31,8 @@ uint16_t avgT = 0;
 void *cameraTask(void *arguments)
 {
   struct timespec t_start, t_end;
+  int frameBallReadyLocal = 0;
+  int frameGoalReadyLocal = 0;
   //open camera
   cam.set( CV_CAP_PROP_FRAME_HEIGHT, HEIGHT );
   cam.set( CV_CAP_PROP_FRAME_WIDTH,  WIDTH );
@@ -51,66 +56,74 @@ void *cameraTask(void *arguments)
 
   while (1)
   {
-    if ((frameBallReady==0)&&(frameGoalReady==0))
+    pthread_mutex_lock(&ready_mutex);
+    frameBallReadyLocal = frameBallReady;
+    frameGoalReadyLocal = frameGoalReady;
+    pthread_mutex_unlock(&ready_mutex);
+    
+    if ((frameBallReadyLocal==0)&&(frameGoalReadyLocal==0))
     {
 		
 #ifdef measureFramerate
-    clock_gettime( CLOCK_REALTIME, &t_start );
+      clock_gettime( CLOCK_REALTIME, &t_start );
 #endif
 
 
-    // Get picture
-    cam.grab();
-    cam.retrieve( frame );
-    // add TopBorder mask
-    cv::Mat mask = frame( cv::Rect(0, 0, WIDTH, TopBorder) );
-    mask.setTo( cv::Scalar(0, 0, 0) );
+      // Get picture
+      cam.grab();
+      cam.retrieve( frame );
+      // add TopBorder mask
+      cv::Mat mask = frame( cv::Rect(0, 0, WIDTH, TopBorder) );
+      mask.setTo( cv::Scalar(0, 0, 0) );
 
-    // Convert image from BGR to HSV
-    cv::cvtColor( frame, hsv, cv::COLOR_RGB2HSV );
-    frameBallReady = 1; //signal for ball thread to begin its task
-    frameGoalReady = 1; //signal for goal thread to begin its task
-
-    
+      // Convert image from BGR to HSV
+      cv::cvtColor( frame, hsv, cv::COLOR_RGB2HSV );
+      
+      
+      pthread_mutex_lock(&ready_mutex);
+      frameBallReady = 1; //signal for ball thread to begin its task
+      frameGoalReady = 1; //signal for goal thread to begin its task
+      pthread_mutex_unlock(&ready_mutex);
+      
+      
 #ifdef measureFramerate
-    clock_gettime( CLOCK_REALTIME, &t_end );
-	//whole secounds to microsecounds
-    unsigned long ss = t_start.tv_sec * 1000;
-    unsigned long es = t_end.tv_sec * 1000;
+      clock_gettime( CLOCK_REALTIME, &t_end );
+	  //whole secounds to microsecounds
+      unsigned long ss = t_start.tv_sec * 1000;
+      unsigned long es = t_end.tv_sec * 1000;
 
-	//nanosecounds to microsecounds
-    ss += t_start.tv_nsec / 1.0e6;
-    es += t_end.tv_nsec / 1.0e6;
+	  //nanosecounds to microsecounds
+      ss += t_start.tv_nsec / 1.0e6;
+      es += t_end.tv_nsec / 1.0e6;
 
-    unsigned long d = es - ss;
-    uint8_t framerate = 1000 / d;
+      unsigned long d = es - ss;
+      uint8_t framerate = 1000 / d;
     
-    if (minT > framerate)
-    {
-		minT = framerate;
-	}
+      if (minT > framerate)
+      {
+         minT = framerate;
+      }
 	
-	if (maxT < framerate)
-    {
-		maxT = framerate;
-	}
+      if (maxT < framerate)
+      {
+         maxT = framerate;
+      }
 	
-	avgT = ( avgT*95 + framerate*5 ) / 100;
-    if (++frameCount == 100)
-    {
-    //*((unsigned long*) (shared+1+sos+sos+1)) = 1000 / d;
-	printf( "Frames: %d minT: %d maxT: %d avgT: %d\n", framerate, minT, maxT, avgT );
-	frameCount = 0;
-	}
-	
+      avgT = ( avgT*95 + framerate*5 ) / 100;
+      if (++frameCount == 100)
+      {
+        //*((unsigned long*) (shared+1+sos+sos+1)) = 1000 / d;
+	    printf( "Frames: %d minT: %d maxT: %d avgT: %d\n", framerate, minT, maxT, avgT );
+	    frameCount = 0;
+      }
 #endif
 
-}
-else
-  {
-    usleep(10000);
-  }
+    }  // if ((frameBallReady==0)&&(frameGoalReady==0))
+    else
+    {
+      usleep(10000);
+    }
     
-
-}
+  
+  }  // while (1)
 }

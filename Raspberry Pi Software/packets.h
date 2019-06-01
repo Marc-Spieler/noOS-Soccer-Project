@@ -66,7 +66,7 @@ struct Info {
 		uint8_t valid1 :1;
 		uint8_t valid2 :1;
 		uint8_t have1 :1;
-		uint8_t have2 :1;
+		uint8_t haveFar :1;
     uint8_t see :1;
 	} status;
 	

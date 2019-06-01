@@ -21,6 +21,7 @@ static int V_MIN = 0, V_MAX = 255;
 void *ballTask(void *arguments)
 {		
 	int index = *((int *)arguments);
+	int frameBallReadyLocal = 0;
 	// get values from calibrateBall.txt
 	printf( "[*Ball] Open calibration file\r\n" );
 	std::ifstream file("/home/pi/soccer/calibrateBall.txt");
@@ -76,7 +77,11 @@ void *ballTask(void *arguments)
 
 	while (1)
 	{  
-		if (frameBallReady==1)
+        pthread_mutex_lock(&ready_mutex);
+        frameBallReadyLocal = frameBallReady;
+        pthread_mutex_unlock(&ready_mutex);
+        	   
+		if (frameBallReadyLocal==1)
 		{
 			// Filter pixel for specific values in given range
 			cv::inRange( hsv, cv::Scalar( H_MIN, S_MIN, V_MIN ), cv::Scalar( H_MAX, S_MAX, V_MAX ), filtered );
@@ -205,13 +210,13 @@ void *ballTask(void *arguments)
 			//static cv::Point tru2 tru2_par;
       
 			// Check lower row testpoints
-			int countM = 0;
+			//int countM = 0;
 
 			int countL = 0;
 			if( flatted.at<uchar>( tll1.y, tll1.x ) > 0 )
 			{ 
 			countL++;
-				countM++;
+				//countM++;
 				tll1_stat = 1;
 			}
 			else
@@ -232,7 +237,7 @@ void *ballTask(void *arguments)
 			if( flatted.at<uchar>( tml.y, tml.x ) > 0 )
 			{
 				countL++; 
-				countM++;
+				//countM++;
 				tml_stat = 1;
 			}
 			else
@@ -243,7 +248,7 @@ void *ballTask(void *arguments)
 			if( flatted.at<uchar>( trl1.y, trl1.x ) > 0 )
 			{
 				countL++;
-				countM++;
+				//countM++;
 				trl1_stat = 1;
 			}
 			else
@@ -267,7 +272,7 @@ void *ballTask(void *arguments)
 			if( flatted.at<uchar>( tlu1.y, tlu1.x ) > 0 )
 			{
 				countU++;
-				countM++;
+				//countM++;
 				tlu1_stat = 1;
 			}
 			else
@@ -286,7 +291,7 @@ void *ballTask(void *arguments)
 			if( flatted.at<uchar>( tmu.y, tml.x ) > 0 )
 			{
 				countU++;
-				countM++;
+				//countM++;
 				tmu_stat = 1;
 			}
 			else
@@ -296,7 +301,7 @@ void *ballTask(void *arguments)
 			if( flatted.at<uchar>( tru1.y, tru1.x ) > 0 )
 			{
 				countU++;
-				countM++;
+				//countM++;
 				tru1_stat = 1;
 			}
 			else
@@ -317,11 +322,11 @@ void *ballTask(void *arguments)
 			if( countU >= 2) //testLower
 			{
 				//cv::line( frame, cv::Point(0, 0), cv::Point(WIDTH, HEIGHT), cv::Scalar(0, 0, 255), 4 );
-				infoBall.status.have2 = 1;
+				infoBall.status.haveFar = 1;
 			}
 			else
 			{
-				infoBall.status.have2 = 0;
+				infoBall.status.haveFar = 0;
 			}
 			
 			if( countL >= 3) //testLower
@@ -339,8 +344,11 @@ void *ballTask(void *arguments)
 			{
 				infoBall.status.have1 = 0;
 			}
-
+			
+			
+			pthread_mutex_lock(&ready_mutex);	
 			frameBallReady = 0; //signal for camera thread to begin its task
+	        pthread_mutex_unlock(&ready_mutex);	
 			comBallReady = 1; //signal for com thread to begin its task
 			//printf("BallPos %d %d\r\n", infoBall.ball1.horizontal, infoBall.ball1.vertical);
 		}
@@ -348,5 +356,6 @@ void *ballTask(void *arguments)
 		{
 			usleep(1000);
 		}
+	   
 	}
 }

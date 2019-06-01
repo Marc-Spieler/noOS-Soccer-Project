@@ -16,8 +16,12 @@
 
 
 void *cameraTask(void *arguments);
-extern volatile int frameBallReady;
-extern volatile int frameGoalReady;
+extern int frameBallReady;
+extern int frameGoalReady;
+
+extern pthread_mutex_t ready_mutex;	
+//extern pthread_cond_t frameBallReady = PTHREAD_COND_INITIALIZER;	
+//extern pthread_cond_t frameGoalReady = PTHREAD_COND_INITIALIZER;
 
 extern int TopBorder;
 extern cv::Mat hsv;
