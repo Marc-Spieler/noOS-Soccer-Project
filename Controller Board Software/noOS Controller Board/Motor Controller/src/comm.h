@@ -148,12 +148,12 @@ typedef struct
     
     struct
     {
-        uint8_t dir         :6;
-        uint8_t see         :1;
-        uint8_t have        :1;
+        uint16_t dir         :6;
+        uint16_t see         :1;
+        uint16_t have        :1;
+        uint16_t have_2      :1;
+        uint16_t rsvd        :7;
     } ball;
-    
-    uint8_t rsvd;
 } raspberrypi_to_motor_t;
 
 extern motor_to_raspberrypi_t mtr;

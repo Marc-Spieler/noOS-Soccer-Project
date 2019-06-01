@@ -34,19 +34,10 @@ void dacc_init(void)
     dacc_reset(DACC);
     dacc_set_timing(DACC, 0x08, 0, 0x10);
     dacc_enable_channel(DACC, DACC_CHANNEL_LINE_VREF);
-    //dacc_enable_channel(DACC, DACC_CHANNEL_VREF_BLACK);
     dacc_set_analog_control(DACC, DACC_ANALOG_CONTROL);
     dacc_set_channel_selection(DACC, DACC_CHANNEL_LINE_VREF);
     dacc_write_conversion_data(DACC, 3000);
-    /*dacc_set_channel_selection(DACC, DACC_CHANNEL_VREF_BLACK);
-    dacc_write_conversion_data(DACC, 3000);*/
 }
-
-/*void set_vref_black(uint16_t value)
-{
-    dacc_set_channel_selection(DACC, DACC_CHANNEL_VREF_BLACK);
-    dacc_write_conversion_data(DACC, value);
-}*/
 
 void update_line_calibration_value(uint16_t calibration_value)
 {
@@ -100,7 +91,7 @@ void calculate_line_esc_direction(void)
             seg_sta[seg_cntr] = 0;
             seg_end[seg_cntr] = 0;
         }
-
+        
         // search first non white led
         for (led_cntr = 0; led_cntr < LED_CNT; led_cntr++)
         {
@@ -112,16 +103,17 @@ void calculate_line_esc_direction(void)
         
         seg_cntr = 0;
         prev_led_white = 0;
+        
         for (int16_t i = 0; i < LED_CNT; i++)
         {
             int16_t j = (led_cntr + i) % LED_CNT;
             if (line_white[j] && !prev_led_white)
             {
                 seg_sta[seg_cntr] = led_deg[j];
-                if (seg_end[seg_cntr] != 0)
+                /*if (seg_end[seg_cntr] != 0)
                 {
                     seg_cntr++;
-                }
+                }*/
             }
 
             if (!line_white[j] && prev_led_white)
@@ -139,7 +131,7 @@ void calculate_line_esc_direction(void)
             prev_led_white = line_white[j];
         }
         
-        divider = seg_cntr;
+        divider = seg_cntr > 0 ? seg_cntr : 1; // remove chance of dividing by 0
         
         for (seg_cntr = 0; seg_cntr < SEG_CNT; seg_cntr++)
         {
@@ -149,34 +141,38 @@ void calculate_line_esc_direction(void)
             }
             seg_mid[seg_cntr] = (seg_sta[seg_cntr] + seg_end[seg_cntr]) / 2;
         }
-        
+ /*       
         if (divider == 2)
         {
             if (seg_mid[0] - seg_mid[1] > 180)
             {
                 line_esc = (seg_mid[0] + seg_mid[1]) / divider;
-                line_esc -= 180; //
             }
             else
             {
                 line_esc = (seg_mid[0] + seg_mid[1]) / divider;
-                //line_esc += 180;
+                line_esc += 180;
             }
         }
         else if (divider > 0)
-        {
+        {*/
             line_esc = 0;
             for (seg_cntr = 0; seg_cntr < SEG_CNT; seg_cntr++)
             {
                 line_esc += seg_mid[seg_cntr];
             }
             line_esc /= divider;
-            //line_esc += 180;
-        }
-        else if (divider == 0)
+            
+            if(divider != 2 || (abs(seg_mid[0] - seg_mid[1]) < 180))
+            {
+                line_esc += 180;
+            }
+            
+      //  }
+        /*else if (divider == 0)
         {
-            line_esc = seg_mid[0];// + 180;
-        }
+            line_esc = seg_mid[0] + 180;
+        }*/
         
         stm.line.see = 1;
         ioport_set_pin_level(LED_ONBOARD, 1);
@@ -184,22 +180,21 @@ void calculate_line_esc_direction(void)
     }
     else
     {
-        line_esc = 180;
+        line_esc = 0;
         stm.line.see = 0;
         ioport_set_pin_level(LED_ONBOARD, 0);
         ioport_set_pin_level(LED_S3, 0);
     }
     
-    if (line_esc >= 360)
+    while(line_esc >= 360)
     {
         line_esc -= 360;
     }
     
-    if (line_esc < 0)
+    while(line_esc < 0)
     {
         line_esc += 360;
     }
     
     stm.line.esc = line_esc;
-    
 }

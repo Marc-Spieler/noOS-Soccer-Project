@@ -211,20 +211,22 @@ void process_new_sensor_values(void)
         {
             ticks_line_seen = getTicks();
             s.line.see = 1;
+            s.line.esc = stm.line.esc;
             prev_esc_dir = stm.line.esc;
         }
         else
         {
-            if((getTicks() - ticks_line_seen) > 500)
+            if((getTicks() - ticks_line_seen) > 100)
             {
                 s.line.see = 0;
-                ioport_set_pin_level(LED_M2, 0);
+                s.line.esc = 0x1FF;
+                //ioport_set_pin_level(LED_M2, 0);
             }
             else
             {
                 s.line.see = 1;
                 s.line.esc = prev_esc_dir;
-                ioport_set_pin_level(LED_M2, 1);
+                //ioport_set_pin_level(LED_M2, 1);
             }
         }
         
@@ -252,9 +254,9 @@ void process_new_sensor_values(void)
         ball_have_avg = ball_have_avg * 0.9 + ball_have_tmp;
         goal_see_avg = goal_see_avg * 0.9 + goal_see_tmp;
 
-        s.ball.see = (ball_see_avg > 0.3) ? true : false;
-        s.ball.have = (ball_have_avg > 0.3) ? true : false;
-        s.goal.see = (goal_see_avg > 0.3) ? true : false;
+        s.ball.see = (ball_see_avg > 0.1) ? true : false;
+        s.ball.have = (ball_have_avg > 0.1) ? true : false;
+        s.goal.see = (goal_see_avg > 0.1) ? true : false;
 
         if(rtm.ball.see)
         {

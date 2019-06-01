@@ -18,6 +18,9 @@
 #define FORCE_LIMIT (225)
 #define STANDARD_FORCE (500)
 
+#define SPEED_FAST 70
+#define SPEED_SLOW 30
+
 uint32_t ticks_test = 0;
 
 menu_t act_menu = MENU_BOOTUP;
@@ -93,7 +96,7 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_match(event1);
+            menu_match_magdeburg(event1);
             break;
         case MENU_SENSORS:
             menu_sensors(event1);
@@ -198,7 +201,7 @@ static void menu_main(event_t event1)
             break;
     }
 }
-
+/*
 static void menu_test(event_t event1)
 {
     float robot_speed = speed_preset;
@@ -228,7 +231,7 @@ static void menu_test(event_t event1)
             break;
     }
 }
-#if 1
+*/
 static void menu_match(event_t event1)
 {
     /*
@@ -264,6 +267,9 @@ static void menu_match(event_t event1)
     float robot_speed = 0;//speed_preset;
     float robot_dir = 0;
     float robot_trn = 0;
+    int16_t add_left = 0;
+    int16_t add_right = 0;
+    int16_t add_rear = 0;
     
     ioport_set_pin_level(LED_M1, 0);
     ioport_set_pin_level(LED_M2, 0);
@@ -289,47 +295,77 @@ static void menu_match(event_t event1)
                 if(abs(s.goal.dir) <= rtm.goal.diff)
                 {
                     ioport_set_pin_level(LED_M1, 1);
-                    robot_speed = 100;//20
+                    robot_speed = SPEED_FAST;
                     robot_dir = 0;
+                    robot_trn -= s.goal.dir;
                 }
                 else
                 {
                     ioport_set_pin_level(LED_M2, 1);
-                    robot_speed = 50;//10
+                    robot_speed = 0;
                     robot_dir = 0;
+                    robot_trn = 0;
+                    
+                    if(s.goal.dir > 0)
+                    {
+                        add_left += -24;
+                        add_right += 36;
+                        add_rear += -48;
+                    }
+                    else if(s.goal.dir < 0)
+                    {
+                        add_left += -36;
+                        add_right += 24;
+                        add_rear += 48;
+                    }
                 }
-                robot_trn -= s.goal.dir / 1;//5
             }
             else
             {
                 if(abs(s.compass) < 10)
                 {
-                    robot_speed = 100;//10
+                    robot_speed = SPEED_FAST;
                     robot_dir = 0;
-                    robot_trn += s.compass; /// 5;//18
+                    robot_trn += s.compass;
                 }
                 else
                 {
-                    robot_speed = 20;//10
+                    robot_speed = 0;
                     robot_dir = 0;
-                    robot_trn += s.compass / 10;//18
+                    robot_trn = 0;
+                    
+                    if(s.compass > 0)
+                    {
+                        add_left += 4;//-36
+                        add_right += 10;//24
+                        add_rear += 60;//48
+                    }
+                    else if(s.compass < 0)
+                    {
+                        add_left += -10;//-24
+                        add_right += -4;//36
+                        add_rear += -60;//-48
+                    }
                 }
-                
             }
         }
         else
         {
-            /*if(s.ball.see)
+            if(s.ball.see)
             {
                 if(s.goal.see)
                 {
-                    if(abs(s.ball.dir) < 3 && abs(s.goal.dir) <= s.goal.diff)
+                    if(abs(s.ball.dir) < 15 && abs(s.goal.dir) <= s.goal.diff)
                     {
-                        robot_speed = 50;//10
+                        robot_speed = SPEED_FAST;
+                        robot_trn -= s.ball.dir;
+                        
                     }
                     else
                     {
-                        if(s.ball.dir >(s.goal.dir)
+                        ioport_set_pin_level(LED_M3, 1);
+                        //robot_dir = s.ball.dir * 2.1;
+                        if(s.ball.dir > s.goal.dir)
                         {
                             robot_dir = 90;
                         }
@@ -340,26 +376,27 @@ static void menu_match(event_t event1)
                         
                         if(abs(s.goal.dir) <= s.goal.diff)
                         {
-                            robot_trn += s.goal.dir * 5;//0
+                            robot_trn -= s.goal.dir;
                         }
                         else
                         {
-                            robot_trn -= s.ball.dir / 0.6;//3
-                        }
-                        robot_speed = 50;//10
+                            robot_trn -= s.ball.dir;
+                        }                        
+                        
+                        robot_speed = SPEED_SLOW;
                     }
                 }
                 else
                 {
-                    if(abs(s.ball.dir) < 3 && abs(compass_dev) < 10)
+                    if(abs(s.ball.dir) < 15 && abs(s.compass) < 15)
                     {
-                        robot_speed = 50;//10
+                        robot_speed = SPEED_FAST;
                         robot_dir = s.ball.dir;
-                        robot_trn += compass_dev / 3.6;//18
+                        robot_trn += s.compass;
                     }
                     else
                     {
-                        if(compass_dev > 0)
+                        if(s.compass > 0)
                         {
                             robot_dir = 90;
                         }
@@ -367,30 +404,27 @@ static void menu_match(event_t event1)
                         {
                             robot_dir = -90;
                         }
-                        robot_trn -= s.ball.dir / 0.6;//3
+                        robot_trn -= s.ball.dir;
+                        robot_speed = SPEED_SLOW;
                     }
                 }
             }
             else
             {
-                //ioport_set_pin_level(LED_M2, 1);
-                mleft_pid_reg.outMax = FORCE_LIMIT;
-                mleft_pid_reg.outMin = -FORCE_LIMIT;
-                mright_pid_reg = mleft_pid_reg;
-                mrear_pid_reg = mleft_pid_reg;
-                robot_speed = 50;//10
+                ioport_set_pin_level(LED_M1, 1);
+                /*robot_speed = 50;
                 robot_dir = 180;
-                robot_trn += compass_dev / 3.6;//18
-            }*/
+                robot_trn += s.compass;*/
+            }
         }
     }
     else
     {
-        robot_dir = stm.line.esc - 180;
-        robot_speed = 30;//30
+        robot_dir = s.line.esc;
+        robot_speed = 30;
     }
 
-    set_motor(robot_speed, robot_dir, robot_trn);
+    set_motor_extended(robot_speed, robot_dir, robot_trn, add_left, add_right, add_rear);
 
     switch (event1)
     {
@@ -406,7 +440,7 @@ static void menu_match(event_t event1)
             break;
     }
 }
-#endif
+
 static void menu_match_magdeburg(event_t event1)
 {
     float robot_speed = speed_preset;
@@ -432,6 +466,10 @@ static void menu_match_magdeburg(event_t event1)
     
     estimate_rel_deviation();
     
+    ioport_set_pin_level(LED_M1, 0);
+    ioport_set_pin_level(LED_M2, 0);
+    ioport_set_pin_level(LED_M3, 0);
+    
     if (!s.line.see)
     {
         if (s.ball.have)
@@ -443,18 +481,18 @@ static void menu_match_magdeburg(event_t event1)
             {
                 if(abs(s.goal.dir) <= s.goal.diff)
                 {
-                    robot_speed = 150.0f;//100
+                    robot_speed = 100.0f;//100
                 }
                 else
                 {
-                    robot_speed = 100.0f;//50
+                    robot_speed = 50.0f;//50
                 }
                 
-                robot_trn = -s.goal.dir / 0.6;//0.6
+                robot_trn = -s.goal.dir;// / 0.6;
             }
             else
             {
-                robot_trn = s.compass / 2.0f;//2
+                robot_trn = s.compass;// / 2.0f;
             }
 #if FORCE_LIMIT_ON == 1
             tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
@@ -472,7 +510,7 @@ static void menu_match_magdeburg(event_t event1)
             if(s.ball.see)
             {
                 //robot_speed = (float)speed_preset;
-                robot_dir = (float)(s.ball.dir * 1.1);//2.1
+                robot_dir = (float)(s.ball.dir * 2.1);//2.1
                 
                 /*if(abs(robot_dir) > 25 && abs(robot_dir) < 40)
                 {
@@ -484,7 +522,7 @@ static void menu_match_magdeburg(event_t event1)
                 }
                 else
                 {*/
-                    robot_speed = 120.0f;//75
+                    robot_speed = 75.0f;//75
                 //}
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
@@ -499,8 +537,30 @@ static void menu_match_magdeburg(event_t event1)
             }
             else
             {
-                robot_dir = 180.0f;
-                robot_speed = 150.0f;//75
+                if(s.goal.see)
+                {
+                    if(s.goal.dir < -5)
+                    {
+                        ioport_set_pin_level(LED_M1, 1);
+                        robot_dir = -135.0f;
+                    }
+                    else if(s.goal.dir > 5)
+                    {
+                        ioport_set_pin_level(LED_M2, 1);
+                        robot_dir = 135.0f;
+                    }
+                    else
+                    {
+                        ioport_set_pin_level(LED_M3, 1);
+                        robot_dir = 180.0f;
+                    }
+                }
+                else
+                {
+                    robot_dir = 180.0f;
+                }
+                
+                robot_speed = 20.0f;//75
 #if FORCE_LIMIT_ON == 1
                 tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
                 pid_motor_left.outMax = FORCE_LIMIT;
@@ -513,12 +573,12 @@ static void menu_match_magdeburg(event_t event1)
 #endif
             }
             
-            robot_trn = s.compass / 3.0f;//3
+            robot_trn = s.compass;// / 3.0f;
         }
     }
     else
     {
-        robot_dir = (float)(s.line.esc - 180);
+        robot_dir = (float)(s.line.esc);
         robot_speed = 75.0f;//75
 #if FORCE_LIMIT_ON == 1
         tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
@@ -1145,7 +1205,7 @@ static void menu_line(event_t event1)
     {
         sprintf(sprintf_buf, "See: %1d", stm.line.see);
         lcd_print_s(1, 0, sprintf_buf);
-        sprintf(sprintf_buf, "Esc: %4d", stm.line.esc - 180);
+        sprintf(sprintf_buf, "Esc: %4d", stm.line.esc);
         lcd_print_s(2, 0, sprintf_buf);
         sprintf(sprintf_buf, "Line: %1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d", stm.line.single.segment_1, stm.line.single.segment_2,
         stm.line.single.segment_3, stm.line.single.segment_4, stm.line.single.segment_5, stm.line.single.segment_6, stm.line.single.segment_7,
@@ -1227,12 +1287,12 @@ static void menu_encoder(event_t event1)
 {
     static Bool updated_ref = true;
 
-    static int8_t ref_motor_speed_left = 0;
-    static int8_t ref_motor_speed_right = 0;
-    static int8_t ref_motor_speed_rear = 0;
-    static uint8_t prev_motor_speed_left = 0;
-    static uint8_t prev_motor_speed_right = 0;
-    static uint8_t prev_motor_speed_rear = 0;
+    static int16_t ref_motor_speed_left = 0;
+    static int16_t ref_motor_speed_right = 0;
+    static int16_t ref_motor_speed_rear = 0;
+    static int16_t prev_motor_speed_left = 0;
+    static int16_t prev_motor_speed_right = 0;
+    static int16_t prev_motor_speed_rear = 0;
     
     if(print_menu)
     {
@@ -1241,24 +1301,30 @@ static void menu_encoder(event_t event1)
         print_cursor(&menu_info.encoder);
     }
     
-    if(prev_motor_speed_left != act_motor_speed_left || updated_ref || print_menu)
+    int16_t tmp_motor_speed_left = (int16_t)(act_motor_speed_left + 0.5);
+    
+    if(prev_motor_speed_left != tmp_motor_speed_left || updated_ref || print_menu)
     {
-        prev_motor_speed_left = act_motor_speed_left;
-        sprintf(sprintf_buf, "Left: %3d  %3d", act_motor_speed_left, ref_motor_speed_left);
+        prev_motor_speed_left = tmp_motor_speed_left;
+        sprintf(sprintf_buf, "Left: %3d  %3d", tmp_motor_speed_left, ref_motor_speed_left);
         lcd_print_s(1, 1, sprintf_buf);
     }
+    
+    int16_t tmp_motor_speed_right = (int16_t)(act_motor_speed_right + 0.5);
 
-    if(prev_motor_speed_right != act_motor_speed_right || updated_ref || print_menu)
+    if(prev_motor_speed_right != tmp_motor_speed_right || updated_ref || print_menu)
     {
-        prev_motor_speed_right = act_motor_speed_right;
-        sprintf(sprintf_buf, "Right: %3d  %3d", act_motor_speed_right, ref_motor_speed_right);
+        prev_motor_speed_right = tmp_motor_speed_right;
+        sprintf(sprintf_buf, "Right: %3d  %3d", tmp_motor_speed_right, ref_motor_speed_right);
         lcd_print_s(2, 1, sprintf_buf);
     }
+    
+    int16_t tmp_motor_speed_rear = (int16_t)(act_motor_speed_rear + 0.5);
 
-    if(prev_motor_speed_rear != act_motor_speed_rear || updated_ref || print_menu)
+    if(prev_motor_speed_rear != tmp_motor_speed_rear || updated_ref || print_menu)
     {
-        prev_motor_speed_rear = act_motor_speed_rear;
-        sprintf(sprintf_buf, "Rear: %3d  %3d", act_motor_speed_rear, ref_motor_speed_rear);
+        prev_motor_speed_rear =tmp_motor_speed_rear;
+        sprintf(sprintf_buf, "Rear: %3d  %3d", tmp_motor_speed_rear, ref_motor_speed_rear);
         lcd_print_s(3, 1, sprintf_buf);
     }
     

@@ -36,12 +36,12 @@ int16_t mleft_out;
 int16_t mright_out;
 int16_t mrear_out;
 
-int8_t act_motor_speed_left;
-int8_t act_motor_speed_right;
-int8_t act_motor_speed_rear;
-int8_t act_motor_speed_right_raw;
-int8_t act_motor_speed_left_raw;
-int8_t act_motor_speed_rear_raw;
+float act_motor_speed_left;
+float act_motor_speed_right;
+float act_motor_speed_rear;
+float act_motor_speed_right_raw;
+float act_motor_speed_left_raw;
+float act_motor_speed_rear_raw;
 
 /*float mleft;
 float mright;
@@ -120,7 +120,7 @@ void motor_init(void)
     pid_motor_left.kp = 30.0f; //10
     pid_motor_left.ki = 5.0f; //0.7
     pid_motor_left.kc = 1.0f; //1
-    pid_motor_left.kd = 1.0f; //0
+    pid_motor_left.kd = 10.0f; //0
     pid_motor_left.outMin = -500.0f;
     pid_motor_left.outMax = 500.0f;
 
@@ -160,6 +160,21 @@ void set_motor(float speed, float dir, float trn)
     left = speed * (cos(dir) * MOTOR_LEFT_COSIN - sin(dir) * MOTOR_LEFT_SIN);
     right = speed * (cos(dir) * MOTOR_RIGHT_COSIN - sin(dir) * MOTOR_RIGHT_SIN);
     rear = speed * (cos(dir) * MOTOR_REAR_COSIN - sin(dir) * MOTOR_REAR_SIN);
+    
+    left += trn;
+    right += trn;
+    rear += trn;
+    
+    set_motor_individual(left, right, rear);
+}
+
+void set_motor_extended(float speed, float dir, float trn, float left, float right, float rear)
+{
+    dir *= (3.14159265359f / 180.0f);
+    
+    left += speed * (cos(dir) * MOTOR_LEFT_COSIN - sin(dir) * MOTOR_LEFT_SIN);
+    right += speed * (cos(dir) * MOTOR_RIGHT_COSIN - sin(dir) * MOTOR_RIGHT_SIN);
+    rear += speed * (cos(dir) * MOTOR_REAR_COSIN - sin(dir) * MOTOR_REAR_SIN);
     
     left += trn;
     right += trn;
@@ -277,12 +292,12 @@ void TC1_Handler(void)
         update_motor_pwm(MOTOR_RIGHT, mright_out);
         update_motor_pwm(MOTOR_REAR, mrear_out);
 
-        act_motor_speed_left_raw = left_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
-        act_motor_speed_right_raw = right_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
-        act_motor_speed_rear_raw = rear_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
-        act_motor_speed_left = (int8_t)(act_motor_speed_left_raw * 0.1 + act_motor_speed_left * 0.9);
-        act_motor_speed_right = (int8_t)(act_motor_speed_right_raw * 0.1 + act_motor_speed_right * 0.9);
-        act_motor_speed_rear = (int8_t)(act_motor_speed_rear_raw * 0.1 + act_motor_speed_rear * 0.9);
+        act_motor_speed_left_raw = (float)left_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_right_raw = (float)right_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_rear_raw = (float)rear_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        act_motor_speed_left = act_motor_speed_left_raw * 0.1 + act_motor_speed_left * 0.9;
+        act_motor_speed_right = act_motor_speed_right_raw * 0.1 + act_motor_speed_right * 0.9;
+        act_motor_speed_rear = act_motor_speed_rear_raw * 0.1 + act_motor_speed_rear * 0.9;
 
         /*if(log_cnt < 400)
         {
