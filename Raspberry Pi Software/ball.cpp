@@ -157,7 +157,9 @@ void *ballTask(void *arguments)
 			float prop2 = (float) bigArea.getHeight() / (float) bigArea.getWidth();
       
 			// Ball found
-			if( bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5 )  // check proportions of the area
+			if( (bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5) ||
+			   ( bigArea.getPixelCount() > 4 && infoBall.ball1.horizontal < (7) )||
+			    (bigArea.getPixelCount() > 4 && infoBall.ball1.horizontal > (57) ))  // check proportions of the area //or out of "proportion border": bounding box around ball not possible 
 			{
 				objBall = bigArea.getStart();
 				objBall.x += bigArea.getWidth() / 2;
@@ -196,11 +198,11 @@ void *ballTask(void *arguments)
 			static cv::Point trl1 trl1_par;
 			static cv::Point trl2 trl2_par;
 
-			static cv::Point tmu tmu_par;
-			static cv::Point tlu1 tlu1_par;
-			static cv::Point tlu2 tlu2_par;
-			static cv::Point tru1 tru1_par;
-			static cv::Point tru2 tru2_par;
+			//static cv::Point tmu tmu_par;
+			//static cv::Point tlu1 tlu1_par;
+			//static cv::Point tlu2 tlu2_par;
+			//static cv::Point tru1 tru1_par;
+			//static cv::Point tru2 tru2_par;
       
 			// Check lower row testpoints
 			int countM = 0;
@@ -210,99 +212,120 @@ void *ballTask(void *arguments)
 			{ 
 			countL++;
 				countM++;
+				tll1_stat = 1;
 			}
 			else
 			{
+				tll1_stat = 0;
 			}
 
 			if( flatted.at<uchar>( tll2.y, tll2.x ) > 0 )
 			{
 				countL++;
+				tll2_stat = 1;
 			}
 			else
 			{
+				tll2_stat = 0;
 			}
 
 			if( flatted.at<uchar>( tml.y, tml.x ) > 0 )
 			{
 				countL++; 
 				countM++;
+				tml_stat = 1;
 			}
 			else
 			{
+				tml_stat = 0;
 			}
 
 			if( flatted.at<uchar>( trl1.y, trl1.x ) > 0 )
 			{
 				countL++;
 				countM++;
+				trl1_stat = 1;
 			}
 			else
 			{
+				trl1_stat = 0;
 			}
 
 			if( flatted.at<uchar>( trl2.y, trl2.x ) > 0 )
 			{
 				countL++;
+				trl2_stat = 1;
 			}
 			else
 			{
+				trl2_stat = 0;
 			}
 
-
+#if 0
 			// Check upper row testpoints
 			int countU = 0;
 			if( flatted.at<uchar>( tlu1.y, tlu1.x ) > 0 )
 			{
 				countU++;
 				countM++;
+				tlu1_stat = 1;
 			}
 			else
 			{
+				tlu1_stat = 0;
 			}
 			if( flatted.at<uchar>( tlu2.y, tlu2.x ) > 0 )
 			{
 				countU++;
+				tlu2_stat = 1;
 			}
 			else
 			{
+				tlu2_stat = 0;
 			}
 			if( flatted.at<uchar>( tmu.y, tml.x ) > 0 )
 			{
 				countU++;
 				countM++;
+				tmu_stat = 1;
 			}
 			else
 			{
+				tmu_stat = 0;
 			}
 			if( flatted.at<uchar>( tru1.y, tru1.x ) > 0 )
 			{
 				countU++;
 				countM++;
+				tru1_stat = 1;
 			}
 			else
 			{
+				tru1_stat = 0;
 			}
 			if( flatted.at<uchar>( tru2.y, tru2.x ) > 0 )
 			{
 				countU++;
+				tru2_stat = 1;
 			}
 			else
 			{
+				tru2_stat = 0;
 			}
-
+#endif
 			//if( countU <= 2 && countL >= 3 && countL < 5 ) //originalvalues
-			if( countU <= 3 && countL >= 3 ) //working
+			//if( countU <= 3 && countL >= 3 ) //working
+			if( countL >= 3) //testLower
 			{
 				//cv::line( frame, cv::Point(0, 0), cv::Point(WIDTH, HEIGHT), cv::Scalar(0, 0, 255), 4 );
 				infoBall.status.have1 = 1;
 			}
 			//else if( countL >= 2 && countM > 3 && countM <= 5 ) //testvalues
-			else if( countL >= 1 && countM > 2 && countM <= 4 ) //working
-			{
+			//else if( countL >= 1 && countM > 2 && countM <= 4 ) //working
+			//{
 				//cv::line( frame, cv::Point(0, 0), cv::Point(WIDTH, HEIGHT), cv::Scalar(0, 0, 255), 4 );
-				infoBall.status.have1 = 1;
-			}
+			//	infoBall.status.have1 = 1;
+			//}
 			else
 			{
 				infoBall.status.have1 = 0;
