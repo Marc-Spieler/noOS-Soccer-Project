@@ -28,19 +28,19 @@ extern cv::Point objGoal;
 #define facTWidth 1.1*fac
 #define facTHeightLower 0.1*fac 
 #define facTBowLower 23*fac
-//#define facTHeightUpper 1.2*fac
+#define facTHeightUpper 1.2*fac
 #define tml_par ( WIDTH / 2, HEIGHT - 26*facTHeightLower ) //before: 53 instead of 26
 #define tll1_par ( WIDTH / 2 - WIDTH / 5*facTWidth, HEIGHT - ((26*facTHeightLower) + facTBowLower*0.5) )
 #define tll2_par ( WIDTH / 2 - (2*WIDTH / 5*facTWidth), HEIGHT - ((26*facTHeightLower) + facTBowLower*2) )
 #define trl1_par ( WIDTH / 2 + WIDTH / 5*facTWidth, HEIGHT - ((26*facTHeightLower) + facTBowLower*0.5) )
 #define trl2_par ( WIDTH / 2 + (2*WIDTH / 5*facTWidth), HEIGHT - ((26*facTHeightLower) + facTBowLower*2) )
-#if 0
+
 #define tmu_par ( WIDTH / 2, HEIGHT - 75*facTHeightUpper )//before: 103 intead of 75
 #define tlu1_par ( WIDTH / 2 - WIDTH / 5*facTWidth, HEIGHT - 75*facTHeightUpper )
-#define tlu2_par ( WIDTH / 2 - (2*WIDTH / 5*facTWidth), HEIGHT - 75*facTHeightUpper )
+//#define tlu2_par ( WIDTH / 2 - (2*WIDTH / 5*facTWidth), HEIGHT - 75*facTHeightUpper )
 #define tru1_par ( WIDTH / 2 + WIDTH / 5*facTWidth, HEIGHT - 75*facTHeightUpper )
-#define  tru2_par ( WIDTH / 2 + (2*WIDTH / 5*facTWidth), HEIGHT - 75*facTHeightUpper )
-#endif
+//#define  tru2_par ( WIDTH / 2 + (2*WIDTH / 5*facTWidth), HEIGHT - 75*facTHeightUpper )
+
 
 //old:
 //#define tml_par ( WIDTH / 2, HEIGHT - 26 ) //before: 53 instead of 26

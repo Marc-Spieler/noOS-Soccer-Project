@@ -90,7 +90,8 @@ struct PacketBluetooth {
 		uint32_t onField :1;
 		uint32_t valid :1;
 		uint32_t have :1;
-		uint32_t rsv :8;
+		uint32_t haveFar :1;
+		uint32_t rsv :7;
 	} bits;
 };
  
@@ -110,11 +111,12 @@ struct PacketSPI_OUT {
     uint32_t goal :6;
     uint32_t seeGoal :1;
     uint32_t GoalHalfWidth :5;
-		uint32_t rsvd_1 :4;
-		uint32_t ball :6;
+	uint32_t rsvd_1 :4;
+	uint32_t ball :6;
     uint32_t seeBall :1;
-		uint32_t have :1;
-		uint32_t rsvd_2 :8;
+	uint32_t have :1;
+	uint32_t haveFar :1;
+	uint32_t rsvd_2 :7;
 	} bits;
 	
 };

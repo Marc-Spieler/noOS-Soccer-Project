@@ -15,7 +15,7 @@ gpio mode 1 out
 gpio write 1 1
 #gpio write 2 1
 
-#sudo /home/pi/soccer/soccer MASTER PI_TWO &
+#sudo /home/pi/soccer/soccer SLAVE PI_TWO &
 
 pin17=$(gpio read 0)
 while [ "$pin17" = "1" ]
