@@ -6,12 +6,17 @@
 #include <wiringPiSPI.h>
 #include <wiringPi.h>
 
+#include <bluetooth/bluetooth.h>
+#include <bluetooth/rfcomm.h>
+#include <fcntl.h>
+
 struct PacketSPI_OUT pOut = { 0 };
 struct PacketSPI_IN pIn = { 0 };
 
 
 cv::VideoWriter vidOut;
 
+struct PacketBluetooth pBluetooth = { 0 };
 struct Info infoBall;
 struct Info infoGoal;
 struct Info infoGeneral;
@@ -31,6 +36,26 @@ int tlu2_stat = 0;
 int tru1_stat = 0;
 int tru2_stat = 0;
 
+// modes
+#define MASTER 1
+#define SLAVE 0
+
+// bluetooth devices
+const char PI_ONE[18]  = "B8:27:EB:EA:F3:FD";
+const char PI_TWO[18] = "B8:27:EB:0D:95:42";
+
+bdaddr_t temp = { 0 };
+bdaddr_t* bdaddr_any = &temp;
+int sock = 0;
+int client = 0;
+struct sockaddr_rc con = { 0 };
+struct sockaddr_rc client_con = { 0 };
+bool stateConnected = false;
+bool connectionRunning = false;
+bool connectionFinished = false;
+char clientName[18];
+socklen_t opt = sizeof( client_con );
+
 
 // Testpoints for having ball [Test][Left/Mid/Right][Lower/Upper]
 static cv::Point tml tml_par;
@@ -48,8 +73,9 @@ static cv::Point trl2 trl2_par;
 
 void *comTask(void *arguments)
 {		
-	int index = *((int *)arguments);
-
+	int isSLAVE = *((int *)arguments);
+	printf( "isSLAVE = %d\r\n", isSLAVE );
+	
 	// setup SPI
 	wiringPiSPISetup( 0, 1000000 );
 	unsigned char bytes[4];
@@ -57,6 +83,25 @@ void *comTask(void *arguments)
 	// 'Setup pin listener
 	wiringPiSetup() ;
 	//pinMode( 1, INPUT );
+	
+	////connect bluetooth
+	//printf( "[*] Connect bluetooth\r\n" );
+	////liveCounter = 750;
+	//fcntl( sock, F_SETFL, ~O_NONBLOCK );
+	//int result = connect( sock, (struct sockaddr*) &con, sizeof(con) );
+	//if( result < 0 ) {
+		////printf( "[*] Error: Failed to connect. %d\r\n" );
+		//printf("[*] Error: Failed to connect. %d(%s)\r\n", errno, strerror(errno) );
+		//stateConnected = false;
+	//} else if( result == 0 ) {
+		//// Connected
+		////printf( "[*] Connected to master\r\n" );
+		//printf("[*] Connected to master\r\n" );
+		//stateConnected = true;		
+	//}
+	////liveCounter = 705;
+	
+	
 	
 	time_t rawtime;
 	struct tm *dateTime;
@@ -72,7 +117,83 @@ void *comTask(void *arguments)
 	
 	cv::Size sv = cv::Size( WIDTH, HEIGHT );
 	cv::Point mid( WIDTH / 2, HEIGHT );
+#if 0	
+	//Master/Slave
+	
+	if( isSLAVE == 0 ) 
+	//if( mode == MASTER ) 
+	{
+		printf( "[*] Starting as Master\r\n" );
+		
+		// create server-socket
+		sock = socket( AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM );
+		
+		// bind socket to port 1
+		con.rc_family = AF_BLUETOOTH;
+		con.rc_bdaddr = *bdaddr_any;
+		con.rc_channel = (uint8_t) 1;
+		bind( sock, (struct sockaddr*) &con, sizeof(con) );
+		
+		// listen to port 1
+		listen( sock, 1 );
+		fcntl( sock, F_SETFL, O_NONBLOCK );
+	}
+	
+	if( isSLAVE != 0 ) 
+	//if( mode == SLAVE ) 
+	{
+		printf( "[*] Starting as Slave\r\n" );
 
+		
+		// Set connection
+		con.rc_family = AF_BLUETOOTH;
+		con.rc_channel = (uint8_t) 1;
+		str2ba( PI_ONE, &con.rc_bdaddr );
+		
+		sock = socket( AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM );
+		//fcntl( sock, F_SETFL, O_NONBLOCK );
+		
+
+		if( connect( sock, (struct sockaddr*) &con, sizeof(con) ) != 0 ) 
+		{
+			printf( "[*] Error: Failed to connect. %s(%d)\r\n", strerror(errno), errno );
+			//sprintf(line8, "[*] Error: Failed to connect. %d(%s)", errno, strerror(errno) );
+			stateConnected = false;
+		} else 
+		{
+			// Connected
+			printf( "[*] Connected to master\r\n" );
+			//sprintf(line8, "[*] Connected to master\r\n" );
+			stateConnected = true;	
+		}
+	}
+	
+	printf( "[*] Bluetooth was set up\r\n" );
+	
+	while (1)
+	{
+		if( isSLAVE == 0 ) {
+			
+			int cs = accept( sock, (struct sockaddr*) &client_con, &opt );
+			if( cs > 0 ) {
+					
+				// Client has connected
+				ba2str( &client_con.rc_bdaddr, clientName );
+				//printf("[*] %s connected\r\n", clientName );
+				printf( "[*] %s connected", clientName );
+				//liveCounter = 50;
+				
+				// Check if client is authorized
+				if( strcmp(clientName, PI_TWO) ) {
+					close( cs );
+				} else {
+					client = cs;
+					fcntl( client, F_SETFL, O_NONBLOCK );
+				}
+			}
+		}
+	}
+#endif	
 	while (1)
 	{
 		if((comBallReady==1)&&(comGoalReady==1))

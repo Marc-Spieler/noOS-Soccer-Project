@@ -14,9 +14,7 @@
 int main( int argc, char** argv ) {
   pthread_t threads[4];
   int thread_args[4];
-  int i;
   int result_code;
-  int isBlue;
   
   //create all threads one by one
 
@@ -37,7 +35,7 @@ int main( int argc, char** argv ) {
     assert(!result_code);
     
     printf("IN MAIN: Creating thread 4.\n");
-    thread_args[3] = 3;
+    thread_args[3] = strcmp(argv[2], "MASTER");
     result_code = pthread_create(&threads[3], NULL, comTask, &thread_args[3]);
     assert(!result_code);
   
