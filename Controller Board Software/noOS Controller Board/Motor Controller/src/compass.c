@@ -77,29 +77,18 @@ void estimate_rel_deviation(void)
     update_compass();
     int16_t rel_dev = direction - opponent_goal;
 
-    if (rel_dev >= 1800)
+    while(rel_dev >= 1800)
     {
         rel_dev -= 3600;
     }
     
-    if (rel_dev >= 1800)
-    {
-        rel_dev -= 3600;
-    }
-    
-    if (rel_dev <= -1800)
+    while(rel_dev <= -1800)
     {
         rel_dev += 3600;
     }
     
-    if (rel_dev <= -1800)
-    {
-        rel_dev += 3600;
-    }
-    
-    s.compass = rel_dev / 10;
+    s.compass = (float)rel_dev / 10;
 }
-
 
 /*float update_correction(pidReg_t *reg)
 {

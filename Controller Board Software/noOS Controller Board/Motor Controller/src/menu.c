@@ -358,8 +358,7 @@ static void menu_match(event_t event1)
                     if(abs(s.ball.dir) < 15 && abs(s.goal.dir) <= s.goal.diff)
                     {
                         robot_speed = SPEED_FAST;
-                        robot_trn -= s.ball.dir;
-                        
+                        robot_trn -= s.ball.dir; //
                     }
                     else
                     {
@@ -374,16 +373,16 @@ static void menu_match(event_t event1)
                             robot_dir = -90;
                         }
                         
-                        if(abs(s.goal.dir) <= s.goal.diff)
+                        /*if(abs(s.goal.dir) <= s.goal.diff)
                         {
                             robot_trn -= s.goal.dir;
                         }
                         else
-                        {
+                        {*/
                             robot_trn -= s.ball.dir;
-                        }                        
+                        //}                        
                         
-                        robot_speed = SPEED_SLOW;
+                        robot_speed = SPEED_SLOW; //
                     }
                 }
                 else
@@ -405,7 +404,7 @@ static void menu_match(event_t event1)
                             robot_dir = -90;
                         }
                         robot_trn -= s.ball.dir;
-                        robot_speed = SPEED_SLOW;
+                        robot_speed = (abs(s.compass > 5)) ? SPEED_SLOW : 0; //
                     }
                 }
             }

@@ -204,7 +204,7 @@ void process_new_sensor_values(void)
     float ball_have_2_tmp = 0.0f;
     float goal_see_tmp = 0.0f;
 
-    if (new_sc_data_arrived)
+    if(new_sc_data_arrived)
     {
         new_sc_data_arrived = false;
         memcpy(&s.line, &stm.line, sizeof(s.line));
