@@ -260,7 +260,7 @@ void process_new_sensor_values(void)
 
         s.ball.see = (ball_see_avg > 0.1) ? true : false;
         s.ball.have = (ball_have_avg > 0.1) ? true : false;
-        s.ball.have_2 = (ball_have_2_avg > 0.1) ? true : false;
+        s.ball.have_2 = rtm.ball.have_2;//(ball_have_2_avg > 0.1) ? true : false;
         s.goal.see = (goal_see_avg > 0.1) ? true : false;
 
         if(rtm.ball.see)

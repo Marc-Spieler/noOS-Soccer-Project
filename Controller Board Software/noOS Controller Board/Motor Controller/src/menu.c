@@ -969,7 +969,7 @@ static void menu_camera(event_t event1)
 
         if(s.ball.have != prev_ball_have || print_menu)
         {
-            sprintf(sprintf_buf, "Having ball: %1d %1d", s.ball.have, s.ball.have_2);
+            sprintf(sprintf_buf, "Having ball: %1d %1d", s.ball.have, rtm.ball.have_2);
             lcd_print_s(2, 0, sprintf_buf);
 
             prev_ball_have = s.ball.have;
