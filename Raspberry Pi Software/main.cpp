@@ -35,7 +35,7 @@ int main( int argc, char** argv ) {
     assert(!result_code);
     
     printf("IN MAIN: Creating thread 4.\n");
-    thread_args[3] = strcmp(argv[2], "MASTER");
+    thread_args[3] = 3;
     result_code = pthread_create(&threads[3], NULL, comTask, &thread_args[3]);
     assert(!result_code);
   
