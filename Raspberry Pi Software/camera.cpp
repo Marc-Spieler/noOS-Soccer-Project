@@ -10,6 +10,7 @@
 // Images
 static raspicam::RaspiCam_Cv cam;
 cv::Mat frame;
+cv::Mat frameOut;
 cv::Mat hsv;
 
 cv::Point objBall;
@@ -84,6 +85,7 @@ void *cameraTask(void *arguments)
       frameBallReady = 1; //signal for ball thread to begin its task
       frameGoalReady = 1; //signal for goal thread to begin its task
       pthread_mutex_unlock(&ready_mutex);
+      frameOut = frame.clone();
       
       
 #ifdef measureFramerate

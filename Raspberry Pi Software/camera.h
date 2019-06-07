@@ -26,6 +26,7 @@ extern pthread_mutex_t ready_mutex;
 extern int TopBorder;
 extern cv::Mat hsv;
 extern cv::Mat frame;
+extern cv::Mat frameOut;
 extern cv::Point objBall;
 extern cv::Point objGoal;
 #define fac 0.7

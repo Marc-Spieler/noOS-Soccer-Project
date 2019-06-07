@@ -220,12 +220,13 @@ void *goalTask(void *arguments){
    
       
 
-		    pthread_mutex_unlock(&ready_mutex);	
+		    pthread_mutex_lock(&ready_mutex);	
 			frameGoalReady = 0; //signal for camera thread to begin its task
+			comGoalReady = 1; //signal for com thread to begin its task
 			pthread_mutex_unlock(&ready_mutex);	
 			
 			
-			comGoalReady = 1; //signal for com thread to begin its task
+
 
 			//printf("GoalPos %d %d\r\n", infoGoal.goal1.horizontal, infoGoal.goal1.vertical);
 		}

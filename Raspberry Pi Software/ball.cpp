@@ -162,7 +162,7 @@ void *ballTask(void *arguments)
 			float prop2 = (float) bigArea.getHeight() / (float) bigArea.getWidth();
       
 			// Ball found
-			if( (bigArea.getPixelCount() > 20 && prop1 < 5.0 && prop2 < 2.5) ||
+			if( (bigArea.getPixelCount() > 15 && prop1 < 5.0 && prop2 < 2.5) ||
 			   ( bigArea.getPixelCount() > 4 && infoBall.ball1.horizontal < (7) )||
 			    (bigArea.getPixelCount() > 4 && infoBall.ball1.horizontal > (57) ))  // check proportions of the area //or out of "proportion border": bounding box around ball not possible 
 			{
@@ -347,9 +347,9 @@ void *ballTask(void *arguments)
 			
 			
 			pthread_mutex_lock(&ready_mutex);	
-			frameBallReady = 0; //signal for camera thread to begin its task
-	        pthread_mutex_unlock(&ready_mutex);	
+			frameBallReady = 0; //signal for camera thread to begin its task	
 			comBallReady = 1; //signal for com thread to begin its task
+			pthread_mutex_unlock(&ready_mutex);
 			//printf("BallPos %d %d\r\n", infoBall.ball1.horizontal, infoBall.ball1.vertical);
 		}
 		else
