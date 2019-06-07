@@ -19,7 +19,7 @@ void *cameraTask(void *arguments);
 extern int frameBallReady;
 extern int frameGoalReady;
 
-extern pthread_mutex_t ready_mutex;	
+//extern pthread_mutex_t ready_mutex;	
 //extern pthread_cond_t frameBallReady = PTHREAD_COND_INITIALIZER;	
 //extern pthread_cond_t frameGoalReady = PTHREAD_COND_INITIALIZER;
 
@@ -33,7 +33,7 @@ extern cv::Point objGoal;
 #define facTWidth 1.1*fac
 #define facTHeightLower 0.1*fac 
 #define facTBowLower 23*fac
-#define facTHeightUpper 1.2*fac
+#define facTHeightUpper 1.4*fac
 #define tml_par ( WIDTH / 2, HEIGHT - 26*facTHeightLower ) //before: 53 instead of 26
 #define tll1_par ( WIDTH / 2 - WIDTH / 5*facTWidth, HEIGHT - ((26*facTHeightLower) + facTBowLower*0.5) )
 #define tll2_par ( WIDTH / 2 - (2*WIDTH / 5*facTWidth), HEIGHT - ((26*facTHeightLower) + facTBowLower*2) )

@@ -21,7 +21,7 @@ int frameCount = 0;
 int frameBallReady = 0;
 int frameGoalReady = 0;
 
-pthread_mutex_t ready_mutex = PTHREAD_MUTEX_INITIALIZER;	
+//pthread_mutex_t ready_mutex = PTHREAD_MUTEX_INITIALIZER;	
 
 int TopBorder = 80;
 uint8_t minT = 255;
@@ -57,10 +57,10 @@ void *cameraTask(void *arguments)
 
   while (1)
   {
-    pthread_mutex_lock(&ready_mutex);
+    //pthread_mutex_lock(&ready_mutex);
     frameBallReadyLocal = frameBallReady;
     frameGoalReadyLocal = frameGoalReady;
-    pthread_mutex_unlock(&ready_mutex);
+    //pthread_mutex_unlock(&ready_mutex);
     
     if ((frameBallReadyLocal==0)&&(frameGoalReadyLocal==0))
     {
@@ -81,10 +81,10 @@ void *cameraTask(void *arguments)
       cv::cvtColor( frame, hsv, cv::COLOR_RGB2HSV );
       
       
-      pthread_mutex_lock(&ready_mutex);
+      //pthread_mutex_lock(&ready_mutex);
       frameBallReady = 1; //signal for ball thread to begin its task
       frameGoalReady = 1; //signal for goal thread to begin its task
-      pthread_mutex_unlock(&ready_mutex);
+      //pthread_mutex_unlock(&ready_mutex);
       frameOut = frame.clone();
       
       

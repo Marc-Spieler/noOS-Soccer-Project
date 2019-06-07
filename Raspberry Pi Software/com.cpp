@@ -81,10 +81,10 @@ void *comTask(void *arguments)
 
 	while (1)
 	{	
-		pthread_mutex_lock(&ready_mutex);
+		//pthread_mutex_lock(&ready_mutex);
         comBallReadyLocal = comBallReady;
         comGoalReadyLocal = comGoalReady;
-        pthread_mutex_unlock(&ready_mutex);
+        //pthread_mutex_unlock(&ready_mutex);
         
 		if((comBallReadyLocal==1)&&(comGoalReadyLocal==1))
 		{		
@@ -230,10 +230,10 @@ void *comTask(void *arguments)
     
     
 			vidOut.write( frameOut );
-			pthread_mutex_lock(&ready_mutex);
+			//pthread_mutex_lock(&ready_mutex);
 			comBallReady=0; //reset signal for com thread to begin its task
 			comGoalReady=0;	//reset signal for com thread to begin its task	
-			pthread_mutex_unlock(&ready_mutex);	
+			//pthread_mutex_unlock(&ready_mutex);	
 		}
 			
 		usleep(10*1000); 

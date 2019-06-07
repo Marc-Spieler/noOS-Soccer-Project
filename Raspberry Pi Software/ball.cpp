@@ -77,9 +77,9 @@ void *ballTask(void *arguments)
 
 	while (1)
 	{  
-        pthread_mutex_lock(&ready_mutex);
+        //pthread_mutex_lock(&ready_mutex);
         frameBallReadyLocal = frameBallReady;
-        pthread_mutex_unlock(&ready_mutex);
+        //pthread_mutex_unlock(&ready_mutex);
         	   
 		if (frameBallReadyLocal==1)
 		{
@@ -346,10 +346,10 @@ void *ballTask(void *arguments)
 			}
 			
 			
-			pthread_mutex_lock(&ready_mutex);	
+			//pthread_mutex_lock(&ready_mutex);	
 			frameBallReady = 0; //signal for camera thread to begin its task	
 			comBallReady = 1; //signal for com thread to begin its task
-			pthread_mutex_unlock(&ready_mutex);
+			//pthread_mutex_unlock(&ready_mutex);
 			//printf("BallPos %d %d\r\n", infoBall.ball1.horizontal, infoBall.ball1.vertical);
 		}
 		else
