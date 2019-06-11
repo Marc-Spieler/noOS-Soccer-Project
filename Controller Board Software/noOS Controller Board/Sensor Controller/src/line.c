@@ -110,10 +110,6 @@ void calculate_line_esc_direction(void)
             if (line_white[j] && !prev_led_white)
             {
                 seg_sta[seg_cntr] = led_deg[j];
-                /*if (seg_end[seg_cntr] != 0)
-                {
-                    seg_cntr++;
-                }*/
             }
 
             if (!line_white[j] && prev_led_white)
@@ -141,39 +137,31 @@ void calculate_line_esc_direction(void)
             }
             seg_mid[seg_cntr] = (seg_sta[seg_cntr] + seg_end[seg_cntr]) / 2;
         }
- /*       
-        if (divider == 2)
-        {
-            if (seg_mid[0] - seg_mid[1] > 180)
-            {
-                line_esc = (seg_mid[0] + seg_mid[1]) / divider;
-            }
-            else
-            {
-                line_esc = (seg_mid[0] + seg_mid[1]) / divider;
-                line_esc += 180;
-            }
-        }
-        else if (divider > 0)
-        {*/
-            line_esc = 0;
-            for (seg_cntr = 0; seg_cntr < SEG_CNT; seg_cntr++)
-            {
-                line_esc += seg_mid[seg_cntr];
-            }
-            line_esc /= divider;
-            
-            if(divider != 2 || (abs(seg_mid[0] - seg_mid[1]) < 180))
-            {
-                line_esc += 180;
-            }
-            
-      //  }
-        /*else if (divider == 0)
-        {
-            line_esc = seg_mid[0] + 180;
-        }*/
+
+        line_esc = 0;
         
+        for (seg_cntr = 0; seg_cntr < SEG_CNT; seg_cntr++)
+        {
+            line_esc += seg_mid[seg_cntr];
+        }
+        
+        line_esc /= divider;
+
+        if(divider != 2 || (abs(seg_mid[0] - seg_mid[1]) < 180))
+        {
+            line_esc += 180;
+        }
+        
+        if(divider <= 2)
+        {
+            
+            stm.line.diff = 90;
+        }
+        else
+        {
+            stm.line.diff = 0;
+        }
+
         stm.line.see = 1;
         ioport_set_pin_level(LED_ONBOARD, 1);
         ioport_set_pin_level(LED_S3, 1);
@@ -182,6 +170,7 @@ void calculate_line_esc_direction(void)
     {
         line_esc = 0;
         stm.line.see = 0;
+        stm.line.diff = 0;
         ioport_set_pin_level(LED_ONBOARD, 0);
         ioport_set_pin_level(LED_S3, 0);
     }

@@ -56,9 +56,10 @@ typedef struct
         
         struct
         {
-            uint16_t see         :1;
-            uint16_t esc         :9;
-            uint16_t rsvd        :6;
+            uint32_t see         :1;
+            uint32_t esc         :9;
+            uint32_t diff        :8;
+            uint32_t rsvd        :14;
         };
     } line;
     
