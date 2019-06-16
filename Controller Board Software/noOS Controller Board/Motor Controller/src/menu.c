@@ -78,6 +78,7 @@ static void menu_compass_calibration(event_t event1);
 static void menu_line(event_t event1);
 static void menu_line_calibration(event_t event1);
 static void menu_encoder(event_t event1);
+static void menu_distance(event_t event1);
 static void menu_settings(event_t event1);
 static void menu_bootup(event_t event1);
 static void menu_shutdown(event_t event1);
@@ -119,6 +120,9 @@ void menu(event_t event1)
             break;
         case MENU_ENCODER:
             menu_encoder(event1);
+            break;
+        case MENU_DISTANCE:
+            menu_distance(event1);
             break;
         case MENU_BOOTUP:
             menu_bootup(event1);
@@ -1010,7 +1014,7 @@ static void menu_sensors(event_t event1)
                     print_menu = true;
                     break;
                 case 4:
-                    act_menu = MENU_ENCODER;
+                    act_menu = MENU_DISTANCE;
                     print_menu = true;
                     break;
                 default:
@@ -1543,6 +1547,40 @@ static void menu_encoder(event_t event1)
             break;
         default:
             updated_ref = false;
+            print_menu = false;
+            break;
+    }
+}
+
+static void menu_distance(event_t event1)
+{
+    static uint8_t prev_distance = 0;
+    
+    if(print_menu)
+    {
+        lcd_clear();
+    }
+    
+    if (prev_distance != s.distance || print_menu)
+    {
+        if(s.distance == 255)
+        {
+            lcd_print_s(2, 0, "error        ");
+        }
+        else
+        {
+            sprintf(sprintf_buf, "Distance: %3d", s.distance);
+            lcd_print_s(2, 0, sprintf_buf);
+        }
+    }
+    
+    switch(event1)
+    {
+        case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_SENSORS;
+            print_menu = true;
+            break;
+        default:
             print_menu = false;
             break;
     }

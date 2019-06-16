@@ -63,6 +63,8 @@ typedef struct
         };
     } line;
     
+    uint8_t distance;
+
     struct
     {
         uint16_t voltage     :8;

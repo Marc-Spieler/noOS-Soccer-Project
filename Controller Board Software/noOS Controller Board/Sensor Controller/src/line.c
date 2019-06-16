@@ -70,6 +70,8 @@ void update_line_values(void)
 
 void calculate_line_esc_direction(void)
 {
+    ioport_set_pin_level(LED_S2, 1);
+    
     if (stm.line.all != 0)
     {
         line_white[0] = stm.line.single.segment_1;
@@ -185,4 +187,6 @@ void calculate_line_esc_direction(void)
     }
     
     stm.line.esc = line_esc;
+
+    ioport_set_pin_level(LED_S2, 0);
 }

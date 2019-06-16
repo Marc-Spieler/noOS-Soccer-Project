@@ -8,6 +8,7 @@
 #include "comm.h"
 #include "timing.h"
 #include "line.h"
+#include "distance.h"
 
 int main(void)
 {
@@ -16,6 +17,7 @@ int main(void)
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
     spi_init();
+    distance_init();
     dacc_init();
     adc_start(ADC);
     
@@ -33,11 +35,13 @@ int main(void)
         mdelay(100);
     }
     
-    while (1)
+    while(1)
     {
         update_battery();
         update_heartbeat();
         
+        update_distance();
+
         update_line_values();
         calculate_line_esc_direction();
         update_line_calibration_value(mts.line_cal_value * 256);

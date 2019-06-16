@@ -6,6 +6,12 @@ src\ASF\common\services\spi\sam_spi\spi_master.c
 
 src\ASF\sam\drivers\adc\adc.c
 
+src\ASF\sam\drivers\pwm\pwm.c
+
+src\ASF\sam\drivers\tc\tc.c
+
+src\distance.c
+
 src\line.c
 
 src\timing.c

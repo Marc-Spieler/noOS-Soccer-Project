@@ -44,7 +44,7 @@ void board_init(void)
     adc_enable_channel(ADC, BATTERY_VOLTAGE);
     adc_configure_trigger(ADC, ADC_TRIG_SW, 0);
     
-    /* Configure Line Sensor pins */
+    /* Configure line sensor pins */
     ioport_set_pin_mode(LINE1, LINE_FLAGS);
     ioport_set_pin_mode(LINE2, LINE_FLAGS);
     ioport_set_pin_mode(LINE3, LINE_FLAGS);
@@ -57,4 +57,9 @@ void board_init(void)
     ioport_set_pin_mode(LINE10, LINE_FLAGS);
     ioport_set_pin_mode(LINE11, LINE_FLAGS);
     ioport_set_pin_mode(LINE12, LINE_FLAGS);
+
+    /* Configure distance sensor pins */
+    ioport_set_pin_mode(DISTANCE_TRIG_PIN, IOPORT_MODE_MUX_B);
+    ioport_disable_pin(DISTANCE_TRIG_PIN);
+    ioport_set_pin_mode(DISTANCE_ECHO, IOPORT_MODE_MUX_A);
 }
