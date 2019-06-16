@@ -14,10 +14,12 @@
 #include "motor.h"
 #include "math.h"
 
-#define SPEED_FAST 70
-#define SPEED_SLOW 30
+#define SPEED_FAST      70
+#define SPEED_SLOW      30
 
-uint32_t ticks_test = 0;
+#define TURN_NONE       0
+#define TURN_COMPASS    1
+#define TURN_GOAL       2
 
 menu_t act_menu = MENU_BOOTUP;
 Bool print_menu = true;
@@ -50,12 +52,14 @@ struct
     menu_info_t sensors;
     menu_info_t settings;
     menu_info_t encoder;
+    menu_info_t pid_tuner;
 } menu_info =
   {
       { 2, 2, 2, 4 },
       { 1, 1, 1, 4 },
       { 1, 1, 1, 3 },
-      { 1, 1, 1, 3 }
+      { 1, 1, 1, 3 },
+      { 1, 1, 1, 4 }
   };
 
 Bool shutdown_confirmed = 0;
@@ -66,8 +70,6 @@ char sprintf_buf[21];
 static void menu_main(event_t event1);
 static void menu_match(event_t event1);
 static void menu_match_magdeburg(event_t event1);
-static void menu_match_voehringen(event_t event1);
-static void menu_match_voehringen_optimized(event_t event1);
 static void menu_test(event_t event1);
 static void menu_sensors(event_t event1);
 static void menu_camera(event_t event1);
@@ -197,28 +199,196 @@ static void menu_main(event_t event1)
             break;
     }
 }
-/*
+
 static void menu_test(event_t event1)
 {
-    float robot_speed = speed_preset;
-    float robot_dir = 0;
-    float robot_trn = 0;
+    static uint32_t ticks_test = 0;
+    static pidReg_t pid_turn;
+    static Bool pid_updated = true;
+    static uint8_t turn_target = TURN_NONE;
     
     if(print_menu)
     {
-        lcd_clear();
-        set_opponent_goal();
+        pid_turn.kp = 1.2f;
+        pid_turn.ki = 0.0f;
+        pid_turn.kc = 0.0f;
+        pid_turn.kd = 0.8f;
+        pid_turn.outMin = -150.0f;
+        pid_turn.outMax = 150.0f;
+        
+        pid_updated = true;
+        
+        //lcd_set_backlight(LCD_LIGHT_OFF);
+        lcd_clear(); // required to turn backlight on/off
+        
+        if(inverted_start)
+        {
+            set_inverted_opponent_goal();
+        }
+        else
+        {
+            set_opponent_goal();
+        }
+        
         enable_motor();
     }
     
-    estimate_rel_deviation();
+    if ((getTicks() - ticks_test) > 50)
+    {
+        ticks_test = getTicks();
+        
+        estimate_rel_deviation();
+        
+        float robot_trn = 0;
+        
+        if(turn_target == TURN_COMPASS)
+        {
+            robot_trn = pidReg(&pid_turn, 0, -s.compass);
+        }
+        else if(turn_target == TURN_GOAL)
+        {
+            robot_trn = pidReg(&pid_turn, 0, s.goal.dir);
+        }
+        
+        set_motor(0, 0, robot_trn);
+    }
     
-    set_motor(0, 0, compass_dev / 2);
+    if(pid_updated)
+    {
+        pid_updated = false;
+        sprintf(sprintf_buf, "P: %2.1f", pid_turn.kp);
+        lcd_print_s(1, 1, sprintf_buf);
+        sprintf(sprintf_buf, "I: %1.2f", pid_turn.ki);
+        lcd_print_s(2, 1, sprintf_buf);
+        sprintf(sprintf_buf, "C: %2.1f", pid_turn.kc);
+        lcd_print_s(3, 1, sprintf_buf);
+        sprintf(sprintf_buf, "D: %2.1f", pid_turn.kd);
+        lcd_print_s(4, 1, sprintf_buf);
+        print_cursor(&menu_info.pid_tuner);
+    }
     
     switch (event1)
     {
+        case EVENT_BUTTON_MID_P:
+            if(turn_target == TURN_COMPASS)
+            {
+                turn_target = TURN_GOAL;
+                ioport_set_pin_level(LED_M1, 0);
+            }
+            else
+            {
+                turn_target = TURN_COMPASS;
+                ioport_set_pin_level(LED_M1, 1);
+            }
+            break;
+        case EVENT_BUTTON_UP_P:
+            if (menu_info.pid_tuner.act_cursor_line > menu_info.pid_tuner.min_cursor_line)
+            {
+                menu_info.pid_tuner.act_cursor_line--;
+                print_cursor(&menu_info.pid_tuner);
+            }
+            break;
+        case EVENT_BUTTON_DOWN_P:
+            if (menu_info.pid_tuner.act_cursor_line < menu_info.pid_tuner.max_cursor_line)
+            {
+                menu_info.pid_tuner.act_cursor_line++;
+                print_cursor(&menu_info.pid_tuner);
+            }
+            break;
+        case EVENT_BUTTON_LEFT_P:
+            switch (menu_info.pid_tuner.act_cursor_line)
+            {
+                case 1:
+                    if(pid_turn.kp >= 0.1f)
+                    {
+                        pid_turn.kp -= 0.1f;
+                        pid_updated = true;
+                    }
+                    else
+                    {
+                        pid_turn.kp = 0.0f;
+                        pid_updated = true;
+                    }
+                    break;
+                case 2:
+                    if(pid_turn.ki >= 0.01f)
+                    {
+                        pid_turn.ki -= 0.01f;
+                        pid_updated = true;
+                    }
+                    else
+                    {
+                        pid_turn.ki = 0.0f;
+                        pid_updated = true;
+                    }
+                    break;
+                case 3:
+                    if(pid_turn.kc >= 0.1f)
+                    {
+                        pid_turn.kc -= 0.1f;
+                        pid_updated = true;
+                    }
+                    else
+                    {
+                        pid_turn.kc = 0.0f;
+                        pid_updated = true;
+                    }
+                    break;
+                case 4:
+                    if(pid_turn.kd >= 0.1f)
+                    {
+                        pid_turn.kd -= 0.1f;
+                        pid_updated = true;
+                    }
+                    else
+                    {
+                        pid_turn.kd = 0.0f;
+                        pid_updated = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case EVENT_BUTTON_RIGHT_P:
+            switch (menu_info.pid_tuner.act_cursor_line)
+            {
+                case 1:
+                    if(pid_turn.kp < 10)
+                    {
+                        pid_turn.kp += 0.1f;
+                        pid_updated = true;
+                    }
+                    break;
+                case 2:
+                    if(pid_turn.ki < 10)
+                    {
+                        pid_turn.ki += 0.1f;
+                        pid_updated = true;
+                    }
+                    break;
+                case 3:
+                    if(pid_turn.kc < 10)
+                    {
+                        pid_turn.kc += 0.1f;
+                        pid_updated = true;
+                    }
+                    break;
+                case 4:
+                    if(pid_turn.kd < 10)
+                    {
+                        pid_turn.kd += 0.1f;
+                        pid_updated = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
         case EVENT_BUTTON_RETURN_P:
             disable_motor();
+            lcd_set_backlight(LCD_LIGHT_ON);
+            lcd_clear(); // required to turn backlight on/off
             act_menu = MENU_MAIN;
             print_menu = true;
             break;
@@ -227,7 +397,7 @@ static void menu_test(event_t event1)
             break;
     }
 }
-*/
+#if 0
 static void menu_match(event_t event1)
 {
     /*
@@ -435,7 +605,220 @@ static void menu_match(event_t event1)
             break;
     }
 }
+#endif
+#if 1
+static void menu_match_magdeburg(event_t event1)
+{
+    //static pidReg_t pid_turn;
+    //uint8_t turn_target = TURN_NONE;
+    static Bool arrived_rear = false;
+    float robot_speed = speed_preset;
+    float robot_dir = 0.0f;
+    float robot_trn = 0.0f;
+    
+    if(print_menu)
+    {
+        /*pid_turn.kp = 1.0f;
+        pid_turn.ki = 0.0f;
+        pid_turn.kc = 0.0f;
+        pid_turn.kd = 0.0f;
+        pid_turn.outMin = -30.0f;
+        pid_turn.outMax = 30.0f;*/
+        
+        lcd_set_backlight(LCD_LIGHT_OFF);
+        lcd_clear(); // required to turn backlight on/off
+        
+        if(inverted_start)
+        {
+            set_inverted_opponent_goal();
+        }
+        else
+        {
+            set_opponent_goal();
+        }
+        
+        enable_motor();
+    }
+    
+    estimate_rel_deviation();
+    
+    ioport_set_pin_level(LED_M1, 0);
+    ioport_set_pin_level(LED_M2, 0);
+    //ioport_set_pin_level(LED_M3, 0);
+    
+    if(!s.ball.see && s.line.see && s.line.esc < 45 && s.line.esc > -45)
+    {
+        arrived_rear = true;
+    }
+    else if(s.ball.see)
+    {
+        arrived_rear = false;
+    }        
+    
+    if(s.ball.have || s.ball.have_2)
+    {
+        robot_speed = 100.0f;
+        robot_dir = 0.0f;
+            
+        if(s.goal.see)
+        {
+            if(abs(s.goal.dir) > s.goal.diff)
+            {
+                robot_speed = 50.0f;
+            }
+            
+            //turn_target = TURN_GOAL;
+            robot_trn = -s.goal.dir;
+        }
+        else
+        {
+            //turn_target = TURN_COMPASS;
+            robot_trn = s.compass;
+        }
+    }
+    else
+    {
+        if(s.ball.see)
+        {
+            robot_dir = (float)(s.ball.dir * 2.1);
+            robot_speed = 75.0f;
+        }
+        else
+        {
+            robot_speed = 75.0f;
 
+            if(!arrived_rear)
+            {
+                if(s.goal.see)
+                {
+                    if(s.goal.dir < -5)
+                    {
+                        robot_dir = -155.0f;
+                    }
+                    else if(s.goal.dir > 5)
+                    {
+                        robot_dir = 155.0f;
+                    }
+                    else
+                    {
+                        robot_dir = 180.0f;
+                    }
+                }
+                else
+                {
+                    robot_dir = 180.0f;
+                }
+            }
+            else
+            {
+                robot_speed = 50.0f;
+                    
+                if(s.goal.dir < -5)
+                {
+                    robot_dir = -90.0f;
+                }
+                else if(s.goal.dir > 5)
+                {
+                    robot_dir = 90.0f;
+                }
+                else
+                {
+                    robot_speed = 0.0f;
+                }
+            }
+        }
+        
+        //turn_target = TURN_COMPASS;
+        robot_trn = s.compass;
+    }
+    
+    if(s.line.see)
+    {
+        int16_t esc_min = s.line.esc - s.line.diff;
+        int16_t esc_max = s.line.esc + s.line.diff;
+        
+        while(esc_min <= -180) esc_min += 360;
+        while(esc_max > 180) esc_max -= 360;
+        
+        if(esc_min > esc_max)
+        {
+            int16_t tmp = esc_min;
+            esc_min = esc_max;
+            esc_max = tmp;
+        }
+        
+        int16_t esc_dir_diff = s.line.esc - robot_dir;
+        
+        while(esc_dir_diff <= -180) esc_dir_diff += 360;
+        while(esc_dir_diff > 180) esc_dir_diff -= 360;
+        
+        if(s.line.diff > 0)
+        {
+            /*if(abs(robot_dir - s.line.esc) > 180)
+            {
+                if(s.line.esc > robot_dir)
+                {
+                    robot_dir += 360;
+                }
+                else
+                {
+                    robot_dir -= 360;
+                }
+            }*/
+            
+            if(abs(esc_dir_diff) <= 90)
+            {
+                if(robot_dir < esc_min)
+                {
+                    robot_dir = esc_min;
+                    ioport_set_pin_level(LED_M2, 1);
+                }
+                if(robot_dir > esc_max)
+                {
+                    robot_dir = esc_max;
+                    ioport_set_pin_level(LED_M1, 1);
+                }
+            }
+            else
+            {
+                robot_dir = robot_dir < 0 ? esc_min : esc_max;
+            }
+        }
+        else
+        {
+            robot_dir = (float)(s.line.esc);
+            robot_speed = 75.0f;
+        }
+    }
+    
+    /*float robot_trn = 0;
+    
+    if(turn_target == TURN_COMPASS)
+    {
+        robot_trn = pidReg(&pid_turn, 0, -s.compass);
+    }
+    else if(turn_target == TURN_GOAL)
+    {
+        robot_trn = pidReg(&pid_turn, 0, s.goal.dir);
+    }*/
+    
+    set_motor(robot_speed, robot_dir, robot_trn);
+
+    switch (event1)
+    {
+        case EVENT_BUTTON_RETURN_P:
+            disable_motor();
+            lcd_set_backlight(LCD_LIGHT_ON);
+            lcd_clear();    // required to turn backlight on/off
+            act_menu = MENU_MAIN;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
+    }
+}
+#else
 static void menu_match_magdeburg(event_t event1)
 {
     static Bool arrived_rear = false;
@@ -570,254 +953,8 @@ static void menu_match_magdeburg(event_t event1)
             robot_speed = 75.0f;
         }
     }
-
-    /*robot_dir *= (3.14159265359f / 180.0f);
     
-    mleft = robot_speed * (cos(robot_dir) * CosinMA1 - sin(robot_dir) * SinMA1);
-    mright = robot_speed * (cos(robot_dir) * CosinMA2 - sin(robot_dir) * SinMA2);
-    mrear = robot_speed * (cos(robot_dir) * CosinMA3 - sin(robot_dir) * SinMA3);
-    
-    mleft += robot_trn;
-    mright += robot_trn;
-    mrear += robot_trn;
-    
-    compensate_motor_output();
-    
-    set_motor_individual(mleft, mright, mrear);*/
     set_motor(robot_speed, robot_dir, robot_trn);
-
-    switch (event1)
-    {
-        case EVENT_BUTTON_RETURN_P:
-            disable_motor();
-            lcd_set_backlight(LCD_LIGHT_ON);
-            lcd_clear();    // required to turn backlight on/off
-            act_menu = MENU_MAIN;
-            print_menu = true;
-            break;
-        default:
-            print_menu = false;
-            break;
-    }
-}
-#if 0
-static void menu_match_voehringen_optimized(event_t event1)
-{
-    float robot_speed = speed_preset;
-    float robot_dir = 0;
-    
-    if(print_menu)
-    {
-        lcd_set_backlight(LCD_LIGHT_OFF);
-        lcd_clear();    // required to turn backlight on/off
-        
-        if(inverted_start)
-        {
-            set_inverted_opponent_goal();
-        }
-        else
-        {
-            set_opponent_goal();
-        }
-        
-        enable_motor();
-    }
-    
-    estimate_rel_deviation();
-    
-    if (!stm.line.see)
-    {
-        if (rtm.ball.have == 1)
-        {
-            robot_speed = 20.0f;
-        
-            if(rtm.goal.see)
-            {
-                robot_dir = (float)((rtm.goal.dir - 32) * 2);
-            }
-#if FORCE_LIMIT_ON == 1
-            tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-            pid_motor_left.outMax = STANDARD_FORCE;
-            pid_motor_left.outMin = -STANDARD_FORCE;
-            pid_motor_right.outMax = STANDARD_FORCE;
-            pid_motor_right.outMin = -STANDARD_FORCE;
-            pid_motor_rear.outMax = STANDARD_FORCE;
-            pid_motor_rear.outMin = -STANDARD_FORCE;
-            tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
-#endif
-        }
-        else
-        {
-            if (rtm.ball.see)
-            {
-                robot_speed = (float)speed_preset;
-                robot_dir = (float)((rtm.ball.dir - 32) * 2);
-#if FORCE_LIMIT_ON == 1
-                tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-                pid_motor_left.outMax = STANDARD_FORCE;
-                pid_motor_left.outMin = -STANDARD_FORCE;
-                pid_motor_right.outMax = STANDARD_FORCE;
-                pid_motor_right.outMin = -STANDARD_FORCE;
-                pid_motor_rear.outMax = STANDARD_FORCE;
-                pid_motor_rear.outMin = -STANDARD_FORCE;
-                tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
-#endif
-            }
-            else
-            {
-                robot_dir = 180.0f;
-                robot_speed = 10.0f;
-#if FORCE_LIMIT_ON == 1
-                tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-                pid_motor_left.outMax = FORCE_LIMIT;
-                pid_motor_left.outMin = -FORCE_LIMIT;
-                pid_motor_right.outMax = FORCE_LIMIT;
-                pid_motor_right.outMin = -FORCE_LIMIT;
-                pid_motor_rear.outMax = FORCE_LIMIT;
-                pid_motor_rear.outMin = -FORCE_LIMIT;
-                tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
-#endif
-            }
-        }        
-    }        
-    else
-    {
-        robot_dir = (float)(stm.line.esc - 180);
-        robot_speed = 15.0f;
-#if FORCE_LIMIT_ON == 1
-        tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-        pid_motor_left.outMax = STANDARD_FORCE;
-        pid_motor_left.outMin = -STANDARD_FORCE;
-        pid_motor_right.outMax = STANDARD_FORCE;
-        pid_motor_right.outMin = -STANDARD_FORCE;
-        pid_motor_rear.outMax = STANDARD_FORCE;
-        pid_motor_rear.outMin = -STANDARD_FORCE;
-        tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
-#endif
-    }    
-
-    robot_dir *= (3.14159265359f / 180.0f);
-    
-    mleft = robot_speed * (cos(robot_dir) * CosinMA1 - sin(robot_dir) * SinMA1);
-    mright = robot_speed * (cos(robot_dir) * CosinMA2 - sin(robot_dir) * SinMA2);
-    mrear = robot_speed * (cos(robot_dir) * CosinMA3 - sin(robot_dir) * SinMA3);
-    
-    mleft += compass_dev / 15.0f;
-    mright += compass_dev / 15.0f;
-    mrear += compass_dev / 15.0f;
-    
-    compensate_motor_output();
-    
-    set_motor_individual(mleft, mright, mrear);
-
-    switch (event1)
-    {
-        case EVENT_BUTTON_RETURN_P:
-            disable_motor();
-            lcd_set_backlight(LCD_LIGHT_ON);
-            lcd_clear();    // required to turn backlight on/off
-            act_menu = MENU_MAIN;
-            print_menu = true;
-            break;
-        default:
-            print_menu = false;
-            break;
-    }
-}
-
-static void menu_match_voehringen(event_t event1)
-{
-    //float dir;
-    //uint32_t ul_ticks_loop;
-    //int16_t rel_deviation;
-  
-    //int8_t diff_x;
-    //int8_t diff_y;
-    
-    float robot_speed = speed_preset;
-    float robot_dir = 0;
-    
-    if(print_menu)
-    {
-        lcd_set_backlight(LCD_LIGHT_OFF);
-        lcd_clear();    // required to turn backlight on/off
-        
-        if(inverted_start)
-        {
-            set_inverted_opponent_goal();
-        }
-        else
-        {
-            set_opponent_goal();
-        }
-        
-        enable_motor();
-    }
-    
-    estimate_rel_deviation();
-    
-    if (rtm.ball.have == 1)// && rtm.ball.dir >= 1 && rtm.ball.dir <= 63)
-    {
-        robot_speed = 20.0f;
-        
-        if(rtm.goal.see)
-        {
-            robot_dir = (rtm.goal.dir - 32) * 2;
-        }
-    }
-    else
-    {
-        robot_dir = rtm.ball.dir - 32;
-        
-        if (rtm.ball.see)
-        {
-            robot_speed = (float)speed_preset;
-            robot_dir *= 2.0f;
-        }
-        else
-        {
-            /*if(rtm.goal.see)
-            {
-                if((rtm.goal.dir - 32) > 5)
-                {
-                    robot_dir = 140;
-                }
-                else if((rtm.goal.dir - 32) < -5)
-                {
-                    robot_dir = -140;
-                }
-                else
-                {
-                    robot_dir = 180;
-                }
-            }
-            else
-            {*/
-                robot_dir = 180;
-            //}
-            robot_speed = 10;
-        }
-    }
-    
-    if (stm.line.see == 1)
-    {
-        robot_dir = stm.line.esc - 180;
-        robot_speed = 15.0f;
-    }
-
-    robot_dir *= (3.14159265359f / 180.0f);
-    
-    mleft = robot_speed * (cos(robot_dir) * CosinMA1 - sin(robot_dir) * SinMA1);
-    mright = robot_speed * (cos(robot_dir) * CosinMA2 - sin(robot_dir) * SinMA2);
-    mrear = robot_speed * (cos(robot_dir) * CosinMA3 - sin(robot_dir) * SinMA3);
-    
-    mleft += compass_dev / 15;
-    mright += compass_dev / 15;
-    mrear += compass_dev / 15;
-    
-    //compensate_motor_output(mleft, mright, mrear);
-    
-    set_motor_individual(mleft, mright, mrear);
 
     switch (event1)
     {
@@ -900,6 +1037,7 @@ static void menu_camera(event_t event1)
     static int8_t prev_goal_dir = 0;
     static Bool prev_goal_see = false;
     static int8_t prev_goal_diff = 0;
+    static uint8_t prev_camera_fps = 0;
 
     if(prev_rpi_inactive != s.rpi_inactive)
     {
@@ -969,6 +1107,13 @@ static void menu_camera(event_t event1)
 
             prev_goal_diff = s.goal.diff;
             prev_goal_see = s.goal.see;
+        }
+        
+        if(s.camera_fps != prev_camera_fps || print_menu)
+        {
+            sprintf(sprintf_buf, "FPS:%2d", s.camera_fps);
+            lcd_print_s(1, 14, sprintf_buf);
+            prev_camera_fps = s.camera_fps;
         }
     }
     else
@@ -1058,19 +1203,21 @@ static void menu_camera(event_t event1)
 
 static void menu_compass(event_t event1)
 {
-    static uint16_t prev_direction = 0;
+    static float prev_direction = 0.1f;
     
     if(print_menu)
     {
         lcd_clear();
         lcd_print_s(4, 2, "press mid to cal");
+        set_opponent_goal();
     }
     
-    update_compass();
-    if(direction != prev_direction)
+    estimate_rel_deviation();
+    
+    if((int16_t)s.compass != (int16_t)prev_direction)
     {
-        prev_direction = direction;
-        sprintf(sprintf_buf, "  Direction: %3.1f  ", (float)direction / 10.0);
+        prev_direction = s.compass;
+        sprintf(sprintf_buf, "  Direction: %4.1f  ", s.compass);
         lcd_print_s(2, 0, sprintf_buf);
     }
     

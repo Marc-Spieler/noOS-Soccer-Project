@@ -152,10 +152,9 @@ void calculate_line_esc_direction(void)
             line_esc += 180;
         }
         
-        if(divider <= 2)
+        if((divider == 1 && abs(seg_sta[0] - seg_end[0]) < 120))//divider == 2 || 
         {
-            
-            stm.line.diff = 90;
+            stm.line.diff = 80;
         }
         else
         {

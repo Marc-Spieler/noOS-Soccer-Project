@@ -157,6 +157,7 @@ void configure_dmac(void)
 void DMAC_Handler(void)
 {
     static uint32_t ul_status;
+    static uint32_t prev_update = 0;
 
     ul_status = dmac_get_status(DMAC);
     
@@ -172,6 +173,8 @@ void DMAC_Handler(void)
         memcpy(&rtm, &rpi_buf, sizeof(rtm));
         prepare_new_values = true;
         new_pi_data_arrived = true;
+        s.camera_fps = (s.camera_fps * 0.9) + (1000 / (getTicks() - prev_update) * 0.1);
+        prev_update = getTicks();
     }
 }
 
@@ -190,6 +193,8 @@ void prepare_values_to_send(void)
 
 void process_new_sensor_values(void)
 {
+    static uint32_t last_pi_update = 0;
+    
     static uint32_t ticks_line_seen = 0;
     static uint32_t ticks_ball_seen = 0;
     static uint32_t ticks_ball_have = 0;
@@ -208,7 +213,18 @@ void process_new_sensor_values(void)
     float ball_have_tmp = 0.0f;
     float ball_have_2_tmp = 0.0f;
     float goal_see_tmp = 0.0f;*/
-
+    
+    if((getTicks() - last_pi_update) > 100)
+    {
+        s.rpi_inactive = true;
+        ioport_set_pin_level(LED_M3, 1);
+    }
+    else
+    {
+        s.rpi_inactive = false;
+        ioport_set_pin_level(LED_M3, 0);
+    }
+    
     if(new_sc_data_arrived)
     {
         new_sc_data_arrived = false;
@@ -246,15 +262,7 @@ void process_new_sensor_values(void)
     if (new_pi_data_arrived)
     {
         new_pi_data_arrived = false;
-
-        if(rtm.ball.dir == 0 || rtm.goal.dir == 0)// || rtm.goal.diff == 0)
-        {
-            s.rpi_inactive = true;
-        }
-        else
-        {
-            s.rpi_inactive = false;
-        }
+        last_pi_update = getTicks();
 
         /*ball_see_tmp = (rtm.ball.see) ? 0.1f : 0.0f;
         ball_have_tmp = (rtm.ball.have) ? 0.1f : 0.0f;

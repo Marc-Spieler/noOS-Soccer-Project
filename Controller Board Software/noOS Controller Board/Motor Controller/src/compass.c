@@ -11,6 +11,7 @@
 
 uint16_t direction;
 int16_t opponent_goal;
+
 static uint8_t compassIsBusy = false;
 
 static void compass_callback(void);
@@ -62,7 +63,6 @@ uint8_t compass_is_busy(void)
 
 void set_opponent_goal(void)
 {
-    update_compass();
     opponent_goal = direction;
 }
 
@@ -75,19 +75,12 @@ void set_inverted_opponent_goal(void)
 void estimate_rel_deviation(void)
 {
     update_compass();
-    int16_t rel_dev = direction - opponent_goal;
+    float rel_dev = (float)(direction - opponent_goal) / 10;
 
-    while(rel_dev >= 1800)
-    {
-        rel_dev -= 3600;
-    }
+    while(rel_dev >= 180.0f) rel_dev -= 360.0f;
+    while(rel_dev <= -180.0f) rel_dev += 360.0f;
     
-    while(rel_dev <= -1800)
-    {
-        rel_dev += 3600;
-    }
-    
-    s.compass = (float)rel_dev / 10;
+    s.compass = rel_dev;
 }
 
 /*float update_correction(pidReg_t *reg)

@@ -43,18 +43,8 @@ float act_motor_speed_right_raw;
 float act_motor_speed_left_raw;
 float act_motor_speed_rear_raw;
 
-/*float mleft;
-float mright;
-float mrear;
-float SinMA1 = 0.5f;
-float SinMA2 = 0.5f;
-float SinMA3 = -1.0f;
-float CosinMA1 = -0.866025404f;
-float CosinMA2 = 0.866025404f;
-float CosinMA3 = 0.0f;*/
-
 uint16_t log_cnt = 0;
-int8_t eleft_counts_log[400]; //1200
+int8_t eleft_counts_log[400];
 int8_t eright_counts_log[400];
 int8_t erear_counts_log[400];
 int8_t speed_mleft_log[400];
@@ -154,7 +144,7 @@ void set_motor(float speed, float dir, float trn)
     float left;
     float right;
     float rear;
-
+    
     dir *= (3.14159265359f / 180.0f);
     
     left = speed * (cos(dir) * MOTOR_LEFT_COSIN - sin(dir) * MOTOR_LEFT_SIN);

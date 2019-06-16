@@ -25,6 +25,8 @@ typedef struct
         Bool have;
         Bool have_2;
     } ball;
+    
+    uint8_t camera_fps;
 
     struct
     {
@@ -53,7 +55,7 @@ typedef struct
         {
             Bool see;
             int16_t esc;
-            uint8_t diff;
+            int8_t diff;//uint
         };
     } line;
 

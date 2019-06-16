@@ -46,6 +46,7 @@ int main(void)
     while (1)
     {
         update_comm();
+        update_compass();
         update_heartbeat();
         check_battery();
         
