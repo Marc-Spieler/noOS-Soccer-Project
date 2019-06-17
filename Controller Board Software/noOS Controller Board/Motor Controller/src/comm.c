@@ -256,7 +256,8 @@ void process_new_sensor_values(void)
             }
         }
         
-        s.distance = stm.distance;
+        s.distance_1 = stm.distance_1;
+        s.distance_2 = stm.distance_2;
         memcpy(&s.battery, &stm.battery, sizeof(s.battery));
     }
 

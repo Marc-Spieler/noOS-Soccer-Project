@@ -63,7 +63,8 @@ typedef struct
         };
     } line;
     
-    Bool distance;
+    Bool distance_1;
+    Bool distance_2;
 
     struct
     {
