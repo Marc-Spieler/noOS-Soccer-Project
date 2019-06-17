@@ -48,8 +48,19 @@ void update_distance(void)
         tc_disable_interrupt(TC0, 1, TC_IER_LDRBS);
         distance = (double)time_of_flight * TICKS_TO_CM;
         tc_enable_interrupt(TC0, 1, TC_IER_LDRBS);
-
-        if(distance > 2000.0f || distance < 0.0f)
+        
+        if(distance >= 10 && distance <= 15)
+        {
+            stm.distance = true;
+            ioport_set_pin_level(LED_S2, 1);
+        }
+        else
+        {
+            stm.distance = false;
+            ioport_set_pin_level(LED_S2, 0);
+        }
+        
+        /*if(distance > 2000.0f || distance < 0.0f)
         {
             stm.distance = 255;
         }
@@ -60,7 +71,7 @@ void update_distance(void)
         else
         {
             stm.distance = (uint8_t)distance;
-        }
+        }*/
 
         prev_tof = time_of_flight;
     }

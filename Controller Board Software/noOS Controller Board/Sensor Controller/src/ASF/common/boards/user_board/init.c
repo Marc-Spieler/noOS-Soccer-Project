@@ -62,4 +62,17 @@ void board_init(void)
     ioport_set_pin_mode(DISTANCE_TRIG_PIN, IOPORT_MODE_MUX_B);
     ioport_disable_pin(DISTANCE_TRIG_PIN);
     ioport_set_pin_mode(DISTANCE_ECHO, IOPORT_MODE_MUX_A);
+    ioport_disable_pin(DISTANCE_ECHO);
+    
+    
+    /* Init PWM */
+    pmc_enable_periph_clk(ID_PWM);
+    pwm_channel_disable(PWM, DISTANCE_TRIG);
+    pwm_clock_t clock_setting =
+    {
+        .ul_clka = PWM_FREQUENCY * PERIOD_VALUE,
+        .ul_clkb = 0,
+        .ul_mck = sysclk_get_cpu_hz()
+    };
+    pwm_init(PWM, &clock_setting);
 }

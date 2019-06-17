@@ -78,7 +78,6 @@ static void menu_compass_calibration(event_t event1);
 static void menu_line(event_t event1);
 static void menu_line_calibration(event_t event1);
 static void menu_encoder(event_t event1);
-static void menu_distance(event_t event1);
 static void menu_settings(event_t event1);
 static void menu_bootup(event_t event1);
 static void menu_shutdown(event_t event1);
@@ -120,9 +119,6 @@ void menu(event_t event1)
             break;
         case MENU_ENCODER:
             menu_encoder(event1);
-            break;
-        case MENU_DISTANCE:
-            menu_distance(event1);
             break;
         case MENU_BOOTUP:
             menu_bootup(event1);
@@ -650,11 +646,11 @@ static void menu_match_magdeburg(event_t event1)
     ioport_set_pin_level(LED_M2, 0);
     //ioport_set_pin_level(LED_M3, 0);
     
-    if(!s.ball.see && s.line.see && s.line.esc < 45 && s.line.esc > -45)
+    if(!s.ball.see && s.distance)//((s.line.see && s.line.esc < 45 && s.line.esc > -45) || s.distance))
     {
         arrived_rear = true;
     }
-    else if(s.ball.see)
+    else// if(s.ball.see)
     {
         arrived_rear = false;
     }        
@@ -689,23 +685,19 @@ static void menu_match_magdeburg(event_t event1)
         }
         else
         {
-            robot_speed = 75.0f;
-
             if(!arrived_rear)
             {
-                if(s.goal.see)
+                robot_speed = 75.0f;
+                
+                if(s.goal.see && (s.goal.dir < -5 || s.goal.dir > 5))
                 {
                     if(s.goal.dir < -5)
                     {
                         robot_dir = -155.0f;
                     }
-                    else if(s.goal.dir > 5)
-                    {
-                        robot_dir = 155.0f;
-                    }
                     else
                     {
-                        robot_dir = 180.0f;
+                        robot_dir = 155.0f;
                     }
                 }
                 else
@@ -730,6 +722,8 @@ static void menu_match_magdeburg(event_t event1)
                     robot_speed = 0.0f;
                 }
             }
+            
+            robot_trn = s.compass;
         }
         
         //turn_target = TURN_COMPASS;
@@ -1014,7 +1008,7 @@ static void menu_sensors(event_t event1)
                     print_menu = true;
                     break;
                 case 4:
-                    act_menu = MENU_DISTANCE;
+                    act_menu = MENU_ENCODER;
                     print_menu = true;
                     break;
                 default:
@@ -1547,40 +1541,6 @@ static void menu_encoder(event_t event1)
             break;
         default:
             updated_ref = false;
-            print_menu = false;
-            break;
-    }
-}
-
-static void menu_distance(event_t event1)
-{
-    static uint8_t prev_distance = 0;
-    
-    if(print_menu)
-    {
-        lcd_clear();
-    }
-    
-    if (prev_distance != s.distance || print_menu)
-    {
-        if(s.distance == 255)
-        {
-            lcd_print_s(2, 0, "error        ");
-        }
-        else
-        {
-            sprintf(sprintf_buf, "Distance: %3d", s.distance);
-            lcd_print_s(2, 0, sprintf_buf);
-        }
-    }
-    
-    switch(event1)
-    {
-        case EVENT_BUTTON_RETURN_P:
-            act_menu = MENU_SENSORS;
-            print_menu = true;
-            break;
-        default:
             print_menu = false;
             break;
     }

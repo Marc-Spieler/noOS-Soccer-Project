@@ -59,7 +59,7 @@ typedef struct
         };
     } line;
 
-    uint8_t distance;
+    Bool distance;
 
     struct
     {
@@ -127,7 +127,7 @@ typedef struct
         };
     } line;
     
-    uint8_t distance;
+    Bool distance;
 
     struct
     {
