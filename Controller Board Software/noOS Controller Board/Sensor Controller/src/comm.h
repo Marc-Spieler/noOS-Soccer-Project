@@ -63,9 +63,21 @@ typedef struct
         };
     } line;
     
-    Bool distance_1;
-    Bool distance_2;
-
+    struct
+    {
+        struct
+        {
+            Bool arrived;
+            Bool correction_dir;
+        } one;
+        
+        struct
+        {
+            Bool arrived;
+            Bool correction_dir;
+        } two;
+    } distance;
+    
     struct
     {
         uint16_t voltage     :8;

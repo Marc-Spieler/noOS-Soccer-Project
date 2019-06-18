@@ -49,25 +49,43 @@ void update_distance(void)
         distance = (double)time_of_flight * TICKS_TO_CM;
         tc_enable_interrupt(TC0, 1, TC_IER_LDRBS);
         
-        if(distance >= 20 && distance <= 25)
+        if(distance >= 31 && distance <= 41)
         {
-            stm.distance_1 = true;
+            stm.distance.one.arrived = true;
             ioport_set_pin_level(LED_S1, 1);
         }
         else
         {
-            stm.distance_1 = false;
+            if(distance > 41)
+            {
+                stm.distance.one.correction_dir = false;
+            }
+            else
+            {
+                stm.distance.one.correction_dir = true;
+            }
+            
+            stm.distance.one.arrived = false;
             ioport_set_pin_level(LED_S1, 0);
         }
 
         if(distance >= 10 && distance <= 15)
         {
-            stm.distance_2 = true;
+            stm.distance.two.arrived = true;
             ioport_set_pin_level(LED_S2, 1);
         }
         else
         {
-            stm.distance_2 = false;
+            if(distance > 15)
+            {
+                stm.distance.two.correction_dir = false;
+            }
+            else
+            {
+                stm.distance.two.correction_dir = true;
+            }
+            
+            stm.distance.two.arrived = false;
             ioport_set_pin_level(LED_S2, 0);
         }
         

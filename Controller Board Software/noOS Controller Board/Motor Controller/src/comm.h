@@ -59,8 +59,20 @@ typedef struct
         };
     } line;
 
-    Bool distance_1;
-    Bool distance_2;
+    struct
+    {
+        struct
+        {
+            Bool arrived;
+            Bool correction_dir;
+        } one;
+        
+        struct
+        {
+            Bool arrived;
+            Bool correction_dir;
+        } two;
+    } distance;
 
     struct
     {
@@ -128,8 +140,20 @@ typedef struct
         };
     } line;
     
-    Bool distance_1;
-    Bool distance_2;
+    struct
+    {
+        struct
+        {
+            Bool arrived;
+            Bool correction_dir;
+        } one;
+        
+        struct
+        {
+            Bool arrived;
+            Bool correction_dir;
+        } two;
+    } distance;
 
     struct
     {

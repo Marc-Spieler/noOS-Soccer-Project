@@ -427,7 +427,7 @@ static void menu_match_hannover(event_t event1)
     ioport_set_pin_level(LED_M2, 0);
     //ioport_set_pin_level(LED_M3, 0);
     
-    if(!s.ball.see && ((s.distance_1 && robot_id == 1) || (s.distance_2 && robot_id == 2)))//((s.line.see && s.line.esc < 45 && s.line.esc > -45) || s.distance))
+    if(!s.ball.see && ((s.distance.one.arrived && robot_id == 1) || (s.distance.two.arrived && robot_id == 2)))//((s.line.see && s.line.esc < 45 && s.line.esc > -45) || s.distance))
     {
         arrived_rear = true;
     }
@@ -456,7 +456,7 @@ static void menu_match_hannover(event_t event1)
     {
         if(s.ball.see)
         {
-            robot_dir = (float)s.ball.dir * 2.1f;
+            robot_dir = (float)s.ball.dir * 2.2f;
             robot_speed = 75.0f;
         }
         else
@@ -465,26 +465,47 @@ static void menu_match_hannover(event_t event1)
             {
                 robot_speed = 75.0f;
                 
-                if(s.goal.see && (s.goal.dir < -5 || s.goal.dir > 5))
+                if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)\
+                || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
                 {
-                    if(s.goal.dir < -5)
+                    if(s.goal.see && (s.goal.dir < -10 || s.goal.dir > 10))
                     {
-                        robot_dir = -155.0f;
+                        if(s.goal.dir < -10)
+                        {
+                            robot_dir = -155.0f;
+                        }
+                        else
+                        {
+                            robot_dir = 155.0f;
+                        }
                     }
                     else
                     {
-                        robot_dir = 155.0f;
+                        robot_dir = 180.0f;
                     }
-                }
-                else
-                {
-                    robot_dir = 180.0f;
                 }
             }
             else
             {
-                robot_speed = 50.0f;
+                /*if(abs(s.goal.dir) >= 3)
+                {
+                    robot_speed = abs(s.goal.dir) * 2;
                     
+                    if(s.goal.dir >= 0)
+                    {
+                        robot_dir = 90.0f;
+                    }
+                    else
+                    {
+                        robot_dir = -90.0f;
+                    }
+                }
+                else
+                {
+                    
+                }*/
+                robot_speed = 30.0f;
+                
                 if(s.goal.dir < -5)
                 {
                     robot_dir = -90.0f;

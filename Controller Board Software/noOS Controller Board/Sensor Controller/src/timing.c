@@ -57,13 +57,13 @@ void update_heartbeat(void)
     if (mts.ibit.heartbeat)
     {
         set_led(LED_ONBOARD, 1);
-        set_led(LED_S1, 1);
+        //set_led(LED_S1, 1);
         stm.ibit.heartbeat = 1;
     }
     else
     {
         set_led(LED_ONBOARD, 0);
-        set_led(LED_S1, 0);
+        //set_led(LED_S1, 0);
         stm.ibit.heartbeat = 0;
     }
 }    
