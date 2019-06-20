@@ -32,9 +32,9 @@ int main(void)
     
     motor_init();
     //init_battery_warning();
-
-    compass_init();
+    
     lcd_init();
+    compass_init();
 
     sd_mmc_init();
     sd_init();

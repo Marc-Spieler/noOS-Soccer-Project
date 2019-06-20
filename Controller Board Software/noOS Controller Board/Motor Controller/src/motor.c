@@ -120,6 +120,18 @@ void motor_init(void)
 
 void enable_motor(void)
 {
+    pid_motor_left.intg = 0.0f;
+    pid_motor_left.prevErr = 0.0f;
+    pid_motor_left.satErr = 0.0f;
+    
+    pid_motor_right.intg = 0.0f;
+    pid_motor_right.prevErr = 0.0f;
+    pid_motor_right.satErr = 0.0f;
+    
+    pid_motor_rear.intg = 0.0f;
+    pid_motor_rear.prevErr = 0.0f;
+    pid_motor_rear.satErr = 0.0f;
+    
     pwm_channel_enable(PWM, MOTOR_LEFT);
     pwm_channel_enable(PWM, MOTOR_RIGHT);
     pwm_channel_enable(PWM, MOTOR_REAR);

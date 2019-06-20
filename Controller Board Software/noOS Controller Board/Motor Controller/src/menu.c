@@ -208,12 +208,15 @@ static void menu_test(event_t event1)
     
     if(print_menu)
     {
-        pid_turn.kp = 1.2f;
+        pid_turn.kp = 0.0f;
         pid_turn.ki = 0.0f;
         pid_turn.kc = 0.0f;
-        pid_turn.kd = 0.8f;
+        pid_turn.kd = 0.0f;
         pid_turn.outMin = -150.0f;
         pid_turn.outMax = 150.0f;
+        pid_turn.intg = 0.0f;
+        pid_turn.prevErr = 0.0f;
+        pid_turn.satErr = 0.0f;
         
         pid_updated = true;
         
@@ -232,7 +235,7 @@ static void menu_test(event_t event1)
         enable_motor();
     }
     
-    if ((getTicks() - ticks_test) > 50)
+    if ((getTicks() - ticks_test) > 100)
     {
         ticks_test = getTicks();
         
@@ -242,11 +245,11 @@ static void menu_test(event_t event1)
         
         if(turn_target == TURN_COMPASS)
         {
-            robot_trn = pidReg(&pid_turn, 0, -s.compass);
+            robot_trn = pidReg_compass(&pid_turn, 0, -s.compass);
         }
         else if(turn_target == TURN_GOAL)
         {
-            robot_trn = pidReg(&pid_turn, 0, s.goal.dir);
+            robot_trn = pidReg_compass(&pid_turn, 0, s.goal.dir);
         }
         
         set_motor(0, 0, robot_trn);
@@ -399,6 +402,10 @@ static void menu_test(event_t event1)
 
 static void menu_match_hannover(event_t event1)
 {
+    static pidReg_t pid_compass;
+    static float pid_compass_out = 0.0f;
+    static uint8_t turn_target = TURN_NONE;
+    
     static Bool arrived_rear = false;
     float robot_speed = 0.0f;
     float robot_dir = 0.0f;
@@ -406,6 +413,16 @@ static void menu_match_hannover(event_t event1)
     
     if(print_menu)
     {
+        pid_compass.kp = 0.7f;
+        pid_compass.ki = 0.0f;
+        pid_compass.kc = 0.0f;
+        pid_compass.kd = 0.6f;
+        pid_compass.outMin = -150.0f;
+        pid_compass.outMax = 150.0f;
+        pid_compass.intg = 0.0f;
+        pid_compass.prevErr = 0.0f;
+        pid_compass.satErr = 0.0f;
+        
         lcd_set_backlight(LCD_LIGHT_OFF);
         lcd_clear(); //required to turn backlight on/off
         
@@ -423,6 +440,12 @@ static void menu_match_hannover(event_t event1)
     
     estimate_rel_deviation();
     
+    if(update_pid_compass)
+    {
+        update_pid_compass = false;
+        pid_compass_out = pidReg_compass(&pid_compass, 0, -s.compass);
+    }
+    
     ioport_set_pin_level(LED_M1, 0);
     ioport_set_pin_level(LED_M2, 0);
     //ioport_set_pin_level(LED_M3, 0);
@@ -436,7 +459,8 @@ static void menu_match_hannover(event_t event1)
         arrived_rear = false;
     }        
     
-    robot_trn = s.compass;
+    turn_target = TURN_COMPASS;
+    //robot_trn = s.compass;
 
     if(s.ball.have || s.ball.have_2)
     {
@@ -449,7 +473,8 @@ static void menu_match_hannover(event_t event1)
                 robot_speed = 50.0f;
             }
             
-            robot_trn = -s.goal.dir;
+            turn_target = TURN_GOAL;
+            //robot_trn = -s.goal.dir;
         }
     }
     else
@@ -558,12 +583,12 @@ static void menu_match_hannover(event_t event1)
             
             if(abs(esc_dir_diff) <= 90)
             {
-                if(robot_dir < esc_min)
+                if(abs(robot_dir) < abs(esc_min))
                 {
                     robot_dir = esc_min;
                     ioport_set_pin_level(LED_M2, 1);
                 }
-                if(robot_dir > esc_max)
+                if(abs(robot_dir) > abs(esc_max))
                 {
                     robot_dir = esc_max;
                     ioport_set_pin_level(LED_M1, 1);
@@ -571,7 +596,16 @@ static void menu_match_hannover(event_t event1)
             }
             else
             {
-                robot_dir = robot_dir < 0 ? esc_min : esc_max;
+                //robot_dir = robot_dir < 0 ? esc_min : esc_max;
+                
+                if(abs(abs(robot_dir) - abs(esc_min)) > abs(abs(robot_dir) - abs(esc_max)))
+                {
+                    robot_dir = esc_max;
+                }
+                else
+                {
+                    robot_dir = esc_min;
+                }
             }
         }
         else
@@ -579,6 +613,20 @@ static void menu_match_hannover(event_t event1)
             robot_dir = (float)(s.line.esc);
             robot_speed = 75.0f;
         }
+    }
+    
+    if(turn_target == TURN_COMPASS)
+    {                    
+        robot_trn = pid_compass_out;
+    }
+    else if(turn_target == TURN_GOAL)
+    {
+        robot_trn = -s.goal.dir;
+        //pid_compass_out = pidReg_compass(&pid_compass, 0, s.goal.dir);
+    }
+    else
+    {
+        robot_trn = 0.0f;
     }
     
     set_motor(robot_speed, robot_dir, robot_trn);
@@ -834,6 +882,7 @@ static void menu_camera(event_t event1)
 static void menu_compass(event_t event1)
 {
     static float prev_direction = 0.1f;
+    static uint16_t prev_raw_direction = 1;
     
     if(print_menu)
     {
@@ -843,6 +892,13 @@ static void menu_compass(event_t event1)
     }
     
     estimate_rel_deviation();
+    
+    if(direction != prev_raw_direction)
+    {
+        prev_raw_direction = direction;
+        sprintf(sprintf_buf, "  Direction: %4.1f  ", ((float)direction / 10));
+        lcd_print_s(1, 0, sprintf_buf);
+    }
     
     if((int16_t)s.compass != (int16_t)prev_direction)
     {

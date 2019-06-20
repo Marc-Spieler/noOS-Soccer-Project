@@ -10,7 +10,8 @@
 #include "comm.h"
 
 uint16_t direction;
-int16_t opponent_goal;
+uint16_t opponent_goal;
+Bool update_pid_compass = false;
 
 static uint8_t compassIsBusy = false;
 
@@ -27,6 +28,24 @@ void compass_init(void)
 
     twi_set_compass_tx_callback(compass_callback);
     twi_set_compass_rx_callback(compass_callback);
+    
+    while(lcd_is_busy());
+
+    twi_packet_t *tx_packet = twi_get_tx_packet();
+    
+    tx_packet->chip = 0x60;
+    tx_packet->addr[0] = 0x0c;
+    tx_packet->addr_length = 1;
+    
+    tx_packet->buffer[0] = 0x55;
+    tx_packet->buffer[1] = 0x5a;
+    tx_packet->buffer[2] = 0xa5;
+    tx_packet->buffer[3] = 0x12;
+    tx_packet->length = 4;
+    
+    set_compass_is_busy();
+    twi_pdc_master_write(TWI0, tx_packet);
+    while(compass_is_busy());
 }
 
 void update_compass(void)
@@ -39,7 +58,7 @@ void update_compass(void)
         {
             return;
         }
-
+        
         ul_ticks_compass = getTicks();
         
         compassIsBusy = true;
@@ -48,6 +67,8 @@ void update_compass(void)
             while(compassIsBusy);
         }
         direction = (rx_packet->buffer[0] << 8) | rx_packet->buffer[1];
+        
+        update_pid_compass = true;
     }
 }
 
@@ -63,6 +84,7 @@ uint8_t compass_is_busy(void)
 
 void set_opponent_goal(void)
 {
+    update_compass();
     opponent_goal = direction;
 }
 
@@ -75,10 +97,10 @@ void set_inverted_opponent_goal(void)
 void estimate_rel_deviation(void)
 {
     update_compass();
-    float rel_dev = (float)(direction - opponent_goal) / 10;
+    float rel_dev = (float)(direction - opponent_goal) / 10.0f;
 
-    while(rel_dev >= 180.0f) rel_dev -= 360.0f;
-    while(rel_dev <= -180.0f) rel_dev += 360.0f;
+    /*while(rel_dev >= 180.0f) rel_dev -= 360.0f;
+    while(rel_dev <= -180.0f) rel_dev += 360.0f;*/
     
     s.compass = rel_dev;
 }
