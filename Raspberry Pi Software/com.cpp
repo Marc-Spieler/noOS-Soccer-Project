@@ -54,7 +54,7 @@ void *comTask(void *arguments)
 	
 	int comBallReadyLocal = 0;
 	int comGoalReadyLocal = 0;
-        
+ 
 
 	// setup SPI
 	wiringPiSPISetup( 0, 1000000 );
@@ -68,11 +68,12 @@ void *comTask(void *arguments)
 	struct tm *dateTime;
 	char filenameBuffer[80];
 
-	time( &rawtime );
+	// wait until others threads are initialized
+	while((frameBallReady==1) || (frameGoalReady==1));
 
+	time( &rawtime );
 	dateTime = localtime( &rawtime );
 	strftime( filenameBuffer, 80,"cam_%H_%M.avi", dateTime );
-	
 	printf("%s",filenameBuffer);
 	vidOut.open( filenameBuffer, CV_FOURCC('H', '2', '6', '4'), 30, cv::Size(WIDTH, HEIGHT), true );
 	
@@ -235,7 +236,9 @@ void *comTask(void *arguments)
 			comGoalReady=0;	//reset signal for com thread to begin its task	
 			//pthread_mutex_unlock(&ready_mutex);	
 		}
-			
-		usleep(10*1000); 
+		else
+		{
+			usleep(1000);
+		} 
 	}
 }

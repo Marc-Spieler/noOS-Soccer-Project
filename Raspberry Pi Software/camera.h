@@ -26,6 +26,7 @@ extern int frameGoalReady;
 extern int TopBorder;
 extern cv::Mat hsv;
 extern cv::Mat frame;
+extern cv::Mat frameTmp;
 extern cv::Mat frameOut;
 extern cv::Point objBall;
 extern cv::Point objGoal;

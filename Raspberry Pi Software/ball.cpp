@@ -13,6 +13,8 @@
 static cv::Mat filtered;
 static cv::Mat flatted;
 
+cv::VideoWriter vidOutBall;
+
 // Filter Values
 static int H_MIN = 0, H_MAX = 255;
 static int S_MIN = 0, S_MAX = 255;
@@ -20,6 +22,8 @@ static int V_MIN = 0, V_MAX = 255;
 
 void *ballTask(void *arguments)
 {		
+	
+	
 	int index = *((int *)arguments);
 	int frameBallReadyLocal = 0;
 	// get values from calibrateBall.txt
@@ -74,6 +78,22 @@ void *ballTask(void *arguments)
 				break;
 		}
 	}
+	file.close();
+	
+	time_t rawtime;
+	struct tm *dateTime;
+	char filenameBuffer[80];
+
+	// wait until others threads are initialized
+	while(frameGoalReady==1);
+
+	time( &rawtime );
+	dateTime = localtime( &rawtime );
+	strftime( filenameBuffer, 80,"BWB_%H_%M.avi", dateTime );
+	printf("%s",filenameBuffer);
+	vidOutBall.open( filenameBuffer, CV_FOURCC('H', '2', '6', '4'), 30, cv::Size(WIDTH, HEIGHT), true );
+	
+    frameBallReady = 0;
 
 	while (1)
 	{  
@@ -162,7 +182,7 @@ void *ballTask(void *arguments)
 			float prop2 = (float) bigArea.getHeight() / (float) bigArea.getWidth();
       
 			// Ball found
-			if( (bigArea.getPixelCount() > 15 && prop1 < 5.0 && prop2 < 2.5) ||
+			if( (bigArea.getPixelCount() > 10 && prop1 < 5.0 && prop2 < 2.5) ||
 			   ( bigArea.getPixelCount() > 4 && infoBall.ball1.horizontal < (7) )||
 			    (bigArea.getPixelCount() > 4 && infoBall.ball1.horizontal > (57) ))  // check proportions of the area //or out of "proportion border": bounding box around ball not possible 
 			{
@@ -344,13 +364,25 @@ void *ballTask(void *arguments)
 			{
 				infoBall.status.have1 = 0;
 			}
-			
-			
+
+			// wait maximum 100ms until com threads has finished loop
+			for( int i = 0; i < 100; i++ )
+			{
+				usleep(1000);
+				if( comBallReady == 0 )
+				{
+					break;
+				}
+			}
+
+			frameOut = frameTmp.clone();
+			vidOutBall.write( flatted );
 			//pthread_mutex_lock(&ready_mutex);	
 			frameBallReady = 0; //signal for camera thread to begin its task	
 			comBallReady = 1; //signal for com thread to begin its task
 			//pthread_mutex_unlock(&ready_mutex);
 			//printf("BallPos %d %d\r\n", infoBall.ball1.horizontal, infoBall.ball1.vertical);
+			//
 		}
 		else
 		{

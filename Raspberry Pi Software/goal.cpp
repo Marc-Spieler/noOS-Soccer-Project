@@ -38,9 +38,9 @@ void *goalTask(void *arguments){
 		  exit( 0 );
 		}
 			
-		}
-		else
-		{
+	}
+	else
+	{
 
 		printf( "[*] Open calibrationGoal_blue file\n" );
 		fileIn.open( "/home/pi/soccer/calibrateGoal_blue.txt" );
@@ -94,6 +94,8 @@ void *goalTask(void *arguments){
 	}
 	fileIn.close();
 	
+    frameGoalReady = 0;
+
 	while (1)
 	{  
         //pthread_mutex_lock(&ready_mutex);
@@ -218,16 +220,20 @@ void *goalTask(void *arguments){
 				infoGoal.status.see = 0;
 			}	
    
-      
+			// wait maximum 100ms until com threads has finished loop
+			for( int i = 0; i < 100; i++ )
+			{
+				usleep(1000);
+				if( comGoalReady == 0 )
+				{
+					break;
+				}
+			}
 
 		    //pthread_mutex_lock(&ready_mutex);	
 			frameGoalReady = 0; //signal for camera thread to begin its task
 			comGoalReady = 1; //signal for com thread to begin its task
-			//pthread_mutex_unlock(&ready_mutex);	
-			
-			
-
-
+			//pthread_mutex_unlock(&ready_mutex);
 			//printf("GoalPos %d %d\r\n", infoGoal.goal1.horizontal, infoGoal.goal1.vertical);
 		}
 		else

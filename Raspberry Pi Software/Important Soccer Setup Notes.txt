@@ -1,0 +1,13 @@
+Autostart 'start.sh' script:
+
+Add file 'autostartStart.desktop' to folder '/home/pi/.config/autostart'.
+
+Add following content to file 'autostartStart.desktop':
+[Desktop Entry]
+Name=autostartStart
+Comment=autostart start.sh
+Type=Application
+Exec=/home/pi/soccer/start.sh
+Terminal=false
+
+Make script 'start.sh' executable with 'sudo chmod +x start.sh'

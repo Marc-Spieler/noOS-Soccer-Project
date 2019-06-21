@@ -10,6 +10,7 @@
 // Images
 static raspicam::RaspiCam_Cv cam;
 cv::Mat frame;
+cv::Mat frameTmp;
 cv::Mat frameOut;
 cv::Mat hsv;
 
@@ -18,8 +19,8 @@ cv::Point objGoal;
 
 
 int frameCount = 0;
-int frameBallReady = 0;
-int frameGoalReady = 0;
+int frameBallReady = 1;	// will be cleared after ball init
+int frameGoalReady = 1;	// will be cleared after goal init
 
 //pthread_mutex_t ready_mutex = PTHREAD_MUTEX_INITIALIZER;	
 
@@ -51,9 +52,9 @@ void *cameraTask(void *arguments)
   usleep( 3 * 1000000 );
   printf( "[*] Ready for capturing\r\n" );
 
-
-  frameBallReady = 0;
-  frameGoalReady = 0;
+  // moved into corresponding files
+  //frameBallReady = 0;
+  //frameGoalReady = 0;
 
   while (1)
   {
@@ -80,12 +81,12 @@ void *cameraTask(void *arguments)
       // Convert image from BGR to HSV
       cv::cvtColor( frame, hsv, cv::COLOR_RGB2HSV );
       
+      frameTmp = frame.clone();
       
       //pthread_mutex_lock(&ready_mutex);
       frameBallReady = 1; //signal for ball thread to begin its task
       frameGoalReady = 1; //signal for goal thread to begin its task
       //pthread_mutex_unlock(&ready_mutex);
-      frameOut = frame.clone();
       
       
 #ifdef measureFramerate
@@ -123,7 +124,7 @@ void *cameraTask(void *arguments)
     }  // if ((frameBallReady==0)&&(frameGoalReady==0))
     else
     {
-      usleep(10000);
+      usleep(1000);
     }
     
   
