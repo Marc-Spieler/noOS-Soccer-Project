@@ -459,7 +459,16 @@ static void menu_match_hannover(event_t event1)
         arrived_rear = false;
     }        
     
-    turn_target = TURN_COMPASS;
+    if(s.goal.see && s.ball.see)
+    {
+        turn_target = TURN_GOAL;
+    }
+    else
+    {
+        turn_target = TURN_COMPASS;
+    }
+    
+    //turn_target = TURN_COMPASS;
     //robot_trn = s.compass;
 
     if(s.ball.have || s.ball.have_2)
@@ -473,7 +482,7 @@ static void menu_match_hannover(event_t event1)
                 robot_speed = 50.0f;
             }
             
-            turn_target = TURN_GOAL;
+            //turn_target = TURN_GOAL;
             //robot_trn = -s.goal.dir;
         }
     }
@@ -481,14 +490,15 @@ static void menu_match_hannover(event_t event1)
     {
         if(s.ball.see)
         {
-            robot_dir = (float)s.ball.dir * 2.2f;
-            robot_speed = 75.0f;
+            ioport_set_pin_level(LED_M2, 1);
+            robot_dir = (float)s.ball.dir * 1.4f;//2.2
+            robot_speed = 100.0f;//75
         }
         else
         {
             if(!arrived_rear)
             {
-                robot_speed = 75.0f;
+                robot_speed = 125.0f;
                 
                 if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)\
                 || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
@@ -512,7 +522,7 @@ static void menu_match_hannover(event_t event1)
             }
             else
             {
-                /*if(abs(s.goal.dir) >= 3)
+                if(abs(s.goal.dir) >= 3)
                 {
                     robot_speed = abs(s.goal.dir) * 2;
                     
@@ -528,7 +538,7 @@ static void menu_match_hannover(event_t event1)
                 else
                 {
                     
-                }*/
+                }
                 robot_speed = 30.0f;
                 
                 if(s.goal.dir < -5)
@@ -586,12 +596,10 @@ static void menu_match_hannover(event_t event1)
                 if(abs(robot_dir) < abs(esc_min))
                 {
                     robot_dir = esc_min;
-                    ioport_set_pin_level(LED_M2, 1);
                 }
                 if(abs(robot_dir) > abs(esc_max))
                 {
                     robot_dir = esc_max;
-                    ioport_set_pin_level(LED_M1, 1);
                 }
             }
             else

@@ -99,8 +99,8 @@ void estimate_rel_deviation(void)
     update_compass();
     float rel_dev = (float)(direction - opponent_goal) / 10.0f;
 
-    /*while(rel_dev >= 180.0f) rel_dev -= 360.0f;
-    while(rel_dev <= -180.0f) rel_dev += 360.0f;*/
+    while(rel_dev >= 180.0f) rel_dev -= 360.0f;
+    while(rel_dev <= -180.0f) rel_dev += 360.0f;
     
     s.compass = rel_dev;
 }
