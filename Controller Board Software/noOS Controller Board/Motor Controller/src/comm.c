@@ -21,6 +21,8 @@ static Bool prepare_new_values = false;
 static Bool new_sc_data_arrived = false;
 static Bool new_pi_data_arrived = false;
 
+Bool update_pid_goal = false;
+
 void spi_init(void)
 {
     configure_dmac();
@@ -264,6 +266,8 @@ void process_new_sensor_values(void)
     {
         new_pi_data_arrived = false;
         last_pi_update = getTicks();
+        
+        update_pid_goal = true;
 
         /*ball_see_tmp = (rtm.ball.see) ? 0.1f : 0.0f;
         ball_have_tmp = (rtm.ball.have) ? 0.1f : 0.0f;

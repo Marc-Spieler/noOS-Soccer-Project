@@ -196,6 +196,8 @@ extern raspberrypi_to_motor_t rtm;
 extern uint8_t sens_buf[sizeof(stm)];
 extern uint8_t rpi_buf[sizeof(rtm)];
 
+extern Bool update_pid_goal;
+
 void spi_init(void);
 void spi_master_initialize(void);
 void spi_slave_initialize(void);

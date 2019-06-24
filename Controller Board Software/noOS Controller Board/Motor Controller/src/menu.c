@@ -404,6 +404,8 @@ static void menu_match_hannover(event_t event1)
 {
     static pidReg_t pid_compass;
     static float pid_compass_out = 0.0f;
+    static pidReg_t pid_goal;
+    static float pid_goal_out = 0.0f;
     static uint8_t turn_target = TURN_NONE;
     
     static Bool arrived_rear = false;
@@ -422,6 +424,8 @@ static void menu_match_hannover(event_t event1)
         pid_compass.intg = 0.0f;
         pid_compass.prevErr = 0.0f;
         pid_compass.satErr = 0.0f;
+        
+        pid_goal = pid_compass;
         
         lcd_set_backlight(LCD_LIGHT_OFF);
         lcd_clear(); //required to turn backlight on/off
@@ -443,7 +447,13 @@ static void menu_match_hannover(event_t event1)
     if(update_pid_compass)
     {
         update_pid_compass = false;
-        pid_compass_out = pidReg_compass(&pid_compass, 0, -s.compass);
+        pid_compass_out = pidReg_compass(&pid_compass, 0.0f, -s.compass);
+    }
+    
+    if(update_pid_goal)
+    {
+        update_pid_goal = false;
+        pid_goal_out = pidReg_compass(&pid_goal, 0.0f, s.goal.dir);
     }
     
     ioport_set_pin_level(LED_M1, 0);
@@ -459,17 +469,7 @@ static void menu_match_hannover(event_t event1)
         arrived_rear = false;
     }        
     
-    if(s.goal.see && s.ball.see)
-    {
-        turn_target = TURN_GOAL;
-    }
-    else
-    {
-        turn_target = TURN_COMPASS;
-    }
-    
-    //turn_target = TURN_COMPASS;
-    //robot_trn = s.compass;
+    turn_target = (s.goal.see && s.ball.see) ? TURN_GOAL : TURN_COMPASS;
 
     if(s.ball.have || s.ball.have_2)
     {
@@ -481,9 +481,6 @@ static void menu_match_hannover(event_t event1)
             {
                 robot_speed = 50.0f;
             }
-            
-            //turn_target = TURN_GOAL;
-            //robot_trn = -s.goal.dir;
         }
     }
     else
@@ -498,10 +495,10 @@ static void menu_match_hannover(event_t event1)
         {
             if(!arrived_rear)
             {
-                robot_speed = 125.0f;
+                robot_speed = 100.0f;
                 
-                if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)\
-                || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
+                if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)
+                  || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
                 {
                     if(s.goal.see && (s.goal.dir < -10 || s.goal.dir > 10))
                     {
@@ -519,9 +516,14 @@ static void menu_match_hannover(event_t event1)
                         robot_dir = 180.0f;
                     }
                 }
+                // no else
+                // variables have already the desired value
+                // robot_speed = 100.0f;
+                // robot_dir = 0.0f;
             }
             else
             {
+#if 0
                 if(abs(s.goal.dir) >= 3)
                 {
                     robot_speed = abs(s.goal.dir) * 2;
@@ -535,10 +537,11 @@ static void menu_match_hannover(event_t event1)
                         robot_dir = -90.0f;
                     }
                 }
-                else
-                {
-                    
-                }
+                // no else
+                // variables have already the desired value
+                // robot_speed = 0.0f;
+                // robot_dir = don't care;
+#else
                 robot_speed = 30.0f;
                 
                 if(s.goal.dir < -5)
@@ -553,6 +556,7 @@ static void menu_match_hannover(event_t event1)
                 {
                     robot_speed = 0.0f;
                 }
+#endif
             }
         }
     }
@@ -622,20 +626,9 @@ static void menu_match_hannover(event_t event1)
             robot_speed = 75.0f;
         }
     }
+    // no else
     
-    if(turn_target == TURN_COMPASS)
-    {                    
-        robot_trn = pid_compass_out;
-    }
-    else if(turn_target == TURN_GOAL)
-    {
-        robot_trn = -s.goal.dir;
-        //pid_compass_out = pidReg_compass(&pid_compass, 0, s.goal.dir);
-    }
-    else
-    {
-        robot_trn = 0.0f;
-    }
+    robot_trn = (turn_target == TURN_COMPASS) ? pid_compass_out : pid_goal_out;
     
     set_motor(robot_speed, robot_dir, robot_trn);
 
