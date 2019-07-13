@@ -1399,7 +1399,7 @@ static void menu_bootup(event_t event1)
         }
     }
     
-    if(ioport_get_pin_level(RPI2) || event1 == EVENT_BUTTON_MID_P)
+    if(event1 == EVENT_BUTTON_MID_P)//ioport_get_pin_level(RPI2) || 
     {
         act_menu = MENU_MAIN;
         print_menu = true;
@@ -1431,7 +1431,7 @@ static void menu_shutdown(event_t event1)
         
         ioport_set_pin_level(RPI1, 0);
 
-        while (ioport_get_pin_level(RPI2) == 1)
+        while (1)//ioport_get_pin_level(RPI2) == 1
         {
             update_comm();
             check_battery();

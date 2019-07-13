@@ -57,8 +57,8 @@
 
 /* Raspberry Pi GPIO pin definition */
 #define RPI1                                    (PIO_PA1_IDX)
-#define RPI2                                    (PIO_PA8_IDX)
-#define RPI3                                    (PIO_PA9_IDX)
+//#define RPI2                                    (PIO_PA8_IDX)
+//#define RPI3                                    (PIO_PA9_IDX)
 #define RPI4                                    (PIO_PA7_IDX)
 #define RPI5                                    (PIO_PA5_IDX)
 #define RPI6                                    (PIO_PA0_IDX)
@@ -102,6 +102,10 @@
 #define ENC_REAR_E						        (PIO_PC13_IDX)
 #define ENC_REAR_F						        (PIO_PC14_IDX)
 #define ENC_REAR_G						        (PIO_PC15_IDX)
+
+/* UART pin definition */
+#define UART_RX                                 (PIO_PA8_IDX)
+#define UART_TX                                 (PIO_PA9_IDX)
 
 /* I2C0 pin definition */
 #define I2C0_DATA                               (PIO_PA17_IDX)

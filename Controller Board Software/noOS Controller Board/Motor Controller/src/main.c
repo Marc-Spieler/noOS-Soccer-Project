@@ -16,6 +16,7 @@
 #include "iniparser.h"
 #include "support.h"
 #include "math.h"
+#include "bt.h"
 
 uint8_t trn = 5;
 
@@ -30,7 +31,7 @@ int main(void)
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
-    motor_init();
+    /*motor_init();
     //init_battery_warning();
 
     compass_init();
@@ -41,11 +42,45 @@ int main(void)
     //write_time_test_2();
     //create_default_ini_file();
     parse_ini_file();
-    spi_init();
+    spi_init();*/
+
+    bt_init();
+
+    while(1)
+    {
+        while(!uart_is_tx_ready(UART));
+        while(!uart_is_tx_empty(UART));
+        uart_write(UART, (uint8_t)'A');
+        while(!uart_is_tx_ready(UART));
+        while(!uart_is_tx_empty(UART));
+        uart_write(UART, (uint8_t)'T');
+        while(!uart_is_tx_ready(UART));
+        while(!uart_is_tx_empty(UART));
+        uart_write(UART, (uint8_t)'+');
+        while(!uart_is_tx_ready(UART));
+        while(!uart_is_tx_empty(UART));
+        uart_write(UART, (uint8_t)'B');
+        while(!uart_is_tx_ready(UART));
+        while(!uart_is_tx_empty(UART));
+        uart_write(UART, (uint8_t)'T');
+        while(!uart_is_tx_ready(UART));
+        while(!uart_is_tx_empty(UART));
+        uart_write(UART, (uint8_t)'P');
+        while(!uart_is_tx_ready(UART));
+        while(!uart_is_tx_empty(UART));
+        uart_write(UART, (uint8_t)'\r');
+        while(!uart_is_tx_ready(UART));
+        while(!uart_is_tx_empty(UART));
+        uart_write(UART, (uint8_t)'\n');
+        ioport_set_pin_level(LED_ONBOARD, 1);
+        mdelay(250);
+        ioport_set_pin_level(LED_ONBOARD, 0);
+        mdelay(250);
+    }
 
     while (1)
     {
-        update_comm();
+        /*update_comm();
         update_compass();
         update_heartbeat();
         check_battery();
@@ -54,6 +89,6 @@ int main(void)
         process_new_sensor_values();
 
         act_event = button_events();
-        menu(act_event);
+        menu(act_event);*/
     }
 }
