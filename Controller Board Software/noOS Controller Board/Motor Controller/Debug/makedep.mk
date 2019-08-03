@@ -26,6 +26,8 @@ src\ASF\sam\drivers\spi\spi.c
 
 src\ASF\sam\drivers\tc\tc.c
 
+src\ASF\sam\drivers\uart\uart.c
+
 src\ASF\sam\drivers\usart\usart.c
 
 src\ASF\thirdparty\fatfs\fatfs-port-r0.09\diskio.c
@@ -35,6 +37,8 @@ src\ASF\thirdparty\fatfs\fatfs-port-r0.09\sam\fattime_rtc.c
 src\ASF\thirdparty\fatfs\fatfs-r0.09\src\ff.c
 
 src\ASF\thirdparty\fatfs\fatfs-r0.09\src\option\ccsbcs.c
+
+src\bt.c
 
 src\comm.c
 

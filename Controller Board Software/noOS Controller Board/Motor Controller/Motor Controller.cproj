@@ -42,6 +42,7 @@
           <option id="sam.drivers.pwm" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.tc" value="Add" config="" content-id="Atmel.ASF" />
           <option id="common.services.fs.fatfs" value="Add" config="" content-id="Atmel.ASF" />
+          <option id="sam.drivers.uart" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.utils.linker_scripts#atsam3x8" value="Add" config="" content-id="Atmel.ASF" />
         </options>
         <configurations>
@@ -302,6 +303,8 @@
           <file path="src/Config/conf_fatfs.h" framework="" version="3.35.1" source="thirdparty\fatfs\fatfs-r0.09\src\module_config_sbcs\conf_fatfs.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.c" framework="" version="3.35.1" source="common\components\memory\sd_mmc\sd_mmc_mem.c" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/common/components/memory/sd_mmc/sd_mmc_mem.h" framework="" version="3.35.1" source="common\components\memory\sd_mmc\sd_mmc_mem.h" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam/drivers/uart/uart.c" framework="" version="3.35.1" source="sam\drivers\uart\uart.c" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam/drivers/uart/uart.h" framework="" version="3.35.1" source="sam\drivers\uart\uart.h" changed="False" content-id="Atmel.ASF" />
         </files>
         <documentation help="http://asf.atmel.com/docs/3.35.1/common.applications.user_application.user_board.sam3x/html/index.html" />
         <offline-documentation help="" />
@@ -386,6 +389,7 @@
       <Value>../src/ASF/common/services/delay</Value>
       <Value>../src/ASF/sam/drivers/hsmci</Value>
       <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -445,6 +449,7 @@
       <Value>../src/ASF/common/services/delay</Value>
       <Value>../src/ASF/sam/drivers/hsmci</Value>
       <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DSD_MMC_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
@@ -486,6 +491,7 @@
       <Value>../src/ASF/common/services/delay</Value>
       <Value>../src/ASF/sam/drivers/hsmci</Value>
       <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -546,6 +552,7 @@
       <Value>../src/ASF/sam/drivers/hsmci</Value>
       <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam</Value>
       <Value>../src/lib/iniparser</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>
@@ -606,6 +613,7 @@
       <Value>../src/ASF/common/services/delay</Value>
       <Value>../src/ASF/sam/drivers/hsmci</Value>
       <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
@@ -648,6 +656,7 @@
       <Value>../src/ASF/common/services/delay</Value>
       <Value>../src/ASF/sam/drivers/hsmci</Value>
       <Value>../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -727,6 +736,12 @@
     <None Include="src\ASF\sam\drivers\tc\tc.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\ASF\sam\drivers\uart\uart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\uart\uart.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\ASF\sam\drivers\usart\usart.c">
       <SubType>compile</SubType>
     </Compile>
@@ -752,6 +767,12 @@
       <SubType>compile</SubType>
     </None>
     <Compile Include="src\ASF\thirdparty\fatfs\fatfs-r0.09\src\option\ccsbcs.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\bt.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\bt.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\comm.c">
@@ -1516,6 +1537,7 @@
     <Folder Include="src\ASF\sam\drivers\spi\" />
     <Folder Include="src\ASF\sam\drivers\tc\" />
     <Folder Include="src\ASF\sam\drivers\twi\" />
+    <Folder Include="src\ASF\sam\drivers\uart\" />
     <Folder Include="src\ASF\sam\drivers\usart\" />
     <Folder Include="src\ASF\sam\utils\" />
     <Folder Include="src\ASF\sam\utils\cmsis\" />

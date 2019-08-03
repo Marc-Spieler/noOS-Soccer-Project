@@ -46,38 +46,258 @@ int main(void)
 
     bt_init();
 
-    while(1)
-    {
-        while(!uart_is_tx_ready(UART));
-        while(!uart_is_tx_empty(UART));
-        uart_write(UART, (uint8_t)'A');
-        while(!uart_is_tx_ready(UART));
-        while(!uart_is_tx_empty(UART));
-        uart_write(UART, (uint8_t)'T');
-        while(!uart_is_tx_ready(UART));
-        while(!uart_is_tx_empty(UART));
-        uart_write(UART, (uint8_t)'+');
-        while(!uart_is_tx_ready(UART));
-        while(!uart_is_tx_empty(UART));
-        uart_write(UART, (uint8_t)'B');
-        while(!uart_is_tx_ready(UART));
-        while(!uart_is_tx_empty(UART));
-        uart_write(UART, (uint8_t)'T');
-        while(!uart_is_tx_ready(UART));
-        while(!uart_is_tx_empty(UART));
-        uart_write(UART, (uint8_t)'P');
-        while(!uart_is_tx_ready(UART));
-        while(!uart_is_tx_empty(UART));
-        uart_write(UART, (uint8_t)'\r');
-        while(!uart_is_tx_ready(UART));
-        while(!uart_is_tx_empty(UART));
-        uart_write(UART, (uint8_t)'\n');
-        ioport_set_pin_level(LED_ONBOARD, 1);
-        mdelay(250);
-        ioport_set_pin_level(LED_ONBOARD, 0);
-        mdelay(250);
-    }
+    mdelay(500);
+    
+    // send AT&F*
+    /*while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'&');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'F');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'*');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');*/
+    bt_write("AT&F*\r\n", 7);
+    mdelay(500);
 
+    // send ATS102=1
+    /*while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'S');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'1');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'0');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'2');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'=');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'1');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');*/
+    bt_write("ATS102=1\r\n", 10);
+    mdelay(500);
+
+    // send ATS320=1
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'S');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'3');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'2');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'0');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'=');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'1');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');
+    mdelay(500);
+
+    // send ATS321=3
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'S');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'3');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'2');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'1');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'=');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'3');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');
+    mdelay(500);
+
+    // send ATS0=1
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'S');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'0');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'=');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'1');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');
+    mdelay(500);
+    
+    // send AT&W
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'&');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'W');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');
+    mdelay(500);
+    
+    // send ATZ
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'Z');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');
+    mdelay(500);
+
+    // send ATI4
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'I');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'4');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');
+    mdelay(500);
+
+    // send AT+BTP
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'A');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'+');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'B');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'T');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'P');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\r');
+    while(!uart_is_tx_ready(UART));
+    while(!uart_is_tx_empty(UART));
+    uart_write(UART, (uint8_t)'\n');
+    
+    ioport_set_pin_level(LED_ONBOARD, 1);
+    mdelay(250);
+    ioport_set_pin_level(LED_ONBOARD, 0);
+    /*mdelay(10000);
+    
+    
+    
+    ioport_set_pin_level(LED_ONBOARD, 1);
+    mdelay(250);
+    ioport_set_pin_level(LED_ONBOARD, 0);
+    mdelay(250);*/
+    
     while (1)
     {
         /*update_comm();
