@@ -8,11 +8,12 @@
 
 #define RX_BUF_MAX_SIZE 128
 
-static uint8_t txlen = 0;
-static uint8_t txid = 0;
-static uint8_t *txbuf = NULL;
-static uint8_t rxid = 0;
-static uint8_t rxbuf[RX_BUF_MAX_SIZE];
+static uint8_t txLen = 0;
+static uint8_t txId = 0;
+static uint8_t *txBuf = NULL;
+static uint8_t rxWrId = 0;
+static uint8_t rxRdId = 0;
+static uint8_t rxBuf[RX_BUF_MAX_SIZE];
 
 void bt_init(void)
 {
@@ -25,50 +26,60 @@ void bt_init(void)
         .ul_baudrate = 9600,
         .ul_mode = (UART_MR_CHMODE_NORMAL | UART_MR_PAR_NO)
     };
-
     uart_init(UART, &uart_settings);
-    uart_enable_interrupt(UART, UART_IER_RXBUFF);
+    uart_enable_interrupt(UART, UART_IER_RXRDY);
+    NVIC_EnableIRQ(UART_IRQn);
     uart_enable(UART);
 }
 
-void bt_write(uint8_t *pbuf, uint8_t len)
+void bt_write_string(uint8_t *pbuf, uint8_t len)
 {
-    txlen = len;
-    txid = 0;
-    txbuf = pbuf;
-    uart_write(UART, txbuf[txid++]);
-    uart_enable_interrupt(UART, UART_IER_TXBUFE);
+    txLen = len;
+    txId = 0;
+    txBuf = pbuf;
+    uart_write(UART, txBuf[txId++]);
+    uart_enable_interrupt(UART, UART_IER_TXRDY);
 }
 
-uint8_t bt_read(uint8_t *pbuf, uint8_t maxcount)
+uint8_t bt_read_byte(uint8_t *pbuf)
 {
+    // if buffer is empty then return immediately
+    if(rxRdId == rxWrId)
+    {
+        return 0;
+    }
 
+    *pbuf = rxBuf[rxRdId++];
+    if(rxRdId >= RX_BUF_MAX_SIZE)
+    {
+        rxRdId = 0;
+    }
+
+    return 1;
 }
 
 void UART_Handler(void)
 {
-    static uint32_t ul_status;
+    uint32_t ul_status = uart_get_status(UART);
 
-    ul_status = uart_get_status(UART);
-    
-    if (ul_status & UART_SR_TXBUFE)
+    if (ul_status & UART_SR_TXRDY)
     {
-        if(txid < txlen)
+        if(txId < txLen)
         {
-            uart_write(UART, txbuf[txid++]);
+            uart_write(UART, txBuf[txId++]);
         }
         else
         {
-            uart_disable_interrupt(UART, UART_IER_TXBUFE);
+            uart_disable_interrupt(UART, UART_IDR_TXRDY);
         }
     }
 
-    if (ul_status & UART_SR_RXBUFF)
+    if (ul_status & UART_SR_RXRDY)
     {
-        uart_read(UART, &rxbuf[rxid++]);
-        if(rxid >= RX_BUF_MAX_SIZE)
+        uart_read(UART, &rxBuf[rxWrId++]);
+        if(rxWrId >= RX_BUF_MAX_SIZE)
         {
-            rxid = 0;
+            rxWrId = 0;
         }
     }
 }
