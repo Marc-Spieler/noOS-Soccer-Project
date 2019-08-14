@@ -292,14 +292,19 @@ int main(void)
     
     while (1)
     {
-        bt_write_string(counter, 1);
+        bt_write_string(&counter, 1);
         //bt_write_string("\r\n", 2);
         counter++;
         
         if(counter >= 0x3a)
         {
             counter = 0x30;
+			ioport_set_pin_level(LED_ONBOARD, 1);
         }
+		else
+		{
+			ioport_set_pin_level(LED_ONBOARD, 0);
+		}
         
         mdelay(500);
         /*update_comm();
