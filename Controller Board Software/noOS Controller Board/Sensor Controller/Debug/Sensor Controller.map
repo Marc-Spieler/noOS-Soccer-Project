@@ -6391,7 +6391,7 @@ LOAD src/ASF/sam/utils/syscalls/gcc/syscalls.o
 LOAD src/comm.o
 LOAD src/main.o
 START GROUP
-LOAD ../src/ASF/thirdparty/CMSIS/Lib/GCC\libarm_cortexM3l_math.a
+LOAD ..\src\ASF\thirdparty\CMSIS\Lib\GCC\libarm_cortexM3l_math.a
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libm.a
 END GROUP
 START GROUP

@@ -7,7 +7,8 @@
 #include "compass.h"
 #include "lcd.h"
 #include "timing.h"
-#include "comm.h"
+//#include "comm.h"
+#include "sensor.h"
 
 uint16_t direction;
 uint16_t opponent_goal;

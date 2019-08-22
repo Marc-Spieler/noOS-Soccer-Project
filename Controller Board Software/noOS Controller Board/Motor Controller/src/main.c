@@ -16,6 +16,7 @@
 #include "iniparser.h"
 #include "support.h"
 #include "math.h"
+#include "sensor.h"
 
 uint8_t trn = 5;
 

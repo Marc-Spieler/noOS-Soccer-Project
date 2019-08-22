@@ -13,83 +13,6 @@ typedef struct
 {
     struct
     {
-        int8_t dir;
-        Bool see;
-        uint8_t diff;
-    } goal;
-    
-    struct
-    {
-        int8_t dir;
-        Bool see;
-        Bool have;
-        Bool have_2;
-    } ball;
-    
-    uint8_t camera_fps;
-
-    struct
-    {
-        union
-        {
-            struct
-            {
-                uint16_t segment_1   :1;
-                uint16_t segment_2   :1;
-                uint16_t segment_3   :1;
-                uint16_t segment_4   :1;
-                uint16_t segment_5   :1;
-                uint16_t segment_6   :1;
-                uint16_t segment_7   :1;
-                uint16_t segment_8   :1;
-                uint16_t segment_9   :1;
-                uint16_t segment_10  :1;
-                uint16_t segment_11  :1;
-                uint16_t segment_12  :1;
-                uint16_t rsvd        :4;
-            } single;
-            uint16_t all;
-        };
-        
-        struct
-        {
-            Bool see;
-            int16_t esc;
-            int8_t diff;//uint
-        };
-    } line;
-
-    struct
-    {
-        struct
-        {
-            Bool arrived;
-            Bool correction_dir;
-        } one;
-        
-        struct
-        {
-            Bool arrived;
-            Bool correction_dir;
-        } two;
-    } distance;
-
-    struct
-    {
-        uint16_t voltage     :8;
-        uint16_t percentage  :8;
-    } battery;
-    
-    float compass;
-    Bool rpi_inactive;
-} sensors_t;
-
-extern sensors_t s;
-
-typedef struct
-{
-    struct
-    {
         uint8_t heartbeat	 :1;
         uint8_t sleep_mode   :1;
         uint8_t rsvd		 :6;
@@ -196,6 +119,9 @@ extern raspberrypi_to_motor_t rtm;
 extern uint8_t sens_buf[sizeof(stm)];
 extern uint8_t rpi_buf[sizeof(rtm)];
 
+extern Bool new_sc_data_arrived;
+extern Bool new_pi_data_arrived;
+
 extern Bool update_pid_goal;
 
 void spi_init(void);
@@ -205,6 +131,5 @@ void spi_master_transfer(void *p_buf, uint32_t ul_size);
 void spi_slave_transfer(void *p_buf, uint32_t ul_size);
 void configure_dmac(void);
 void prepare_values_to_send(void);
-void process_new_sensor_values(void);
 
 #endif

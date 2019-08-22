@@ -56,6 +56,8 @@ src\pid.c
 
 src\sd.c
 
+src\sensor.c
+
 src\support.c
 
 src\timing.c

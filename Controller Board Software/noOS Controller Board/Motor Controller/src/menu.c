@@ -13,9 +13,8 @@
 #include "iniparser.h"
 #include "motor.h"
 #include "math.h"
-
-#define SPEED_FAST      70
-#define SPEED_SLOW      30
+#include "pid.h"
+#include "sensor.h"
 
 #define TURN_NONE       0
 #define TURN_COMPASS    1
@@ -26,12 +25,6 @@ Bool print_menu = true;
 
 FIL noOS_ini_file;
 char str[8];
-
-Bool blink_level;
-uint32_t ticks_blink_update;
-uint32_t ticks_dot_update;
-uint8_t dots = 3;
-Bool update_dots = 1;
 
 Bool ini_update_robot_id = false;
 Bool ini_update_speed = false;
@@ -62,13 +55,12 @@ struct
       { 1, 1, 1, 4 }
   };
 
-Bool shutdown_confirmed = 0;
 Bool inverted_start = false;
 
 char sprintf_buf[21];
 
 static void menu_main(event_t event1);
-static void menu_match_hannover(event_t event1);
+static void menu_match(event_t event1);
 static void menu_test(event_t event1);
 static void menu_sensors(event_t event1);
 static void menu_camera(event_t event1);
@@ -400,18 +392,15 @@ static void menu_test(event_t event1)
     }
 }
 
-static void menu_match_hannover(event_t event1)
+static void menu_match(event_t event1)
 {
     static pidReg_t pid_compass;
     static float pid_compass_out = 0.0f;
-    static pidReg_t pid_goal;
-    static float pid_goal_out = 0.0f;
-    static uint8_t turn_target = TURN_NONE;
     
     static Bool arrived_rear = false;
-    float robot_speed = 0.0f;
-    float robot_dir = 0.0f;
-    float robot_trn = 0.0f;
+    int16_t x_speed = 0.0f;
+    int16_t y_speed = 0.0f;
+    int16_t robot_trn = 0.0f;
     
     if(print_menu)
     {
@@ -424,8 +413,6 @@ static void menu_match_hannover(event_t event1)
         pid_compass.intg = 0.0f;
         pid_compass.prevErr = 0.0f;
         pid_compass.satErr = 0.0f;
-        
-        pid_goal = pid_compass;
         
         lcd_set_backlight(LCD_LIGHT_OFF);
         lcd_clear(); //required to turn backlight on/off
@@ -450,187 +437,60 @@ static void menu_match_hannover(event_t event1)
         pid_compass_out = pidReg_compass(&pid_compass, 0.0f, -s.compass);
     }
     
-    if(update_pid_goal)
-    {
-        update_pid_goal = false;
-        pid_goal_out = pidReg_compass(&pid_goal, 0.0f, s.goal.dir);
-    }
-    
     ioport_set_pin_level(LED_M1, 0);
     ioport_set_pin_level(LED_M2, 0);
     //ioport_set_pin_level(LED_M3, 0);
     
-    if(!s.ball.see && ((s.distance.one.arrived && robot_id == 1) || (s.distance.two.arrived && robot_id == 2)))//((s.line.see && s.line.esc < 45 && s.line.esc > -45) || s.distance))
+    if(!s.ball.see && ((s.distance.one.arrived && robot_id == 1) || (s.distance.two.arrived && robot_id == 2)))
     {
         arrived_rear = true;
     }
-    else// if(s.ball.see)
-    {
-        arrived_rear = false;
-    }        
-    
-    turn_target = (s.goal.see && s.ball.see) ? TURN_GOAL : TURN_COMPASS;
-
-    if(s.ball.have || s.ball.have_2)
-    {
-        robot_speed = 100.0f;
-            
-        if(s.goal.see)
-        {
-            if(abs(s.goal.dir) > s.goal.diff)
-            {
-                robot_speed = 50.0f;
-            }
-        }
-    }
     else
     {
-        if(s.ball.see)
-        {
-            ioport_set_pin_level(LED_M2, 1);
-            robot_dir = (float)s.ball.dir * 1.4f;//2.2
-            robot_speed = 100.0f;//75
-        }
-        else
-        {
-            if(!arrived_rear)
-            {
-                robot_speed = 100.0f;
-                
-                if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)
-                  || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
-                {
-                    if(s.goal.see && (s.goal.dir < -10 || s.goal.dir > 10))
-                    {
-                        if(s.goal.dir < -10)
-                        {
-                            robot_dir = -155.0f;
-                        }
-                        else
-                        {
-                            robot_dir = 155.0f;
-                        }
-                    }
-                    else
-                    {
-                        robot_dir = 180.0f;
-                    }
-                }
-                // no else
-                // variables have already the desired value
-                // robot_speed = 100.0f;
-                // robot_dir = 0.0f;
-            }
-            else
-            {
-#if 0
-                if(abs(s.goal.dir) >= 3)
-                {
-                    robot_speed = abs(s.goal.dir) * 2;
-                    
-                    if(s.goal.dir >= 0)
-                    {
-                        robot_dir = 90.0f;
-                    }
-                    else
-                    {
-                        robot_dir = -90.0f;
-                    }
-                }
-                // no else
-                // variables have already the desired value
-                // robot_speed = 0.0f;
-                // robot_dir = don't care;
-#else
-                robot_speed = 30.0f;
-                
-                if(s.goal.dir < -5)
-                {
-                    robot_dir = -90.0f;
-                }
-                else if(s.goal.dir > 5)
-                {
-                    robot_dir = 90.0f;
-                }
-                else
-                {
-                    robot_speed = 0.0f;
-                }
-#endif
-            }
-        }
+        arrived_rear = false;
     }
     
-    if(s.line.see)
+    if((s.ball.see && abs(s.ball.dir) <= 40) || s.ball.have || s.ball.have_2)  // move forward
     {
-        int16_t esc_min = s.line.esc - s.line.diff;
-        int16_t esc_max = s.line.esc + s.line.diff;
-        
-        while(esc_min <= -180) esc_min += 360;
-        while(esc_max > 180) esc_max -= 360;
-        
-        if(esc_min > esc_max)
+        if(s.ball.have || s.ball.have_2)
         {
-            int16_t tmp = esc_min;
-            esc_min = esc_max;
-            esc_max = tmp;
+            x_speed = 400;
+            y_speed = 0;
         }
-        
-        int16_t esc_dir_diff = s.line.esc - robot_dir;
-        
-        while(esc_dir_diff <= -180) esc_dir_diff += 360;
-        while(esc_dir_diff > 180) esc_dir_diff -= 360;
-        
-        if(s.line.diff > 0)
+        else
         {
-            /*if(abs(robot_dir - s.line.esc) > 180)
+            x_speed = 200;
+            y_speed = s.ball.dir * 5;
+        }
+    }
+    else if(!arrived_rear) // move backward
+    {
+        if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)
+        || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
+        {
+            if(s.ball.see)
             {
-                if(s.line.esc > robot_dir)
-                {
-                    robot_dir += 360;
-                }
-                else
-                {
-                    robot_dir -= 360;
-                }
-            }*/
-            
-            if(abs(esc_dir_diff) <= 90)
-            {
-                if(abs(robot_dir) < abs(esc_min))
-                {
-                    robot_dir = esc_min;
-                }
-                if(abs(robot_dir) > abs(esc_max))
-                {
-                    robot_dir = esc_max;
-                }
+                x_speed = -200;
+                y_speed = s.ball.see * 3;
             }
             else
             {
-                //robot_dir = robot_dir < 0 ? esc_min : esc_max;
-                
-                if(abs(abs(robot_dir) - abs(esc_min)) > abs(abs(robot_dir) - abs(esc_max)))
-                {
-                    robot_dir = esc_max;
-                }
-                else
-                {
-                    robot_dir = esc_min;
-                }
+                x_speed = -400;
+                y_speed = 0;
             }
         }
         else
         {
-            robot_dir = (float)(s.line.esc);
-            robot_speed = 75.0f;
-        }
+            x_speed = 100;
+            x_speed = 0;
+        }            
     }
-    // no else
+    else // x stand still
+    {
+        
+    }
     
-    robot_trn = (turn_target == TURN_COMPASS) ? pid_compass_out : pid_goal_out;
-    
-    set_motor(robot_speed, robot_dir, robot_trn);
+    set_motor(x_speed, y_speed, pid_compass_out);
 
     switch (event1)
     {
@@ -1118,7 +978,7 @@ static void menu_encoder(event_t event1)
         print_cursor(&menu_info.encoder);
     }
     
-    int16_t tmp_motor_speed_left = (int16_t)(act_motor_speed_left + 0.5);
+    int16_t tmp_motor_speed_left = (int16_t)(s.motor.left_speed + 0.5);
     
     if(prev_motor_speed_left != tmp_motor_speed_left || updated_ref || print_menu)
     {
@@ -1127,7 +987,7 @@ static void menu_encoder(event_t event1)
         lcd_print_s(1, 1, sprintf_buf);
     }
     
-    int16_t tmp_motor_speed_right = (int16_t)(act_motor_speed_right + 0.5);
+    int16_t tmp_motor_speed_right = (int16_t)(s.motor.right_speed + 0.5);
 
     if(prev_motor_speed_right != tmp_motor_speed_right || updated_ref || print_menu)
     {
@@ -1136,7 +996,7 @@ static void menu_encoder(event_t event1)
         lcd_print_s(2, 1, sprintf_buf);
     }
     
-    int16_t tmp_motor_speed_rear = (int16_t)(act_motor_speed_rear + 0.5);
+    int16_t tmp_motor_speed_rear = (int16_t)(s.motor.right_speed + 0.5);
 
     if(prev_motor_speed_rear != tmp_motor_speed_rear || updated_ref || print_menu)
     {
@@ -1396,6 +1256,10 @@ static void menu_settings(event_t event1)
 
 static void menu_bootup(event_t event1)
 {
+    static uint32_t ticks_dot_update;
+    static uint8_t dots = 3;
+    static Bool update_dots = 1;
+    
     if (print_menu)
     {
         for(int i = 0; i< 3; i++)
@@ -1466,6 +1330,7 @@ static void menu_bootup(event_t event1)
 static void menu_shutdown(event_t event1)
 {
     static uint32_t ticks_shutdown;
+    static Bool shutdown_confirmed = false;
 
     if(shutdown_confirmed)
     {
@@ -1529,7 +1394,7 @@ static void menu_shutdown(event_t event1)
     switch (event1)
     {
         case EVENT_BUTTON_MID_P:
-            shutdown_confirmed = 1;
+            shutdown_confirmed = true;
             break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_MAIN;
