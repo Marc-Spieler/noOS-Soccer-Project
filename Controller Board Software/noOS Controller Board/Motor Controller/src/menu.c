@@ -215,9 +215,9 @@ static void menu_test(event_t event1)
 		mdelay(30000);
 	}
 	
-	max_left = s.motor.left_speed < max_left ? s.motor.left_speed : max_left;
-	max_right = s.motor.right_speed < max_right ? s.motor.right_speed : max_right;
-	max_rear = s.motor.rear_speed < max_rear ? s.motor.rear_speed : max_rear;
+	max_left = s.motor.speed.left < max_left ? s.motor.speed.left : max_left;
+	max_right = s.motor.speed.right < max_right ? s.motor.speed.right : max_right;
+	max_rear = s.motor.speed.rear < max_rear ? s.motor.speed.rear : max_rear;
 	
 	switch (event1)
 	{
@@ -444,10 +444,10 @@ static void menu_match(event_t event1)
     
     if(print_menu)
     {
-        pid_compass.kp = 5.0f;
+        pid_compass.kp = 0.7f;
         pid_compass.ki = 0.0f;
         pid_compass.kc = 0.0f;
-        pid_compass.kd = 6.5f;
+        pid_compass.kd = 0.6f;
         pid_compass.outMin = -150.0f;
         pid_compass.outMax = 150.0f;
         pid_compass.intg = 0.0f;
@@ -493,14 +493,14 @@ static void menu_match(event_t event1)
     if(s.ball.have || s.ball.have_2)
     {
 	    x_speed = 0;
-		y_speed = 300;
+		y_speed = 100;
     }
     else
     {
 	    if(s.ball.see)
 	    {
-		    x_speed = s.ball.dir >= 0 ? 100 + s.ball.dir * 2 : -100 + s.ball.dir * 2;
-			y_speed = 200 - abs(s.ball.dir) * 2;
+		    x_speed = s.ball.dir >= 0 ? 1 + s.ball.dir * 2 : -1 + s.ball.dir * 2;
+			y_speed = (int16_t)(50 - abs(s.ball.dir) * 0.5f);
 	    }
 	    else
 	    {
@@ -510,12 +510,12 @@ static void menu_match(event_t event1)
 			    || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
 			    {
 					x_speed = 0;
-					y_speed = -200;
+					y_speed = -50;
 			    }
 				else
 				{
 					x_speed = 0;
-					y_speed = -200;
+					y_speed = -50;
 				}
 		    }
 		    else
@@ -528,8 +528,8 @@ static void menu_match(event_t event1)
 	
 	if(s.line.see)
 	{
-		x_speed = sin(s.line.esc) * 300;
-		y_speed = cos(s.line.esc) * 300;
+		x_speed = sin(s.line.esc) * 100;
+		y_speed = cos(s.line.esc) * 100;
 	}
     
     set_motor(x_speed, y_speed, pid_compass_out);
@@ -1020,7 +1020,7 @@ static void menu_encoder(event_t event1)
         print_cursor(&menu_info.encoder);
     }
     
-    int16_t tmp_motor_speed_left = (int16_t)(s.motor.left_speed + 0.5);
+    int16_t tmp_motor_speed_left = (int16_t)(s.motor.speed.left + 0.5);
     
     if(prev_motor_speed_left != tmp_motor_speed_left || updated_ref || print_menu)
     {
@@ -1029,7 +1029,7 @@ static void menu_encoder(event_t event1)
         lcd_print_s(1, 1, sprintf_buf);
     }
     
-    int16_t tmp_motor_speed_right = (int16_t)(s.motor.right_speed + 0.5);
+    int16_t tmp_motor_speed_right = (int16_t)(s.motor.speed.right + 0.5);
 
     if(prev_motor_speed_right != tmp_motor_speed_right || updated_ref || print_menu)
     {
@@ -1038,7 +1038,7 @@ static void menu_encoder(event_t event1)
         lcd_print_s(2, 1, sprintf_buf);
     }
     
-    int16_t tmp_motor_speed_rear = (int16_t)(s.motor.right_speed + 0.5);
+    int16_t tmp_motor_speed_rear = (int16_t)(s.motor.speed.right + 0.5);
 
     if(prev_motor_speed_rear != tmp_motor_speed_rear || updated_ref || print_menu)
     {

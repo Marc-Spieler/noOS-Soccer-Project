@@ -9,6 +9,7 @@
 #include "string.h"
 #include "math.h"
 #include "sensor.h"
+#include "pid.h"
 
 #define CM_PER_TICK             ((2 * M_PI * 3) / 464.64)
 #define ENCODER_UPDATE_RATE     (0.008) //in seconds
@@ -17,6 +18,14 @@ pwm_channel_t pwm_motor_left;
 pwm_channel_t pwm_motor_right;
 pwm_channel_t pwm_motor_rear;
 pwm_channel_t pwm_encoder;    // do not move - weird thing happens
+
+pidReg_t pid_motor_left;
+pidReg_t pid_motor_right;
+pidReg_t pid_motor_rear;
+
+float motor_left_target;
+float motor_right_target;
+float motor_rear_target;
 
 int16_t motor_left_out;
 int16_t motor_right_out;
@@ -76,10 +85,32 @@ void motor_init(void)
     NVIC_EnableIRQ(TC1_IRQn);
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
     tc_start(TC0, 1);
+    
+    pid_motor_left.kp = 30.0f;
+    pid_motor_left.ki = 5.0f;
+    pid_motor_left.kc = 1.0f;
+    pid_motor_left.kd = 10.0f;
+    pid_motor_left.outMin = -500.0f;
+    pid_motor_left.outMax = 500.0f;
+
+    pid_motor_right = pid_motor_left;
+    pid_motor_rear = pid_motor_left;
 }
 
 void enable_motor(void)
 {
+    pid_motor_left.intg = 0.0f;
+    pid_motor_left.prevErr = 0.0f;
+    pid_motor_left.satErr = 0.0f;
+    
+    pid_motor_right.intg = 0.0f;
+    pid_motor_right.prevErr = 0.0f;
+    pid_motor_right.satErr = 0.0f;
+    
+    pid_motor_rear.intg = 0.0f;
+    pid_motor_rear.prevErr = 0.0f;
+    pid_motor_rear.satErr = 0.0f;
+    
     pwm_channel_enable(PWM, MOTOR_LEFT);
     pwm_channel_enable(PWM, MOTOR_RIGHT);
     pwm_channel_enable(PWM, MOTOR_REAR);
@@ -97,9 +128,6 @@ void disable_motor(void)
     pwm_channel_disable(PWM, MOTOR_REAR);
 
     tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
-    s.motor.left_speed = 0.0f;
-    s.motor.right_speed = 0.0f;
-    s.motor.rear_speed = 0.0f;
 }
 
 void set_motor(int16_t x_speed, int16_t y_speed, int16_t trn)
@@ -131,18 +159,17 @@ void set_motor(int16_t x_speed, int16_t y_speed, int16_t trn)
         rear /= factor;
     }
     
-    /* write new values to motors */
-    update_motor_pwm(MOTOR_LEFT, left);
-    update_motor_pwm(MOTOR_RIGHT, right);
-    update_motor_pwm(MOTOR_REAR, rear);
+    set_motor_individual(left, right, rear);
 }
 
 void set_motor_individual(int16_t left, int16_t right, int16_t rear)
 {
-    /* write new values to motors */
-    update_motor_pwm(MOTOR_LEFT, left);
-    update_motor_pwm(MOTOR_RIGHT, right);
-    update_motor_pwm(MOTOR_REAR, rear);
+    /* update motor target speed values */
+    tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
+    motor_left_target = (float)left;
+    motor_right_target = (float)right;
+    motor_left_target = (float)rear;
+    tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 }
 
 void update_motor_pwm(uint8_t motor, int16_t speed)
@@ -174,9 +201,9 @@ void update_motor_pwm(uint8_t motor, int16_t speed)
 void TC1_Handler(void)
 {
     uint32_t PIOC_value;
-    int8_t left_enc_counts;
-    int8_t right_enc_counts;
-    int8_t rear_enc_counts;
+    int8_t enc_counts_left;
+    int8_t enc_counts_right;
+    int8_t enc_counts_rear;
     
     if ((tc_get_status(TC0, 1) & TC_SR_CPCS) == TC_SR_CPCS)
     {
@@ -188,16 +215,26 @@ void TC1_Handler(void)
         pwm_channel_enable(PWM, ENC_CLK);
         
         /* extract ticks of each encoder */
-        left_enc_counts = (PIOC_value & 0x7F000000) >> 24;
-        left_enc_counts = (left_enc_counts & 0x00000040) ? left_enc_counts - 128 : left_enc_counts;
-        right_enc_counts = ((PIOC_value & 0x00C00000) >> 17) | ((PIOC_value & 0x001F0000) >> 16);
-        right_enc_counts = (right_enc_counts & 0x00000040) ? right_enc_counts - 128 : right_enc_counts;
-        rear_enc_counts = ((PIOC_value & 0x0000FC00) >> 9) | ((PIOC_value & 0x00000002) >> 1);
-        rear_enc_counts = (rear_enc_counts & 0x00000040) ? rear_enc_counts - 128 : rear_enc_counts;
+        enc_counts_left = (PIOC_value & 0x7F000000) >> 24;
+        enc_counts_left = (enc_counts_left & 0x00000040) ? enc_counts_left - 128 : enc_counts_left;
+        enc_counts_right = ((PIOC_value & 0x00C00000) >> 17) | ((PIOC_value & 0x001F0000) >> 16);
+        enc_counts_right = (enc_counts_right & 0x00000040) ? enc_counts_right - 128 : enc_counts_right;
+        enc_counts_rear = ((PIOC_value & 0x0000FC00) >> 9) | ((PIOC_value & 0x00000002) >> 1);
+        enc_counts_rear = (enc_counts_rear & 0x00000040) ? enc_counts_rear - 128 : enc_counts_rear;
         
         /* convert ticks to cm/s */
-        s.motor.left_speed = (float)left_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
-        s.motor.right_speed = (float)right_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
-        s.motor.rear_speed = (float)rear_enc_counts * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        s.motor.speed.left = (float)enc_counts_left * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        s.motor.speed.right = (float)enc_counts_right * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        s.motor.speed.rear = (float)enc_counts_rear * (CM_PER_TICK / ENCODER_UPDATE_RATE);
+        
+        /* update individual motor pid controllers */
+        s.motor.output.left = pidReg(&pid_motor_left, motor_left_target, (float)enc_counts_left);
+        s.motor.output.right = pidReg(&pid_motor_right, motor_right_target, (float)enc_counts_right);
+        s.motor.output.rear = pidReg(&pid_motor_rear, motor_rear_target, (float)enc_counts_rear);
+        
+        /* write new output values to motors */
+        update_motor_pwm(MOTOR_LEFT, s.motor.output.left);
+        update_motor_pwm(MOTOR_RIGHT, s.motor.output.right);
+        update_motor_pwm(MOTOR_REAR, s.motor.output.rear);
     }
 }

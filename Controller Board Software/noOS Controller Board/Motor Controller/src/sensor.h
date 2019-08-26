@@ -82,9 +82,19 @@ typedef struct
     
     struct  
     {
-        float left_speed;
-        float right_speed;
-        float rear_speed;
+        struct
+        {
+            float left;
+            float right;
+            float rear;
+        } speed;
+        
+        struct
+        {
+            float left;
+            float right;
+            float rear;
+        } output;
     } motor;
     
     float compass;
