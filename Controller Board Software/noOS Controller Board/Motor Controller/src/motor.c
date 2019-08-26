@@ -104,9 +104,9 @@ void disable_motor(void)
 
 void set_motor(int16_t x_speed, int16_t y_speed, int16_t trn)
 {
-    float left = x_speed - y_speed * 0.5f + trn;
-    float right = x_speed - y_speed * 0.5f + trn;
-    float rear = y_speed + trn;
+    float left = -y_speed - x_speed * 0.5f + trn;
+    float right = y_speed - x_speed * 0.5f + trn;
+    float rear = x_speed + trn;
     
     /* compensate motor output */
     float motor[3] = {left, right, rear};

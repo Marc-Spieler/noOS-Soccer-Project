@@ -85,7 +85,7 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_match_hannover(event1);
+            menu_test(event1);
             break;
         case MENU_SENSORS:
             menu_sensors(event1);
@@ -192,6 +192,47 @@ static void menu_main(event_t event1)
 }
 
 static void menu_test(event_t event1)
+{
+	static uint32_t ticks_test = 0;
+	static float max_left = 0;
+	static float max_right = 0;
+	static float max_rear = 0;
+	
+	if(print_menu)
+	{
+		lcd_clear();
+		enable_motor();
+		set_motor(0, 0, -500);
+		ticks_test = getTicks();
+	}
+	
+	if((getTicks() - ticks_test) > 10000)
+	{
+		disable_motor();
+		lcd_print_i(1, 1, (int16_t)max_left);
+		lcd_print_i(2, 1, (int16_t)max_right);
+		lcd_print_i(3, 1, (int16_t)max_rear);
+		mdelay(30000);
+	}
+	
+	max_left = s.motor.left_speed < max_left ? s.motor.left_speed : max_left;
+	max_right = s.motor.right_speed < max_right ? s.motor.right_speed : max_right;
+	max_rear = s.motor.rear_speed < max_rear ? s.motor.rear_speed : max_rear;
+	
+	switch (event1)
+	{
+		case EVENT_BUTTON_RETURN_P:
+		disable_motor();
+		act_menu = MENU_MAIN;
+		print_menu = true;
+		break;
+		default:
+		print_menu = false;
+		break;
+	}
+}
+
+static void menu_test_pid(event_t event1)
 {
     static uint32_t ticks_test = 0;
     static pidReg_t pid_turn;
@@ -400,14 +441,13 @@ static void menu_match(event_t event1)
     static Bool arrived_rear = false;
     int16_t x_speed = 0.0f;
     int16_t y_speed = 0.0f;
-    int16_t robot_trn = 0.0f;
     
     if(print_menu)
     {
-        pid_compass.kp = 0.7f;
+        pid_compass.kp = 5.0f;
         pid_compass.ki = 0.0f;
         pid_compass.kc = 0.0f;
-        pid_compass.kd = 0.6f;
+        pid_compass.kd = 6.5f;
         pid_compass.outMin = -150.0f;
         pid_compass.outMax = 150.0f;
         pid_compass.intg = 0.0f;
@@ -450,45 +490,47 @@ static void menu_match(event_t event1)
         arrived_rear = false;
     }
     
-    if((s.ball.see && abs(s.ball.dir) <= 40) || s.ball.have || s.ball.have_2)  // move forward
+    if(s.ball.have || s.ball.have_2)
     {
-        if(s.ball.have || s.ball.have_2)
-        {
-            x_speed = 400;
-            y_speed = 0;
-        }
-        else
-        {
-            x_speed = 200;
-            y_speed = s.ball.dir * 5;
-        }
+	    x_speed = 0;
+		y_speed = 300;
     }
-    else if(!arrived_rear) // move backward
+    else
     {
-        if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)
-        || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
-        {
-            if(s.ball.see)
-            {
-                x_speed = -200;
-                y_speed = s.ball.see * 3;
-            }
-            else
-            {
-                x_speed = -400;
-                y_speed = 0;
-            }
-        }
-        else
-        {
-            x_speed = 100;
-            x_speed = 0;
-        }            
+	    if(s.ball.see)
+	    {
+		    x_speed = s.ball.dir >= 0 ? 100 + s.ball.dir * 2 : -100 + s.ball.dir * 2;
+			y_speed = 200 - abs(s.ball.dir) * 2;
+	    }
+	    else
+	    {
+		    if(!arrived_rear)
+		    {
+			    if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)
+			    || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
+			    {
+					x_speed = 0;
+					y_speed = -200;
+			    }
+				else
+				{
+					x_speed = 0;
+					y_speed = -200;
+				}
+		    }
+		    else
+		    {
+			    x_speed = 0;
+				y_speed = 0;
+		    }
+	    }
     }
-    else // x stand still
-    {
-        
-    }
+	
+	if(s.line.see)
+	{
+		x_speed = sin(s.line.esc) * 300;
+		y_speed = cos(s.line.esc) * 300;
+	}
     
     set_motor(x_speed, y_speed, pid_compass_out);
 
