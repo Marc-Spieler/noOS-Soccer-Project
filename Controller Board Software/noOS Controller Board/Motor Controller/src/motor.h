@@ -9,7 +9,7 @@
 
 #include "asf.h"
 
-#define MAX_MOTOR_SPEED         (500) // no unit
+#define MAX_MOTOR_SPEED         (150) // cm/s
 
 void motor_init(void);
 void enable_motor(void);

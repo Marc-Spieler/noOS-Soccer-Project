@@ -62,6 +62,7 @@ char sprintf_buf[21];
 static void menu_main(event_t event1);
 static void menu_match(event_t event1);
 static void menu_test(event_t event1);
+static void menu_test_pid(event_t event1);
 static void menu_sensors(event_t event1);
 static void menu_camera(event_t event1);
 static void menu_compass(event_t event1);
@@ -85,7 +86,7 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_test(event1);
+            menu_match(event1);
             break;
         case MENU_SENSORS:
             menu_sensors(event1);
@@ -499,7 +500,7 @@ static void menu_match(event_t event1)
     {
 	    if(s.ball.see)
 	    {
-		    x_speed = s.ball.dir >= 0 ? 1 + s.ball.dir * 2 : -1 + s.ball.dir * 2;
+		    x_speed = (int16_t)(s.ball.dir);
 			y_speed = (int16_t)(50 - abs(s.ball.dir) * 0.5f);
 	    }
 	    else

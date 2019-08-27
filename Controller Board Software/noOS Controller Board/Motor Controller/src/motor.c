@@ -12,7 +12,7 @@
 #include "pid.h"
 
 #define CM_PER_TICK             ((2 * M_PI * 3) / 464.64)
-#define ENCODER_UPDATE_RATE     (0.008) //in seconds
+#define ENCODER_UPDATE_RATE     (0.01) //in seconds
 
 pwm_channel_t pwm_motor_left;
 pwm_channel_t pwm_motor_right;
@@ -78,7 +78,7 @@ void motor_init(void)
  
     sysclk_enable_peripheral_clock(ID_TC1);
     tc_init(TC0, 1, TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_CPCTRG);
-    tc_write_rc(TC0, 1, 5249);  //MCLK / 128 * 0,008
+    tc_write_rc(TC0, 1, 6562);  //MCLK / 128 * ENC_UPDATE_RATE - 1
     NVIC_DisableIRQ(TC1_IRQn);
     NVIC_ClearPendingIRQ(TC1_IRQn);
     NVIC_SetPriority(TC1_IRQn, 0);
@@ -164,11 +164,16 @@ void set_motor(int16_t x_speed, int16_t y_speed, int16_t trn)
 
 void set_motor_individual(int16_t left, int16_t right, int16_t rear)
 {
+	/* convert ticks to cm/s */
+	left /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+	right /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+	rear /= (CM_PER_TICK / ENCODER_UPDATE_RATE);
+	
     /* update motor target speed values */
     tc_disable_interrupt(TC0, 1, TC_IER_CPCS);
     motor_left_target = (float)left;
     motor_right_target = (float)right;
-    motor_left_target = (float)rear;
+    motor_rear_target = (float)rear;
     tc_enable_interrupt(TC0, 1, TC_IER_CPCS);
 }
 
