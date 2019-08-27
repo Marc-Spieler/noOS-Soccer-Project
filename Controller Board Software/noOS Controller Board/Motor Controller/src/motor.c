@@ -12,7 +12,9 @@
 #include "pid.h"
 
 #define CM_PER_TICK             ((2 * M_PI * 3) / 464.64)
-#define ENCODER_UPDATE_RATE     (0.01) //in seconds
+#define ENCODER_UPDATE_RATE     (0.008) //in seconds
+
+#define DOUBLE_RES 1
 
 pwm_channel_t pwm_motor_left;
 pwm_channel_t pwm_motor_right;
@@ -26,10 +28,6 @@ pidReg_t pid_motor_rear;
 float motor_left_target;
 float motor_right_target;
 float motor_rear_target;
-
-int16_t motor_left_out;
-int16_t motor_right_out;
-int16_t motor_rear_out;
 
 void update_motor_pwm(uint8_t motor, int16_t speed);
 
@@ -78,7 +76,7 @@ void motor_init(void)
  
     sysclk_enable_peripheral_clock(ID_TC1);
     tc_init(TC0, 1, TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_CPCTRG);
-    tc_write_rc(TC0, 1, 6562);  //MCLK / 128 * ENC_UPDATE_RATE - 1
+    tc_write_rc(TC0, 1, 5249);  //MCLK / 128 * ENC_UPDATE_RATE - 1
     NVIC_DisableIRQ(TC1_IRQn);
     NVIC_ClearPendingIRQ(TC1_IRQn);
     NVIC_SetPriority(TC1_IRQn, 0);
@@ -210,6 +208,12 @@ void TC1_Handler(void)
     int8_t enc_counts_right;
     int8_t enc_counts_rear;
     
+    #if DOUBLE_RES == 1
+        const float prev_enc_counts_left = 0.0f;
+        const float prev_enc_counts_right = 0.0f;
+        const float prev_enc_counts_rear = 0.0f;
+    #endif
+    
     if ((tc_get_status(TC0, 1) & TC_SR_CPCS) == TC_SR_CPCS)
     {
         /* read encoder ticks */
@@ -232,10 +236,21 @@ void TC1_Handler(void)
         s.motor.speed.right = (float)enc_counts_right * (CM_PER_TICK / ENCODER_UPDATE_RATE);
         s.motor.speed.rear = (float)enc_counts_rear * (CM_PER_TICK / ENCODER_UPDATE_RATE);
         
-        /* update individual motor pid controllers */
-        s.motor.output.left = pidReg(&pid_motor_left, motor_left_target, (float)enc_counts_left);
-        s.motor.output.right = pidReg(&pid_motor_right, motor_right_target, (float)enc_counts_right);
-        s.motor.output.rear = pidReg(&pid_motor_rear, motor_rear_target, (float)enc_counts_rear);
+        #if DOUBLE_RES == 1
+            float filtered_enc_counts_left = (enc_counts_left + prev_enc_counts_left) / 2;
+            float filtered_enc_counts_right = (enc_counts_right + prev_enc_counts_right) / 2;
+            float filtered_enc_counts_rear = (enc_counts_rear + prev_enc_counts_rear) / 2;
+        
+            /* update individual motor pid controllers */
+            s.motor.output.left = pidReg(&pid_motor_left, motor_left_target, filtered_enc_counts_left);
+            s.motor.output.right = pidReg(&pid_motor_right, motor_right_target, filtered_enc_counts_right);
+            s.motor.output.rear = pidReg(&pid_motor_rear, motor_rear_target, filtered_enc_counts_rear);
+        #else
+            /* update individual motor pid controllers */
+            s.motor.output.left = pidReg(&pid_motor_left, motor_left_target, enc_counts_left);
+            s.motor.output.right = pidReg(&pid_motor_right, motor_right_target, enc_counts_right);
+            s.motor.output.rear = pidReg(&pid_motor_rear, motor_rear_target, enc_counts_rear);
+        #endif
         
         /* write new output values to motors */
         update_motor_pwm(MOTOR_LEFT, s.motor.output.left);
