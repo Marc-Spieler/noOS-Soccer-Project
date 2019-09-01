@@ -8,8 +8,6 @@ src\ASF\common\components\memory\sd_mmc\sd_mmc_mem.c
 
 src\ASF\common\services\delay\sam\cycle_counter.c
 
-src\ASF\common\services\serial\usart_serial.c
-
 src\ASF\common\services\spi\sam_spi\spi_master.c
 
 src\ASF\common\services\spi\sam_usart_spi\usart_spi.c
@@ -27,8 +25,6 @@ src\ASF\sam\drivers\rtc\rtc.c
 src\ASF\sam\drivers\spi\spi.c
 
 src\ASF\sam\drivers\tc\tc.c
-
-src\ASF\sam\drivers\uart\uart.c
 
 src\ASF\sam\drivers\usart\usart.c
 

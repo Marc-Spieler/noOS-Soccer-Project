@@ -40,40 +40,24 @@ int main(void)
     board_init();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
-    /*motor_init();
-    //init_battery_warning();
+    motor_init();
 
     compass_init();
     lcd_init();
+    
+    spi_init();
 
+    //bt_init();
+    
     sd_mmc_init();
     sd_init();
-    //write_time_test_2();
-    //create_default_ini_file();
     parse_ini_file();
-    spi_init();*/
-
-    bt_init();
     
-    uint8_t counter = 0x30;
+    uint32_t bt_ticks = 0;
     
     while (1)
     {
-        bt_write_string(&counter, 1);
-        counter++;
-        
-        if(counter >= 0x3a)
-        {
-            counter = 0x30;
-			ioport_set_pin_level(LED_ONBOARD, 1);
-        }
-		else
-		{
-			ioport_set_pin_level(LED_ONBOARD, 0);
-		}
-        
-        mdelay(500);
-        /*update_comm();
+        update_comm();
         update_compass();
         update_heartbeat();
         check_battery();
@@ -82,7 +66,17 @@ int main(void)
         process_new_sensor_values();
 
         act_event = button_events();
-        menu(act_event);*/
+        menu(act_event);
+        
+        /*if((getTicks() - bt_ticks) >= 100)
+        {
+            bt_ticks = getTicks();
+            char sprintf_buf[14];
+            sprintf(sprintf_buf, "%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d\r\n", s.line.single.segment_1, s.line.single.segment_2, s.line.single.segment_3,\
+                    s.line.single.segment_4, s.line.single.segment_5, s.line.single.segment_6, s.line.single.segment_7, s.line.single.segment_8,\
+                    s.line.single.segment_9, s.line.single.segment_10, s.line.single.segment_11, s.line.single.segment_12);
+            bt_write_string(sprintf_buf, 14);
+        }*/
     }
 }
 

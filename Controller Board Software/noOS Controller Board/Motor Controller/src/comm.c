@@ -229,6 +229,7 @@ void process_new_sensor_values(void)
     {
         new_sc_data_arrived = false;
         memcpy(&s.line.all, &stm.line.all, sizeof(s.line.all));
+        //memcpy(&s.line.single, &stm.line.single, sizeof(s.line.single));
         
         if(stm.line.see)
         {

@@ -64,6 +64,7 @@ void bt_write_string(uint8_t *pbuf, uint8_t len)
     return 1;
 }*/
 
+#if 0
 void USART0_Handler(void)
 {
     uint32_t ul_status = usart_get_status(USART0);
@@ -89,3 +90,4 @@ void USART0_Handler(void)
         }*/
     }
 }
+#endif
