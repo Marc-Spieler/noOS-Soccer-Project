@@ -57,6 +57,6 @@ typedef enum
 
 void bt_init(void);
 void bt_write_string(uint8_t *pbuf, uint8_t len);
-uint8_t bt_read_byte(uint8_t *pbuf);
+//uint8_t bt_read_byte(uint8_t *pbuf);
 
 #endif

@@ -8,6 +8,8 @@ src\ASF\common\components\memory\sd_mmc\sd_mmc_mem.c
 
 src\ASF\common\services\delay\sam\cycle_counter.c
 
+src\ASF\common\services\serial\usart_serial.c
+
 src\ASF\common\services\spi\sam_spi\spi_master.c
 
 src\ASF\common\services\spi\sam_usart_spi\usart_spi.c

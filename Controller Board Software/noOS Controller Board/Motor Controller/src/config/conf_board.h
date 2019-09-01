@@ -104,8 +104,8 @@
 #define ENC_REAR_G						        (PIO_PC15_IDX)
 
 /* UART pin definition */
-#define UART_RX                                 (PIO_PA8_IDX)
-#define UART_TX                                 (PIO_PA9_IDX)
+#define UART_RX                                 (PIO_PA10_IDX)
+#define UART_TX                                 (PIO_PA11_IDX)
 
 /* I2C0 pin definition */
 #define I2C0_DATA                               (PIO_PA17_IDX)

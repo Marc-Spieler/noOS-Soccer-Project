@@ -18,23 +18,22 @@
 #include "math.h"
 #include "bt.h"
 
-#define RX_BUF_MAX_SIZE 128
+//#define RX_BUF_MAX_SIZE 128
 
 uint8_t trn = 5;
 
-static uint8_t rxId = 0;
+/*static uint8_t rxId = 0;
 static uint8_t rxBuf[RX_BUF_MAX_SIZE];
 static Bool okReceived = false;
-static const char *btEventTable[] = BT_EVENT_TABLE;
+static const char *btEventTable[] = BT_EVENT_TABLE;*/
 
 void noOS_bootup_sequence(void);
-static void process_rx_packet(void);
-static int8_t find_str(const char *s, const char *t);
+/*static void process_rx_packet(void);
+static int8_t find_str(const char *s, const char *t);*/
 
 int main(void)
 {
     event_t act_event;
-    uint8_t c;
 
     sysclk_init();
 
@@ -55,245 +54,12 @@ int main(void)
     spi_init();*/
 
     bt_init();
-
-    mdelay(500);
-    
-    bt_write_string("^^^", 3);
-    
-    mdelay(500);
-    
-    // send AT&F*
-    bt_write_string("AT&F*\r\n", 7);
-
-    //while(!okReceived)
-    //{
-        /*
-        * As long as there are characters in the receive queue
-        * copy characters into buffer and increment buffer index
-        */
-        while(bt_read_byte(&c) > 0)
-        {
-            // Copy character into buffer
-            rxBuf[rxId++] = c;
-
-            // Increment buffer index and terminate string with NULL
-            // If buffer is full then roll over and start form the beginning.
-            if(rxId >= RX_BUF_MAX_SIZE)
-            {
-                rxId = 0;
-            }
-            rxBuf[rxId] = '\0';
-
-            // Check character for carriage return
-            if(c == '\r')
-            {
-                process_rx_packet();
-            }
-        };
-    //};
-    okReceived = false;
-    
-    // send ATS102=1
-    bt_write_string("ATS102=1\r\n", 10);
-    mdelay(500);
-
-    // send ATS320=1
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'A');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'T');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'S');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'3');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'2');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'0');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'=');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'1');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\r');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\n');
-    mdelay(500);
-
-    // send ATS321=3
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'A');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'T');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'S');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'3');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'2');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'1');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'=');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'3');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\r');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\n');
-    mdelay(500);
-
-    // send ATS0=1
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'A');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'T');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'S');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'0');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'=');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'1');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\r');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\n');
-    mdelay(500);
-    
-    // send AT&W
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'A');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'T');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'&');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'W');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\r');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\n');
-    mdelay(500);
-    
-    // send ATZ
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'A');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'T');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'Z');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\r');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\n');
-    mdelay(500);
-
-    // send ATI4
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'A');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'T');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'I');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'4');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\r');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\n');
-    mdelay(500);
-
-    // send AT+BTP
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'A');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'T');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'+');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'B');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'T');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'P');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\r');
-    while(!uart_is_tx_ready(UART));
-    while(!uart_is_tx_empty(UART));
-    uart_write(UART, (uint8_t)'\n');
-    
-    ioport_set_pin_level(LED_ONBOARD, 1);
-    mdelay(250);
-    ioport_set_pin_level(LED_ONBOARD, 0);
-    /*mdelay(10000);
-    
-    
-    
-    ioport_set_pin_level(LED_ONBOARD, 1);
-    mdelay(250);
-    ioport_set_pin_level(LED_ONBOARD, 0);
-    mdelay(250);*/
     
     uint8_t counter = 0x30;
     
     while (1)
     {
         bt_write_string(&counter, 1);
-        //bt_write_string("\r\n", 2);
         counter++;
         
         if(counter >= 0x3a)
@@ -328,7 +94,7 @@ int main(void)
  * \param none
  * \return none
  */
-static void process_rx_packet(void)
+/*static void process_rx_packet(void)
 {
     int pos;
 
@@ -342,7 +108,7 @@ static void process_rx_packet(void)
     // Reset receive buffer
     rxId = 0;
     rxBuf[rxId] = '\0';
-}
+}*/
 
 /*!\brief Find string within string.
  *
@@ -352,7 +118,7 @@ static void process_rx_packet(void)
  * \param2 pointer to string
  * \return position
  */
-static int8_t find_str(const char *s, const char *t)
+/*static int8_t find_str(const char *s, const char *t)
 {
     int rval = -1;
     int p = 0;
@@ -378,4 +144,4 @@ static int8_t find_str(const char *s, const char *t)
         };
     };
     return rval;
-}
+}*/
