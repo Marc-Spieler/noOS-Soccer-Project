@@ -9,6 +9,7 @@
 #include "timing.h"
 #include "comm.h"
 
+static Bool compass_in_use = false;
 uint16_t direction;
 uint16_t opponent_goal;
 Bool update_pid_compass = false;
@@ -42,15 +43,23 @@ void compass_init(void)
     tx_packet->buffer[2] = 0xa5;
     tx_packet->buffer[3] = 0x12;
     tx_packet->length = 4;
-    
-    set_compass_is_busy();
-    twi_pdc_master_write(TWI0, tx_packet);
-    while(compass_is_busy());
+
+    if(compass_in_use)
+    {
+        set_compass_is_busy();
+        twi_pdc_master_write(TWI0, tx_packet);
+        while(compass_is_busy());
+    }    
 }
 
 void update_compass(void)
 {
     twi_packet_t *rx_packet = twi_get_rx_packet();
+
+    if(!compass_in_use)
+    {
+        return;
+    }
 
     if ((getTicks() - ul_ticks_compass) > 100)
     {

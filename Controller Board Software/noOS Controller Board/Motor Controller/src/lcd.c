@@ -23,8 +23,9 @@
 /************************************************************
 * Local Variables                                           *
 ************************************************************/
+static Bool lcd_in_use = false;
 static backlight_t backlight;
-static uint8_t lcdIsBusy = false;
+static Bool lcdIsBusy = false;
 static uint32_t lcdStartTicks = 0;
 static uint32_t lcdTimeoutErrorCntr = 0;
 static twi_master_options_t twiConfig;
@@ -93,7 +94,12 @@ void lcd_print_s(uint8_t line, uint8_t col, const char* str)
     uint8_t cmd;
     uint8_t byte;
     uint8_t count;
-    
+ 
+    if(!lcd_in_use)
+    {
+        return;
+    }
+   
     while(lcdIsBusy | twi_is_busy())
     {
         if((getTicks() - lcdStartTicks) > LCD_TIMEOUT_DELAY)
@@ -162,6 +168,11 @@ void lcd_print_m(const char* str[])
     uint8_t count;
     uint8_t line;
     uint16_t index = 0;
+
+    if(!lcd_in_use)
+    {
+        return;
+    }
     
     lcd_clear(); // added 03.03.19 by Marc
     
@@ -239,6 +250,11 @@ static void send_nibble(uint8_t cmd, uint8_t byte)
 {
     twi_packet_t *tx_packet = twi_get_tx_packet();
 
+    if(!lcd_in_use)
+    {
+        return;
+    }
+    
     while(lcdIsBusy | twi_is_busy())
     {
         if((getTicks() - lcdStartTicks) > LCD_TIMEOUT_DELAY)
@@ -268,6 +284,11 @@ static void send_nibble(uint8_t cmd, uint8_t byte)
 static void send_byte(uint8_t cmd, uint8_t byte)
 {
     twi_packet_t *tx_packet = twi_get_tx_packet();
+
+    if(!lcd_in_use)
+    {
+        return;
+    }
 
     while(lcdIsBusy | twi_is_busy())
     {

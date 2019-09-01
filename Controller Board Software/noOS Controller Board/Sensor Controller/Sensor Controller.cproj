@@ -248,7 +248,6 @@
   <armgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.51\include</Value>
       <Value>../src/ASF/common/boards</Value>
       <Value>../src/ASF/sam/utils</Value>
       <Value>../src/ASF/sam/utils/header_files</Value>
@@ -272,6 +271,7 @@
       <Value>../src/ASF/sam/drivers/adc</Value>
       <Value>../src/ASF/sam/drivers/pwm</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -287,8 +287,8 @@
   </armgcc.linker.libraries.Libraries>
   <armgcc.linker.libraries.LibrarySearchPaths>
     <ListValues>
+      <Value>..\src\ASF\thirdparty\CMSIS\Lib\GCC</Value>
       <Value>%24(ProjectDir)\Device_Startup</Value>
-      <Value>../src/ASF/thirdparty/CMSIS/Lib/GCC</Value>
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
@@ -296,7 +296,6 @@
   <armgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.51\include</Value>
       <Value>../src/ASF/common/boards</Value>
       <Value>../src/ASF/sam/utils</Value>
       <Value>../src/ASF/sam/utils/header_files</Value>
@@ -320,13 +319,13 @@
       <Value>../src/ASF/sam/drivers/adc</Value>
       <Value>../src/ASF/sam/drivers/pwm</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.51\include</Value>
       <Value>../src/ASF/common/boards</Value>
       <Value>../src/ASF/sam/utils</Value>
       <Value>../src/ASF/sam/utils/header_files</Value>
@@ -350,6 +349,7 @@
       <Value>../src/ASF/sam/drivers/adc</Value>
       <Value>../src/ASF/sam/drivers/pwm</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -398,6 +398,7 @@
       <Value>../src/ASF/sam/drivers/adc</Value>
       <Value>../src/ASF/sam/drivers/pwm</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>
@@ -413,8 +414,8 @@
   </armgcc.linker.libraries.Libraries>
   <armgcc.linker.libraries.LibrarySearchPaths>
     <ListValues>
+      <Value>..\src\ASF\thirdparty\CMSIS\Lib\GCC</Value>
       <Value>%24(ProjectDir)\Device_Startup</Value>
-      <Value>../src/ASF/thirdparty/CMSIS/Lib/GCC</Value>
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
@@ -445,6 +446,7 @@
       <Value>../src/ASF/sam/drivers/adc</Value>
       <Value>../src/ASF/sam/drivers/pwm</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
@@ -452,7 +454,6 @@
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.51\include</Value>
       <Value>../src/ASF/common/boards</Value>
       <Value>../src/ASF/sam/utils</Value>
       <Value>../src/ASF/sam/utils/header_files</Value>
@@ -476,6 +477,7 @@
       <Value>../src/ASF/sam/drivers/adc</Value>
       <Value>../src/ASF/sam/drivers/pwm</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
