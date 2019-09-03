@@ -44,14 +44,14 @@ int main(void)
 
     lcd_init();
     compass_init();
-    
-    spi_init();
 
-    //bt_init();
+    bt_init();
     
     sd_mmc_init();
     sd_init();
     parse_ini_file();
+    
+    spi_init();
     
     uint32_t bt_ticks = 0;
     
@@ -68,7 +68,7 @@ int main(void)
         act_event = button_events();
         menu(act_event);
         
-        /*if((getTicks() - bt_ticks) >= 100)
+        if((getTicks() - bt_ticks) >= 100)
         {
             bt_ticks = getTicks();
             char sprintf_buf[14];
@@ -76,7 +76,7 @@ int main(void)
                     s.line.single.segment_4, s.line.single.segment_5, s.line.single.segment_6, s.line.single.segment_7, s.line.single.segment_8,\
                     s.line.single.segment_9, s.line.single.segment_10, s.line.single.segment_11, s.line.single.segment_12);
             bt_write_string(sprintf_buf, 14);
-        }*/
+        }
     }
 }
 
