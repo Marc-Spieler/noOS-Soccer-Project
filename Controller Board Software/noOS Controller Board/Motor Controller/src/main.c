@@ -42,8 +42,8 @@ int main(void)
     
     motor_init();
 
-    compass_init();
     lcd_init();
+    compass_init();
     
     spi_init();
 
