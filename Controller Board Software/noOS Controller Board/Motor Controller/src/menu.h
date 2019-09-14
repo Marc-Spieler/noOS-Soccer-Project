@@ -13,22 +13,22 @@ typedef enum
 {
     EVENT_NO_EVENT,
     EVENT_BUTTON_UP_P,
-    EVENT_BUTTON_UP_H,
+    //EVENT_BUTTON_UP_H,
     EVENT_BUTTON_UP_R,
     EVENT_BUTTON_LEFT_P,
-    EVENT_BUTTON_LEFT_H,
+    //EVENT_BUTTON_LEFT_H,
     EVENT_BUTTON_LEFT_R,
     EVENT_BUTTON_MID_P,
-    EVENT_BUTTON_MID_H,
+    //EVENT_BUTTON_MID_H,
     EVENT_BUTTON_MID_R,
     EVENT_BUTTON_RIGHT_P,
-    EVENT_BUTTON_RIGHT_H,
+    //EVENT_BUTTON_RIGHT_H,
     EVENT_BUTTON_RIGHT_R,
     EVENT_BUTTON_DOWN_P,
-    EVENT_BUTTON_DOWN_H,
+    //EVENT_BUTTON_DOWN_H,
     EVENT_BUTTON_DOWN_R,
     EVENT_BUTTON_RETURN_P,
-    EVENT_BUTTON_RETURN_H,
+    //EVENT_BUTTON_RETURN_H,
     EVENT_BUTTON_RETURN_R
 } event_t;
 
@@ -47,24 +47,6 @@ typedef enum
     MENU_BOOTUP,
     MENU_SHUTDOWN
 } menu_t;
-
-extern menu_t act_menu;
-extern Bool print_menu;
-
-char sprintf_cache[20];
-
-Bool pb_up_act;
-Bool pb_up_prev;
-Bool pb_left_act;
-Bool pb_left_prev;
-Bool pb_mid_act;
-Bool pb_mid_prev;
-Bool pb_right_act;
-Bool pb_right_prev;
-Bool pb_down_act;
-Bool pb_down_prev;
-Bool pb_return_act;
-Bool pb_return_prev;
 
 void menu(event_t event1);
 event_t button_events(void);

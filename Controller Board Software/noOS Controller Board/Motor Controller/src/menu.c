@@ -14,9 +14,6 @@
 #include "motor.h"
 #include "math.h"
 
-#define SPEED_FAST      70
-#define SPEED_SLOW      30
-
 #define TURN_NONE       0
 #define TURN_COMPASS    1
 #define TURN_GOAL       2
@@ -1553,6 +1550,18 @@ static void print_cursor(menu_info_t *info)
 event_t button_events(void)
 {
     event_t nextEvent = EVENT_NO_EVENT;
+    static Bool pb_up_act = false;
+    static Bool pb_up_prev = false;
+    static Bool pb_left_act = false;
+    static Bool pb_left_prev = false;
+    static Bool pb_mid_act = false;
+    static Bool pb_mid_prev = false;
+    static Bool pb_right_act = false;
+    static Bool pb_right_prev = false;
+    static Bool pb_down_act = false;
+    static Bool pb_down_prev = false;
+    static Bool pb_return_act = false;
+    static Bool pb_return_prev = false;
 
     if (getTicks() >= (ticks_button_update + 30))
     {

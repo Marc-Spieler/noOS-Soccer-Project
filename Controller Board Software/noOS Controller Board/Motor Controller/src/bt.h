@@ -55,8 +55,19 @@ typedef enum
     BT_EVENT_COUNT
 } bt_event_id_t;
 
+typedef enum
+{
+    //BT_RES_OK,
+    BT_RES_MATCH,
+    BT_RES_PID_TUNER
+} bt_response_t;
+
+extern bt_response_t expected_bt_response;
+
+extern uint32_t bt_rx_ticks;
+
 void bt_init(void);
-void bt_write_string(uint8_t *pbuf, uint8_t len);
+void bt_write(uint8_t *pbuf, uint8_t len);
 //uint8_t bt_read_byte(uint8_t *pbuf);
 
 #endif

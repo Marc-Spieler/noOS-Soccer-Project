@@ -53,7 +53,7 @@ int main(void)
     
     spi_init();
     
-    uint32_t bt_ticks = 0;
+    uint32_t bt_tx_ticks = 0;
     
     while (1)
     {
@@ -64,18 +64,28 @@ int main(void)
         
         prepare_values_to_send();
         process_new_sensor_values();
+        //process_bt_rx();
 
         act_event = button_events();
         menu(act_event);
         
-        if((getTicks() - bt_ticks) >= 100)
+        if((getTicks() - bt_rx_ticks) <= 100)
         {
-            bt_ticks = getTicks();
+            ioport_set_pin_level(LED_ONBOARD, true);
+        }
+        else
+        {
+            ioport_set_pin_level(LED_ONBOARD, false);
+        }
+        
+        if((getTicks() - bt_tx_ticks) >= 5)
+        {
+            bt_tx_ticks = getTicks();
             char sprintf_buf[14];
             sprintf(sprintf_buf, "%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d\r\n", s.line.single.segment_1, s.line.single.segment_2, s.line.single.segment_3,\
                     s.line.single.segment_4, s.line.single.segment_5, s.line.single.segment_6, s.line.single.segment_7, s.line.single.segment_8,\
                     s.line.single.segment_9, s.line.single.segment_10, s.line.single.segment_11, s.line.single.segment_12);
-            bt_write_string(sprintf_buf, 14);
+            bt_write(sprintf_buf, 14);
         }
     }
 }
