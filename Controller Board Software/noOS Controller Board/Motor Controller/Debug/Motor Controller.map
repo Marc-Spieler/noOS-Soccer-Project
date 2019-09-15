@@ -12187,50 +12187,54 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x20070000                SystemInit
                 0x200700d0                system_init_flash
  *(.data .data.*)
+ .data.compass_in_use
+                0x2007018c        0x1 src/compass.o
+ .data.lcd_in_use
+                0x2007018d        0x1 src/lcd.o
+ *fill*         0x2007018e        0x2 
  .data.iniparser_error_callback
-                0x2007018c        0x4 src/lib/iniparser/iniparser.o
+                0x20070190        0x4 src/lib/iniparser/iniparser.o
  .data.act_menu
-                0x20070190        0x1 src/menu.o
-                0x20070190                act_menu
+                0x20070194        0x1 src/menu.o
+                0x20070194                act_menu
  .data.print_menu
-                0x20070191        0x1 src/menu.o
-                0x20070191                print_menu
- .data.dots     0x20070192        0x1 src/menu.o
-                0x20070192                dots
+                0x20070195        0x1 src/menu.o
+                0x20070195                print_menu
+ .data.dots     0x20070196        0x1 src/menu.o
+                0x20070196                dots
  .data.update_dots
-                0x20070193        0x1 src/menu.o
-                0x20070193                update_dots
+                0x20070197        0x1 src/menu.o
+                0x20070197                update_dots
  .data.menu_info
-                0x20070194       0x14 src/menu.o
-                0x20070194                menu_info
+                0x20070198       0x14 src/menu.o
+                0x20070198                menu_info
  .data.prev_raw_direction.10762
-                0x200701a8        0x2 src/menu.o
- *fill*         0x200701aa        0x2 
+                0x200701ac        0x2 src/menu.o
+ *fill*         0x200701ae        0x2 
  .data.prev_direction.10761
-                0x200701ac        0x4 src/menu.o
+                0x200701b0        0x4 src/menu.o
  .data.updated_ref.10799
-                0x200701b0        0x1 src/menu.o
- *fill*         0x200701b1        0x3 
+                0x200701b4        0x1 src/menu.o
+ *fill*         0x200701b5        0x3 
  .data.test_file_name
-                0x200701b4       0x12 src/sd.o
-                0x200701b4                test_file_name
+                0x200701b8       0x12 src/sd.o
+                0x200701b8                test_file_name
  .data.robot_id
-                0x200701c6        0x2 src/support.o
-                0x200701c6                robot_id
+                0x200701ca        0x2 src/support.o
+                0x200701ca                robot_id
  .data.speed_preset
-                0x200701c8        0x2 src/support.o
-                0x200701c8                speed_preset
+                0x200701cc        0x2 src/support.o
+                0x200701cc                speed_preset
  .data.allow_leds
-                0x200701ca        0x1 src/support.o
-                0x200701ca                allow_leds
- *fill*         0x200701cb        0x1 
+                0x200701ce        0x1 src/support.o
+                0x200701ce                allow_leds
+ *fill*         0x200701cf        0x1 
  .data.SystemCoreClock
-                0x200701cc        0x4 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
-                0x200701cc                SystemCoreClock
+                0x200701d0        0x4 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
+                0x200701d0                SystemCoreClock
  .data._impure_ptr
-                0x200701d0        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-impure.o)
-                0x200701d0                _impure_ptr
- *fill*         0x200701d4        0x4 
+                0x200701d4        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-impure.o)
+                0x200701d4                _impure_ptr
  .data.impure_data
                 0x200701d8      0x428 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-impure.o)
  .data.__global_locale
@@ -12251,7 +12255,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x20070b80                . = ALIGN (0x4)
                 0x20070b80                _erelocate = .
 
-.bss            0x20070b80     0x1b0c load address 0x00098c30
+.bss            0x20070b80     0x1b08 load address 0x00098c30
                 0x20070b80                . = ALIGN (0x4)
                 0x20070b80                _sbss = .
                 0x20070b80                _szero = .
@@ -12330,230 +12334,224 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x20070e38        0x4 src/ASF/sam/drivers/twi/twi.o
  .bss.compassRxCallback
                 0x20070e3c        0x4 src/ASF/sam/drivers/twi/twi.o
- .bss.compass_in_use
-                0x20070e40        0x1 src/compass.o
  .bss.update_pid_compass
-                0x20070e41        0x1 src/compass.o
-                0x20070e41                update_pid_compass
+                0x20070e40        0x1 src/compass.o
+                0x20070e40                update_pid_compass
  .bss.compassIsBusy
-                0x20070e42        0x1 src/compass.o
- .bss.lcd_in_use
-                0x20070e43        0x1 src/lcd.o
+                0x20070e41        0x1 src/compass.o
  .bss.backlight
-                0x20070e44        0x1 src/lcd.o
+                0x20070e42        0x1 src/lcd.o
  .bss.lcdIsBusy
-                0x20070e45        0x1 src/lcd.o
- *fill*         0x20070e46        0x2 
+                0x20070e43        0x1 src/lcd.o
  .bss.lcdStartTicks
-                0x20070e48        0x4 src/lcd.o
+                0x20070e44        0x4 src/lcd.o
  .bss.lcdTimeoutErrorCntr
-                0x20070e4c        0x4 src/lcd.o
+                0x20070e48        0x4 src/lcd.o
  .bss.twiConfig
-                0x20070e50        0xc src/lcd.o
+                0x20070e4c        0xc src/lcd.o
  .bss.ini_update_robot_id
-                0x20070e5c        0x1 src/menu.o
-                0x20070e5c                ini_update_robot_id
+                0x20070e58        0x1 src/menu.o
+                0x20070e58                ini_update_robot_id
  .bss.ini_update_speed
-                0x20070e5d        0x1 src/menu.o
-                0x20070e5d                ini_update_speed
+                0x20070e59        0x1 src/menu.o
+                0x20070e59                ini_update_speed
  .bss.ini_update_heartbeat
-                0x20070e5e        0x1 src/menu.o
-                0x20070e5e                ini_update_heartbeat
+                0x20070e5a        0x1 src/menu.o
+                0x20070e5a                ini_update_heartbeat
  .bss.ini_update_line_cal
-                0x20070e5f        0x1 src/menu.o
-                0x20070e5f                ini_update_line_cal
+                0x20070e5b        0x1 src/menu.o
+                0x20070e5b                ini_update_line_cal
  .bss.shutdown_confirmed
-                0x20070e60        0x1 src/menu.o
-                0x20070e60                shutdown_confirmed
+                0x20070e5c        0x1 src/menu.o
+                0x20070e5c                shutdown_confirmed
  .bss.inverted_start
-                0x20070e61        0x1 src/menu.o
-                0x20070e61                inverted_start
- *fill*         0x20070e62        0x2 
+                0x20070e5d        0x1 src/menu.o
+                0x20070e5d                inverted_start
+ *fill*         0x20070e5e        0x2 
  .bss.pid_compass.10700
-                0x20070e64       0x24 src/menu.o
+                0x20070e60       0x24 src/menu.o
  .bss.pid_goal.10702
-                0x20070e88       0x24 src/menu.o
+                0x20070e84       0x24 src/menu.o
  .bss.pid_compass_out.10701
-                0x20070eac        0x4 src/menu.o
+                0x20070ea8        0x4 src/menu.o
  .bss.pid_goal_out.10703
-                0x20070eb0        0x4 src/menu.o
+                0x20070eac        0x4 src/menu.o
  .bss.arrived_rear.10705
-                0x20070eb4        0x1 src/menu.o
+                0x20070eb0        0x1 src/menu.o
  .bss.turn_target.10704
-                0x20070eb5        0x1 src/menu.o
+                0x20070eb1        0x1 src/menu.o
  .bss.prev_rpi_inactive.10746
-                0x20070eb6        0x1 src/menu.o
+                0x20070eb2        0x1 src/menu.o
  .bss.prev_ball_dir.10747
-                0x20070eb7        0x1 src/menu.o
+                0x20070eb3        0x1 src/menu.o
  .bss.prev_ball_see.10748
-                0x20070eb8        0x1 src/menu.o
+                0x20070eb4        0x1 src/menu.o
  .bss.prev_ball_have.10749
-                0x20070eb9        0x1 src/menu.o
+                0x20070eb5        0x1 src/menu.o
  .bss.prev_ball_have_2.10750
-                0x20070eba        0x1 src/menu.o
+                0x20070eb6        0x1 src/menu.o
  .bss.prev_goal_dir.10751
-                0x20070ebb        0x1 src/menu.o
+                0x20070eb7        0x1 src/menu.o
  .bss.prev_goal_see.10752
-                0x20070ebc        0x1 src/menu.o
+                0x20070eb8        0x1 src/menu.o
  .bss.prev_goal_diff.10753
-                0x20070ebd        0x1 src/menu.o
+                0x20070eb9        0x1 src/menu.o
  .bss.prev_camera_fps.10754
+                0x20070eba        0x1 src/menu.o
+ *fill*         0x20070ebb        0x1 
+ .bss.prev_line_values.10782
+                0x20070ebc        0x2 src/menu.o
+ .bss.prev_line_see.10783
                 0x20070ebe        0x1 src/menu.o
  *fill*         0x20070ebf        0x1 
- .bss.prev_line_values.10782
-                0x20070ec0        0x2 src/menu.o
- .bss.prev_line_see.10783
-                0x20070ec2        0x1 src/menu.o
- *fill*         0x20070ec3        0x1 
  .bss.prev_motor_speed_left.10803
-                0x20070ec4        0x2 src/menu.o
+                0x20070ec0        0x2 src/menu.o
  .bss.ref_motor_speed_left.10800
-                0x20070ec6        0x2 src/menu.o
+                0x20070ec2        0x2 src/menu.o
  .bss.prev_motor_speed_right.10804
-                0x20070ec8        0x2 src/menu.o
+                0x20070ec4        0x2 src/menu.o
  .bss.ref_motor_speed_right.10801
-                0x20070eca        0x2 src/menu.o
+                0x20070ec6        0x2 src/menu.o
  .bss.prev_motor_speed_rear.10805
-                0x20070ecc        0x2 src/menu.o
+                0x20070ec8        0x2 src/menu.o
  .bss.ref_motor_speed_rear.10802
-                0x20070ece        0x2 src/menu.o
+                0x20070eca        0x2 src/menu.o
  .bss.ticks_shutdown.10862
-                0x20070ed0        0x4 src/menu.o
+                0x20070ecc        0x4 src/menu.o
  .bss.heartbeat
-                0x20070ed4        0x1 src/support.o
-                0x20070ed4                heartbeat
- *fill*         0x20070ed5        0x3 
+                0x20070ed0        0x1 src/support.o
+                0x20070ed0                heartbeat
+ *fill*         0x20070ed1        0x3 
  .bss.g_ul_ms_ticks
-                0x20070ed8        0x4 src/timing.o
+                0x20070ed4        0x4 src/timing.o
  .bss.prev_battery_percentage
-                0x20070edc        0x1 src/timing.o
-                0x20070edc                prev_battery_percentage
+                0x20070ed8        0x1 src/timing.o
+                0x20070ed8                prev_battery_percentage
  .bss.heart_state.10028
-                0x20070edd        0x1 src/timing.o
- *fill*         0x20070ede        0x2 
+                0x20070ed9        0x1 src/timing.o
+ *fill*         0x20070eda        0x2 
  .bss.ticks_heartbeat.10029
-                0x20070ee0        0x4 src/timing.o
+                0x20070edc        0x4 src/timing.o
  .bss.ticks_battery.10034
-                0x20070ee4        0x4 src/timing.o
+                0x20070ee0        0x4 src/timing.o
  .bss.bat_led_state.10033
-                0x20070ee8        0x1 src/timing.o
- *fill*         0x20070ee9        0x3 
+                0x20070ee4        0x1 src/timing.o
+ *fill*         0x20070ee5        0x3 
  .bss.heap.5297
-                0x20070eec        0x4 src/ASF/sam/utils/syscalls/gcc/syscalls.o
+                0x20070ee8        0x4 src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .bss.__malloc_current_mallinfo
-                0x20070ef0       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
-                0x20070ef0                __malloc_current_mallinfo
+                0x20070eec       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
+                0x20070eec                __malloc_current_mallinfo
  .bss.__malloc_max_sbrked_mem
-                0x20070f18        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
-                0x20070f18                __malloc_max_sbrked_mem
+                0x20070f14        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
+                0x20070f14                __malloc_max_sbrked_mem
  .bss.__malloc_max_total_mem
-                0x20070f1c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
-                0x20070f1c                __malloc_max_total_mem
+                0x20070f18        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
+                0x20070f18                __malloc_max_total_mem
  .bss.__malloc_top_pad
-                0x20070f20        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
-                0x20070f20                __malloc_top_pad
+                0x20070f1c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
+                0x20070f1c                __malloc_top_pad
  *(COMMON)
- COMMON         0x20070f24       0x64 src/comm.o
-                0x20070f24                sens_buf
-                0x20070f38                mtr
-                0x20070f3c                rpi_buf
-                0x20070f40                ticks_comm
-                0x20070f44                rtm
-                0x20070f48                mts
-                0x20070f50                ticks_button_update
-                0x20070f54                stm
-                0x20070f68                s
- COMMON         0x20070f88        0x4 src/compass.o
-                0x20070f88                direction
-                0x20070f8a                opponent_goal
- COMMON         0x20070f8c       0x75 src/menu.o
-                0x20070f8c                pb_return_act
-                0x20070f8d                pb_mid_prev
-                0x20070f8e                pb_down_prev
-                0x20070f8f                pb_left_prev
-                0x20070f90                pb_down_act
-                0x20070f91                pb_up_prev
-                0x20070f92                blink_level
-                0x20070f93                pb_right_prev
-                0x20070f94                pb_return_prev
-                0x20070f98                noOS_ini_file
-                0x20070fbc                pb_left_act
-                0x20070fc0                ticks_blink_update
-                0x20070fc4                sprintf_cache
-                0x20070fd8                pb_mid_act
-                0x20070fd9                pb_up_act
-                0x20070fdc                str
-                0x20070fe4                pb_right_act
-                0x20070fe8                ticks_dot_update
-                0x20070fec                sprintf_buf
- *fill*         0x20071001        0x3 
- COMMON         0x20071004     0x13fc src/motor.o
-                0x20071004                act_motor_speed_rear_raw
-                0x20071008                pwm_motor_left
-                0x20071030                mright_out_log
-                0x20071350                mright_out
-                0x20071354                act_motor_speed_left
-                0x20071358                pwm_motor_right
-                0x20071380                speed_mright
-                0x20071384                act_motor_speed_rear
-                0x20071388                act_motor_speed_right_raw
-                0x2007138c                act_motor_speed_left_raw
-                0x20071390                mleft_out_log
-                0x200716b0                mleft_out
-                0x200716b4                pwm_motor_rear
-                0x200716dc                act_motor_speed_right
-                0x200716e0                mrear_out
-                0x200716e4                speed_mleft
-                0x200716e8                pid_motor_rear
-                0x2007170c                pid_motor_right
-                0x20071730                erear_counts_log
-                0x200718c0                speed_mleft_log
-                0x20071a50                mrear_out_log
-                0x20071d70                eleft_counts_log
-                0x20071f00                pwm_encoder
-                0x20071f28                eright_counts_log
-                0x200720b8                speed_mrear_log
-                0x20072248                speed_mright_log
-                0x200723d8                pid_motor_left
-                0x200723fc                speed_mrear
- COMMON         0x20072400      0x256 src/sd.o
-                0x20072400                fs
-                0x20072630                file_object
-                0x20072654                res
-                0x20072655                status
- *fill*         0x20072656        0x2 
- COMMON         0x20072658        0x4 src/support.o
-                0x20072658                noOS_ini_dict
- COMMON         0x2007265c        0x8 src/timing.o
-                0x2007265c                battery_percentage
-                0x20072660                ul_ticks_compass
- COMMON         0x20072664       0x21 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
-                0x20072664                __lock___atexit_recursive_mutex
-                0x20072668                __lock___arc4random_mutex
-                0x2007266c                __lock___env_recursive_mutex
-                0x20072670                __lock___sinit_recursive_mutex
-                0x20072674                __lock___malloc_recursive_mutex
-                0x20072678                __lock___at_quick_exit_mutex
-                0x2007267c                __lock___dd_hash_mutex
-                0x20072680                __lock___tz_mutex
-                0x20072684                __lock___sfp_recursive_mutex
- *fill*         0x20072685        0x3 
- COMMON         0x20072688        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-reent.o)
-                0x20072688                errno
-                0x2007268c                . = ALIGN (0x4)
-                0x2007268c                _ebss = .
-                0x2007268c                _ezero = .
+ COMMON         0x20070f20       0x64 src/comm.o
+                0x20070f20                sens_buf
+                0x20070f34                mtr
+                0x20070f38                rpi_buf
+                0x20070f3c                ticks_comm
+                0x20070f40                rtm
+                0x20070f44                mts
+                0x20070f4c                ticks_button_update
+                0x20070f50                stm
+                0x20070f64                s
+ COMMON         0x20070f84        0x4 src/compass.o
+                0x20070f84                direction
+                0x20070f86                opponent_goal
+ COMMON         0x20070f88       0x75 src/menu.o
+                0x20070f88                pb_return_act
+                0x20070f89                pb_mid_prev
+                0x20070f8a                pb_down_prev
+                0x20070f8b                pb_left_prev
+                0x20070f8c                pb_down_act
+                0x20070f8d                pb_up_prev
+                0x20070f8e                blink_level
+                0x20070f8f                pb_right_prev
+                0x20070f90                pb_return_prev
+                0x20070f94                noOS_ini_file
+                0x20070fb8                pb_left_act
+                0x20070fbc                ticks_blink_update
+                0x20070fc0                sprintf_cache
+                0x20070fd4                pb_mid_act
+                0x20070fd5                pb_up_act
+                0x20070fd8                str
+                0x20070fe0                pb_right_act
+                0x20070fe4                ticks_dot_update
+                0x20070fe8                sprintf_buf
+ *fill*         0x20070ffd        0x3 
+ COMMON         0x20071000     0x13fc src/motor.o
+                0x20071000                act_motor_speed_rear_raw
+                0x20071004                pwm_motor_left
+                0x2007102c                mright_out_log
+                0x2007134c                mright_out
+                0x20071350                act_motor_speed_left
+                0x20071354                pwm_motor_right
+                0x2007137c                speed_mright
+                0x20071380                act_motor_speed_rear
+                0x20071384                act_motor_speed_right_raw
+                0x20071388                act_motor_speed_left_raw
+                0x2007138c                mleft_out_log
+                0x200716ac                mleft_out
+                0x200716b0                pwm_motor_rear
+                0x200716d8                act_motor_speed_right
+                0x200716dc                mrear_out
+                0x200716e0                speed_mleft
+                0x200716e4                pid_motor_rear
+                0x20071708                pid_motor_right
+                0x2007172c                erear_counts_log
+                0x200718bc                speed_mleft_log
+                0x20071a4c                mrear_out_log
+                0x20071d6c                eleft_counts_log
+                0x20071efc                pwm_encoder
+                0x20071f24                eright_counts_log
+                0x200720b4                speed_mrear_log
+                0x20072244                speed_mright_log
+                0x200723d4                pid_motor_left
+                0x200723f8                speed_mrear
+ COMMON         0x200723fc      0x256 src/sd.o
+                0x200723fc                fs
+                0x2007262c                file_object
+                0x20072650                res
+                0x20072651                status
+ *fill*         0x20072652        0x2 
+ COMMON         0x20072654        0x4 src/support.o
+                0x20072654                noOS_ini_dict
+ COMMON         0x20072658        0x8 src/timing.o
+                0x20072658                battery_percentage
+                0x2007265c                ul_ticks_compass
+ COMMON         0x20072660       0x21 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
+                0x20072660                __lock___atexit_recursive_mutex
+                0x20072664                __lock___arc4random_mutex
+                0x20072668                __lock___env_recursive_mutex
+                0x2007266c                __lock___sinit_recursive_mutex
+                0x20072670                __lock___malloc_recursive_mutex
+                0x20072674                __lock___at_quick_exit_mutex
+                0x20072678                __lock___dd_hash_mutex
+                0x2007267c                __lock___tz_mutex
+                0x20072680                __lock___sfp_recursive_mutex
+ *fill*         0x20072681        0x3 
+ COMMON         0x20072684        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-reent.o)
+                0x20072684                errno
+                0x20072688                . = ALIGN (0x4)
+                0x20072688                _ebss = .
+                0x20072688                _ezero = .
 
-.stack          0x2007268c     0x2004 load address 0x0009a73c
-                0x20072690                . = ALIGN (0x8)
- *fill*         0x2007268c        0x4 
-                0x20072690                _sstack = .
-                0x20074690                . = (. + __stack_size__)
- *fill*         0x20072690     0x2000 
-                0x20074690                . = ALIGN (0x8)
-                0x20074690                _estack = .
-                0x20074690                . = ALIGN (0x4)
-                0x20074690                _end = .
+.stack          0x20072688     0x2000 load address 0x0009a738
+                0x20072688                . = ALIGN (0x8)
+                0x20072688                _sstack = .
+                0x20074688                . = (. + __stack_size__)
+ *fill*         0x20072688     0x2000 
+                0x20074688                . = ALIGN (0x8)
+                0x20074688                _estack = .
+                0x20074688                . = ALIGN (0x4)
+                0x20074688                _end = .
 OUTPUT(Motor Controller.elf elf32-littlearm)
 
 .ARM.attributes
