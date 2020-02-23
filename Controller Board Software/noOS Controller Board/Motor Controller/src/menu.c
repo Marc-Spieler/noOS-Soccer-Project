@@ -926,6 +926,42 @@ static void menu_compass(event_t event1)
 
 static void menu_compass_calibration(event_t event1)
 {
+    uint8_t cal_status;
+    uint8_t sys_cal_status;
+    uint8_t gyr_cal_status;
+    uint8_t acc_cal_status;
+    uint8_t mag_cal_status;
+    
+    if(print_menu)
+    {
+        lcd_clear();
+        lcd_print_s(1, 1, "move/rotate robot");
+        lcd_print_s(2, 1, "in figure 8");
+    }
+
+    if(get_compass_cal_status(&cal_status) == 0)
+    {
+        sys_cal_status = (cal_status >> 6) & 0x03;
+        gyr_cal_status = (cal_status >> 4) & 0x03;
+        acc_cal_status = (cal_status >> 2) & 0x03;
+        mag_cal_status = (cal_status     ) & 0x03;
+        sprintf(sprintf_buf, "Cal Status: %1d %1d %1d %1d", sys_cal_status, gyr_cal_status, acc_cal_status, mag_cal_status);
+        lcd_print_s(4, 1, sprintf_buf);
+    }
+    mdelay(20);
+
+    switch(event1)
+    {
+        case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_COMPASS;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
+    }
+
+#if 0
     uint8_t compass_cal_step = 0;
 
     if(print_menu)
@@ -935,7 +971,7 @@ static void menu_compass_calibration(event_t event1)
         sprintf(sprintf_buf, "  Direction: %1d  ", compass_cal_step + 1);
         lcd_print_s(3, 1, sprintf_buf);
     }
-    
+   
     if(event1 == EVENT_BUTTON_MID_P)
     {
         twi_packet_t *tx_packet = twi_get_tx_packet();
@@ -1005,6 +1041,7 @@ static void menu_compass_calibration(event_t event1)
             print_menu = false;
             break;
     }
+#endif
 }
 
 static void menu_line(event_t event1)

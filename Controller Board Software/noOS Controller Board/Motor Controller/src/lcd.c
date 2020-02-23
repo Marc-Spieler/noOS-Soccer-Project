@@ -100,7 +100,7 @@ void lcd_print_s(uint8_t line, uint8_t col, const char* str)
         return;
     }
    
-    while(lcdIsBusy | twi_is_busy())
+    while(lcdIsBusy || twi_is_busy())
     {
         if((getTicks() - lcdStartTicks) > LCD_TIMEOUT_DELAY)
         {
@@ -176,7 +176,7 @@ void lcd_print_m(const char* str[])
     
     lcd_clear(); // added 03.03.19 by Marc
     
-    while(lcdIsBusy | twi_is_busy())
+    while(lcdIsBusy || twi_is_busy())
     {
         if((getTicks() - lcdStartTicks) > LCD_TIMEOUT_DELAY)
         {
@@ -255,7 +255,7 @@ static void send_nibble(uint8_t cmd, uint8_t byte)
         return;
     }
     
-    while(lcdIsBusy | twi_is_busy())
+    while(lcdIsBusy || twi_is_busy())
     {
         if((getTicks() - lcdStartTicks) > LCD_TIMEOUT_DELAY)
         {
@@ -290,7 +290,7 @@ static void send_byte(uint8_t cmd, uint8_t byte)
         return;
     }
 
-    while(lcdIsBusy | twi_is_busy())
+    while(lcdIsBusy || twi_is_busy())
     {
         if((getTicks() - lcdStartTicks) > LCD_TIMEOUT_DELAY)
         {

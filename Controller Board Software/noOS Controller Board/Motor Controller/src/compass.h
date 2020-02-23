@@ -14,6 +14,7 @@ extern Bool update_pid_compass;
 
 void compass_init(void);
 void update_compass(void);
+uint8_t get_compass_cal_status(uint8_t *cal_status);
 void set_compass_is_busy(void);
 uint8_t compass_is_busy(void);
 void set_opponent_goal(void);
