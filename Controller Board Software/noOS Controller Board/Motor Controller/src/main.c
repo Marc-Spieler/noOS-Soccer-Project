@@ -69,7 +69,7 @@ int main(void)
         act_event = button_events();
         menu(act_event);
         
-        if((getTicks() - bt_rx_ticks) <= 100)
+        /*if((getTicks() - bt_rx_ticks) <= 100)
         {
             ioport_set_pin_level(LED_ONBOARD, true);
         }
@@ -86,7 +86,7 @@ int main(void)
                     s.line.single.segment_4, s.line.single.segment_5, s.line.single.segment_6, s.line.single.segment_7, s.line.single.segment_8,\
                     s.line.single.segment_9, s.line.single.segment_10, s.line.single.segment_11, s.line.single.segment_12);
             bt_write(sprintf_buf, 14);
-        }
+        }*/
     }
 }
 

@@ -8,19 +8,12 @@
 #include "timing.h"
 #include "pid.h"
 
-#define RX_BUF_MAX_SIZE 128
-
-static Bool bt_data_arrived = false;
 static uint8_t txLen = 0;
 static uint8_t txId = 0;
 static uint8_t *txBuf = NULL;
-static uint8_t rxWrId = 0;
-//static uint8_t rxRdId = 0;
-static uint8_t rxBuf[RX_BUF_MAX_SIZE];
+static uint8_t rx_chunk = 0;
 
 uint32_t bt_rx_ticks = 0;
-
-pid_t bt_pid_tune;
 
 void bt_init(void)
 {
@@ -54,49 +47,6 @@ void bt_write(uint8_t *pbuf, uint8_t len)
     usart_enable_interrupt(USART0, US_IER_TXRDY);
 }
 
-/*void process_bt_rx(void)
-{
-    if (bt_data_arrived)
-    {
-        bt_data_arrived = false;
-        
-        switch(expected_bt_response)
-        {
-            case BT_RES_MATCH:
-                
-                break;
-            case BT_RES_PID_TUNER:
-                bt_pid_tune.kp = ;
-                bt_pid_tune.ki;
-                bt_pid_tune.kc;
-                bt_pid_tune.kd;
-                bt_pid_tune.intg;
-                bt_pid_tune.outMax;
-                bt_pid_tune.outMin;
-                bt_pid_tune.satErr;
-                bt_pid_tune.prevErr;
-        	    break;
-        }
-    }
-}*/
-
-/*uint8_t bt_read_byte(uint8_t *pbuf)
-{
-    // if buffer is empty then return immediately
-    if(rxRdId == rxWrId)
-    {
-        return 0;
-    }
-
-    *pbuf = rxBuf[rxRdId++];
-    if(rxRdId >= RX_BUF_MAX_SIZE)
-    {
-        rxRdId = 0;
-    }
-
-    return 1;
-}*/
-
 void USART0_Handler(void)
 {
     uint32_t ul_status = usart_get_status(USART0);
@@ -115,14 +65,34 @@ void USART0_Handler(void)
 
     if (ul_status & US_CSR_RXRDY)
     {
-        usart_read(USART0, &rxBuf[rxWrId++]);
+        uint8_t tmp = 0;
+        usart_read(USART0, &tmp);
         
-        if(rxWrId >= RX_BUF_MAX_SIZE)
+        if(tmp > 128) rx_chunk = 1;
+        
+        switch(rx_chunk)
         {
-            rxWrId = 0;
+            case 1:
+                ioport_set_pin_level(LED_ONBOARD, true);
+                break;
+            case 2:
+                ioport_set_pin_level(LED_ONBOARD, false);
+                break;
+            case 3:
+                ioport_set_pin_level(LED_M1, true);
+                break;
+            case 4:
+                ioport_set_pin_level(LED_M1, false);
+                break;
+            case 5:
+                ioport_set_pin_level(LED_M2, true);
+                break;
+            default:
+                ioport_set_pin_level(LED_M2, false);
+                break;
         }
         
-        bt_data_arrived = true;
+        rx_chunk++;
         bt_rx_ticks = getTicks();
     }
 }
