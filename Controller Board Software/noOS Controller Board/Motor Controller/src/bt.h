@@ -10,7 +10,7 @@
 #include "asf.h"
 
 // Table with all events used in eEMU application
-#define BT_EVENT_CALL               "CALL"
+/*#define BT_EVENT_CALL               "CALL"
 #define BT_EVENT_CONNECT            "CONNECT"
 #define BT_EVENT_INQUIRY            "INQUIRY"
 #define BT_EVENT_INQUIRY_PARTIAL    "INQUIRY_PARTIAL"
@@ -35,11 +35,11 @@
     BT_EVENT_SSP_COMPLETE,          \
     BT_EVENT_SSP_PASSKEY,           \
     BT_EVENT_SYNTAX_ERROR           \
-}
+}*/
 /*
  * Index to events in table
  */
-typedef enum
+/*typedef enum
 {
     BT_EVENT_CALL_ID = 0,
     BT_EVENT_CONNECT_ID,
@@ -62,12 +62,18 @@ typedef enum
     BT_RES_PID_TUNER
 } bt_response_t;
 
-extern bt_response_t expected_bt_response;
+extern bt_response_t expected_bt_response;*/
 
 extern uint32_t bt_rx_ticks;
 
+typedef struct
+{
+    uint8_t dir;
+} bt_rx_t;
+
+extern bt_rx_t bt_rx;
+
 void bt_init(void);
 void bt_write(uint8_t *pbuf, uint8_t len);
-//uint8_t bt_read_byte(uint8_t *pbuf);
 
 #endif

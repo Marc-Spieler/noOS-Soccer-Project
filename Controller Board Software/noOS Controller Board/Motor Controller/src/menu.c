@@ -13,6 +13,7 @@
 #include "iniparser.h"
 #include "motor.h"
 #include "math.h"
+#include "bt.h"
 
 #define TURN_NONE       0
 #define TURN_COMPASS    1
@@ -87,7 +88,7 @@ void menu(event_t event1)
     switch (act_menu)
     {
         case MENU_MAIN:
-            menu_main(event1);
+            menu_test(event1);//menu_main(event1);
             break;
         case MENU_MATCH:
             menu_match_hannover(event1);
@@ -199,32 +200,11 @@ static void menu_main(event_t event1)
 static void menu_test(event_t event1)
 {
     static uint32_t ticks_test = 0;
-    static pidReg_t pid_turn;
-    static Bool pid_updated = true;
-    static uint8_t turn_target = TURN_NONE;
     
     if(print_menu)
     {
-        pid_turn.kp = 1.2f;
-        pid_turn.ki = 0.0f;
-        pid_turn.kc = 0.0f;
-        pid_turn.kd = 0.8f;
-        pid_turn.outMin = -150.0f;
-        pid_turn.outMax = 150.0f;
-        
-        pid_updated = true;
-        
         //lcd_set_backlight(LCD_LIGHT_OFF);
         lcd_clear(); // required to turn backlight on/off
-        
-        if(inverted_start)
-        {
-            set_inverted_opponent_goal();
-        }
-        else
-        {
-            set_opponent_goal();
-        }
         
         enable_motor();
     }
@@ -233,154 +213,58 @@ static void menu_test(event_t event1)
     {
         ticks_test = getTicks();
         
-        estimate_rel_deviation();
+        float r_speed = 0.0f;
+        float r_dir = 0.0f;
+        float r_trn = 0.0f;
         
-        float robot_trn = 0;
-        
-        if(turn_target == TURN_COMPASS)
+        switch(bt_rx.dir)
         {
-            robot_trn = pidReg(&pid_turn, 0, -s.compass);
-        }
-        else if(turn_target == TURN_GOAL)
-        {
-            robot_trn = pidReg(&pid_turn, 0, s.goal.dir);
+            case 1:
+                r_speed = 30.0f;
+                r_dir = -45.0f;
+                break;
+            case 2:
+                r_speed = 30.0f;
+                break;
+            case 3:
+                r_speed = 30.0f;
+                r_dir = 45.0f;
+                break;
+            case 4:
+                r_trn = 30.0f;
+                break;
+            case 5:
+                r_speed = 30.0f;
+                r_dir = -90.0f;
+                break;
+            case 6:
+                r_speed = 30.0f;
+                r_dir = 90.0f;
+                break;
+            case 7:
+                r_trn = -30.0f;
+                break;
+            case 8:
+                r_speed = 30.0f;
+                r_dir = -135.0f;
+                break;
+            case 9:
+                r_speed = 30.0f;
+                r_dir = 180.0f;
+                break;
+            case 10:
+                r_speed = 30.0f;
+                r_dir = 135.0f;
+                break;
+            default:
+                break;
         }
         
-        set_motor(0, 0, robot_trn);
-    }
-    
-    if(pid_updated)
-    {
-        pid_updated = false;
-        sprintf(sprintf_buf, "P: %2.1f", pid_turn.kp);
-        lcd_print_s(1, 1, sprintf_buf);
-        sprintf(sprintf_buf, "I: %1.2f", pid_turn.ki);
-        lcd_print_s(2, 1, sprintf_buf);
-        sprintf(sprintf_buf, "C: %2.1f", pid_turn.kc);
-        lcd_print_s(3, 1, sprintf_buf);
-        sprintf(sprintf_buf, "D: %2.1f", pid_turn.kd);
-        lcd_print_s(4, 1, sprintf_buf);
-        print_cursor(&menu_info.pid_tuner);
+        set_motor(r_speed, r_dir, r_trn);
     }
     
     switch (event1)
     {
-        case EVENT_BUTTON_MID_P:
-            if(turn_target == TURN_COMPASS)
-            {
-                turn_target = TURN_GOAL;
-                ioport_set_pin_level(LED_M1, 0);
-            }
-            else
-            {
-                turn_target = TURN_COMPASS;
-                ioport_set_pin_level(LED_M1, 1);
-            }
-            break;
-        case EVENT_BUTTON_UP_P:
-            if (menu_info.pid_tuner.act_cursor_line > menu_info.pid_tuner.min_cursor_line)
-            {
-                menu_info.pid_tuner.act_cursor_line--;
-                print_cursor(&menu_info.pid_tuner);
-            }
-            break;
-        case EVENT_BUTTON_DOWN_P:
-            if (menu_info.pid_tuner.act_cursor_line < menu_info.pid_tuner.max_cursor_line)
-            {
-                menu_info.pid_tuner.act_cursor_line++;
-                print_cursor(&menu_info.pid_tuner);
-            }
-            break;
-        case EVENT_BUTTON_LEFT_P:
-            switch (menu_info.pid_tuner.act_cursor_line)
-            {
-                case 1:
-                    if(pid_turn.kp >= 0.1f)
-                    {
-                        pid_turn.kp -= 0.1f;
-                        pid_updated = true;
-                    }
-                    else
-                    {
-                        pid_turn.kp = 0.0f;
-                        pid_updated = true;
-                    }
-                    break;
-                case 2:
-                    if(pid_turn.ki >= 0.01f)
-                    {
-                        pid_turn.ki -= 0.01f;
-                        pid_updated = true;
-                    }
-                    else
-                    {
-                        pid_turn.ki = 0.0f;
-                        pid_updated = true;
-                    }
-                    break;
-                case 3:
-                    if(pid_turn.kc >= 0.1f)
-                    {
-                        pid_turn.kc -= 0.1f;
-                        pid_updated = true;
-                    }
-                    else
-                    {
-                        pid_turn.kc = 0.0f;
-                        pid_updated = true;
-                    }
-                    break;
-                case 4:
-                    if(pid_turn.kd >= 0.1f)
-                    {
-                        pid_turn.kd -= 0.1f;
-                        pid_updated = true;
-                    }
-                    else
-                    {
-                        pid_turn.kd = 0.0f;
-                        pid_updated = true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case EVENT_BUTTON_RIGHT_P:
-            switch (menu_info.pid_tuner.act_cursor_line)
-            {
-                case 1:
-                    if(pid_turn.kp < 10)
-                    {
-                        pid_turn.kp += 0.1f;
-                        pid_updated = true;
-                    }
-                    break;
-                case 2:
-                    if(pid_turn.ki < 10)
-                    {
-                        pid_turn.ki += 0.1f;
-                        pid_updated = true;
-                    }
-                    break;
-                case 3:
-                    if(pid_turn.kc < 10)
-                    {
-                        pid_turn.kc += 0.1f;
-                        pid_updated = true;
-                    }
-                    break;
-                case 4:
-                    if(pid_turn.kd < 10)
-                    {
-                        pid_turn.kd += 0.1f;
-                        pid_updated = true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            break;
         case EVENT_BUTTON_RETURN_P:
             disable_motor();
             lcd_set_backlight(LCD_LIGHT_ON);

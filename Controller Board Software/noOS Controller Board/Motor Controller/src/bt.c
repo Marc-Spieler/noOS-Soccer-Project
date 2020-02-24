@@ -8,6 +8,8 @@
 #include "timing.h"
 #include "pid.h"
 
+bt_rx_t bt_rx;
+
 static uint8_t txLen = 0;
 static uint8_t txId = 0;
 static uint8_t *txBuf = NULL;
@@ -74,21 +76,10 @@ void USART0_Handler(void)
         {
             case 1:
                 ioport_set_pin_level(LED_ONBOARD, true);
-                break;
-            case 2:
-                ioport_set_pin_level(LED_ONBOARD, false);
-                break;
-            case 3:
-                ioport_set_pin_level(LED_M1, true);
-                break;
-            case 4:
-                ioport_set_pin_level(LED_M1, false);
-                break;
-            case 5:
-                ioport_set_pin_level(LED_M2, true);
+                bt_rx.dir = (tmp - 128);
                 break;
             default:
-                ioport_set_pin_level(LED_M2, false);
+                bt_rx.dir = 0;
                 break;
         }
         
