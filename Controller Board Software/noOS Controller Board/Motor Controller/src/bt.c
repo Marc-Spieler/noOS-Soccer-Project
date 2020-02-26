@@ -9,6 +9,7 @@
 #include "pid.h"
 
 bt_rx_t bt_rx;
+bt_tx_t bt_tx;
 
 static uint8_t txLen = 0;
 static uint8_t txId = 0;
@@ -70,16 +71,29 @@ void USART0_Handler(void)
         uint8_t tmp = 0;
         usart_read(USART0, &tmp);
         
-        if(tmp > 128) rx_chunk = 1;
+        if(tmp >= 128) rx_chunk = 1;
         
         switch(rx_chunk)
         {
             case 1:
-                ioport_set_pin_level(LED_ONBOARD, true);
-                bt_rx.dir = (tmp - 128);
+                bt_rx.sbyte.active = (tmp & 0x2) ? 1 : 0;
+                bt_rx.sbyte.at_goal = (tmp & 0x1) ? 1 : 0;
+                break;
+            case 2:
+                bt_rx.ball_angle = tmp - 63;
+                break;
+            case 3:
+                bt_rx.goal_angle = tmp - 63;
+                break;
+            case 4:
+                bt_rx.ball_dist = tmp;
+                break;
+            case 5:
+                bt_rx.goal_dist = tmp;
+                ioport_set_pin_level(LED_M2, true);
+                ioport_set_pin_level(LED_M2, false);
                 break;
             default:
-                bt_rx.dir = 0;
                 break;
         }
         

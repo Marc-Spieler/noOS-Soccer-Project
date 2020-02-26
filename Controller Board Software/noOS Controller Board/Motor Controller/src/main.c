@@ -54,6 +54,7 @@ int main(void)
     spi_init();
     
     uint32_t bt_tx_ticks = 0;
+    bt_tx.sbyte.sbit = true;
     
     while (1)
     {
@@ -64,29 +65,29 @@ int main(void)
         
         prepare_values_to_send();
         process_new_sensor_values();
-        //process_bt_rx();
 
         act_event = button_events();
         menu(act_event);
         
-        /*if((getTicks() - bt_rx_ticks) <= 100)
-        {
-            ioport_set_pin_level(LED_ONBOARD, true);
-        }
-        else
-        {
-            ioport_set_pin_level(LED_ONBOARD, false);
-        }
+        bt_tx.sbyte.at_goal = s.distance.two.arrived;
+        bt_tx.ball_angle = (int)(s.ball.dir / 2.812) + 63;
+        bt_tx.goal_angle = (int)(s.goal.dir / 2.812) + 63;
+        bt_tx.goal_dist = s.goal.diff;
         
-        if((getTicks() - bt_tx_ticks) >= 5)
+        if((getTicks() - bt_tx_ticks) >= 100)
         {
             bt_tx_ticks = getTicks();
-            char sprintf_buf[14];
-            sprintf(sprintf_buf, "%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d\r\n", s.line.single.segment_1, s.line.single.segment_2, s.line.single.segment_3,\
-                    s.line.single.segment_4, s.line.single.segment_5, s.line.single.segment_6, s.line.single.segment_7, s.line.single.segment_8,\
-                    s.line.single.segment_9, s.line.single.segment_10, s.line.single.segment_11, s.line.single.segment_12);
-            bt_write(sprintf_buf, 14);
-        }*/
+            
+            uint8_t btbuf[5];
+            
+            btbuf[0] = bt_tx.full_sbyte;
+            btbuf[1] = bt_tx.ball_angle;
+            btbuf[2] = bt_tx.goal_angle;
+            btbuf[3] = bt_tx.ball_dist;
+            btbuf[4] = bt_tx.goal_dist;
+            
+            bt_write(&btbuf, 5);
+        }
     }
 }
 

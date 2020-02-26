@@ -66,7 +66,7 @@ Bool inverted_start = false;
 char sprintf_buf[21];
 
 static void menu_main(event_t event1);
-static void menu_match_hannover(event_t event1);
+static void menu_match(event_t event1);
 static void menu_test(event_t event1);
 static void menu_sensors(event_t event1);
 static void menu_camera(event_t event1);
@@ -88,10 +88,10 @@ void menu(event_t event1)
     switch (act_menu)
     {
         case MENU_MAIN:
-            menu_test(event1);//menu_main(event1);
+            menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_match_hannover(event1);
+            menu_test(event1);
             break;
         case MENU_SENSORS:
             menu_sensors(event1);
@@ -197,88 +197,7 @@ static void menu_main(event_t event1)
     }
 }
 
-static void menu_test(event_t event1)
-{
-    static uint32_t ticks_test = 0;
-    
-    if(print_menu)
-    {
-        //lcd_set_backlight(LCD_LIGHT_OFF);
-        lcd_clear(); // required to turn backlight on/off
-        
-        enable_motor();
-    }
-    
-    if ((getTicks() - ticks_test) > 50)
-    {
-        ticks_test = getTicks();
-        
-        float r_speed = 0.0f;
-        float r_dir = 0.0f;
-        float r_trn = 0.0f;
-        
-        switch(bt_rx.dir)
-        {
-            case 1:
-                r_speed = 30.0f;
-                r_dir = -45.0f;
-                break;
-            case 2:
-                r_speed = 30.0f;
-                break;
-            case 3:
-                r_speed = 30.0f;
-                r_dir = 45.0f;
-                break;
-            case 4:
-                r_trn = 30.0f;
-                break;
-            case 5:
-                r_speed = 30.0f;
-                r_dir = -90.0f;
-                break;
-            case 6:
-                r_speed = 30.0f;
-                r_dir = 90.0f;
-                break;
-            case 7:
-                r_trn = -30.0f;
-                break;
-            case 8:
-                r_speed = 30.0f;
-                r_dir = -135.0f;
-                break;
-            case 9:
-                r_speed = 30.0f;
-                r_dir = 180.0f;
-                break;
-            case 10:
-                r_speed = 30.0f;
-                r_dir = 135.0f;
-                break;
-            default:
-                break;
-        }
-        
-        set_motor(r_speed, r_dir, r_trn);
-    }
-    
-    switch (event1)
-    {
-        case EVENT_BUTTON_RETURN_P:
-            disable_motor();
-            lcd_set_backlight(LCD_LIGHT_ON);
-            lcd_clear(); // required to turn backlight on/off
-            act_menu = MENU_MAIN;
-            print_menu = true;
-            break;
-        default:
-            print_menu = false;
-            break;
-    }
-}
-
-static void menu_match_hannover(event_t event1)
+static void menu_match(event_t event1)
 {
     static Bool arrived_rear = false;
     float robot_speed = 0.0f;
@@ -306,7 +225,6 @@ static void menu_match_hannover(event_t event1)
     
     ioport_set_pin_level(LED_M1, 0);
     ioport_set_pin_level(LED_M2, 0);
-    //ioport_set_pin_level(LED_M3, 0);
     
     if(!s.ball.see && ((s.distance.one.arrived && robot_id == 1) || (s.distance.two.arrived && robot_id == 2)))//((s.line.see && s.line.esc < 45 && s.line.esc > -45) || s.distance))
     {
@@ -368,23 +286,6 @@ static void menu_match_hannover(event_t event1)
             }
             else
             {
-                /*if(abs(s.goal.dir) >= 3)
-                {
-                    robot_speed = abs(s.goal.dir) * 2;
-                    
-                    if(s.goal.dir >= 0)
-                    {
-                        robot_dir = 90.0f;
-                    }
-                    else
-                    {
-                        robot_dir = -90.0f;
-                    }
-                }
-                else
-                {
-                    
-                }*/
                 robot_speed = 30.0f;
                 
                 if(s.goal.dir < -5)
@@ -425,18 +326,6 @@ static void menu_match_hannover(event_t event1)
         
         if(s.line.diff > 0)
         {
-            /*if(abs(robot_dir - s.line.esc) > 180)
-            {
-                if(s.line.esc > robot_dir)
-                {
-                    robot_dir += 360;
-                }
-                else
-                {
-                    robot_dir -= 360;
-                }
-            }*/
-            
             if(abs(esc_dir_diff) <= 90)
             {
                 if(robot_dir < esc_min)
@@ -481,6 +370,63 @@ static void menu_match_hannover(event_t event1)
             break;
     }
 }
+
+static void menu_test(event_t event1)
+{
+    static Bool prev_active = false;
+    static Bool prev_at_goal = false;
+    static int8_t prev_ball_angle = 0;
+    static int8_t prev_goal_angle = 0;
+    static uint8_t prev_ball_dist = 0;
+    static uint8_t prev_goal_dist = 0;
+
+    if(print_menu)
+    {
+        lcd_clear();
+        bt_tx.sbyte.active = true;
+    }
+    
+    if(bt_rx.sbyte.active != prev_active || print_menu)
+    {
+        sprintf(sprintf_buf, "active: %1d", bt_rx.sbyte.active);
+        lcd_print_s(1, 0, sprintf_buf);
+        prev_active = bt_rx.sbyte.active;
+    }
+    if(bt_rx.sbyte.at_goal != prev_at_goal || print_menu)
+    {
+        sprintf(sprintf_buf, "at goal: %1d", bt_rx.sbyte.at_goal);
+        lcd_print_s(1, 10, sprintf_buf);
+        prev_at_goal = bt_rx.sbyte.at_goal;
+    }
+    
+    if(bt_rx.ball_angle != prev_ball_angle || bt_rx.ball_dist != prev_ball_dist || print_menu)
+    {
+        sprintf(sprintf_buf, "ball: %3d %2d", bt_rx.ball_angle, bt_rx.ball_dist);
+        lcd_print_s(2, 0, sprintf_buf);
+        prev_ball_angle = bt_rx.ball_angle;
+        prev_ball_dist = bt_rx.ball_dist;
+    }
+    
+    if(bt_rx.goal_angle != prev_goal_angle || bt_rx.goal_dist != prev_goal_dist || print_menu)
+    {
+        sprintf(sprintf_buf, "goal: %3d %2d", bt_rx.goal_angle, bt_rx.goal_dist);
+        lcd_print_s(3, 0, sprintf_buf);
+        prev_goal_angle = bt_rx.goal_angle;
+        prev_goal_dist = bt_rx.goal_dist;
+    }
+    
+    switch (event1)
+    {
+        case EVENT_BUTTON_RETURN_P:
+            bt_tx.sbyte.active = false;
+            act_menu = MENU_MAIN;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
+    }
+}    
 
 static void menu_sensors(event_t event1)
 {
