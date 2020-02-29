@@ -7,6 +7,7 @@
 #include "bt.h"
 #include "timing.h"
 #include "pid.h"
+#include "comm.h"
 
 bt_rx_t bt_rx;
 bt_tx_t bt_tx;
@@ -17,6 +18,7 @@ static uint8_t *txBuf = NULL;
 static uint8_t rx_chunk = 0;
 
 uint32_t bt_rx_ticks = 0;
+uint32_t bt_tx_ticks = 0;
 
 void bt_init(void)
 {
@@ -39,6 +41,8 @@ void bt_init(void)
     NVIC_EnableIRQ(USART0_IRQn);
     usart_enable_rx(USART0);
     usart_enable_tx(USART0);
+	
+	bt_tx.sbyte.sbit = true;
 }
 
 void bt_write(uint8_t *pbuf, uint8_t len)
@@ -48,6 +52,36 @@ void bt_write(uint8_t *pbuf, uint8_t len)
     txBuf = pbuf;
     usart_write(USART0, txBuf[txId++]);
     usart_enable_interrupt(USART0, US_IER_TXRDY);
+}
+
+void bt_maintenance(void)
+{
+	/* transfer new BT data */
+	bt_tx.sbyte.at_goal = s.distance.two.arrived;
+	bt_tx.ball_angle = (int)(s.ball.dir / 2.812) + 63;
+	bt_tx.goal_angle = (int)(s.goal.dir / 2.812) + 63;
+	bt_tx.goal_dist = s.goal.diff;
+	
+	if((getTicks() - bt_tx_ticks) >= 100)
+	{
+		bt_tx_ticks = getTicks();
+		
+		uint8_t btbuf[5];
+		
+		btbuf[0] = bt_tx.full_sbyte;
+		btbuf[1] = bt_tx.ball_angle;
+		btbuf[2] = bt_tx.goal_angle;
+		btbuf[3] = bt_tx.ball_dist;
+		btbuf[4] = bt_tx.goal_dist;
+		
+		bt_write(&btbuf, 5);
+	}
+	
+	/* set partner inactive if connection interrupts */
+	if((getTicks() - bt_rx_ticks) >= 500)
+	{
+		bt_rx.sbyte.active = false;
+	}
 }
 
 void USART0_Handler(void)
@@ -90,8 +124,8 @@ void USART0_Handler(void)
                 break;
             case 5:
                 bt_rx.goal_dist = tmp;
-                ioport_set_pin_level(LED_M2, true);
-                ioport_set_pin_level(LED_M2, false);
+                /*ioport_set_pin_level(LED_M2, true);
+                ioport_set_pin_level(LED_M2, false);*/
                 break;
             default:
                 break;
