@@ -30,9 +30,12 @@ typedef struct
   int S_MAX;
   int V_MIN;
   int V_MAX;
-  int TopBorder;
-  int THOLD;
-  int TCENTER;
+  int M_MID_high;
+  int M_MID_low;
+  int M_SIDE_high;
+  int M_SIDE_low;
+  //int THOLD;
+  //int TCENTER;
 }calPar_t;
 
 calPar_t ball;
@@ -69,12 +72,28 @@ int main(int argc, char** argv)
 	cv::createTrackbar( "S_MAX", "Slider", &par.S_MAX, 255 );
 	cv::createTrackbar( "V_MIN", "Slider", &par.V_MIN, 255 );
 	cv::createTrackbar( "V_MAX", "Slider", &par.V_MAX, 255 );
-  cv::createTrackbar( "TopBorder", "Slider", &par.TopBorder, 255 );
-	cv::createTrackbar( "THOLD", "Slider", &par.THOLD, 300 );
-	cv::createTrackbar( "TCENTER", "Slider", &par.TCENTER, 300 );
-	goal_blue.TopBorder = par.TopBorder;
-	goal_yellow.TopBorder = par.TopBorder;
-	ball.TopBorder = par.TopBorder;
+	cv::createTrackbar( "M_MID_high", "Slider", &par.M_MID_high, HEIGHT );
+	cv::createTrackbar( "M_MID_low", "Slider", &par.M_MID_low, HEIGHT );
+	cv::createTrackbar( "M_SIDE_high", "Slider", &par.M_SIDE_high, HEIGHT );
+	cv::createTrackbar( "M_SIDE_low", "Slider", &par.M_SIDE_low, HEIGHT );
+	
+	//cv::createTrackbar( "THOLD", "Slider", &par.THOLD, 300 );
+	//cv::createTrackbar( "TCENTER", "Slider", &par.TCENTER, 300 );
+	goal_blue.M_MID_high = par.M_MID_high;
+	goal_yellow.M_MID_high = par.M_MID_high;
+	ball.M_MID_high = par.M_MID_high;
+	
+	goal_blue.M_MID_low = par.M_MID_low;
+	goal_yellow.M_MID_low = par.M_MID_low;
+	ball.M_MID_low = par.M_MID_low;
+	
+	goal_blue.M_SIDE_high = par.M_SIDE_high;
+	goal_yellow.M_SIDE_high = par.M_SIDE_high;
+	ball.M_SIDE_high = par.M_SIDE_high;
+	
+	goal_blue.M_SIDE_low = par.M_SIDE_low;
+	goal_yellow.M_SIDE_low = par.M_SIDE_low;
+	ball.M_SIDE_low = par.M_SIDE_low;
   
 	// Camera object
 	raspicam::RaspiCam_Cv cam;
@@ -125,8 +144,56 @@ int main(int argc, char** argv)
 
     
 		// Mask image
-		cv::Mat mask = frame( cv::Rect(0, 0, 320, par.TopBorder) );    //Error when inserting "par.TopBorder" instead of "80"
+		cv::Mat mask = frame( cv::Rect(0, par.M_MID_high, WIDTH, par.M_MID_low) );    //Error when inserting "par.TopBorder" instead of "80"
 		mask.setTo( cv::Scalar(0, 0, 0) );
+		
+		
+		
+		//cv::Point A(par.M_SIDE_low, par.M_MID_high);
+		//cv::Point B(WIDTH, par.M_MID_high);
+		//cv::Point C(WIDTH, 0);
+		
+		/** Create some points */
+		cv::Point right_top_points[1][3];
+		//right_points[0][0] = cv::Point(WIDTH-par.M_SIDE_low, par.M_MID_high);
+		right_top_points[0][0] = cv::Point(WIDTH, par.M_MID_high);
+		right_top_points[0][1] = cv::Point(WIDTH, 0);
+		right_top_points[0][2] = cv::Point(WIDTH-par.M_SIDE_high, 0);
+		const cv::Point* ppt[1] = { right_top_points[0] };
+		int npt[] = { 3 };
+		cv::fillPoly(frame, ppt, npt, 1,cv::Scalar(0, 0, 0), 8);
+		
+		cv::Point right_low_points[1][3];
+		right_low_points[0][0] = cv::Point(WIDTH-par.M_SIDE_low, par.M_MID_high);
+		right_low_points[0][1] = cv::Point(WIDTH, par.M_MID_high);
+		right_low_points[0][2] = cv::Point(WIDTH, 0);
+		//right_low_points[0][3] = cv::Point(WIDTH-par.M_SIDE_high, 0);
+		const cv::Point* ppt_[1] = { right_low_points[0] };
+		int npt_[] = { 3 };
+		cv::fillPoly(frame, ppt_, npt_, 1,cv::Scalar(0, 0, 0), 8);
+		
+		
+		cv::Point left_top_points[1][3];
+		//left_points[0][0] = cv::Point(par.M_SIDE_low, par.M_MID_high);
+		left_top_points[0][0] = cv::Point(0, par.M_MID_high);
+		left_top_points[0][1] = cv::Point(0, 0);
+		left_top_points[0][2] = cv::Point(par.M_SIDE_high, 0);
+		const cv::Point* ppt_L[1] = { left_top_points[0] };
+		int npt_L[] = { 3 };
+		cv::fillPoly(frame, ppt_L, npt_L, 1,cv::Scalar(0, 0, 0), 8);
+		
+		
+		cv::Point left_low_points[1][3];
+		left_low_points[0][0] = cv::Point(par.M_SIDE_low, par.M_MID_high);
+		left_low_points[0][1] = cv::Point(0, par.M_MID_high);
+		left_low_points[0][2] = cv::Point(0, 0);
+		//left_low_points[0][3] = cv::Point(par.M_SIDE_high, 0);
+		const cv::Point* ppt_L_[1] = { left_low_points[0] };
+		int npt_L_[] = { 3 };
+		cv::fillPoly(frame, ppt_L_, npt_L_, 1,cv::Scalar(0, 0, 0), 8);
+		
+		
+		
 		
 		cv::Point mid( frame.cols / 2, frame.rows );
 
@@ -135,9 +202,25 @@ int main(int argc, char** argv)
 			first = false;
 			continue;
 		}
-    goal_blue.TopBorder = par.TopBorder;
-    goal_yellow.TopBorder = par.TopBorder;
-    ball.TopBorder = par.TopBorder;
+    
+    
+    goal_blue.M_MID_high = par.M_MID_high;
+	goal_yellow.M_MID_high = par.M_MID_high;
+	ball.M_MID_high = par.M_MID_high;
+	
+	goal_blue.M_MID_low = par.M_MID_low;
+	goal_yellow.M_MID_low = par.M_MID_low;
+	ball.M_MID_low = par.M_MID_low;
+	
+	goal_blue.M_SIDE_high = par.M_SIDE_high;
+	goal_yellow.M_SIDE_high = par.M_SIDE_high;
+	ball.M_SIDE_high = par.M_SIDE_high;
+	
+	goal_blue.M_SIDE_low = par.M_SIDE_low;
+	goal_yellow.M_SIDE_low = par.M_SIDE_low;
+	ball.M_SIDE_low = par.M_SIDE_low;
+    
+    
     isGoal_yellow = (GoalBall==1)?true:false;
     isBall = (GoalBall==2)?true:false;	
 		if( isBall )
@@ -161,9 +244,12 @@ int main(int argc, char** argv)
     cv::setTrackbarPos( "S_MAX", "Slider", par.S_MAX);
     cv::setTrackbarPos( "V_MIN", "Slider", par.V_MIN);
     cv::setTrackbarPos( "V_MAX", "Slider", par.V_MAX);
-    cv::setTrackbarPos( "TopBorder", "Slider", par.TopBorder);
-    cv::setTrackbarPos( "THOLD", "Slider", par.THOLD);
-    cv::setTrackbarPos( "TCENTER", "Slider", par.TCENTER);
+    cv::setTrackbarPos( "M_MID_high", "Slider", par.M_MID_high);
+    cv::setTrackbarPos( "M_MID_low", "Slider", par.M_MID_low);
+    cv::setTrackbarPos( "M_SIDE_high", "Slider", par.M_SIDE_high);
+    cv::setTrackbarPos( "M_SIDE_low", "Slider", par.M_SIDE_low);
+    //cv::setTrackbarPos( "THOLD", "Slider", par.THOLD);
+    //cv::setTrackbarPos( "TCENTER", "Slider", par.TCENTER);
     
 		//cv::GaussianBlur( frame, frame, cv::Size(13, 13), 2, 2 );
 
@@ -329,7 +415,10 @@ int main(int argc, char** argv)
 	fileOut << ball.S_MAX << "\n";
 	fileOut << ball.V_MIN << "\n";
 	fileOut << ball.V_MAX << "\n";
-  fileOut << ball.TopBorder;
+	fileOut << ball.M_MID_high << "\n";
+	fileOut << ball.M_MID_low << "\n";
+	fileOut << ball.M_SIDE_high << "\n";
+	fileOut << ball.M_SIDE_low;
 	fileOut.close();
   
   // Write calibration data out
@@ -340,7 +429,10 @@ int main(int argc, char** argv)
 	fileOut << goal_blue.S_MAX << "\n";
 	fileOut << goal_blue.V_MIN << "\n";
 	fileOut << goal_blue.V_MAX << "\n";
-  fileOut << goal_blue.TopBorder;
+	fileOut << ball.M_MID_high << "\n";
+	fileOut << ball.M_MID_low << "\n";
+	fileOut << ball.M_SIDE_high << "\n";
+	fileOut << ball.M_SIDE_low;
 	fileOut.close();
   
   // Write calibration data out
@@ -351,7 +443,10 @@ int main(int argc, char** argv)
 	fileOut << goal_yellow.S_MAX << "\n";
 	fileOut << goal_yellow.V_MIN << "\n";
 	fileOut << goal_yellow.V_MAX << "\n";
-  fileOut << goal_yellow.TopBorder;
+	fileOut << ball.M_MID_high << "\n";
+	fileOut << ball.M_MID_low << "\n";
+	fileOut << ball.M_SIDE_high << "\n";
+	fileOut << ball.M_SIDE_low;
 	fileOut.close();
   
 
@@ -399,7 +494,7 @@ bool loadCalibration(bool isBall, bool isGoal_yellow, calPar_t *par) {
   }
 	std::string line = "EMPTY";
 	size_t val;
-	for( int i = 0; i < 7; i++ ) {
+	for( int i = 0; i < 10; i++ ) {
 		if( !std::getline( fileIn, line ) ) {
 			printf( "[*] Error: Calibration file wrong format\n" );
 			return false;
@@ -432,8 +527,20 @@ bool loadCalibration(bool isBall, bool isGoal_yellow, calPar_t *par) {
 				printf( "V_MAX: %d\n", par->V_MAX );
 				break;
 			case 6:
-				par->TopBorder = val;
-				printf( "TopBorder: %d\n", par->TopBorder );
+				par->M_MID_high = val;
+				printf( "M_MID_high: %d\n", par->M_MID_high );
+				break;
+			case 7:
+				par->M_MID_low = val;
+				printf( "M_MID_low: %d\n", par->M_MID_low );
+				break;
+			case 8:
+				par->M_SIDE_high = val;
+				printf( "M_SIDE_high: %d\n", par->M_SIDE_high );
+				break;
+			case 9:
+				par->M_SIDE_low = val;
+				printf( "M_SIDE_low: %d\n", par->M_SIDE_low );
 				break;
 		}
 	}

@@ -24,7 +24,11 @@ int frameGoalReady = 1;	// will be cleared after goal init
 
 //pthread_mutex_t ready_mutex = PTHREAD_MUTEX_INITIALIZER;	
 
-int TopBorder = 80;
+//int TopBorder = 80;
+int M_MID_high;
+int M_MID_low;
+int M_SIDE_high;
+int M_SIDE_low;
 uint8_t minT = 255;
 uint8_t maxT = 0;
 uint16_t avgT = 0;
@@ -75,8 +79,51 @@ void *cameraTask(void *arguments)
       cam.grab();
       cam.retrieve( frame );
       // add TopBorder mask
-      cv::Mat mask = frame( cv::Rect(0, 0, WIDTH, TopBorder) );
-      mask.setTo( cv::Scalar(0, 0, 0) );
+      cv::Mat mask = frame( cv::Rect(0, M_MID_high, WIDTH, M_MID_low) );
+	  mask.setTo( cv::Scalar(0, 0, 0) );
+		
+	  /** Draw Polygon Mask */
+	cv::Point right_top_points[1][3];
+	//right_points[0][0] = cv::Point(WIDTH-M_SIDE_low, M_MID_high);
+	right_top_points[0][0] = cv::Point(WIDTH, M_MID_high);
+	right_top_points[0][1] = cv::Point(WIDTH, 0);
+	right_top_points[0][2] = cv::Point(WIDTH-M_SIDE_high, 0);
+	const cv::Point* ppt[1] = { right_top_points[0] };
+	int npt[] = { 3 };
+	cv::fillPoly(frame, ppt, npt, 1,cv::Scalar(0, 0, 0), 8);
+	
+	cv::Point right_low_points[1][3];
+	right_low_points[0][0] = cv::Point(WIDTH-M_SIDE_low, M_MID_high);
+	right_low_points[0][1] = cv::Point(WIDTH, M_MID_high);
+	right_low_points[0][2] = cv::Point(WIDTH, 0);
+	//right_low_points[0][3] = cv::Point(WIDTH-M_SIDE_high, 0);
+	const cv::Point* ppt_[1] = { right_low_points[0] };
+	int npt_[] = { 3 };
+	cv::fillPoly(frame, ppt_, npt_, 1,cv::Scalar(0, 0, 0), 8);
+	
+	
+	cv::Point left_top_points[1][3];
+	//left_points[0][0] = cv::Point(M_SIDE_low, M_MID_high);
+	left_top_points[0][0] = cv::Point(0, M_MID_high);
+	left_top_points[0][1] = cv::Point(0, 0);
+	left_top_points[0][2] = cv::Point(M_SIDE_high, 0);
+	const cv::Point* ppt_L[1] = { left_top_points[0] };
+	int npt_L[] = { 3 };
+	cv::fillPoly(frame, ppt_L, npt_L, 1,cv::Scalar(0, 0, 0), 8);
+	
+	
+	cv::Point left_low_points[1][3];
+	left_low_points[0][0] = cv::Point(M_SIDE_low, M_MID_high);
+	left_low_points[0][1] = cv::Point(0, M_MID_high);
+	left_low_points[0][2] = cv::Point(0, 0);
+	//left_low_points[0][3] = cv::Point(M_SIDE_high, 0);
+	const cv::Point* ppt_L_[1] = { left_low_points[0] };
+	int npt_L_[] = { 3 };
+	cv::fillPoly(frame, ppt_L_, npt_L_, 1,cv::Scalar(0, 0, 0), 8);
+
+
+
+
 
       // Convert image from BGR to HSV
       cv::cvtColor( frame, hsv, cv::COLOR_RGB2HSV );

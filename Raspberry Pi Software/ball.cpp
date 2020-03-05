@@ -37,7 +37,7 @@ void *ballTask(void *arguments)
 		
 	std::string line = "EMPTY";
 	size_t val;
-	for( int i = 0; i < 7; i++ )
+	for( int i = 0; i < 10; i++ )
 	{
 		if( !std::getline( file, line ) )
 		{
@@ -73,8 +73,20 @@ void *ballTask(void *arguments)
 				printf( "[*Ball] V_MAX: %d\r\n", V_MAX );
 				break;
 			case 6:
-				TopBorder = val;
-				printf( "[*Ball] TopBorder: %d\r\n", TopBorder );
+				M_MID_high = val;
+				printf( "[*Ball] M_MID_high: %d\r\n", M_MID_high );
+				break;
+			case 7:
+				M_MID_low = val;
+				printf( "[*Ball] M_MID_low: %d\r\n", M_MID_low );
+				break;
+			case 8:
+				M_SIDE_high = val;
+				printf( "[*Ball] M_SIDE_high: %d\r\n", M_SIDE_high );
+				break;
+			case 9:
+				M_SIDE_low = val;
+				printf( "[*Ball] M_SIDE_low: %d\r\n", M_SIDE_low );
 				break;
 		}
 	}
@@ -89,9 +101,9 @@ void *ballTask(void *arguments)
 
 	time( &rawtime );
 	dateTime = localtime( &rawtime );
-	strftime( filenameBuffer, 80,"BWB_%H_%M.avi", dateTime );
-	printf("%s",filenameBuffer);
-	vidOutBall.open( filenameBuffer, CV_FOURCC('H', '2', '6', '4'), 30, cv::Size(WIDTH, HEIGHT), true );
+	//strftime( filenameBuffer, 80,"BWB_%H_%M.avi", dateTime );
+	//printf("%s",filenameBuffer);
+	//vidOutBall.open( filenameBuffer, CV_FOURCC('H', '2', '6', '4'), 30, cv::Size(WIDTH, HEIGHT), true );
 	
     frameBallReady = 0;
 
@@ -111,9 +123,9 @@ void *ballTask(void *arguments)
 			std::vector<Area> areas;
       
 			// Search every 4th pixel 
-			for( int y = 0; y < flatted.rows; y+=8 )
+			for( int y = 0; y < flatted.rows; y+=4 )
 			{
-				for( int x = 0; x < flatted.cols; x+=8 )
+				for( int x = 0; x < flatted.cols; x+=4 )
 				{
 					// Read value
 					uchar value = flatted.at<uchar>( y, x );
@@ -189,7 +201,8 @@ void *ballTask(void *arguments)
 				objBall = bigArea.getStart();
 				objBall.x += bigArea.getWidth() / 2;
 				objBall.y += bigArea.getHeight() / 2;
-
+				
+				
 				float horizontal = 0, vertical = 0;
 				horizontal = ((float)(objBall.x - (WIDTH / 2)) / (float)(WIDTH / 2)) * 31.0f; // horizontal ball position on a scale from -31.0 to 31.0
 				vertical = ((float) ((HEIGHT / 2) - objBall.y) / (float) HEIGHT) * 50.0f;
@@ -203,9 +216,23 @@ void *ballTask(void *arguments)
 				{
 					horizontal = 31.0f;
 				}
-
+				
+				
+				if (objBall.y > M_MID_high)
+				{
+					//printf("1\n");//vorne
+				}
+				else
+				{
+					//printf("0\n");//spiegel
+					horizontal=(float(horizontal/31))*(-45);//spiegeln, 74grad Sichtfeld
+					horizontal+=180;//hinten
+					
+				}
+				printf("%f\r\n",horizontal);
 				horizontal += 32.0f; // horizontal values are now 1.0 - 63.0
-//				printf("Obj.x mid.x WIDTH :%d %d %d\r\n", obj.x, mid.x, WIDTH);
+				//printf("Obj.x mid.x WIDTH :%d %d %d\r\n", objBall.x, mid.x, WIDTH);
+				//printf("X:%d Y:%d\r\n", objBall.x, objBall.y);
 				infoBall.ball1.horizontal = (unsigned short) horizontal;
 				infoBall.ball1.vertical = (unsigned short) vertical;
 				infoBall.status.see = 1;

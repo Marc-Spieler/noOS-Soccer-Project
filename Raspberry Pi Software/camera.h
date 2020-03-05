@@ -23,7 +23,11 @@ extern int frameGoalReady;
 //extern pthread_cond_t frameBallReady = PTHREAD_COND_INITIALIZER;	
 //extern pthread_cond_t frameGoalReady = PTHREAD_COND_INITIALIZER;
 
-extern int TopBorder;
+//extern int TopBorder;
+extern int M_MID_high;
+extern int M_MID_low;
+extern int M_SIDE_high;
+extern int M_SIDE_low;
 extern cv::Mat hsv;
 extern cv::Mat frame;
 extern cv::Mat frameTmp;
