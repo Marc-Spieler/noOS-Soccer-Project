@@ -68,6 +68,7 @@ char sprintf_buf[21];
 
 static void menu_main(event_t event1);
 static void menu_match(event_t event1);
+static void menu_kicker(event_t event1);
 static void menu_test(event_t event1);
 static void menu_sensors(event_t event1);
 static void menu_camera(event_t event1);
@@ -92,8 +93,14 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_test(event1);
+            menu_match(event1);
             break;
+		case MENU_KICKER:
+			menu_kicker(event1);
+			break;
+		case MENU_TEST:
+			menu_test(event1);
+			break;
         case MENU_SENSORS:
             menu_sensors(event1);
             break;
@@ -188,6 +195,17 @@ static void menu_main(event_t event1)
                     break;
             }
             break;
+		case EVENT_BUTTON_LEFT_P:
+			switch (menu_info.main.act_cursor_line)
+			{
+				case 2:
+				act_menu = MENU_KICKER;
+				print_menu = true;
+				break;
+				default:
+				break;
+			}
+			break;
         case EVENT_BUTTON_RETURN_P:
             act_menu = MENU_SHUTDOWN;
             print_menu = true;
@@ -214,6 +232,7 @@ static void menu_match(event_t event1)
             set_opponent_goal();
         }
         
+		bt_tx.sbyte.active = true;
         enable_motor();
     }
     
@@ -222,7 +241,8 @@ static void menu_match(event_t event1)
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
-            disable_motor();
+            bt_tx.sbyte.active = false;
+			disable_motor();
             ioport_set_pin_level(LED_M1, 0);
             ioport_set_pin_level(LED_M2, 0);
             ioport_set_pin_level(LED_M3, 0);
@@ -237,7 +257,7 @@ static void menu_match(event_t event1)
     }
 }
 
-static void menu_test(event_t event1)
+static void menu_kicker(event_t event1)
 {
     uint32_t prev_percentage = 0;
     
@@ -249,11 +269,16 @@ static void menu_test(event_t event1)
     
     if(kicker_percentage != prev_percentage)
     {
-        sprintf(sprintf_buf, "Voltage: %3d %%", kicker_percentage);
-        lcd_print_s(2, 0, sprintf_buf);
+        sprintf(sprintf_buf, "power: %3d%%", kicker_percentage);
+        lcd_print_s(2, 4, sprintf_buf);
         prev_percentage = kicker_percentage;
     }
     
+	if(s.ball.have)
+	{
+		kick_ball();
+	}
+	
     switch(event1)
     {
         case EVENT_BUTTON_MID_P:
@@ -268,7 +293,7 @@ static void menu_test(event_t event1)
             break;
     }
 }
-/*
+
 static void menu_test(event_t event1)
 {
     static Bool prev_active = false;
@@ -325,7 +350,7 @@ static void menu_test(event_t event1)
             break;
     }
 }
-*/
+
 static void menu_sensors(event_t event1)
 {
     if (print_menu)

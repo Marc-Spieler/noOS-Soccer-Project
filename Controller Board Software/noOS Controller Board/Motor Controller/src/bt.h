@@ -18,8 +18,9 @@ typedef struct
         struct
         {
             uint8_t sbit	 :1;
-            uint8_t rsvd	 :5;
+            uint8_t rsvd	 :4;
             uint8_t active	 :1;
+			uint8_t ball_see :1;
             uint8_t at_goal	 :1;
         } sbyte;
         uint8_t full_sbyte;
@@ -38,8 +39,9 @@ typedef struct
         struct
         {
             uint8_t at_goal	 :1;
-            uint8_t active	 :1;
-            uint8_t rsvd	 :5;
+            uint8_t ball_see :1;
+			uint8_t active	 :1;
+            uint8_t rsvd	 :4;
             uint8_t sbit	 :1;
         } sbyte;
         uint8_t full_sbyte;

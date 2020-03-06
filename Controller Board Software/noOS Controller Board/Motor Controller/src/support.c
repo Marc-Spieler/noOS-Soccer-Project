@@ -92,7 +92,7 @@ void update_vkick(void)
         
         //while ((adc_get_status(ADC) & ADC_ISR_DRDY) != ADC_ISR_DRDY);
         uint32_t tmp = adc_get_channel_value(ADC, KICK_VOLTAGE);
-        kicker_percentage = (tmp / 41.0f);
+        kicker_percentage = (tmp / 37.0f);
         adc_start(ADC);
     }
 }

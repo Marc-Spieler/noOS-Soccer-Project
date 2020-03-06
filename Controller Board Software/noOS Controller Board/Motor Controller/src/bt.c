@@ -57,9 +57,8 @@ void bt_write(uint8_t *pbuf, uint8_t len)
 void bt_maintenance(void)
 {
 	/* transfer new BT data */
-	bt_tx.sbyte.at_goal = s.distance.two.arrived;
-	bt_tx.ball_angle = (int)(s.ball.dir / 2.812) + 63;
-	bt_tx.goal_angle = (int)(s.goal.dir / 2.812) + 63;
+	bt_tx.ball_angle = (int)(s.ball.dir * 0.3556) + 63;
+	bt_tx.goal_angle = (int)(s.goal.dir * 0.3356) + 63;
 	bt_tx.goal_dist = s.goal.diff;
 	
 	if((getTicks() - bt_tx_ticks) >= 100)

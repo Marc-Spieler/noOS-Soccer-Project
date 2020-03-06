@@ -285,7 +285,11 @@ void process_new_sensor_values(void)
         {
             ticks_ball_seen = getTicks();
             s.ball.see = true;
-            s.ball.dir = (rtm.ball.dir - 32) * 2;
+            s.ball.dir = (rtm.ball.dir - 63);
+			while(s.ball.dir > 180)
+			{
+				s.ball.dir -= 360;
+			}
             prev_s_ball_dir = s.ball.dir;
         }
         else
@@ -340,7 +344,7 @@ void process_new_sensor_values(void)
         {
             ticks_goal_seen = getTicks();
             s.goal.see = true;
-            s.goal.dir = (rtm.goal.dir - 32) * 2;
+            s.goal.dir = (rtm.goal.dir - 63);
             s.goal.diff = rtm.goal.diff * 2;
             prev_s_goal_dir = s.goal.dir;
             prev_s_goal_diff = s.goal.diff;

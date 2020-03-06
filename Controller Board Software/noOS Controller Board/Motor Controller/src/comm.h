@@ -20,7 +20,7 @@ typedef struct
     
     struct
     {
-        int8_t dir;
+        int16_t dir;
         Bool see;
         Bool have;
         Bool have_2;
@@ -174,19 +174,19 @@ typedef struct
 {
     struct
     {
-        uint16_t dir         :6;
+        uint16_t dir         :7;
         uint16_t see         :1;
         uint16_t diff        :5;
-        uint16_t rsvd        :4;
+        uint16_t rsvd        :3;
     } goal;
     
     struct
     {
-        uint16_t dir         :6;
+        uint16_t dir         :9;
         uint16_t see         :1;
         uint16_t have        :1;
         uint16_t have_2      :1;
-        uint16_t rsvd        :7;
+        uint16_t rsvd        :4;
     } ball;
 } raspberrypi_to_motor_t;
 

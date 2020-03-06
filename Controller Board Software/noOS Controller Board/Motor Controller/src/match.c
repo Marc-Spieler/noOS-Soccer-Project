@@ -19,7 +19,7 @@ float robot_trn = 0.0f;
 
 static void move2ball(void);
 static void ball2goal(void);
-static void return2goal(void);
+static void return2goal(Bool pos);
 
 void match(void)
 {
@@ -30,15 +30,50 @@ void match(void)
     
     if(bt_rx.sbyte.active)
     {
-        /*bt_rx.ball_angle
-        bt_rx.ball_dist
-        bt_rx.goal_angle
-        bt_rx.goal_dist
-        
-        if()
-        {
-            
-        }*/
+		bt_tx.sbyte.at_goal = false;
+		
+		if(bt_rx.sbyte.ball_see && s.ball.see)
+		{
+			if(abs(bt_rx.ball_angle) > abs(s.ball.dir))
+			{
+				if(s.ball.have || s.ball.have_2)
+				{
+					ball2goal();
+				}
+				else
+				{
+					move2ball();
+				}
+			}
+			else
+			{
+				bt_rx.sbyte.at_goal = true;
+				return2goal(true);
+			}
+		}
+		else if(!bt_rx.sbyte.ball_see && s.ball.see)
+		{
+			if(s.ball.have || s.ball.have_2)
+			{
+				ball2goal();
+			}
+			else
+			{
+				move2ball();
+			}
+		}
+		else
+		{
+			if(bt_rx.sbyte.at_goal)
+			{
+				return2goal(false);
+			}
+			else
+			{
+				bt_tx.sbyte.at_goal = true;
+				return2goal(true);
+			}
+		}
     }
     else
     {
@@ -65,7 +100,7 @@ void match(void)
             }
             else
             {
-                return2goal();
+                return2goal(robot_id == 2 ? true : false);
             }
         }
     }
@@ -138,61 +173,66 @@ static void ball2goal(void)
         }
         else
         {
-            // if ball in kick position
-            // kick
+            if(s.ball.have)
+            {
+	            kick_ball();
+            }
         }
         
         robot_trn = -s.goal.dir;
     }
 }
 
-static void return2goal(void)
+static void return2goal(Bool pos)
 {
-    if(!arrived_rear)
-    {
-        robot_speed = 75.0f;
-        
-        if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)\
-        || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
-        {
-            if(s.goal.see && (s.goal.dir < -10 || s.goal.dir > 10)) // when goal visible center on field using goal as reference
-            {
-                if(s.goal.dir < -10)
-                {
-                    robot_dir = -155.0f;
-                }
-                else
-                {
-                    robot_dir = 155.0f;
-                }
-            }
-            else
-            {
-                robot_dir = 180.0f;
-            }
-        }
-    }
-    else
-    {
-        robot_speed = 30.0f;
-        
-        if(s.goal.dir < -5)
-        {
-            robot_dir = -90.0f;
-        }
-        else if(s.goal.dir > 5)
-        {
-            robot_dir = 90.0f;
-        }
-        else
-        {
-            robot_speed = 0.0f;
-        }
-    }
+	if(!arrived_rear)
+	{
+		robot_speed = 75.0f;
+			
+		if((!pos && !s.distance.one.arrived && !s.distance.one.correction_dir) || \
+			(pos && !s.distance.two.arrived && !s.distance.two.correction_dir))
+		{
+			if(s.goal.see && (s.goal.dir < -10 || s.goal.dir > 10)) // when goal visible center on field using goal as reference
+			{
+				if(s.goal.dir < -10)
+				{
+					robot_dir = -155.0f;
+				}
+				else
+				{
+					robot_dir = 155.0f;
+				}
+			}
+			else
+			{
+				robot_dir = 180.0f;
+			}
+		}
+	}
+	else
+	{
+		robot_speed = 30.0f;
+			
+		if(s.goal.dir < -5)
+		{
+			robot_dir = -90.0f;
+		}
+		else if(s.goal.dir > 5)
+		{
+			robot_dir = 90.0f;
+		}
+		else
+		{
+			robot_speed = 0.0f;
+		}
+	}
 }
 
 void kick_ball(void)
 {
-    ioport_set_pin_level(KICK_TRIG, 1);
-    ticks_kicked = getTicks();
+	if(kicker_percentage >= 70 && (getTicks() - ticks_kicked) >= 100)
+	{
+		ticks_kicked = getTicks();
+		ioport_set_pin_level(KICK_TRIG, 1);
+	}
 }

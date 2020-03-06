@@ -36,6 +36,8 @@ typedef enum
 {
     MENU_MAIN,
     MENU_MATCH,
+	MENU_KICKER,
+	MENU_TEST,
     MENU_SENSORS,
     MENU_CAMERA,
     MENU_COMPASS,
