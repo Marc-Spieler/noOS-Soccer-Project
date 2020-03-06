@@ -9,6 +9,8 @@
 
 #include "asf.h"
 
+extern Bool first_loop;
+
 void match(void);
 void kick_ball(void);
 

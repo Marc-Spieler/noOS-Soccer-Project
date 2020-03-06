@@ -22,15 +22,7 @@ pidReg_t pid_compass;
 float pid_compass_out = 0.0f;
 uint8_t turn_target = TURN_NONE;
 
-pid_compass.kp = 0.7f;
-pid_compass.ki = 0.0f;
-pid_compass.kc = 0.0f;
-pid_compass.kd = 0.6f;
-pid_compass.outMin = -150.0f;
-pid_compass.outMax = 150.0f;
-pid_compass.intg = 0.0f;
-pid_compass.prevErr = 0.0f;
-pid_compass.satErr = 0.0f;
+Bool first_loop = false;
 
 Bool arrived_rear = false;
 float robot_speed = 0.0f;
@@ -43,6 +35,24 @@ static void return2goal(Bool pos);
 
 void match(void)
 {
+	if(first_loop)
+	{
+		first_loop = false;
+		pid_compass.kp = 0.7f;
+		pid_compass.ki = 0.0f;
+		pid_compass.kc = 0.0f;
+		pid_compass.kd = 0.6f;
+		pid_compass.outMin = -150.0f;
+		pid_compass.outMax = 150.0f;
+		pid_compass.intg = 0.0f;
+		pid_compass.prevErr = 0.0f;
+		pid_compass.satErr = 0.0f;
+	}
+	
+	robot_dir = 0.0f;
+	robot_speed = 0.0f;
+	robot_trn = 0.0f;
+	
     estimate_rel_deviation();
     
     ioport_set_pin_level(LED_M1, 0);
@@ -56,6 +66,7 @@ void match(void)
     
     if(bt_rx.sbyte.active)
     {
+		#if 0
 		bt_tx.sbyte.at_goal = false;
 		
 		if(bt_rx.sbyte.ball_see && s.ball.see)
@@ -100,6 +111,7 @@ void match(void)
 				return2goal(true);
 			}
 		}
+		#endif
     }
     else
     {
@@ -196,7 +208,21 @@ void match(void)
 
 static void move2ball(void)
 {
-    robot_dir = (float)s.ball.dir * 2.2f;
+	if(abs(s.ball.dir) < 64)
+	{
+		robot_dir = (float)s.ball.dir * 1.5f; // 2.2f
+	}
+    else
+	{
+		if(s.ball.dir < 0)
+		{
+			robot_dir = 135.0f;
+		}
+		else
+		{
+			robot_dir = -135.0f;
+		}
+	}
     robot_speed = 75.0f;
 }
 

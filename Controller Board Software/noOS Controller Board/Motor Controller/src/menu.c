@@ -219,6 +219,7 @@ static void menu_match(event_t event1)
         lcd_set_backlight(LCD_LIGHT_OFF);
         lcd_clear(); //required to turn backlight on/off
         
+		first_loop = true;
         if(inverted_start)
         {
             set_inverted_opponent_goal();
@@ -228,7 +229,7 @@ static void menu_match(event_t event1)
             set_opponent_goal();
         }
         
-		bt_tx.sbyte.active = true;
+		//bt_tx.sbyte.active = true;
         enable_motor();
     }
     
