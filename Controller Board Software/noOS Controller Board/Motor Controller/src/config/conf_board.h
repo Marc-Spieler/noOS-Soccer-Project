@@ -63,6 +63,12 @@
 #define RPI5                                    (PIO_PA5_IDX)
 #define RPI6                                    (PIO_PA0_IDX)
 
+/* Kicker pin definition */
+#define KICK_TRIG                               (PIO_PB24_IDX)
+//#define KICK_VOLTAGE                            (PIO_PB21_IDX)
+#define KICK_VOLTAGE                            (ADC_CHANNEL_14)
+
+
 /* Motor pin definition */
 #define MOTOR_LEFT           				    (PWM_CHANNEL_0)
 #define MOTOR_LEFT_L					        (PIO_PC2_IDX)

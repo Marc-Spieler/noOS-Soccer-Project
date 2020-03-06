@@ -47,7 +47,16 @@ void board_init(void)
 	ioport_set_pin_mode(PB_DOWN, IOPORT_MODE_PULLUP | IOPORT_MODE_DEBOUNCE);
 	ioport_set_pin_dir(PB_RETURN, IOPORT_DIR_INPUT);
 	ioport_set_pin_mode(PB_RETURN, IOPORT_MODE_PULLUP | IOPORT_MODE_DEBOUNCE);
-  
+    
+    /* Configure Kicker pins */
+    ioport_set_pin_dir(KICK_TRIG, IOPORT_DIR_OUTPUT);
+    ioport_set_pin_level(KICK_TRIG, 0);
+    pmc_enable_periph_clk(ID_ADC);
+    adc_init(ADC, sysclk_get_cpu_hz(), 6400000, ADC_STARTUP_TIME_4);
+    adc_configure_timing(ADC, 1, ADC_SETTLING_TIME_3, 1);
+    adc_enable_channel(ADC, KICK_VOLTAGE);
+    adc_configure_trigger(ADC, ADC_TRIG_SW, 0);
+    
     /* Configure Motor pins */
     ioport_set_pin_mode(MOTOR_LEFT_L, IOPORT_MODE_MUX_B);
     ioport_disable_pin(MOTOR_LEFT_L);

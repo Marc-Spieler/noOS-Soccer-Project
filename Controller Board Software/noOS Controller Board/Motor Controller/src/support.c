@@ -6,6 +6,7 @@
 
 #include "support.h"
 #include "comm.h"
+#include "timing.h"
 
 dictionary* noOS_ini_dict;
 
@@ -13,6 +14,11 @@ uint16_t robot_id = 1;
 uint16_t speed_preset = 15;
 Bool heartbeat = false;
 Bool allow_leds = true;
+
+//uint32_t kicker_voltage = 0;
+uint8_t kicker_percentage = 0;
+uint32_t ticks_kicked = 0;
+uint32_t ticks_vkick = 0;
 
 inline void set_led(ioport_pin_t pin, Bool level)
 {
@@ -66,4 +72,27 @@ void parse_ini_file(void)
     speed_preset = iniparser_getint(noOS_ini_dict, "general:speed", 15);
     heartbeat = iniparser_getboolean(noOS_ini_dict, "general:heartbeat", false);
     mts.line_cal_value = iniparser_getint(noOS_ini_dict, "general:line_cal", 12);
+}
+
+void kicker_maintenance(void)
+{
+    update_vkick();
+    
+    if((getTicks() - ticks_kicked) >= 100)
+    {
+        ioport_set_pin_level(KICK_TRIG, 0);
+    }
+}
+
+void update_vkick(void)
+{
+    if((getTicks() - ticks_vkick) >= 250)
+    {
+        ticks_vkick = getTicks();
+        
+        //while ((adc_get_status(ADC) & ADC_ISR_DRDY) != ADC_ISR_DRDY);
+        uint32_t tmp = adc_get_channel_value(ADC, KICK_VOLTAGE);
+        kicker_percentage = (tmp / 41.0f);
+        adc_start(ADC);
+    }
 }

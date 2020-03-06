@@ -14,6 +14,7 @@
 #include "motor.h"
 #include "math.h"
 #include "bt.h"
+#include "match.h"
 
 #define TURN_NONE       0
 #define TURN_COMPASS    1
@@ -199,11 +200,6 @@ static void menu_main(event_t event1)
 
 static void menu_match(event_t event1)
 {
-    static Bool arrived_rear = false;
-    float robot_speed = 0.0f;
-    float robot_dir = 0.0f;
-    float robot_trn = 0.0f;
-    
     if(print_menu)
     {
         lcd_set_backlight(LCD_LIGHT_OFF);
@@ -221,138 +217,8 @@ static void menu_match(event_t event1)
         enable_motor();
     }
     
-    estimate_rel_deviation();
+    match();
     
-    ioport_set_pin_level(LED_M1, 0);
-    ioport_set_pin_level(LED_M2, 0);
-    
-    if(!s.ball.see && ((s.distance.one.arrived && robot_id == 1) || (s.distance.two.arrived && robot_id == 2)))//((s.line.see && s.line.esc < 45 && s.line.esc > -45) || s.distance))
-    {
-        arrived_rear = true;
-    }
-    else// if(s.ball.see)
-    {
-        arrived_rear = false;
-    }        
-    
-    robot_trn = s.compass;
-
-    if(s.ball.have || s.ball.have_2)
-    {
-        robot_speed = 100.0f;
-            
-        if(s.goal.see)
-        {
-            if(abs(s.goal.dir) > s.goal.diff)
-            {
-                robot_speed = 50.0f;
-            }
-            
-            robot_trn = -s.goal.dir;
-        }
-    }
-    else
-    {
-        if(s.ball.see)
-        {
-            robot_dir = (float)s.ball.dir * 2.2f;
-            robot_speed = 75.0f;
-        }
-        else
-        {
-            if(!arrived_rear)
-            {
-                robot_speed = 75.0f;
-                
-                if((robot_id == 1 && !s.distance.one.arrived && !s.distance.one.correction_dir)\
-                || (robot_id == 2 && !s.distance.two.arrived && !s.distance.two.correction_dir))
-                {
-                    if(s.goal.see && (s.goal.dir < -10 || s.goal.dir > 10))
-                    {
-                        if(s.goal.dir < -10)
-                        {
-                            robot_dir = -155.0f;
-                        }
-                        else
-                        {
-                            robot_dir = 155.0f;
-                        }
-                    }
-                    else
-                    {
-                        robot_dir = 180.0f;
-                    }
-                }
-            }
-            else
-            {
-                robot_speed = 30.0f;
-                
-                if(s.goal.dir < -5)
-                {
-                    robot_dir = -90.0f;
-                }
-                else if(s.goal.dir > 5)
-                {
-                    robot_dir = 90.0f;
-                }
-                else
-                {
-                    robot_speed = 0.0f;
-                }
-            }
-        }
-    }
-    
-    if(s.line.see)
-    {
-        int16_t esc_min = s.line.esc - s.line.diff;
-        int16_t esc_max = s.line.esc + s.line.diff;
-        
-        while(esc_min <= -180) esc_min += 360;
-        while(esc_max > 180) esc_max -= 360;
-        
-        if(esc_min > esc_max)
-        {
-            int16_t tmp = esc_min;
-            esc_min = esc_max;
-            esc_max = tmp;
-        }
-        
-        int16_t esc_dir_diff = s.line.esc - robot_dir;
-        
-        while(esc_dir_diff <= -180) esc_dir_diff += 360;
-        while(esc_dir_diff > 180) esc_dir_diff -= 360;
-        
-        if(s.line.diff > 0)
-        {
-            if(abs(esc_dir_diff) <= 90)
-            {
-                if(robot_dir < esc_min)
-                {
-                    robot_dir = esc_min;
-                    ioport_set_pin_level(LED_M2, 1);
-                }
-                if(robot_dir > esc_max)
-                {
-                    robot_dir = esc_max;
-                    ioport_set_pin_level(LED_M1, 1);
-                }
-            }
-            else
-            {
-                robot_dir = robot_dir < 0 ? esc_min : esc_max;
-            }
-        }
-        else
-        {
-            robot_dir = (float)(s.line.esc);
-            robot_speed = 75.0f;
-        }
-    }
-    
-    set_motor(robot_speed, robot_dir, robot_trn);
-
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
@@ -371,6 +237,38 @@ static void menu_match(event_t event1)
     }
 }
 
+static void menu_test(event_t event1)
+{
+    uint32_t prev_percentage = 0;
+    
+    if(print_menu)
+    {
+        lcd_clear();
+        lcd_print_s(3, 1, "press mid to kick");
+    }
+    
+    if(kicker_percentage != prev_percentage)
+    {
+        sprintf(sprintf_buf, "Voltage: %3d %%", kicker_percentage);
+        lcd_print_s(2, 0, sprintf_buf);
+        prev_percentage = kicker_percentage;
+    }
+    
+    switch(event1)
+    {
+        case EVENT_BUTTON_MID_P:
+            kick_ball();
+            break;
+        case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_MAIN;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
+    }
+}
+/*
 static void menu_test(event_t event1)
 {
     static Bool prev_active = false;
@@ -426,8 +324,8 @@ static void menu_test(event_t event1)
             print_menu = false;
             break;
     }
-}    
-
+}
+*/
 static void menu_sensors(event_t event1)
 {
     if (print_menu)

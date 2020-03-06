@@ -48,6 +48,7 @@ int main(void)
         check_battery();
 		
 		bt_maintenance();
+        kicker_maintenance();
         
         prepare_values_to_send();
         process_new_sensor_values();

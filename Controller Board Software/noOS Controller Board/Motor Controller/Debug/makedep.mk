@@ -14,6 +14,10 @@ src\ASF\common\services\spi\sam_usart_spi\usart_spi.c
 
 src\ASF\common\services\storage\ctrl_access\ctrl_access.c
 
+src\ASF\sam\drivers\adc\adc.c
+
+src\ASF\sam\drivers\adc\adc_sam3u.c
+
 src\ASF\sam\drivers\hsmci\hsmci.c
 
 src\ASF\sam\drivers\pdc\pdc.c
@@ -49,6 +53,8 @@ src\lcd.c
 src\lib\iniparser\dictionary.c
 
 src\lib\iniparser\iniparser.c
+
+src\match.c
 
 src\menu.c
 
