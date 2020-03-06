@@ -16,10 +16,6 @@
 #include "bt.h"
 #include "match.h"
 
-#define TURN_NONE       0
-#define TURN_COMPASS    1
-#define TURN_GOAL       2
-
 menu_t act_menu = MENU_BOOTUP;
 Bool print_menu = true;
 

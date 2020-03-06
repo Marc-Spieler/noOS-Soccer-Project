@@ -21,5 +21,6 @@ typedef struct
 } pidReg_t;
 
 float pidReg(pidReg_t* reg, float ref, float act);
+float pidReg_compass(pidReg_t* reg, float ref, float act);
 
 #endif

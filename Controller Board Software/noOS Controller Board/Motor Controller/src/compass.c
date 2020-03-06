@@ -12,6 +12,7 @@
 static Bool compass_in_use = false;
 uint16_t direction;
 int16_t opponent_goal;
+Bool update_pid_compass = false;
 
 static uint8_t compassIsBusy = false;
 
@@ -75,6 +76,8 @@ void update_compass(void)
             while(compassIsBusy);
         }
         direction = (rx_packet->buffer[0] << 8) | rx_packet->buffer[1];
+        
+        update_pid_compass = true;
     }
 }
 

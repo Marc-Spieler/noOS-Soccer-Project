@@ -11,6 +11,26 @@
 #include "bt.h"
 #include "comm.h"
 #include "timing.h"
+#include "compass.h"
+#include "pid.h"
+
+#define TURN_NONE       0
+#define TURN_COMPASS    1
+#define TURN_GOAL       2
+
+pidReg_t pid_compass;
+float pid_compass_out = 0.0f;
+uint8_t turn_target = TURN_NONE;
+
+pid_compass.kp = 0.7f;
+pid_compass.ki = 0.0f;
+pid_compass.kc = 0.0f;
+pid_compass.kd = 0.6f;
+pid_compass.outMin = -150.0f;
+pid_compass.outMax = 150.0f;
+pid_compass.intg = 0.0f;
+pid_compass.prevErr = 0.0f;
+pid_compass.satErr = 0.0f;
 
 Bool arrived_rear = false;
 float robot_speed = 0.0f;
@@ -27,6 +47,12 @@ void match(void)
     
     ioport_set_pin_level(LED_M1, 0);
     ioport_set_pin_level(LED_M2, 0);
+    
+    if(update_pid_compass)
+    {
+        update_pid_compass = false;
+        pid_compass_out = pidReg_compass(&pid_compass, 0, -s.compass);
+    }
     
     if(bt_rx.sbyte.active)
     {
@@ -152,6 +178,19 @@ void match(void)
         }
     }
     
+    if(turn_target == TURN_COMPASS)
+    {
+        robot_trn = pid_compass_out;
+    }
+    else if(turn_target == TURN_GOAL)
+    {
+        robot_trn = -s.goal.dir;
+    }
+    else
+    {
+        robot_trn = 0.0f;
+    }
+    
     set_motor(robot_speed, robot_dir, robot_trn);
 }
 
@@ -179,7 +218,7 @@ static void ball2goal(void)
             }
         }
         
-        robot_trn = -s.goal.dir;
+        turn_target = TURN_GOAL;
     }
 }
 

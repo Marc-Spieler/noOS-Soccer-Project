@@ -9,6 +9,8 @@
 
 #include "asf.h"
 
+extern Bool update_pid_compass;
+
 void compass_init(void);
 void update_compass(void);
 void set_compass_is_busy(void);
