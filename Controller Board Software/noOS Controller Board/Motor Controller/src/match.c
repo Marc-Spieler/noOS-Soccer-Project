@@ -64,7 +64,7 @@ void match(void)
         pid_compass_out = pidReg_compass(&pid_compass, 0, -s.compass);
     }
     
-    if(bt_rx.sbyte.active)
+    /*if(bt_rx.sbyte.active)
     {
 		#if 0
 		bt_tx.sbyte.at_goal = false;
@@ -114,7 +114,7 @@ void match(void)
 		#endif
     }
     else
-    {
+    {*/
         if(!s.ball.see && ((s.distance.one.arrived && robot_id == 1) || (s.distance.two.arrived && robot_id == 2)))
         {
             arrived_rear = true;
@@ -124,7 +124,7 @@ void match(void)
             arrived_rear = false;
         }
         
-        robot_trn = s.compass;
+        turn_target = TURN_COMPASS;
 
         if(s.ball.have || s.ball.have_2)
         {
@@ -138,10 +138,10 @@ void match(void)
             }
             else
             {
-                return2goal(robot_id == 2 ? true : false);
+				return2goal(robot_id == 2 ? true : false);
             }
         }
-    }
+    //}
     
     if(s.line.see)
     {
@@ -196,7 +196,7 @@ void match(void)
     }
     else if(turn_target == TURN_GOAL)
     {
-        robot_trn = -s.goal.dir;
+		robot_trn = -s.goal.dir;
     }
     else
     {
@@ -210,7 +210,14 @@ static void move2ball(void)
 {
 	if(abs(s.ball.dir) < 64)
 	{
-		robot_dir = (float)s.ball.dir * 1.5f; // 2.2f
+		if(s.ball.dir <= 20)
+		{
+			robot_dir = (float)s.ball.dir;
+		}
+		else
+		{
+			robot_dir = (float)s.ball.dir * 2.2f;
+		}
 	}
     else
 	{
@@ -223,7 +230,7 @@ static void move2ball(void)
 			robot_dir = -135.0f;
 		}
 	}
-    robot_speed = 75.0f;
+    robot_speed = 85.0f;
 }
 
 static void ball2goal(void)

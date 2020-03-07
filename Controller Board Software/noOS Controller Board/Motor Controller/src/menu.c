@@ -271,10 +271,10 @@ static void menu_kicker(event_t event1)
         prev_percentage = kicker_percentage;
     }
     
-	if(s.ball.have)
+	/*if(s.ball.have)
 	{
 		kick_ball();
-	}
+	}*/
 	
     switch(event1)
     {
