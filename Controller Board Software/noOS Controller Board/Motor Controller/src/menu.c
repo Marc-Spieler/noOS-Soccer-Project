@@ -72,7 +72,7 @@ static void menu_compass(event_t event1);
 static void menu_compass_calibration(event_t event1);
 static void menu_line(event_t event1);
 static void menu_line_calibration(event_t event1);
-static void menu_encoder(event_t event1);
+//static void menu_encoder(event_t event1);
 static void menu_settings(event_t event1);
 static void menu_bootup(event_t event1);
 static void menu_shutdown(event_t event1);
@@ -118,9 +118,9 @@ void menu(event_t event1)
         case MENU_LINE_CALIBRATION:
             menu_line_calibration(event1);
             break;
-        case MENU_ENCODER:
+        /*case MENU_ENCODER:
             menu_encoder(event1);
-            break;
+            break;*/
         case MENU_BOOTUP:
             menu_bootup(event1);
             break;
@@ -293,52 +293,18 @@ static void menu_kicker(event_t event1)
 
 static void menu_test(event_t event1)
 {
-    static Bool prev_active = false;
-    static Bool prev_at_goal = false;
-    static int8_t prev_ball_angle = 0;
-    static int8_t prev_goal_angle = 0;
-    static uint8_t prev_ball_dist = 0;
-    static uint8_t prev_goal_dist = 0;
-
     if(print_menu)
     {
         lcd_clear();
-        bt_tx.sbyte.active = true;
+        enable_motor();
     }
     
-    if(bt_rx.sbyte.active != prev_active || print_menu)
-    {
-        sprintf(sprintf_buf, "active: %1d", bt_rx.sbyte.active);
-        lcd_print_s(1, 0, sprintf_buf);
-        prev_active = bt_rx.sbyte.active;
-    }
-    if(bt_rx.sbyte.at_goal != prev_at_goal || print_menu)
-    {
-        sprintf(sprintf_buf, "at goal: %1d", bt_rx.sbyte.at_goal);
-        lcd_print_s(1, 10, sprintf_buf);
-        prev_at_goal = bt_rx.sbyte.at_goal;
-    }
-    
-    if(bt_rx.ball_angle != prev_ball_angle || bt_rx.ball_dist != prev_ball_dist || print_menu)
-    {
-        sprintf(sprintf_buf, "ball: %3d %2d", bt_rx.ball_angle, bt_rx.ball_dist);
-        lcd_print_s(2, 0, sprintf_buf);
-        prev_ball_angle = bt_rx.ball_angle;
-        prev_ball_dist = bt_rx.ball_dist;
-    }
-    
-    if(bt_rx.goal_angle != prev_goal_angle || bt_rx.goal_dist != prev_goal_dist || print_menu)
-    {
-        sprintf(sprintf_buf, "goal: %3d %2d", bt_rx.goal_angle, bt_rx.goal_dist);
-        lcd_print_s(3, 0, sprintf_buf);
-        prev_goal_angle = bt_rx.goal_angle;
-        prev_goal_dist = bt_rx.goal_dist;
-    }
+    move_robot(MOVE_F, 10, 0);
     
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
-            bt_tx.sbyte.active = false;
+            disable_motor();
             act_menu = MENU_MAIN;
             print_menu = true;
             break;
@@ -789,7 +755,7 @@ static void menu_line_calibration(event_t event1)
             break;
     }
 }
-
+/*
 static void menu_encoder(event_t event1)
 {
     static Bool updated_ref = true;
@@ -924,7 +890,7 @@ static void menu_encoder(event_t event1)
             break;
     }
 }
-
+*/
 static void menu_settings(event_t event1)
 {
     if (print_menu)

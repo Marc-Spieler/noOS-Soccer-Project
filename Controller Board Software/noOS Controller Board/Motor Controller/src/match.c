@@ -35,6 +35,7 @@ static void return2goal(Bool pos);
 
 void match(void)
 {
+    /*
 	if(first_loop)
 	{
 		first_loop = false;
@@ -64,84 +65,32 @@ void match(void)
         pid_compass_out = pidReg_compass(&pid_compass, 0, -s.compass);
     }
     
-    /*if(bt_rx.sbyte.active)
+    if(!s.ball.see && ((s.distance.one.arrived && robot_id == 1) || (s.distance.two.arrived && robot_id == 2)))
     {
-		#if 0
-		bt_tx.sbyte.at_goal = false;
-		
-		if(bt_rx.sbyte.ball_see && s.ball.see)
-		{
-			if(abs(bt_rx.ball_angle) > abs(s.ball.dir))
-			{
-				if(s.ball.have || s.ball.have_2)
-				{
-					ball2goal();
-				}
-				else
-				{
-					move2ball();
-				}
-			}
-			else
-			{
-				bt_rx.sbyte.at_goal = true;
-				return2goal(true);
-			}
-		}
-		else if(!bt_rx.sbyte.ball_see && s.ball.see)
-		{
-			if(s.ball.have || s.ball.have_2)
-			{
-				ball2goal();
-			}
-			else
-			{
-				move2ball();
-			}
-		}
-		else
-		{
-			if(bt_rx.sbyte.at_goal)
-			{
-				return2goal(false);
-			}
-			else
-			{
-				bt_tx.sbyte.at_goal = true;
-				return2goal(true);
-			}
-		}
-		#endif
+        arrived_rear = true;
     }
     else
-    {*/
-        if(!s.ball.see && ((s.distance.one.arrived && robot_id == 1) || (s.distance.two.arrived && robot_id == 2)))
-        {
-            arrived_rear = true;
-        }
-        else
-        {
-            arrived_rear = false;
-        }
-        
-        turn_target = TURN_COMPASS;
+    {
+        arrived_rear = false;
+    }
+    
+    turn_target = TURN_COMPASS;
 
-        if(s.ball.have || s.ball.have_2)
+    if(s.ball.have || s.ball.have_2)
+    {
+        ball2goal();
+    }
+    else
+    {
+        if(s.ball.see)
         {
-            ball2goal();
+            move2ball();
         }
         else
         {
-            if(s.ball.see)
-            {
-                move2ball();
-            }
-            else
-            {
-				return2goal(robot_id == 2 ? true : false);
-            }
+            return2goal(robot_id == 2 ? true : false);
         }
-    //}
+    }
     
     if(s.line.see)
     {
@@ -203,7 +152,7 @@ void match(void)
         robot_trn = 0.0f;
     }
     
-    set_motor(robot_speed, robot_dir, robot_trn);
+    set_motor(robot_speed, robot_dir, robot_trn);*/
 }
 
 static void move2ball(void)

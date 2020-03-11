@@ -8,24 +8,27 @@
 #define MOTOR_H
 
 #include "asf.h"
-#include "pid.h"
 
-#define MAX_MOTOR_SPEED         (150) //cm/s
+#define MAX_MOTOR_SPEED         (500) //PWM unit
 
-extern pidReg_t pid_motor_left;
-extern pidReg_t pid_motor_right;
-extern pidReg_t pid_motor_rear;
-
-extern float act_motor_speed_left;
-extern float act_motor_speed_right;
-extern float act_motor_speed_rear;
+typedef enum
+{
+    MOVE_NONE,
+    MOVE_F,
+    MOVE_FL,
+    MOVE_FR,
+    MOVE_B,
+    MOVE_BL,
+    MOVE_BR,
+    MOVE_RL,
+    MOVE_RR,
+} move_t;
 
 void motor_init(void);
 void enable_motor(void);
 void disable_motor(void);
-void set_motor(float speed, float dir, float trn);
-void set_motor_extended(float speed, float dir, float trn, float left, float right, float rear);
-void set_motor_individual(float mleft_ref, float mright_ref, float mrear_ref);
+void move_robot(uint8_t action, float speed, float rot);
+void set_motor_individual(uint8_t motor, float ispeed);
 void update_motor_pwm(uint8_t motor, int16_t speed);
 
 #endif
