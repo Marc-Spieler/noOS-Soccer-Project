@@ -15,6 +15,7 @@
 #include "math.h"
 #include "bt.h"
 #include "match.h"
+#include "pid.h"
 
 menu_t act_menu = MENU_BOOTUP;
 Bool print_menu = true;
@@ -89,7 +90,7 @@ void menu(event_t event1)
             menu_main(event1);
             break;
         case MENU_MATCH:
-            menu_match(event1);
+            menu_test(event1);
             break;
 		case MENU_KICKER:
 			menu_kicker(event1);
@@ -293,17 +294,54 @@ static void menu_kicker(event_t event1)
 
 static void menu_test(event_t event1)
 {
+	static pidReg_t pid_compass;
+	static float pid_compass_out = 0.0f;
+	
+	static UINT bw;
+	static FIL file_object;
+	static char test_file_name[] = "pid_compass_cmps03_p0.5_i0.0_c0.0_d0.0.txt";
+	static char sprintf_buf[11];
+	
     if(print_menu)
     {
+		f_open(&file_object, (char const *)test_file_name, FA_CREATE_ALWAYS | FA_WRITE);
+		
+		pid_compass.kp = 0.5f;//3.0
+		pid_compass.ki = 0.0f;//0.4
+		pid_compass.kc = 0.0f;//0.15
+		pid_compass.kd = 0.0f;//1.5
+		pid_compass.outMin = -100.0f;
+		pid_compass.outMax = 100.0f;
+		pid_compass.intg = 0.0f;
+		pid_compass.prevErr = 0.0f;
+		pid_compass.satErr = 0.0f;
+		
+		set_opponent_goal();
         lcd_clear();
         enable_motor();
     }
     
-    move_robot(MOVE_F, 10, 0);
-    
+	estimate_rel_deviation();
+	
+	if(update_pid_compass)
+	{
+		update_pid_compass = false;
+		pid_compass_out = pidReg(&pid_compass, 0, -s.compass);
+		if(pid_compass_out > 0) pid_compass_out += 10;
+		if(pid_compass_out < 0) pid_compass_out -= 10;
+		
+		sprintf(sprintf_buf, "%4.1f;", -s.compass);
+		f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+		sprintf(sprintf_buf, "%4.1f\r\n", pid_compass_out);
+		f_write(&file_object, sprintf_buf, strlen(sprintf_buf), &bw);
+	}
+	
+    move_robot(MOVE_F, 0.0f, pid_compass_out);
+	
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
+			f_close(&file_object);
             disable_motor();
             act_menu = MENU_MAIN;
             print_menu = true;

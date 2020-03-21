@@ -57,10 +57,10 @@ void disable_motor(void)
     pwm_channel_disable(PWM, MOTOR_REAR);
 }
 
-void move_robot(uint8_t action, float speed, float rot)
+void move_robot(move_t action, float speed, float rot)
 {
     int16_t ispeed = (int16_t)(speed * 5 + 0.5f);
-    int16_t irot = (uint16_t)(rot * 5 + 0.5f);
+    int16_t irot = (int16_t)(rot * 5 + 0.5f);
     
     switch(action)
     {
@@ -68,34 +68,35 @@ void move_robot(uint8_t action, float speed, float rot)
             update_motor_pwm(MOTOR_LEFT, irot);
             update_motor_pwm(MOTOR_RIGHT, irot);
             update_motor_pwm(MOTOR_REAR, irot);
+			break;
         case MOVE_F:
-            update_motor_pwm(MOTOR_LEFT, ispeed);
+            update_motor_pwm(MOTOR_LEFT, -ispeed);
             update_motor_pwm(MOTOR_RIGHT, ispeed);
             update_motor_pwm(MOTOR_REAR, irot);
             break;
         case MOVE_FL:
             update_motor_pwm(MOTOR_LEFT, irot);
             update_motor_pwm(MOTOR_RIGHT, ispeed);
-            update_motor_pwm(MOTOR_REAR, ispeed);
+            update_motor_pwm(MOTOR_REAR, -ispeed);
             break;
         case MOVE_FR:
-            update_motor_pwm(MOTOR_LEFT, ispeed);
+            update_motor_pwm(MOTOR_LEFT, -ispeed);
             update_motor_pwm(MOTOR_RIGHT, irot);
             update_motor_pwm(MOTOR_REAR, ispeed);
             break;
         case MOVE_B:
             update_motor_pwm(MOTOR_LEFT, ispeed);
-            update_motor_pwm(MOTOR_RIGHT, ispeed);
+            update_motor_pwm(MOTOR_RIGHT, -ispeed);
             update_motor_pwm(MOTOR_REAR, irot);
             break;
         case MOVE_BL:
             update_motor_pwm(MOTOR_LEFT, ispeed);
             update_motor_pwm(MOTOR_RIGHT, irot);
-            update_motor_pwm(MOTOR_REAR, ispeed);
+            update_motor_pwm(MOTOR_REAR, -ispeed);
             break;
         case MOVE_BR:
             update_motor_pwm(MOTOR_LEFT, irot);
-            update_motor_pwm(MOTOR_RIGHT, ispeed);
+            update_motor_pwm(MOTOR_RIGHT, -ispeed);
             update_motor_pwm(MOTOR_REAR, ispeed);
             break;
         case MOVE_RL:
