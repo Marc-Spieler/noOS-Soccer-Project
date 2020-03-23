@@ -18,6 +18,7 @@
 #include "pid.h"
 
 menu_t act_menu = MENU_BOOTUP;
+menu_t prev_menu = MENU_BOOTUP;
 Bool print_menu = true;
 
 FIL noOS_ini_file;
@@ -84,6 +85,21 @@ static void print_cursor(menu_info_t *info);
 
 void menu(event_t event1)
 {
+    if(act_menu != prev_menu)
+    {
+        print_menu = true;
+        prev_menu = act_menu;
+    }
+    
+    if(act_menu == MENU_MOTORTEST)
+    {
+        ioport_set_pin_level(LED_ONBOARD, true);
+    }
+    else
+    {
+        ioport_set_pin_level(LED_ONBOARD, false);
+    }
+    
     switch (act_menu)
     {
         case MENU_MAIN:
@@ -239,7 +255,9 @@ static void menu_match(event_t event1)
     switch (event1)
     {
         case EVENT_BUTTON_RETURN_P:
-            bt_tx.sbyte.active = false;
+            #if !BT_PC
+                bt_tx.sbyte.active = false;
+            #endif
 			disable_motor();
             ioport_set_pin_level(LED_M1, 0);
             ioport_set_pin_level(LED_M2, 0);

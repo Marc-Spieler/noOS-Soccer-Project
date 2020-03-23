@@ -34,6 +34,7 @@ typedef enum
 
 typedef enum
 {
+    MENU_BOOTUP = 0,
     MENU_MAIN,
     MENU_MATCH,
 	MENU_KICKER,
@@ -46,9 +47,11 @@ typedef enum
     MENU_LINE_CALIBRATION,
     MENU_ENCODER,
     MENU_SETTINGS,
-    MENU_BOOTUP,
-    MENU_SHUTDOWN
+    MENU_SHUTDOWN,
+    MENU_MOTORTEST = 20
 } menu_t;
+
+extern menu_t act_menu;
 
 void menu(event_t event1);
 event_t button_events(void);

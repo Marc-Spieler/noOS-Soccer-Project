@@ -23,7 +23,7 @@
 /************************************************************
 * Local Variables                                           *
 ************************************************************/
-static Bool lcd_in_use = true;
+static Bool lcd_in_use = false;
 static backlight_t backlight;
 static Bool lcdIsBusy = false;
 static uint32_t lcdStartTicks = 0;

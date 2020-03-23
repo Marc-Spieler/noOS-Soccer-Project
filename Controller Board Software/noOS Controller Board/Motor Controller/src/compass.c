@@ -9,7 +9,7 @@
 #include "timing.h"
 #include "comm.h"
 
-static Bool compass_in_use = true;
+static Bool compass_in_use = false;
 uint16_t direction;
 int16_t opponent_goal;
 Bool update_pid_compass = false;

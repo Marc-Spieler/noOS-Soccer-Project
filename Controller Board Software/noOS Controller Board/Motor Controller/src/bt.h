@@ -7,51 +7,105 @@
 #ifndef BT_H
 #define BT_H
 
+#define BT_PC 1
+
 #include "asf.h"
 
 extern uint32_t bt_rx_ticks;
 
-typedef struct
-{
-    union
+#if BT_PC
+    typedef struct
     {
-        struct
+        union
         {
-            uint8_t sbit	 :1;
-            uint8_t rsvd	 :4;
-            uint8_t active	 :1;
-			uint8_t ball_see :1;
-            uint8_t at_goal	 :1;
-        } sbyte;
-        uint8_t full_sbyte;
-    };
-    
-    int8_t ball_angle;
-    int8_t goal_angle;
-    uint8_t ball_dist;
-    uint8_t goal_dist;
-} bt_rx_t;
+            struct
+            {
+                uint8_t setMenu :7;
+                uint8_t sbit	:1;
+            } sbyte;
+            uint8_t full_sbyte;
+        };
+    } bt_rx_t;
 
-typedef struct
-{
-    union
+    typedef struct
     {
+        union
+        {
+            struct
+            {
+                uint8_t rsvd	:7;
+                uint8_t sbit	:1;
+            } sbyte;
+            uint8_t full_sbyte;
+        };
+        
+        uint8_t battery_percentage;
+        
         struct
         {
-            uint8_t at_goal	 :1;
-            uint8_t ball_see :1;
-			uint8_t active	 :1;
-            uint8_t rsvd	 :4;
-            uint8_t sbit	 :1;
-        } sbyte;
-        uint8_t full_sbyte;
-    };
-    
-    uint8_t ball_angle;
-    uint8_t goal_angle;
-    uint8_t ball_dist;
-    uint8_t goal_dist;
-} bt_tx_t;
+            uint8_t ls1     :1;
+            uint8_t ls2 	:1;
+            uint8_t ls3     :1;
+            uint8_t ls4     :1;
+            uint8_t ls5     :1;
+            uint8_t ls6     :1;
+            uint8_t ls7     :1;
+            uint8_t blocked :1;
+        } line_part_1;
+        struct
+        {
+            uint8_t ls8     :1;
+            uint8_t ls9     :1;
+            uint8_t ls10    :1;
+            uint8_t ls11    :1;
+            uint8_t ls12    :1;
+            uint8_t rsvd    :2;
+            uint8_t blocked :1;
+        } line_part_2;
+    } bt_tx_t;
+#else
+    typedef struct
+    {
+        union
+        {
+            struct
+            {
+                uint8_t sbit	 :1;
+                uint8_t rsvd	 :4;
+                uint8_t active	 :1;
+                uint8_t ball_see :1;
+                uint8_t at_goal	 :1;
+            } sbyte;
+            uint8_t full_sbyte;
+        };
+        
+        int8_t ball_angle;
+        int8_t goal_angle;
+        uint8_t ball_dist;
+        uint8_t goal_dist;
+    } bt_rx_t;
+
+    typedef struct
+    {
+        union
+        {
+            struct
+            {
+                uint8_t at_goal	 :1;
+                uint8_t ball_see :1;
+                uint8_t active	 :1;
+                uint8_t rsvd	 :4;
+                uint8_t sbit	 :1;
+            } sbyte;
+            uint8_t full_sbyte;
+        };
+        
+        uint8_t ball_angle;
+        uint8_t goal_angle;
+        uint8_t ball_dist;
+        uint8_t goal_dist;
+    } bt_tx_t;
+#endif
 
 extern bt_rx_t bt_rx;
 extern bt_tx_t bt_tx;
