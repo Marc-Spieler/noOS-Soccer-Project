@@ -73,12 +73,17 @@ void bt_maintenance(void)
         bt_tx.line_part_2.ls10 = s.line.single.segment_10;
         bt_tx.line_part_2.ls11 = s.line.single.segment_11;
         bt_tx.line_part_2.ls12 = s.line.single.segment_12;
+        bt_tx.currentLineCalibration = mts.line_cal_value;
+        bt_tx.absoluteCompassPart1.bit0_6 = (1831 & 0x7f);
+        bt_tx.absoluteCompassPart2.bit7_11 = ((1831 & 0xf80) >> 7);
+        bt_tx.relativeCompassPart1.bit0_6 = ((uint16_t)((180.0f + 180.0f) * 10.0f) & 0x7f);
+        bt_tx.relativeCompassPart2.bit7_11 = (((uint16_t)((180.0f + 180.0f) * 10.0f) & 0xf80) >> 7);
 	    
 	    if((getTicks() - bt_tx_ticks) >= 200)
 	    {
     	    bt_tx_ticks = getTicks();
     	    
-    	    bt_write((uint8_t *)&bt_tx, 4);
+    	    bt_write((uint8_t *)&bt_tx, 9);
 	    }
     #else
         bt_tx.ball_angle = (int)(s.ball.dir * 0.3556) + 63;
@@ -131,9 +136,39 @@ void USART0_Handler(void)
             switch(rx_chunk)
             {
                 case 1:
-                    tmp -= 128;
-                    act_menu = tmp;
+                    if(tmp & 0x01)
+                    {
+                        ioport_set_pin_level(LED_ONBOARD, true);
+                    }
+                    else
+                    {
+                        ioport_set_pin_level(LED_ONBOARD, false);
+                    }
+                    
+                    if(tmp & 0x02)
+                    {
+                        bt_rx.sbyte.setLineCalibration = true;
+                    }
+                    else
+                    {
+                        bt_rx.sbyte.setLineCalibration = false;
+                    }
+                    
+                    if(tmp & 0x04)
+                    {
+                        bt_rx.sbyte.startAction = true;
+                    }
+                    else
+                    {
+                        bt_rx.sbyte.startAction = false;
+                    }
                     break;
+                case 2:
+                    if(bt_rx.sbyte.setLineCalibration)
+                    {
+                        mts.line_cal_value = tmp;
+                        // save new value to sd card
+                    }
                 default:
                     break;
             }

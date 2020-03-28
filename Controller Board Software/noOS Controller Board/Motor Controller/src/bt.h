@@ -20,11 +20,16 @@ extern uint32_t bt_rx_ticks;
         {
             struct
             {
-                uint8_t setMenu :7;
-                uint8_t sbit	:1;
+                uint8_t setLed              :1;
+                uint8_t setLineCalibration  :1;
+                uint8_t startAction         :1;
+                uint8_t rsvd                :4;
+                uint8_t sbit                :1;
             } sbyte;
             uint8_t full_sbyte;
         };
+        
+        uint8_t newLineCalibration;
     } bt_rx_t;
 
     typedef struct
@@ -62,6 +67,31 @@ extern uint32_t bt_rx_ticks;
             uint8_t rsvd    :2;
             uint8_t blocked :1;
         } line_part_2;
+        uint8_t currentLineCalibration;
+        
+        struct
+        {
+            uint8_t bit0_6  :7;
+            uint8_t blocked :1;
+        } absoluteCompassPart1;
+        struct
+        {
+            uint8_t bit7_11 :5;
+            uint8_t rsvd    :2;
+            uint8_t blocked :1;
+        } absoluteCompassPart2;
+        
+        struct
+        {
+            uint8_t bit0_6  :7;
+            uint8_t blocked :1;
+        } relativeCompassPart1;
+        struct
+        {
+            uint8_t bit7_11 :5;
+            uint8_t rsvd    :2;
+            uint8_t blocked :1;
+        } relativeCompassPart2;
     } bt_tx_t;
 #else
     typedef struct

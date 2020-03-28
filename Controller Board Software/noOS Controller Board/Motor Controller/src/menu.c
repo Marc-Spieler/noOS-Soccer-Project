@@ -67,6 +67,7 @@ char sprintf_buf[21];
 static void menu_main(event_t event1);
 static void menu_match(event_t event1);
 static void menu_kicker(event_t event1);
+static void menu_motortest(event_t event1);
 static void menu_test(event_t event1);
 static void menu_sensors(event_t event1);
 static void menu_camera(event_t event1);
@@ -85,19 +86,12 @@ static void print_cursor(menu_info_t *info);
 
 void menu(event_t event1)
 {
+    if(bt_rx.sbyte.startAction) act_menu = MENU_MOTORTEST;
+    
     if(act_menu != prev_menu)
     {
         print_menu = true;
         prev_menu = act_menu;
-    }
-    
-    if(act_menu == MENU_MOTORTEST)
-    {
-        ioport_set_pin_level(LED_ONBOARD, true);
-    }
-    else
-    {
-        ioport_set_pin_level(LED_ONBOARD, false);
     }
     
     switch (act_menu)
@@ -143,6 +137,9 @@ void menu(event_t event1)
             break;
         case MENU_SHUTDOWN:
             menu_shutdown(event1);
+            break;
+        case MENU_MOTORTEST:
+            menu_motortest(event1);
             break;
         default:
             break;
@@ -301,6 +298,41 @@ static void menu_kicker(event_t event1)
             kick_ball();
             break;
         case EVENT_BUTTON_RETURN_P:
+            act_menu = MENU_MAIN;
+            print_menu = true;
+            break;
+        default:
+            print_menu = false;
+            break;
+    }
+}
+
+static void menu_motortest(event_t event1)
+{
+    static uint32_t start_ticks = 0;
+    
+    if(print_menu)
+    {
+        start_ticks = getTicks();
+        
+        lcd_clear();
+        enable_motor();
+    }
+    
+    if((getTicks() - start_ticks) < 1500)
+    {
+        move_robot(MOVE_B, 0.0f, 15.0f);
+    }
+    else
+    {
+        if(bt_rx.sbyte.startAction) start_ticks = getTicks();
+        move_robot(MOVE_F, 0.0f, 0.0f);
+    }
+    
+    switch (event1)
+    {
+        case EVENT_BUTTON_RETURN_P:
+            disable_motor();
             act_menu = MENU_MAIN;
             print_menu = true;
             break;

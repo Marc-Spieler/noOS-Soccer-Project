@@ -8,11 +8,13 @@
 #include "lcd.h"
 #include "timing.h"
 #include "comm.h"
+#include "string.h"
 
 static Bool compass_in_use = false;
 uint16_t direction;
 int16_t opponent_goal;
 Bool update_pid_compass = false;
+static twi_master_options_t twiConfig;
 
 static uint8_t compassIsBusy = false;
 
@@ -20,6 +22,9 @@ static void compass_callback(void);
 
 void compass_init(void)
 {
+    memset((void *)&twiConfig, 0, sizeof(twiConfig));
+    twiConfig.speed = 100000;
+    
     twi_packet_t *rx_packet = twi_get_rx_packet();
 
     rx_packet->chip = 0x60;
@@ -76,6 +81,7 @@ void update_compass(void)
             while(compassIsBusy);
         }
         direction = (rx_packet->buffer[0] << 8) | rx_packet->buffer[1];
+        s.compass_abs = direction;
         
         update_pid_compass = true;
     }
@@ -107,7 +113,7 @@ void estimate_rel_deviation(void)
     update_compass();
     float rel_dev = (float)(direction - opponent_goal) / 10.0f;
 
-    while(rel_dev >= 180.0f) rel_dev -= 360.0f;
+    while(rel_dev > 180.0f) rel_dev -= 360.0f;
     while(rel_dev <= -180.0f) rel_dev += 360.0f;
     
     s.compass = rel_dev;

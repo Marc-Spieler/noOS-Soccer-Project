@@ -81,6 +81,7 @@ typedef struct
     } battery;
     
     float compass;
+    uint16_t compass_abs;
     Bool rpi_inactive;
 } sensors_t;
 

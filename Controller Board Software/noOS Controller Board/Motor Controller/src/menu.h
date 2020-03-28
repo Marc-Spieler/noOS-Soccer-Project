@@ -48,7 +48,7 @@ typedef enum
     MENU_ENCODER,
     MENU_SETTINGS,
     MENU_SHUTDOWN,
-    MENU_MOTORTEST = 20
+    MENU_MOTORTEST
 } menu_t;
 
 extern menu_t act_menu;
