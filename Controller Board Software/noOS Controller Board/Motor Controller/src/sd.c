@@ -8,8 +8,6 @@
 #include "asf.h"
 #include "string.h"
 #include "timing.h"
-#include "lcd.h"
-#include "menu.h"
 #include "comm.h"
 #include "compass.h"
 

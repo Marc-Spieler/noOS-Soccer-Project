@@ -7,8 +7,6 @@
 #include "timing.h"
 #include "comm.h"
 #include "string.h"
-#include "lcd.h"
-#include "menu.h"
 #include "support.h"
 
 uint32_t ul_ticks_compass;

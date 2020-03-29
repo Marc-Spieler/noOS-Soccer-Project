@@ -5,7 +5,6 @@
 /************************************************************************/
 
 #include "compass.h"
-#include "lcd.h"
 #include "timing.h"
 #include "comm.h"
 #include "string.h"
@@ -34,8 +33,6 @@ void compass_init(void)
 
     twi_set_compass_tx_callback(compass_callback);
     twi_set_compass_rx_callback(compass_callback);
-    
-    while(lcd_is_busy());
 
     twi_packet_t *tx_packet = twi_get_tx_packet();
     
@@ -68,11 +65,6 @@ void update_compass(void)
 
     if ((getTicks() - ul_ticks_compass) > 100)
     {
-        if(lcd_is_busy())
-        {
-            return;
-        }
-
         ul_ticks_compass = getTicks();
         
         compassIsBusy = true;

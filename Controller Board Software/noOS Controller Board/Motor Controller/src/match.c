@@ -35,8 +35,7 @@ static void return2goal(Bool pos);
 
 void match(void)
 {
-    /*
-	if(first_loop)
+    if(first_loop)
 	{
 		first_loop = false;
 		pid_compass.kp = 0.7f;
@@ -152,7 +151,7 @@ void match(void)
         robot_trn = 0.0f;
     }
     
-    set_motor(robot_speed, robot_dir, robot_trn);*/
+    //set_motor(robot_speed, robot_dir, robot_trn);
 }
 
 static void move2ball(void)

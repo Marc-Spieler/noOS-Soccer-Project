@@ -1017,12 +1017,6 @@
     <None Include="src\config\conf_fatfs.h">
       <SubType>compile</SubType>
     </None>
-    <Compile Include="src\lcd.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\lcd.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\lib\iniparser\dictionary.c">
       <SubType>compile</SubType>
     </Compile>
@@ -1039,12 +1033,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\match.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\menu.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\menu.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\motor.c">

@@ -7,21 +7,16 @@
 #include "asf.h"
 #include "string.h"
 #include "timing.h"
-#include "lcd.h"
-#include "menu.h"
 #include "comm.h"
 #include "compass.h"
 #include "sd.h"
 #include "motor.h"
 #include "iniparser.h"
 #include "support.h"
-#include "math.h"
 #include "bt.h"
 
 int main(void)
 {
-    event_t act_event;
-
     sysclk_init();
 
     board_init();
@@ -29,7 +24,6 @@ int main(void)
     
     motor_init();
 
-    lcd_init();
     compass_init();
 
     bt_init();
@@ -53,7 +47,6 @@ int main(void)
         prepare_values_to_send();
         process_new_sensor_values();
 
-        act_event = button_events();
-        menu(act_event);
+        if(matchStarted) match);
     }
 }

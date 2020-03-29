@@ -48,15 +48,11 @@ src\ASF\sam\drivers\twi\twi.c
 
 src\compass.c
 
-src\lcd.c
-
 src\lib\iniparser\dictionary.c
 
 src\lib\iniparser\iniparser.c
 
 src\match.c
-
-src\menu.c
 
 src\motor.c
 
