@@ -424,7 +424,7 @@ extern "C" {
  * This function should be called to ensure proper initialization of the target
  * board hardware connected to the part.
  */
-extern void board_init(void);
+extern void boardInit(void);
 
 #endif  // #ifdef __AVR32_ABI_COMPILER__
 #else
@@ -433,7 +433,7 @@ extern void board_init(void);
  * This function should be called to ensure proper initialization of the target
  * board hardware connected to the part.
  */
-extern void board_init(void);
+extern void boardInit(void);
 #endif
 
 

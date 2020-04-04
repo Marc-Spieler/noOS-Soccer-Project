@@ -131,17 +131,15 @@ C_SRCS +=  \
 ../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam/fattime_rtc.c \
 ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.c \
 ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.c \
-../src/bt.c \
-../src/comm.c \
 ../src/ASF/sam/drivers/twi/twi.c \
 ../src/compass.c \
+../src/data.c \
+../src/experiments.c \
 ../src/lib/iniparser/dictionary.c \
 ../src/lib/iniparser/iniparser.c \
-../src/match.c \
 ../src/motor.c \
-../src/pid.c \
-../src/sd.c \
-../src/support.c \
+../src/ric.c \
+../src/serial.c \
 ../src/timing.c \
 ../src/ASF/common/services/clock/sam3x/sysclk.c \
 ../src/ASF/sam/drivers/dmac/dmac.c \
@@ -182,17 +180,15 @@ src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.o \
 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam/fattime_rtc.o \
 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o \
 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o \
-src/bt.o \
-src/comm.o \
 src/ASF/sam/drivers/twi/twi.o \
 src/compass.o \
+src/data.o \
+src/experiments.o \
 src/lib/iniparser/dictionary.o \
 src/lib/iniparser/iniparser.o \
-src/match.o \
 src/motor.o \
-src/pid.o \
-src/sd.o \
-src/support.o \
+src/ric.o \
+src/serial.o \
 src/timing.o \
 src/ASF/common/services/clock/sam3x/sysclk.o \
 src/ASF/sam/drivers/dmac/dmac.o \
@@ -226,17 +222,15 @@ src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.o \
 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam/fattime_rtc.o \
 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.o \
 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o \
-src/bt.o \
-src/comm.o \
 src/ASF/sam/drivers/twi/twi.o \
 src/compass.o \
+src/data.o \
+src/experiments.o \
 src/lib/iniparser/dictionary.o \
 src/lib/iniparser/iniparser.o \
-src/match.o \
 src/motor.o \
-src/pid.o \
-src/sd.o \
-src/support.o \
+src/ric.o \
+src/serial.o \
 src/timing.o \
 src/ASF/common/services/clock/sam3x/sysclk.o \
 src/ASF/sam/drivers/dmac/dmac.o \
@@ -270,17 +264,15 @@ src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.d \
 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam/fattime_rtc.d \
 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.d \
 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.d \
-src/bt.d \
-src/comm.d \
 src/ASF/sam/drivers/twi/twi.d \
 src/compass.d \
+src/data.d \
+src/experiments.d \
 src/lib/iniparser/dictionary.d \
 src/lib/iniparser/iniparser.d \
-src/match.d \
 src/motor.d \
-src/pid.d \
-src/sd.d \
-src/support.d \
+src/ric.d \
+src/serial.d \
 src/timing.d \
 src/ASF/common/services/clock/sam3x/sysclk.d \
 src/ASF/sam/drivers/dmac/dmac.d \
@@ -314,17 +306,15 @@ src/ASF/thirdparty/fatfs/fatfs-port-r0.09/diskio.d \
 src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam/fattime_rtc.d \
 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ff.d \
 src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.d \
-src/bt.d \
-src/comm.d \
 src/ASF/sam/drivers/twi/twi.d \
 src/compass.d \
+src/data.d \
+src/experiments.d \
 src/lib/iniparser/dictionary.d \
 src/lib/iniparser/iniparser.d \
-src/match.d \
 src/motor.d \
-src/pid.d \
-src/sd.d \
-src/support.d \
+src/ric.d \
+src/serial.d \
 src/timing.d \
 src/ASF/common/services/clock/sam3x/sysclk.d \
 src/ASF/sam/drivers/dmac/dmac.d \
@@ -486,20 +476,6 @@ src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ccsbcs.o: ../src/ASF/thirdparty/
 	@echo Finished building: $<
 	
 
-src/bt.o: ../src/bt.c
-	@echo Building file: $<
-	@echo Invoking: ARM/GNU C Compiler : 6.3.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-src/comm.o: ../src/comm.c
-	@echo Building file: $<
-	@echo Invoking: ARM/GNU C Compiler : 6.3.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
 src/ASF/sam/drivers/twi/twi.o: ../src/ASF/sam/drivers/twi/twi.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 6.3.1
@@ -508,6 +484,20 @@ src/ASF/sam/drivers/twi/twi.o: ../src/ASF/sam/drivers/twi/twi.c
 	
 
 src/compass.o: ../src/compass.c
+	@echo Building file: $<
+	@echo Invoking: ARM/GNU C Compiler : 6.3.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/data.o: ../src/data.c
+	@echo Building file: $<
+	@echo Invoking: ARM/GNU C Compiler : 6.3.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/experiments.o: ../src/experiments.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 6.3.1
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
@@ -528,13 +518,6 @@ src/lib/iniparser/iniparser.o: ../src/lib/iniparser/iniparser.c
 	@echo Finished building: $<
 	
 
-src/match.o: ../src/match.c
-	@echo Building file: $<
-	@echo Invoking: ARM/GNU C Compiler : 6.3.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
 src/motor.o: ../src/motor.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 6.3.1
@@ -542,21 +525,14 @@ src/motor.o: ../src/motor.c
 	@echo Finished building: $<
 	
 
-src/pid.o: ../src/pid.c
+src/ric.o: ../src/ric.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 6.3.1
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
-src/sd.o: ../src/sd.c
-	@echo Building file: $<
-	@echo Invoking: ARM/GNU C Compiler : 6.3.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-src/support.o: ../src/support.c
+src/serial.o: ../src/serial.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 6.3.1
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM3X8E__ -Dscanf=iscanf -DBOARD=USER_BOARD -DARM_MATH_CM3=true -Dprintf=iprintf -D__SAM3X8E__ -DDEBUG  -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam3x/source/templates" -I"../src/ASF/sam/utils/cmsis/sam3x/include" -I"../src/ASF/common/boards/user_board" -I"../src" -I"../src/config" -I"../src/ASF/sam/drivers/dmac" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/ioport" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/services/spi/sam_spi" -I"../src/ASF/common/services/spi" -I"../src/ASF/common/services/spi/sam_usart_spi" -I"../src/ASF/sam/drivers/spi" -I"../src/ASF/sam/drivers/usart" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/pwm" -I"../src/ASF/sam/drivers/tc" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/sam/drivers/hsmci" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/lib/iniparser" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include" -I"../src/ASF/sam/drivers/adc"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m3 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return  -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

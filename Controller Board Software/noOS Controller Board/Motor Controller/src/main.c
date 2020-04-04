@@ -1,52 +1,36 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
 /* Team: noOS                                                           */
-/* Created: 01.07.2018                                                  */
+/* Created: 29.03.2020                                                  */
 /************************************************************************/
 
 #include "asf.h"
-#include "string.h"
-#include "timing.h"
-#include "comm.h"
 #include "compass.h"
-#include "sd.h"
+#include "experiments.h"
 #include "motor.h"
-#include "iniparser.h"
-#include "support.h"
-#include "bt.h"
+#include "ric.h"
+#include "serial.h"
+#include "timing.h"
 
 int main(void)
 {
     sysclk_init();
-
-    board_init();
+    boardInit();
     SysTick_Config(sysclk_get_cpu_hz() / 1000);
     
-    motor_init();
-
-    compass_init();
-
-    bt_init();
+    serialInit();
+    ricInit();
     
-    sd_mmc_init();
-    sd_init();
-    parse_ini_file();
+    compassInit();
     
-    spi_init();
+    motorInit();
     
-    while (1)
+    while(1)
     {
-        update_comm();
-        update_compass();
-        update_heartbeat();
-        check_battery();
-		
-		bt_maintenance();
-        kicker_maintenance();
+        serialMaintenance();
+        ricMaintenance();
+        compassMaintenance();
         
-        prepare_values_to_send();
-        process_new_sensor_values();
-
-        if(matchStarted) match);
+        motorCircleTest();
     }
 }

@@ -40,27 +40,23 @@ src\ASF\thirdparty\fatfs\fatfs-r0.09\src\ff.c
 
 src\ASF\thirdparty\fatfs\fatfs-r0.09\src\option\ccsbcs.c
 
-src\bt.c
-
-src\comm.c
-
 src\ASF\sam\drivers\twi\twi.c
 
 src\compass.c
+
+src\data.c
+
+src\experiments.c
 
 src\lib\iniparser\dictionary.c
 
 src\lib\iniparser\iniparser.c
 
-src\match.c
-
 src\motor.c
 
-src\pid.c
+src\ric.c
 
-src\sd.c
-
-src\support.c
+src\serial.c
 
 src\timing.c
 

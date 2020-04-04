@@ -1,6 +1,6 @@
 /************************************************************************/
 /* Author: Marc Spieler                                                 */
-/* Team: NoOS                                                           */
+/* Team: noOS                                                           */
 /* Created: 01.07.2018                                                  */
 /************************************************************************/
 
@@ -8,7 +8,7 @@
 #include "board.h"
 #include "conf_board.h"
 
-void board_init(void)
+void boardInit(void)
 {
 	#ifndef CONF_BOARD_KEEP_WATCHDOG_AT_INIT
 	/* Disable the watchdog */
@@ -28,12 +28,7 @@ void board_init(void)
 	ioport_set_pin_level(LED_M3, 0);
 	ioport_set_pin_dir(LED_BAT, IOPORT_DIR_OUTPUT);
 	ioport_set_pin_level(LED_BAT, 0);
-
-
-    /* Configure battery warner Pin */
-    /*ioport_set_pin_mode(BAT_WARN_PIN, IOPORT_MODE_MUX_B);
-    ioport_disable_pin(BAT_WARN_PIN);*/
-	
+#if 0
 	/* Configure pushbutton pins */
 	ioport_set_pin_dir(PB_UP, IOPORT_DIR_INPUT);
 	ioport_set_pin_mode(PB_UP, IOPORT_MODE_PULLUP | IOPORT_MODE_DEBOUNCE);
@@ -56,7 +51,7 @@ void board_init(void)
     adc_configure_timing(ADC, 1, ADC_SETTLING_TIME_3, 1);
     adc_enable_channel(ADC, KICK_VOLTAGE);
     adc_configure_trigger(ADC, ADC_TRIG_SW, 0);
-    
+#endif
     /* Configure Motor pins */
     ioport_set_pin_mode(MOTOR_LEFT_L, IOPORT_MODE_MUX_B);
     ioport_disable_pin(MOTOR_LEFT_L);
@@ -70,7 +65,7 @@ void board_init(void)
     ioport_disable_pin(MOTOR_REAR_L);
     ioport_set_pin_mode(MOTOR_REAR_H, IOPORT_MODE_MUX_B);
     ioport_disable_pin(MOTOR_REAR_H);
-
+#if 0
     /* Configure Encoder pins */
     ioport_set_pin_mode(ENC_CLK_PIN, IOPORT_MODE_MUX_B);
     ioport_disable_pin(ENC_CLK_PIN);
@@ -109,7 +104,7 @@ void board_init(void)
     ioport_set_pin_dir(RPI4, IOPORT_DIR_INPUT);
     ioport_set_pin_dir(RPI5, IOPORT_DIR_INPUT);
     ioport_set_pin_dir(RPI6, IOPORT_DIR_INPUT);
-    
+#endif
     /* Configure UART pins */
     ioport_set_pin_mode(UART_RX, IOPORT_MODE_MUX_A);
     ioport_disable_pin(UART_RX);
@@ -121,7 +116,7 @@ void board_init(void)
     ioport_disable_pin(I2C0_DATA);
     ioport_set_pin_mode(I2C0_CLK, IOPORT_MODE_MUX_A);
     ioport_disable_pin(I2C0_CLK);
-	
+
 	/* Configure SPI pins */
 	ioport_set_pin_mode(SPI1_MISO, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(SPI1_MISO);
@@ -131,7 +126,7 @@ void board_init(void)
 	ioport_disable_pin(SPI1_SPCK);
 	ioport_set_pin_mode(SPI1_NPCS0, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(SPI1_NPCS0);
-
+#if 0
     /* Configure micro SD Card pins */
     ioport_set_pin_mode(MSD_CMD, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(MSD_CMD);
@@ -145,14 +140,13 @@ void board_init(void)
 	ioport_disable_pin(MSD_DATA2);
     ioport_set_pin_mode(MSD_DATA3, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(MSD_DATA3);
-
+#endif
     /* Init PWM */
     pmc_enable_periph_clk(ID_PWM);
     pwm_channel_disable(PWM, MOTOR_LEFT);
     pwm_channel_disable(PWM, MOTOR_RIGHT);
     pwm_channel_disable(PWM, MOTOR_REAR);
     pwm_channel_disable(PWM, ENC_CLK);
-    //pwm_channel_disable(PWM, BAT_WARN);
     pwm_clock_t clock_setting =
     {
         .ul_clka = PWM_FREQUENCY * PERIOD_VALUE,
