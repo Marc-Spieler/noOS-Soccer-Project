@@ -5,6 +5,7 @@
 /************************************************************************/
 
 #include "experiments.h"
+#include "data.h"
 #include "motor.h"
 #include "timing.h"
 
@@ -14,7 +15,7 @@ uint8_t movementDirection = 0;
 
 void motorCircleTest(void)
 {
-    if((getTicks() - lastDirectionChange) >= 1000 && doTest)
+    if((getTicks() - lastDirectionChange) >= 800 && doTest)
     {
         lastDirectionChange = getTicks();
         motorEnable();
@@ -48,6 +49,6 @@ void motorCircleTest(void)
                 break;
         }
         
-        moveRobot(movementDirection, 50, 0);
+        moveRobot(movementDirection, 50, data.compass / 3);
     }
 }    

@@ -74,34 +74,34 @@ void moveRobot(move_t action, float speed, float rot)
             motorUpdatePWM(MOTOR_REAR, irot);
             break;
         case MOVE_F:
-            motorUpdatePWM(MOTOR_LEFT, -ispeed);
-            motorUpdatePWM(MOTOR_RIGHT, ispeed);
-            motorUpdatePWM(MOTOR_REAR, irot);
+            motorUpdatePWM(MOTOR_LEFT, -ispeed + irot);
+            motorUpdatePWM(MOTOR_RIGHT, ispeed + irot);
+            motorUpdatePWM(MOTOR_REAR, 0);
             break;
         case MOVE_FL:
-            motorUpdatePWM(MOTOR_LEFT, irot);
-            motorUpdatePWM(MOTOR_RIGHT, ispeed);
-            motorUpdatePWM(MOTOR_REAR, -ispeed);
+            motorUpdatePWM(MOTOR_LEFT, 0);
+            motorUpdatePWM(MOTOR_RIGHT, ispeed + irot);
+            motorUpdatePWM(MOTOR_REAR, -ispeed + irot);
             break;
         case MOVE_FR:
-            motorUpdatePWM(MOTOR_LEFT, -ispeed);
-            motorUpdatePWM(MOTOR_RIGHT, irot);
-            motorUpdatePWM(MOTOR_REAR, ispeed);
+            motorUpdatePWM(MOTOR_LEFT, -ispeed + irot);
+            motorUpdatePWM(MOTOR_RIGHT, 0);
+            motorUpdatePWM(MOTOR_REAR, ispeed + irot);
             break;
         case MOVE_B:
-            motorUpdatePWM(MOTOR_LEFT, ispeed);
-            motorUpdatePWM(MOTOR_RIGHT, -ispeed);
-            motorUpdatePWM(MOTOR_REAR, irot);
+            motorUpdatePWM(MOTOR_LEFT, ispeed + irot);
+            motorUpdatePWM(MOTOR_RIGHT, -ispeed + irot);
+            motorUpdatePWM(MOTOR_REAR, 0);
             break;
         case MOVE_BL:
-            motorUpdatePWM(MOTOR_LEFT, ispeed);
-            motorUpdatePWM(MOTOR_RIGHT, irot);
-            motorUpdatePWM(MOTOR_REAR, -ispeed);
+            motorUpdatePWM(MOTOR_LEFT, ispeed + irot);
+            motorUpdatePWM(MOTOR_RIGHT, 0);
+            motorUpdatePWM(MOTOR_REAR, -ispeed + irot);
             break;
         case MOVE_BR:
-            motorUpdatePWM(MOTOR_LEFT, irot);
-            motorUpdatePWM(MOTOR_RIGHT, -ispeed);
-            motorUpdatePWM(MOTOR_REAR, ispeed);
+            motorUpdatePWM(MOTOR_LEFT, 0);
+            motorUpdatePWM(MOTOR_RIGHT, -ispeed + irot);
+            motorUpdatePWM(MOTOR_REAR, ispeed + irot);
             break;
         case MOVE_RL:
             motorUpdatePWM(MOTOR_LEFT, ispeed);
