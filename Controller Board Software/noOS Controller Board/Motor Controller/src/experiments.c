@@ -51,6 +51,6 @@ void motorCircleTest(void)
                 break;
         }
     }
-	motorEnable();
-	moveRobot(movementDirection, 0, (data.compass * pidP));
+	
+	moveRobot(movementDirection, 50, (data.compass * pidP));
 }    

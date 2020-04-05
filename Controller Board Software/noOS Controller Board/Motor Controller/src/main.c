@@ -33,6 +33,6 @@ int main(void)
         ricMaintenance();
         serialMaintenance();
         
-        motorCircleTest();
+        //motorCircleTest();
     }
 }
