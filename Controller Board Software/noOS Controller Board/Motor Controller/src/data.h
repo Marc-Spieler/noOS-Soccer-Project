@@ -33,6 +33,8 @@ typedef struct
     
     float compass;
     
+    uint8_t kickerPercentage;
+    
     struct
     {
         union

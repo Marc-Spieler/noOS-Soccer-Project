@@ -7,6 +7,7 @@
 #include "asf.h"
 #include "compass.h"
 #include "experiments.h"
+#include "kicker.h"
 #include "motor.h"
 #include "ric.h"
 #include "serial.h"
@@ -27,9 +28,10 @@ int main(void)
     
     while(1)
     {
-        serialMaintenance();
-        ricMaintenance();
         compassMaintenance();
+        kickerMaintenance();
+        ricMaintenance();
+        serialMaintenance();
         
         motorCircleTest();
     }

@@ -11,7 +11,7 @@
 
 twi_master_options_t twiConfig;
 uint32_t lastCompassRead = 0;
-uint8_t compassIsBusy = false;
+static uint8_t compassIsBusy = false;
 
 uint16_t rawCompass = 0;
 float goalReferencePoint = 0.0f;
@@ -32,8 +32,8 @@ void compassInit(void)
     rx_packet->addr_length = 1;
     rx_packet->length = 2;
     
-    //twi_set_compass_rx_callback(compassCallback);
-    //twi_set_compass_tx_callback(compassCallback);
+    twi_set_compass_rx_callback(compassCallback);
+    twi_set_compass_tx_callback(compassCallback);
 }
 
 void compassMaintenance(void)
@@ -44,10 +44,10 @@ void compassMaintenance(void)
     {
         lastCompassRead = getTicks();
         
-        //setCompassIsBusy();
         if(twi_pdc_master_read(TWI0, rx_packet) == TWI_SUCCESS)
         {
-            //while(compass_is_busy());
+            compassIsBusy = true;
+            while(compassIsBusy);
         }
         rawCompass = ((rx_packet->buffer[0] << 8) | rx_packet->buffer[1]);
         
@@ -79,19 +79,7 @@ void compassCalibrationStep(void)
     tx_packet->buffer[0] = 0xff;
     tx_packet->length = 1;
     
-    //setCompassIsBusy();
     twi_pdc_master_write(TWI0, tx_packet);
-    //while(compass_is_busy());
-}
-
-void setCompassIsBusy(void)
-{
-    compassIsBusy = true;
-}
-
-uint8_t compass_is_busy(void)
-{
-    return compassIsBusy;
 }
 
 static void compassCallback(void)

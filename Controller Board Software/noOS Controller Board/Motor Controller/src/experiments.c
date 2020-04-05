@@ -10,6 +10,8 @@
 #include "timing.h"
 
 Bool doTest = false;
+float pidP = 0.0f;
+
 uint32_t lastDirectionChange = 0;
 uint8_t movementDirection = 0;
 
@@ -49,6 +51,6 @@ void motorCircleTest(void)
                 break;
         }
         
-        moveRobot(movementDirection, 50, data.compass / 3);
+        moveRobot(movementDirection, 50, data.compass * pidP);
     }
 }    

@@ -4,14 +4,12 @@
 /* Created: 04.04.2020                                                  */
 /************************************************************************/
 
-#ifndef EXPERIMENTS_H
-#define EXPERIMENTS_H
+#ifndef KICKER_H
+#define KICKER_H
 
 #include "asf.h"
 
-extern Bool doTest;
-extern float pidP;
-
-void motorCircleTest(void);
+void kickerMaintenance(void);
+void kick(void);
 
 #endif

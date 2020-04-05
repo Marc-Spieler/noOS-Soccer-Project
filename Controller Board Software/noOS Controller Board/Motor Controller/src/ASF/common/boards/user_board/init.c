@@ -42,7 +42,7 @@ void boardInit(void)
 	ioport_set_pin_mode(PB_DOWN, IOPORT_MODE_PULLUP | IOPORT_MODE_DEBOUNCE);
 	ioport_set_pin_dir(PB_RETURN, IOPORT_DIR_INPUT);
 	ioport_set_pin_mode(PB_RETURN, IOPORT_MODE_PULLUP | IOPORT_MODE_DEBOUNCE);
-    
+#endif
     /* Configure Kicker pins */
     ioport_set_pin_dir(KICK_TRIG, IOPORT_DIR_OUTPUT);
     ioport_set_pin_level(KICK_TRIG, 0);
@@ -51,7 +51,7 @@ void boardInit(void)
     adc_configure_timing(ADC, 1, ADC_SETTLING_TIME_3, 1);
     adc_enable_channel(ADC, KICK_VOLTAGE);
     adc_configure_trigger(ADC, ADC_TRIG_SW, 0);
-#endif
+    
     /* Configure Motor pins */
     ioport_set_pin_mode(MOTOR_LEFT_L, IOPORT_MODE_MUX_B);
     ioport_disable_pin(MOTOR_LEFT_L);
@@ -71,7 +71,7 @@ void boardInit(void)
     ioport_disable_pin(ENC_CLK_PIN);
     ioport_set_pin_dir(ENC_LOAD, IOPORT_DIR_OUTPUT);
     ioport_set_pin_level(ENC_LOAD, 1);
-
+    
     ioport_set_pin_dir(ENC_LEFT_A, IOPORT_DIR_INPUT);
     ioport_set_pin_dir(ENC_LEFT_B, IOPORT_DIR_INPUT);
     ioport_set_pin_dir(ENC_LEFT_C, IOPORT_DIR_INPUT);
@@ -95,7 +95,7 @@ void boardInit(void)
     ioport_set_pin_dir(ENC_REAR_E, IOPORT_DIR_INPUT);
     ioport_set_pin_dir(ENC_REAR_F, IOPORT_DIR_INPUT);
     ioport_set_pin_dir(ENC_REAR_G, IOPORT_DIR_INPUT);
-  
+    
     /* Configure Raspberry Pi GPIO pins */
     ioport_set_pin_dir(RPI1, IOPORT_DIR_OUTPUT);
     ioport_set_pin_level(RPI1, 1);
@@ -110,13 +110,13 @@ void boardInit(void)
     ioport_disable_pin(UART_RX);
     ioport_set_pin_mode(UART_TX, IOPORT_MODE_MUX_A);
     ioport_disable_pin(UART_TX);
-
+    
     /* Configure I2C pins */
     ioport_set_pin_mode(I2C0_DATA, IOPORT_MODE_MUX_A);
     ioport_disable_pin(I2C0_DATA);
     ioport_set_pin_mode(I2C0_CLK, IOPORT_MODE_MUX_A);
     ioport_disable_pin(I2C0_CLK);
-
+    
 	/* Configure SPI pins */
 	ioport_set_pin_mode(SPI1_MISO, IOPORT_MODE_MUX_A);
 	ioport_disable_pin(SPI1_MISO);

@@ -9,6 +9,7 @@
 #include "compass.h"
 #include "data.h"
 #include "experiments.h"
+#include "kicker.h"
 #include "motor.h"
 #include "ric.h"
 #include "timing.h"
@@ -45,6 +46,7 @@ typedef enum
     DR_COMPASS,
     DR_LINE,
     DR_LINE_CALIBRATION,
+    DR_KICKER_P,
 } dataRequest_t;
 
 typedef enum
@@ -58,7 +60,9 @@ typedef enum
     EC_MOTOR_RIGHT,
     EC_MOTOR_REAR,
     EC_MOTOR_MOVE,
+    EC_PID_SET_P,
     EC_COMPASS_CALIBRATION,
+    EC_KICK,
 } executionCommand_t;
 
 void serialWrite(uint8_t *pbuf, uint8_t len);
@@ -156,6 +160,12 @@ void serialMaintenance(void)
                     addByteToTxBuffer(DR_LINE_CALIBRATION);
                     addByteToTxBuffer(m2s.line_cal_value);
                     txMsgLen += 2;
+                    break;
+                case DR_KICKER_P:
+                    addByteToTxBuffer(DR_KICKER_P);
+                    addByteToTxBuffer(data.kickerPercentage);
+                    txMsgLen += 2;
+                    break;
                 default:
                     break;
             }
@@ -186,7 +196,7 @@ void processRxPacket(void)
             switch(rxMsg[processedBytes])
             {
                 case EC_UPDATE_LED:
-                    //ioport_set_pin_level(LED_ONBOARD, (rxMsg[++processedBytes] > 0 ? true : false));
+                    ioport_set_pin_level(LED_ONBOARD, (rxMsg[++processedBytes] > 0 ? true : false));
                     break;
                 case EC_UPDATE_LINE_CALIBRATION:
                     m2s.line_cal_value = rxMsg[++processedBytes];
@@ -210,12 +220,17 @@ void processRxPacket(void)
                     motorSetIndividual(MOTOR_REAR, (rxMsg[++processedBytes] - 100));
                     break;
                 case EC_MOTOR_MOVE:
-                    moveRobot(rxMsg[++processedBytes], rxMsg[++processedBytes], (rxMsg[++processedBytes] - 100));
+                    moveRobot(rxMsg[processedBytes + 1], rxMsg[processedBytes + 2], (rxMsg[processedBytes + 3] - 100));
+                    processedBytes += 3;
+                    break;
+                case EC_PID_SET_P:
+                    pidP = (rxMsg[++processedBytes] / 100);
                     break;
                 case EC_COMPASS_CALIBRATION:
-                    ioport_set_pin_level(LED_ONBOARD, true);
                     compassCalibrationStep();
-                    ioport_set_pin_level(LED_ONBOARD, false);
+                    break;
+                case EC_KICK:
+                    kick();
                     break;
                 default:
                     break;

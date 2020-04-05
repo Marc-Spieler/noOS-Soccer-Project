@@ -48,6 +48,8 @@ src\data.c
 
 src\experiments.c
 
+src\kicker.c
+
 src\lib\iniparser\dictionary.c
 
 src\lib\iniparser\iniparser.c
