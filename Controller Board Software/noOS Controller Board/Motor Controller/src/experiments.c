@@ -10,7 +10,7 @@
 #include "timing.h"
 
 Bool doTest = false;
-float pidP = 0.0f;
+float pidP = 2.0f;
 
 uint32_t lastDirectionChange = 0;
 uint8_t movementDirection = 0;
@@ -28,21 +28,21 @@ void motorCircleTest(void)
                 movementDirection = MOVE_F;
                 break;
             case MOVE_F:
-                movementDirection = MOVE_FL;
-                break;
-            case MOVE_FL:
-                movementDirection = MOVE_BL;
-                break;
-            case MOVE_BL:
-                movementDirection = MOVE_B;
-                break;
-            case MOVE_B:
-                movementDirection = MOVE_BR;
-                break;
-            case MOVE_BR:
                 movementDirection = MOVE_FR;
                 break;
             case MOVE_FR:
+                movementDirection = MOVE_BR;
+                break;
+            case MOVE_BR:
+                movementDirection = MOVE_B;
+                break;
+            case MOVE_B:
+                movementDirection = MOVE_BL;
+                break;
+            case MOVE_BL:
+                movementDirection = MOVE_FL;
+                break;
+            case MOVE_FL:
                 movementDirection = 0;
                 motorDisable();
                 doTest = false;
@@ -50,7 +50,7 @@ void motorCircleTest(void)
             default:
                 break;
         }
-        
-        moveRobot(movementDirection, 50, (data.compass * pidP));
     }
+	motorEnable();
+	moveRobot(movementDirection, 0, (data.compass * pidP));
 }    

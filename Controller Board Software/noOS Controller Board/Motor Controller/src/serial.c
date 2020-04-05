@@ -224,7 +224,7 @@ void processRxPacket(void)
                     processedBytes += 3;
                     break;
                 case EC_PID_SET_P:
-                    pidP = (rxMsg[++processedBytes] / 100);
+                    pidP = ((float)rxMsg[++processedBytes] * 0.01f);
                     break;
                 case EC_COMPASS_CALIBRATION:
                     compassCalibrationStep();
