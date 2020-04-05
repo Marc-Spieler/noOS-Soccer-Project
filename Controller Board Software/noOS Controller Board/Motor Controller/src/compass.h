@@ -11,6 +11,7 @@
 
 void compassInit(void);
 void compassMaintenance(void);
+uint8_t get_compass_cal_status(uint8_t *cal_status);
 void setGoalReference(Bool inverted);
 void compassCalibrationStep(void);
 void setCompassIsBusy(void);
